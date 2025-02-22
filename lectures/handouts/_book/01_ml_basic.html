@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; 机器学习基础 – 量化投资与机器学习</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./lab02_data.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-ed6da6eef3892af8a4b5ed59bfb951f5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "没有结果",
+    "search-matching-documents-text": "匹配的文档",
+    "search-copy-link-title": "复制搜索链接",
+    "search-hide-matches-text": "隐藏其它匹配结果",
+    "search-more-match-text": "更多匹配结果",
+    "search-more-matches-text": "更多匹配结果",
+    "search-clear-button-title": "清除",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "提交",
+    "search-label": "搜索"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_ml_basic.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">机器学习基础</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="搜索" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">量化投资与机器学习</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="搜索"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_ml_basic.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">机器学习基础</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lab02_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">金融数据获取与数据分析基础</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">目录</h2>
+   
+  <ul>
+  <li><a href="#机器学习简介" id="toc-机器学习简介" class="nav-link active" data-scroll-target="#机器学习简介"><span class="header-section-number">2.1</span> 机器学习简介</a>
+  <ul class="collapse">
+  <li><a href="#什么是机器学习" id="toc-什么是机器学习" class="nav-link" data-scroll-target="#什么是机器学习"><span class="header-section-number">2.1.1</span> 什么是机器学习？</a></li>
+  <li><a href="#机器学习的主要特点" id="toc-机器学习的主要特点" class="nav-link" data-scroll-target="#机器学习的主要特点"><span class="header-section-number">2.1.2</span> 机器学习的主要特点</a></li>
+  </ul></li>
+  <li><a href="#机器学习的主要类型" id="toc-机器学习的主要类型" class="nav-link" data-scroll-target="#机器学习的主要类型"><span class="header-section-number">2.2</span> 机器学习的主要类型</a>
+  <ul class="collapse">
+  <li><a href="#监督学习-supervised-learning" id="toc-监督学习-supervised-learning" class="nav-link" data-scroll-target="#监督学习-supervised-learning"><span class="header-section-number">2.2.1</span> 监督学习 (Supervised Learning)</a></li>
+  <li><a href="#无监督学习-unsupervised-learning" id="toc-无监督学习-unsupervised-learning" class="nav-link" data-scroll-target="#无监督学习-unsupervised-learning"><span class="header-section-number">2.2.2</span> 无监督学习 (Unsupervised Learning)</a></li>
+  <li><a href="#强化学习-reinforcement-learning" id="toc-强化学习-reinforcement-learning" class="nav-link" data-scroll-target="#强化学习-reinforcement-learning"><span class="header-section-number">2.2.3</span> 强化学习 (Reinforcement Learning)</a></li>
+  </ul></li>
+  <li><a href="#机器学习项目流程" id="toc-机器学习项目流程" class="nav-link" data-scroll-target="#机器学习项目流程"><span class="header-section-number">2.3</span> 机器学习项目流程</a></li>
+  <li><a href="#总结" id="toc-总结" class="nav-link" data-scroll-target="#总结"><span class="header-section-number">2.4</span> 总结</a></li>
+  <li><a href="#练习" id="toc-练习" class="nav-link" data-scroll-target="#练习"><span class="header-section-number">2.5</span> 练习</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">机器学习基础</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="机器学习简介" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="机器学习简介"><span class="header-section-number">2.1</span> 机器学习简介</h2>
+<section id="什么是机器学习" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="什么是机器学习"><span class="header-section-number">2.1.1</span> 什么是机器学习？</h3>
+<p>机器学习是人工智能领域中一个非常热门且快速发展的分支。简单来说，机器学习就是让计算机通过学习数据，而不是依赖明确的编程指令，来完成特定的任务或解决问题。想象一下，我们教小孩子认识猫和狗，不是告诉他们猫和狗的具体特征（比如多少根胡须，耳朵的形状），而是给他们看大量的猫和狗的图片，告诉他们哪些是猫，哪些是狗。通过不断学习，孩子就能自己总结出猫和狗的区别，并且能够识别新的猫和狗。机器学习的原理与之类似，它使用算法来解析数据，从中学习，然后利用学到的知识对新数据做出预测或决策。</p>
+</section>
+<section id="机器学习的主要特点" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="机器学习的主要特点"><span class="header-section-number">2.1.2</span> 机器学习的主要特点</h3>
+<ul>
+<li><strong>数据驱动</strong>: 机器学习模型的核心是数据。模型从数据中学习规律，数据越多、质量越高，模型通常就越强大。</li>
+<li><strong>自动学习</strong>: 机器学习系统能够自动地从数据中发现模式和规律，无需人工明确指定规则。</li>
+<li><strong>持续优化</strong>: 机器学习模型可以通过不断学习新的数据来提升性能，使其能够适应变化的环境。</li>
+<li><strong>泛化能力</strong>: 训练好的模型不仅能处理训练数据，还能对未见过的新数据进行预测或决策。</li>
+</ul>
+</section>
+</section>
+<section id="机器学习的主要类型" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="机器学习的主要类型"><span class="header-section-number">2.2</span> 机器学习的主要类型</h2>
+<section id="监督学习-supervised-learning" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="监督学习-supervised-learning"><span class="header-section-number">2.2.1</span> 监督学习 (Supervised Learning)</h3>
+<p>监督学习就像是有一位老师（监督者）指导计算机学习。我们提供给计算机带有”标签”的数据，标签就是我们希望模型预测的答案。例如，如果我们想让模型识别图片中的水果是苹果还是香蕉，我们就需要提供大量已经标记好（苹果或香蕉）的水果图片给模型学习。模型学习的目标就是找到输入数据（水果图片）和输出标签（苹果或香蕉）之间的关系。</p>
+<p><strong>主要特点:</strong> * 需要使用带有标签的数据进行训练。 * 目标是学习输入特征与输出标签之间的映射关系。 * 主要解决分类和回归问题。分类问题是预测数据属于哪个类别（例如，垃圾邮件检测），回归问题是预测一个连续的数值（例如，房价预测）。</p>
+<p><strong>现实生活案例:</strong> * <strong>垃圾邮件检测</strong>: 通过分析邮件的内容（关键词、发件人等）来判断邮件是否为垃圾邮件。 * <strong>图像识别</strong>: 识别图片中的物体，例如人脸识别、交通标志识别等。 * <strong>语音识别</strong>: 将语音转换成文字。</p>
+<p><strong>金融领域应用示例:</strong> * <strong>信用评分</strong>: 根据用户的个人信息和交易记录预测其信用等级。 * <strong>股票价格预测</strong>: 预测股票未来价格的涨跌趋势。 * <strong>客户流失预测</strong>: 预测哪些客户可能在未来一段时间内停止使用某项金融服务。</p>
+</section>
+<section id="无监督学习-unsupervised-learning" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="无监督学习-unsupervised-learning"><span class="header-section-number">2.2.2</span> 无监督学习 (Unsupervised Learning)</h3>
+<p>无监督学习则像是让计算机在没有老师指导的情况下，自己去探索数据的内在结构和模式。我们提供给计算机的数据没有标签，模型需要自己去发现数据中的隐藏信息。例如，给计算机一大堆新闻报道，让它自己将这些新闻按照主题进行分类，这就是一个无监督学习的任务。</p>
+<p><strong>主要特点:</strong> * 使用没有标签的数据进行学习。 * 目标是发现数据中的内在结构、模式或关系。 * 常用于聚类、降维和关联规则挖掘等任务。聚类是将相似的数据点 grouping 在一起，降维是在保留数据主要信息的同时减少数据的维度，关联规则挖掘是发现数据中不同项之间的关联关系。</p>
+<p><strong>现实生活案例:</strong> * <strong>客户分群</strong>: 根据用户的购买行为将用户分成不同的群体，以便进行个性化营销。 * <strong>社交网络分析</strong>: 分析社交网络中用户之间的关系，发现社区结构或影响力中心。 * <strong>异常检测</strong>: 在大量数据中找出异常或不正常的点，例如信用卡欺诈检测。</p>
+<p><strong>金融领域应用示例:</strong> * <strong>投资组合风险分析</strong>: 通过聚类分析将不同的投资资产进行分类，评估投资组合的风险。 * <strong>市场细分</strong>: 将市场上的客户按照不同的特征进行细分，以便更好地了解市场需求。 * <strong>交易异常检测</strong>: 检测金融市场中不正常的交易行为，例如内幕交易或市场操纵。</p>
+</section>
+<section id="强化学习-reinforcement-learning" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="强化学习-reinforcement-learning"><span class="header-section-number">2.2.3</span> 强化学习 (Reinforcement Learning)</h3>
+<p>强化学习更像是训练一只宠物。我们不直接告诉宠物应该做什么，而是通过奖励或惩罚来引导它学习。计算机作为一个”智能体”，在与环境的交互中不断尝试不同的动作。如果某个动作让它达到了目标（例如，在游戏中获得高分，或者在交易中获得盈利），我们就给予奖励；如果动作不好，就给予惩罚。通过不断地试错和学习，智能体最终学会如何在特定环境中做出最优的决策，以获得最大的累积奖励。</p>
+<p><strong>主要特点:</strong> * 通过与环境的交互进行学习。 * 通过奖励和惩罚来指导学习方向。 * 目标是学习在特定环境中采取最优的行动策略，以最大化累积奖励。 * 适合解决序贯决策问题，即一系列连续决策的问题。</p>
+<p><strong>现实生活案例:</strong> * <strong>游戏AI</strong>: 训练AI玩游戏，例如围棋、象棋、电子游戏等。 * <strong>机器人控制</strong>: 训练机器人完成各种任务，例如自动驾驶、物体抓取等。 * <strong>推荐系统优化</strong>: 通过用户与推荐系统的交互（点击、购买等）来优化推荐策略。</p>
+<p><strong>金融领域应用示例:</strong> * <strong>自动化交易</strong>: 开发自动交易程序，根据市场情况自动进行买卖操作。 * <strong>投资组合管理</strong>: 动态调整投资组合，以最大化收益并控制风险。 * <strong>订单执行优化</strong>: 优化股票交易的订单执行策略，以降低交易成本。</p>
+</section>
+</section>
+<section id="机器学习项目流程" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="机器学习项目流程"><span class="header-section-number">2.3</span> 机器学习项目流程</h2>
+<p>一个完整的机器学习项目通常包含以下几个关键步骤：</p>
+<ol type="1">
+<li><strong>数据收集与预处理</strong>:
+<ul>
+<li><strong>数据获取</strong>: 收集项目所需的数据。数据来源可能包括数据库、文件、网络爬虫、传感器等等。</li>
+<li><strong>数据清洗</strong>: 处理数据中的缺失值、异常值、重复值和错误数据，确保数据质量。</li>
+<li><strong>特征工程</strong>: 从原始数据中提取有用的特征，或者创建新的特征，以便模型更好地学习。特征工程是机器学习项目中非常重要的一步，好的特征能够显著提升模型性能。</li>
+</ul></li>
+<li><strong>模型选择与训练</strong>:
+<ul>
+<li><strong>选择合适的算法</strong>: 根据问题的类型（分类、回归、聚类等）和数据的特点，选择合适的机器学习算法。例如，对于分类问题可以选择逻辑回归、支持向量机、决策树、随机森林等算法。</li>
+<li><strong>划分数据集</strong>: 将数据集划分为训练集、验证集和测试集。训练集用于训练模型，验证集用于调整模型参数，测试集用于评估模型的泛化能力。</li>
+<li><strong>模型训练与调参</strong>: 使用训练集数据训练模型，并使用验证集调整模型参数，例如超参数优化。目标是找到在验证集上表现最好的模型参数。</li>
+</ul></li>
+<li><strong>模型评估与优化</strong>:
+<ul>
+<li><strong>性能评估</strong>: 使用测试集评估模型的性能。根据问题的类型选择合适的评估指标，例如准确率、精确率、召回率、F1 值（分类问题），均方误差、平均绝对误差（回归问题）等。</li>
+<li><strong>模型调优</strong>: 如果模型性能不理想，需要进一步分析原因，并进行模型调优。调优方法可能包括：调整模型参数、尝试不同的算法、改进特征工程、增加数据量等。</li>
+<li><strong>结果分析</strong>: 分析模型的预测结果，理解模型的优点和不足，为后续的模型改进提供方向。</li>
+</ul></li>
+<li><strong>模型部署与监控</strong>:
+<ul>
+<li><strong>模型部署</strong>: 将训练好的模型部署到实际应用环境中。部署方式可能包括将模型集成到应用程序中、部署为 Web 服务等。</li>
+<li><strong>性能监控</strong>: 在模型上线运行后，需要持续监控模型的性能。因为实际应用环境中的数据分布可能会发生变化（即”概念漂移”），导致模型性能下降。</li>
+<li><strong>定期更新</strong>: 根据监控结果，定期使用新的数据重新训练模型，或者调整模型参数，以保持模型的性能和适应性。</li>
+</ul></li>
+</ol>
+</section>
+<section id="总结" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="总结"><span class="header-section-number">2.4</span> 总结</h2>
+<ul>
+<li>机器学习是一种强大的数据分析和预测工具，能够从数据中自动学习模式和规律。</li>
+<li>监督学习、无监督学习和强化学习是机器学习的三种主要类型，它们适用于不同的问题场景。</li>
+<li>机器学习在金融领域有着广泛的应用前景，可以用于风险管理、投资决策、客户服务等多个方面。</li>
+<li>成功应用机器学习需要一个完整的项目流程，包括数据准备、模型构建、评估优化和部署监控等环节。</li>
+</ul>
+</section>
+<section id="练习" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="练习"><span class="header-section-number">2.5</span> 练习</h2>
+<ol type="1">
+<li>思考一个你感兴趣的金融领域问题，分析它适合使用哪种类型的机器学习方法，并解释原因。</li>
+<li>在日常生活中，你还能想到哪些可以使用机器学习解决的问题？请举例说明，并分析适合使用哪种类型的机器学习方法。</li>
+<li>查阅资料，探索更多机器学习在金融领域的实际应用案例，并思考这些应用如何改变金融行业。</li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "已复制");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "已复制");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="index.html">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./lab02_data.html" class="pagination-link" aria-label="金融数据获取与数据分析基础">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">金融数据获取与数据分析基础</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
