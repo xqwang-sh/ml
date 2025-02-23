@@ -3,7 +3,7 @@ project:
   output-dir: _book
 
 book:
-  title: "量化投资与机器学习"
+  title: "数据挖掘与机器学习"
   author: "汪小圈" # 请替换为您的姓名
   date: last-modified
   chapters:
