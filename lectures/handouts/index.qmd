@@ -20,6 +20,11 @@ title: "前言"
 
 1.  [借贷违约风险评估](project1_LC.qmd)
 
+下面两个项目二选一：
+
+2a.  [股票价格预测](project2a_tspred.qmd)
+2b.  [财务报表文本分析](project2b_text.qmd)
+
 **使用说明:**
 
 *   本讲义使用 Quarto 创建，可以方便地生成 HTML, PDF, ePub 等多种格式。
