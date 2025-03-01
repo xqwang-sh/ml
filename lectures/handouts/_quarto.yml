@@ -10,6 +10,7 @@ book:
     - index.qmd
     - 01_ml_basic.qmd
     - lab02_data.qmd
+    - 03_supervised.qmd
 
 format:
   html:

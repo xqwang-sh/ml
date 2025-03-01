@@ -12,8 +12,13 @@ title: "前言"
 
 1.  [机器学习基础](01_ml_basic.qmd)
 2.  [金融数据获取与数据分析基础](lab02_data.qmd)
-3.  [监督学习]()
-4.  [无监督学习]()
+3.  [监督学习（上）](03_supervised.qmd)
+4.  [监督学习（下）](04_supervised.qmd)
+5.  [模型评估与优化](05_model_assess.qmd)
+
+**课程项目:**
+
+1.  [借贷违约风险评估](project1_LC.qmd)
 
 **使用说明:**
 
