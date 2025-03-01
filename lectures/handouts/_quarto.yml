@@ -11,6 +11,7 @@ book:
     - 01_ml_basic.qmd
     - lab02_data.qmd
     - 03_supervised.qmd
+    - project1_LC.qmd
 
 format:
   html:
