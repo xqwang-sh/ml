@@ -11,6 +11,8 @@ book:
     - 01_ml_basic.qmd
     - lab02_data.qmd
     - 03_supervised.qmd
+    - 04_supervised.qmd
+    - 05_model_assess.qmd
     - project1_LC.qmd
 
 format:
