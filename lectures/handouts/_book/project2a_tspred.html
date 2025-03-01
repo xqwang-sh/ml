@@ -181,6 +181,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#预测结果分析与应用" id="toc-预测结果分析与应用" class="nav-link" data-scroll-target="#预测结果分析与应用"><span class="header-section-number">8.5.3</span> 预测结果分析与应用</a></li>
   </ul></li>
   <li><a href="#提交要求" id="toc-提交要求" class="nav-link" data-scroll-target="#提交要求"><span class="header-section-number">8.6</span> 提交要求</a></li>
+  <li><a href="#评分标准" id="toc-评分标准" class="nav-link" data-scroll-target="#评分标准"><span class="header-section-number">8.7</span> 评分标准</a></li>
   </ul>
 </nav>
     </div>
@@ -378,7 +379,6 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>课堂展示Slides</strong>：
 <ul>
 <li>简明扼要展示项目主要发现和结果</li>
-<li>重点说明数据特征、模型选择和预测结果</li>
 <li>包含关键可视化图表</li>
 <li>演示时间控制在10分钟以内</li>
 </ul></li>
@@ -395,6 +395,36 @@ ul.task-list li input[type="checkbox"] {
 <li>截止日期：2025年6月8日23:59</li>
 </ul></li>
 </ol>
+</section>
+<section id="评分标准" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="评分标准"><span class="header-section-number">8.7</span> 评分标准</h2>
+<ul>
+<li><strong>课堂展示（40分）</strong>
+<ul>
+<li>内容全面性：清晰展示数据分析、特征工程、模型构建和评估的完整流程</li>
+<li>技术理解：准确阐述金融时间序列特性及采用模型的优缺点</li>
+<li>结果分析：深入解读预测结果的经济意义和实际应用价值</li>
+<li>可视化呈现：包含时间序列分解图、ACF/PACF图、模型预测对比图等专业图表</li>
+<li>创新性：展示对模型局限性的思考或改进尝试</li>
+<li>时间控制：重点突出，在10分钟内完整呈现核心内容</li>
+</ul></li>
+<li><strong>代码质量（30分）</strong>
+<ul>
+<li>完整性：包含数据预处理、特征生成、模型训练、回测评估全流程</li>
+<li>时序处理：正确实现时间序列分割、滚动窗口验证，避免数据泄露</li>
+<li>可重复性：设置随机种子，保证结果可复现</li>
+<li>规范性：代码模块化设计，有清晰的函数注释和文档说明</li>
+<li>可视化：实现关键时序分析和预测结果的可视化功能</li>
+</ul></li>
+<li><strong>模型性能（30分）</strong>
+<ul>
+<li>基准模型：实现ARIMA/GARCH等传统时序模型作为基准</li>
+<li>优化模型：通过特征工程/模型融合提升预测精度</li>
+<li>模型多样性：至少包含3种不同类别模型（如ARIMA、LSTM、XGBoost）</li>
+<li>评估全面性：同时报告点预测精度（MSE）和方向准确性指标</li>
+<li>策略应用：设计基于预测结果的简单交易策略并评估其表现</li>
+</ul></li>
+</ul>
 
 
 </section>
