@@ -28,9 +28,11 @@ title: 金融数据获取与数据分析基础
     *   **股东信息**：股东户数、十大股东
     *   **分红送股**：分红金额、送股比例
 *   **常用数据源**：
+    *   **CSMAR** (csmar.com):  国泰安金融数据库，数据全面，学校IP范围内免费使用
+    *   **CNRDS** (cnrds.com):  中国研究数据服务平台，另类数据全面，可向学校申请账号
     *   **Tushare** (tushare.pro):  国内股票数据接口，数据全面，API友好 (稍后详细介绍)
     *   **Yahoo Finance** (finance.yahoo.com):  全球股票数据，免费API (yfinance Python库)
-    *   **交易所官方API**:  上海证券交易所 (sse.com.cn), 深圳证券交易所 (szse.cn) - 数据权威，但API可能较为复杂
+    *   **交易所官方API**:  上海证券交易所 (sse.com.cn), 深圳证券交易所 (szse.cn) - 数据权威，但API要走申请流程
     *   **券商API**:  部分券商提供API接口，方便交易和数据获取 (例如：同花顺, 东方财富)
     *   **Wind** (wind.com.cn), **Bloomberg** (bloomberg.com):  专业金融数据服务商，数据质量高，但价格昂贵 (机构常用)
 
@@ -43,10 +45,10 @@ title: 金融数据获取与数据分析基础
     *   **债券评级**：评级机构、评级结果
     *   **债券发行数据**：发行规模、发行利率
 *   **常用数据源**：
+    *   **CSMAR** (csmar.com):  国泰安金融数据库，学校IP范围内免费使用
     *   **Wind** (wind.com.cn), **Bloomberg** (bloomberg.com):  专业金融数据服务商
     *   **中债网** (chinabond.com.cn):  中国债券信息网，官方数据
     *   **交易所债券信息平台**:  上海证券交易所债券信息平台, 深圳证券交易所债券信息平台
-    *   **券商研究报告**:  部分券商研报会提供债券市场数据和分析
 
 ### 期货市场数据
 
@@ -143,10 +145,10 @@ title: 金融数据获取与数据分析基础
     import numpy as np
     import pandas as pd
 
-    # 假设您已下载 茅台 (600519.SH) 近5日收盘价数据到 moutai_daily.csv
+    # 假设已下载茅台日线数据
     # CSV 文件包含 Date 和 Close 列
-    moutai_daily_df = pd.read_csv('moutai_daily.csv')
-    close_prices = moutai_daily_df['Close'].values
+    df = pd.read_csv('data/CSMAR/moutai_daily/TRD_Dalyr.csv')
+    close_prices = df['Clsprc'].values
 
     # 计算平均收盘价
     avg_price = np.mean(close_prices)
@@ -155,11 +157,6 @@ title: 金融数据获取与数据分析基础
     # 计算收盘价的标准差
     std_price = np.std(close_prices)
     print(f"收盘价标准差: {std_price:.2f}")
-
-    # 计算每日涨跌幅 (假设前一日收盘价在 CSV 中也存在)
-    previous_close_prices = moutai_daily_df['Close'].shift(1).fillna(method='bfill').values #  向前填充第一个缺失值
-    price_change_ratio = (close_prices[1:] - previous_close_prices[1:]) / previous_close_prices[1:]
-    print(f"每日涨跌幅: {price_change_ratio}")
     ```
 
 ### 2.2 Pandas 基础
@@ -177,17 +174,7 @@ title: 金融数据获取与数据分析基础
     import pandas as pd
     import numpy as np
     import matplotlib.pyplot as plt
-    import tushare as ts
 
-    # 设置Tushare token
-    ts.set_token('你的token')
-    pro = ts.pro_api()
-
-    # 获取茅台股票数据（最近60个交易日）
-    df = pro.daily(ts_code='600519.SH', 
-                  start_date='20240101',
-                  end_date='20240331')
-    
     # 基础数据处理
     df['trade_date'] = pd.to_datetime(df['trade_date'])  # 转换日期格式
     df = df.sort_values('trade_date')  # 按日期排序
@@ -274,188 +261,19 @@ title: 金融数据获取与数据分析基础
 
 ### 代码生成与解释
 
-*   **AI 代码生成工具**:  Cursor, GitHub Copilot 等
-*   **代码生成**:  使用 `Ctrl+K` (或 Cmd+K) 快捷键，根据自然语言描述或代码上下文，自动生成代码片段或完整函数。  例如，在注释中输入 "用 Tushare 获取贵州茅台 (600519.SH) 2023年至今的日线数据"，AI 可以自动生成相应的 Python 代码。
-*   **代码解释**:  使用 `Ctrl+L` (或 Cmd+L) 快捷键，AI 工具可以解释选定代码的功能和逻辑，帮助理解代码。 例如，选中一段复杂的 Pandas 股票数据处理代码，使用 `Ctrl+L` 可以快速了解代码的功能。
+*   **AI 代码生成工具**:  GitHub Copilot
+*   **代码生成**:  根据自然语言描述或代码上下文，自动生成代码片段或完整函数。
+*   **代码解释**:  使用Ask Copilot，AI 可以解释选定代码的功能和逻辑，帮助理解代码。 例如，选中一段复杂的 Pandas 股票数据处理代码，使用 `Ctrl+L` 可以快速了解代码的功能。
 
 ### 代码优化与调试
 
-*   **AI 代码优化**:  AI 工具可以分析代码，提供性能优化建议，例如：
-    *   **代码效率优化**:  改进算法、减少循环、使用向量化运算 (例如：优化股票数据批量处理循环)。 可以使用 `Ctrl+I` (或 Cmd+I) 快捷键，请求 AI 检查代码并给出优化建议。
-    *   **代码可读性优化**:  代码格式化、变量命名建议、代码重构建议。  `Ctrl+I` 同样可以用于代码可读性优化。
-*   **AI 代码调试**:  AI 工具可以辅助代码调试，例如：
-    *   **错误检测**:  静态代码分析，检测潜在错误 (例如：检查股票数据处理代码中是否存在数据类型错误)。  某些 AI 工具可以在编写代码时实时检测错误。
+*   **AI 代码优化**:  AI 可以分析代码，提供性能优化建议，例如：
+    *   **代码效率优化**:  改进算法、减少循环、使用向量化运算 (例如：优化股票数据批量处理循环)。 可以使用Edit with Copilot，请求 AI 检查代码并给出优化建议。
+    *   **代码可读性优化**:  代码格式化、变量命名建议、代码重构建议。 Edit with Copilot 同样可以用于代码可读性优化。
+*   **AI 代码调试**:  AI 可以辅助代码调试，例如：
+    *   **错误检测**:  静态代码分析，检测潜在错误 (例如：检查股票数据处理代码中是否存在数据类型错误)。 
     *   **Bug 定位**:  根据错误信息和代码上下文，帮助定位 Bug。  AI 可以分析错误堆栈信息，并结合代码逻辑，给出可能的 Bug 位置和修复建议。
     *   **智能提示**:  提供代码补全、参数提示、错误提示，减少编码错误。
-
-### 最佳实践案例
-
-*   **案例 1: 生成基础数据分析代码**
-    *   **场景**: 需要生成一段完整的代码，用于获取茅台股票数据并进行基本分析。
-    *   **操作**: 在代码编辑器中输入以下注释，然后按下 `Ctrl+K`:
-        ```python
-        # 使用tushare获取贵州茅台(600519.SH)最近30天的日线数据
-        # 计算日收益率、5日均线、20日均线
-        # 使用matplotlib绘制K线图，并在图上显示均线
-        ```
-    *   **预期生成代码**:
-        ```python
-        import tushare as ts
-        import pandas as pd
-        import matplotlib.pyplot as plt
-
-        # 初始化tushare
-        ts.set_token('你的token')
-        pro = ts.pro_api()
-
-        # 获取数据
-        end_date = pd.Timestamp.today().strftime('%Y%m%d')
-        start_date = (pd.Timestamp.today() - pd.Timedelta(days=30)).strftime('%Y%m%d')
-        df = pro.daily(ts_code='600519.SH', start_date=start_date, end_date=end_date)
-        df['trade_date'] = pd.to_datetime(df['trade_date'])
-        df = df.sort_values('trade_date')
-
-        # 计算指标
-        df['daily_return'] = df['close'].pct_change()
-        df['MA5'] = df['close'].rolling(window=5).mean()
-        df['MA20'] = df['close'].rolling(window=20).mean()
-
-        # 绘图
-        plt.figure(figsize=(12, 6))
-        plt.plot(df['trade_date'], df['close'], label='收盘价')
-        plt.plot(df['trade_date'], df['MA5'], label='5日均线')
-        plt.plot(df['trade_date'], df['MA20'], label='20日均线')
-        plt.title('贵州茅台股价走势')
-        plt.xlabel('日期')
-        plt.ylabel('价格')
-        plt.legend()
-        plt.grid(True)
-        plt.show()
-        ```
-
-*   **案例 2: 生成技术分析代码**
-    *   **场景**: 通过解释MACD指标的计算原理，生成更复杂的技术分析代码。
-    *   **操作**: 输入以下注释，然后按下 `Ctrl+L`:
-        ```python
-        # 请解释MACD指标的计算原理，并生成一个完整的函数来计算茅台股票的MACD指标
-        # 需要包含：
-        # 1. MACD的计算（快线、慢线、柱状图）
-        # 2. 买卖信号判断
-        # 3. 结果可视化
-        ```
-    *   **预期生成代码**:
-        ```python
-        def analyze_macd(stock_data, short_window=12, long_window=26, signal_window=9):
-            """
-            计算并可视化MACD指标
-            - DIF(MACD线): 快速EMA与慢速EMA的差
-            - DEA(信号线): DIF的移动平均
-            - MACD柱: DIF与DEA的差值
-            """
-            # 计算MACD
-            exp1 = stock_data['close'].ewm(span=short_window, adjust=False).mean()
-            exp2 = stock_data['close'].ewm(span=long_window, adjust=False).mean()
-            stock_data['DIF'] = exp1 - exp2
-            stock_data['DEA'] = stock_data['DIF'].ewm(span=signal_window, adjust=False).mean()
-            stock_data['MACD'] = 2 * (stock_data['DIF'] - stock_data['DEA'])
-            
-            # 生成买卖信号
-            stock_data['SIGNAL'] = 0
-            stock_data.loc[stock_data['DIF'] > stock_data['DEA'], 'SIGNAL'] = 1
-            stock_data.loc[stock_data['DIF'] < stock_data['DEA'], 'SIGNAL'] = -1
-            
-            # 可视化
-            fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 8), sharex=True)
-            
-            # 绘制股价
-            ax1.plot(stock_data['trade_date'], stock_data['close'])
-            ax1.set_title('茅台股价与MACD信号')
-            ax1.grid(True)
-            
-            # 绘制MACD
-            ax2.plot(stock_data['trade_date'], stock_data['DIF'], label='DIF')
-            ax2.plot(stock_data['trade_date'], stock_data['DEA'], label='DEA')
-            ax2.bar(stock_data['trade_date'], stock_data['MACD'], label='MACD柱')
-            ax2.grid(True)
-            ax2.legend()
-            
-            plt.tight_layout()
-            plt.show()
-            
-            return stock_data
-
-        # 调用函数
-        df = analyze_macd(df)
-        ```
-
-*   **案例 3: 生成性能优化代码**
-    *   **场景**: 优化股票数据分析代码，生成更高效的实现。
-    *   **操作**: 输入以下注释和代码，然后按下 `Ctrl+I`:
-        ```python
-        # 请优化以下计算波动率的代码，使用向量化操作提高性能
-        # 需要：
-        # 1. 使用pandas的向量化操作
-        # 2. 添加并行计算支持
-        # 3. 增加性能监控
-        
-        def calculate_volatility(close_prices):
-            volatility = []
-            for i in range(len(close_prices)-20):
-                window = close_prices[i:i+20]
-                daily_returns = []
-                for j in range(1, len(window)):
-                    daily_return = (window[j] - window[j-1]) / window[j-1]
-                    daily_returns.append(daily_return)
-                vol = np.std(daily_returns) * np.sqrt(252)
-                volatility.append(vol)
-            return volatility
-        ```
-    *   **预期生成代码**:
-        ```python
-        import time
-        from concurrent.futures import ThreadPoolExecutor
-        
-        def calculate_volatility_optimized(close_prices):
-            """
-            优化后的波动率计算函数
-            - 使用pandas的向量化操作
-            - 支持并行计算
-            - 包含性能监控
-            """
-            start_time = time.time()
-            
-            # 计算日收益率（向量化操作）
-            returns = pd.Series(close_prices).pct_change().dropna()
-            
-            # 使用rolling计算滚动波动率
-            volatility = returns.rolling(window=20).std() * np.sqrt(252)
-            
-            # 并行计算示例（处理多个股票时使用）
-            def parallel_volatility(stock_returns):
-                return stock_returns.rolling(window=20).std() * np.sqrt(252)
-            
-            with ThreadPoolExecutor() as executor:
-                # 这里可以处理多个股票的数据
-                results = list(executor.map(parallel_volatility, [returns]))
-            
-            end_time = time.time()
-            print(f"计算耗时: {end_time - start_time:.4f} 秒")
-            
-            return volatility
-        
-        # 性能对比
-        prices = df['close'].values
-        
-        # 测试原始版本
-        start = time.time()
-        vol1 = calculate_volatility(prices)
-        print(f"原始版本耗时: {time.time() - start:.4f} 秒")
-        
-        # 测试优化版本
-        start = time.time()
-        vol2 = calculate_volatility_optimized(prices)
-        print(f"优化版本耗时: {time.time() - start:.4f} 秒")
-        ```
 
 ## 总结
 

@@ -225,7 +225,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#代码生成与解释" id="toc-代码生成与解释" class="nav-link" data-scroll-target="#代码生成与解释"><span class="header-section-number">3.4.1</span> 代码生成与解释</a></li>
   <li><a href="#代码优化与调试" id="toc-代码优化与调试" class="nav-link" data-scroll-target="#代码优化与调试"><span class="header-section-number">3.4.2</span> 代码优化与调试</a></li>
-  <li><a href="#最佳实践案例" id="toc-最佳实践案例" class="nav-link" data-scroll-target="#最佳实践案例"><span class="header-section-number">3.4.3</span> 最佳实践案例</a></li>
   </ul></li>
   <li><a href="#总结" id="toc-总结" class="nav-link" data-scroll-target="#总结"><span class="header-section-number">3.5</span> 总结</a></li>
   </ul>
@@ -291,9 +290,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 <li><strong>常用数据源</strong>：
 <ul>
+<li><strong>CSMAR</strong> (csmar.com): 国泰安金融数据库，数据全面，学校IP范围内免费使用</li>
+<li><strong>CNRDS</strong> (cnrds.com): 中国研究数据服务平台，另类数据全面，可向学校申请账号</li>
 <li><strong>Tushare</strong> (tushare.pro): 国内股票数据接口，数据全面，API友好 (稍后详细介绍)</li>
 <li><strong>Yahoo Finance</strong> (finance.yahoo.com): 全球股票数据，免费API (yfinance Python库)</li>
-<li><strong>交易所官方API</strong>: 上海证券交易所 (sse.com.cn), 深圳证券交易所 (szse.cn) - 数据权威，但API可能较为复杂</li>
+<li><strong>交易所官方API</strong>: 上海证券交易所 (sse.com.cn), 深圳证券交易所 (szse.cn) - 数据权威，但API要走申请流程</li>
 <li><strong>券商API</strong>: 部分券商提供API接口，方便交易和数据获取 (例如：同花顺, 东方财富)</li>
 <li><strong>Wind</strong> (wind.com.cn), <strong>Bloomberg</strong> (bloomberg.com): 专业金融数据服务商，数据质量高，但价格昂贵 (机构常用)</li>
 </ul></li>
@@ -312,10 +313,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 <li><strong>常用数据源</strong>：
 <ul>
+<li><strong>CSMAR</strong> (csmar.com): 国泰安金融数据库，学校IP范围内免费使用</li>
 <li><strong>Wind</strong> (wind.com.cn), <strong>Bloomberg</strong> (bloomberg.com): 专业金融数据服务商</li>
 <li><strong>中债网</strong> (chinabond.com.cn): 中国债券信息网，官方数据</li>
 <li><strong>交易所债券信息平台</strong>: 上海证券交易所债券信息平台, 深圳证券交易所债券信息平台</li>
-<li><strong>券商研究报告</strong>: 部分券商研报会提供债券市场数据和分析</li>
 </ul></li>
 </ul>
 </section>
@@ -426,10 +427,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 假设您已下载 茅台 (600519.SH) 近5日收盘价数据到 moutai_daily.csv</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 假设已下载茅台日线数据</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># CSV 文件包含 Date 和 Close 列</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>moutai_daily_df <span class="op">=</span> pd.read_csv(<span class="st">'moutai_daily.csv'</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>close_prices <span class="op">=</span> moutai_daily_df[<span class="st">'Close'</span>].values</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data/CSMAR/moutai_daily/TRD_Dalyr.csv'</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>close_prices <span class="op">=</span> df[<span class="st">'Clsprc'</span>].values</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算平均收盘价</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>avg_price <span class="op">=</span> np.mean(close_prices)</span>
@@ -437,12 +438,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算收盘价的标准差</span></span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>std_price <span class="op">=</span> np.std(close_prices)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"收盘价标准差: </span><span class="sc">{</span>std_price<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算每日涨跌幅 (假设前一日收盘价在 CSV 中也存在)</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>previous_close_prices <span class="op">=</span> moutai_daily_df[<span class="st">'Close'</span>].shift(<span class="dv">1</span>).fillna(method<span class="op">=</span><span class="st">'bfill'</span>).values <span class="co">#  向前填充第一个缺失值</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>price_change_ratio <span class="op">=</span> (close_prices[<span class="dv">1</span>:] <span class="op">-</span> previous_close_prices[<span class="dv">1</span>:]) <span class="op">/</span> previous_close_prices[<span class="dv">1</span>:]</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"每日涨跌幅: </span><span class="sc">{</span>price_change_ratio<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"收盘价标准差: </span><span class="sc">{</span>std_price<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul>
 </section>
 <section id="pandas-基础" class="level3" data-number="3.3.2">
@@ -461,64 +457,54 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tushare <span class="im">as</span> ts</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 设置Tushare token</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>ts.set_token(<span class="st">'你的token'</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>pro <span class="op">=</span> ts.pro_api()</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取茅台股票数据（最近60个交易日）</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pro.daily(ts_code<span class="op">=</span><span class="st">'600519.SH'</span>, </span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>              start_date<span class="op">=</span><span class="st">'20240101'</span>,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>              end_date<span class="op">=</span><span class="st">'20240331'</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 基础数据处理</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'trade_date'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'trade_date'</span>])  <span class="co"># 转换日期格式</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.sort_values(<span class="st">'trade_date'</span>)  <span class="co"># 按日期排序</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算基本指标</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'daily_return'</span>] <span class="op">=</span> df[<span class="st">'close'</span>].pct_change()  <span class="co"># 日收益率</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'MA5'</span>] <span class="op">=</span> df[<span class="st">'close'</span>].rolling(window<span class="op">=</span><span class="dv">5</span>).mean()  <span class="co"># 5日均线</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'MA20'</span>] <span class="op">=</span> df[<span class="st">'close'</span>].rolling(window<span class="op">=</span><span class="dv">20</span>).mean()  <span class="co"># 20日均线</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'volatility'</span>] <span class="op">=</span> df[<span class="st">'daily_return'</span>].rolling(window<span class="op">=</span><span class="dv">20</span>).std() <span class="op">*</span> np.sqrt(<span class="dv">252</span>)  <span class="co"># 20日年化波动率</span></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 基础数据处理</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'trade_date'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'trade_date'</span>])  <span class="co"># 转换日期格式</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.sort_values(<span class="st">'trade_date'</span>)  <span class="co"># 按日期排序</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 数据分析示例</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">基本统计信息:"</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[[<span class="st">'close'</span>, <span class="st">'daily_return'</span>, <span class="st">'volatility'</span>]].describe())</span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算基本指标</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'daily_return'</span>] <span class="op">=</span> df[<span class="st">'close'</span>].pct_change()  <span class="co"># 日收益率</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'MA5'</span>] <span class="op">=</span> df[<span class="st">'close'</span>].rolling(window<span class="op">=</span><span class="dv">5</span>).mean()  <span class="co"># 5日均线</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'MA20'</span>] <span class="op">=</span> df[<span class="st">'close'</span>].rolling(window<span class="op">=</span><span class="dv">20</span>).mean()  <span class="co"># 20日均线</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'volatility'</span>] <span class="op">=</span> df[<span class="st">'daily_return'</span>].rolling(window<span class="op">=</span><span class="dv">20</span>).std() <span class="op">*</span> np.sqrt(<span class="dv">252</span>)  <span class="co"># 20日年化波动率</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 数据分析示例</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">基本统计信息:"</span>)</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[[<span class="st">'close'</span>, <span class="st">'daily_return'</span>, <span class="st">'volatility'</span>]].describe())</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">交易量最大的5天:"</span>)</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.nlargest(<span class="dv">5</span>, <span class="st">'vol'</span>)[[<span class="st">'trade_date'</span>, <span class="st">'close'</span>, <span class="st">'vol'</span>]])</span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算每周平均收盘价和成交量</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>weekly_stats <span class="op">=</span> df.set_index(<span class="st">'trade_date'</span>).resample(<span class="st">'W'</span>).agg({</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">'close'</span>: <span class="st">'mean'</span>,</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">'vol'</span>: <span class="st">'sum'</span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">每周统计:"</span>)</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(weekly_stats.head())</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化分析</span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">10</span>))</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制K线图和均线</span></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'trade_date'</span>], df[<span class="st">'close'</span>], label<span class="op">=</span><span class="st">'收盘价'</span>)</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'trade_date'</span>], df[<span class="st">'MA5'</span>], label<span class="op">=</span><span class="st">'5日均线'</span>)</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'trade_date'</span>], df[<span class="st">'MA20'</span>], label<span class="op">=</span><span class="st">'20日均线'</span>)</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'贵州茅台股价走势'</span>)</span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制成交量和波动率</span></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>plt.bar(df[<span class="st">'trade_date'</span>], df[<span class="st">'vol'</span>], alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">'成交量'</span>)</span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'trade_date'</span>], df[<span class="st">'volatility'</span>] <span class="op">*</span> <span class="dv">1000000</span>, <span class="st">'r'</span>, label<span class="op">=</span><span class="st">'波动率(放大1000000倍)'</span>)</span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'成交量和波动率'</span>)</span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">交易量最大的5天:"</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.nlargest(<span class="dv">5</span>, <span class="st">'vol'</span>)[[<span class="st">'trade_date'</span>, <span class="st">'close'</span>, <span class="st">'vol'</span>]])</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算每周平均收盘价和成交量</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>weekly_stats <span class="op">=</span> df.set_index(<span class="st">'trade_date'</span>).resample(<span class="st">'W'</span>).agg({</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">'close'</span>: <span class="st">'mean'</span>,</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">'vol'</span>: <span class="st">'sum'</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">每周统计:"</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(weekly_stats.head())</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化分析</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">10</span>))</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制K线图和均线</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'trade_date'</span>], df[<span class="st">'close'</span>], label<span class="op">=</span><span class="st">'收盘价'</span>)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'trade_date'</span>], df[<span class="st">'MA5'</span>], label<span class="op">=</span><span class="st">'5日均线'</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'trade_date'</span>], df[<span class="st">'MA20'</span>], label<span class="op">=</span><span class="st">'20日均线'</span>)</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'贵州茅台股价走势'</span>)</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制成交量和波动率</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>plt.bar(df[<span class="st">'trade_date'</span>], df[<span class="st">'vol'</span>], alpha<span class="op">=</span><span class="fl">0.5</span>, label<span class="op">=</span><span class="st">'成交量'</span>)</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'trade_date'</span>], df[<span class="st">'volatility'</span>] <span class="op">*</span> <span class="dv">1000000</span>, <span class="st">'r'</span>, label<span class="op">=</span><span class="st">'波动率(放大1000000倍)'</span>)</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'成交量和波动率'</span>)</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 <li><p><strong>练习建议</strong>:</p>
 <ol type="1">
 <li>尝试修改上述代码，计算不同时间窗口的均线（如10日、30日均线）</li>
@@ -573,179 +559,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="代码生成与解释" class="level3" data-number="3.4.1">
 <h3 data-number="3.4.1" class="anchored" data-anchor-id="代码生成与解释"><span class="header-section-number">3.4.1</span> 代码生成与解释</h3>
 <ul>
-<li><strong>AI 代码生成工具</strong>: Cursor, GitHub Copilot 等</li>
-<li><strong>代码生成</strong>: 使用 <code>Ctrl+K</code> (或 Cmd+K) 快捷键，根据自然语言描述或代码上下文，自动生成代码片段或完整函数。 例如，在注释中输入 “用 Tushare 获取贵州茅台 (600519.SH) 2023年至今的日线数据”，AI 可以自动生成相应的 Python 代码。</li>
-<li><strong>代码解释</strong>: 使用 <code>Ctrl+L</code> (或 Cmd+L) 快捷键，AI 工具可以解释选定代码的功能和逻辑，帮助理解代码。 例如，选中一段复杂的 Pandas 股票数据处理代码，使用 <code>Ctrl+L</code> 可以快速了解代码的功能。</li>
+<li><strong>AI 代码生成工具</strong>: GitHub Copilot</li>
+<li><strong>代码生成</strong>: 根据自然语言描述或代码上下文，自动生成代码片段或完整函数。</li>
+<li><strong>代码解释</strong>: 使用Ask Copilot，AI 可以解释选定代码的功能和逻辑，帮助理解代码。 例如，选中一段复杂的 Pandas 股票数据处理代码，使用 <code>Ctrl+L</code> 可以快速了解代码的功能。</li>
 </ul>
 </section>
 <section id="代码优化与调试" class="level3" data-number="3.4.2">
 <h3 data-number="3.4.2" class="anchored" data-anchor-id="代码优化与调试"><span class="header-section-number">3.4.2</span> 代码优化与调试</h3>
 <ul>
-<li><strong>AI 代码优化</strong>: AI 工具可以分析代码，提供性能优化建议，例如：
+<li><strong>AI 代码优化</strong>: AI 可以分析代码，提供性能优化建议，例如：
 <ul>
-<li><strong>代码效率优化</strong>: 改进算法、减少循环、使用向量化运算 (例如：优化股票数据批量处理循环)。 可以使用 <code>Ctrl+I</code> (或 Cmd+I) 快捷键，请求 AI 检查代码并给出优化建议。</li>
-<li><strong>代码可读性优化</strong>: 代码格式化、变量命名建议、代码重构建议。 <code>Ctrl+I</code> 同样可以用于代码可读性优化。</li>
+<li><strong>代码效率优化</strong>: 改进算法、减少循环、使用向量化运算 (例如：优化股票数据批量处理循环)。 可以使用Edit with Copilot，请求 AI 检查代码并给出优化建议。</li>
+<li><strong>代码可读性优化</strong>: 代码格式化、变量命名建议、代码重构建议。 Edit with Copilot 同样可以用于代码可读性优化。</li>
 </ul></li>
-<li><strong>AI 代码调试</strong>: AI 工具可以辅助代码调试，例如：
+<li><strong>AI 代码调试</strong>: AI 可以辅助代码调试，例如：
 <ul>
-<li><strong>错误检测</strong>: 静态代码分析，检测潜在错误 (例如：检查股票数据处理代码中是否存在数据类型错误)。 某些 AI 工具可以在编写代码时实时检测错误。</li>
+<li><strong>错误检测</strong>: 静态代码分析，检测潜在错误 (例如：检查股票数据处理代码中是否存在数据类型错误)。</li>
 <li><strong>Bug 定位</strong>: 根据错误信息和代码上下文，帮助定位 Bug。 AI 可以分析错误堆栈信息，并结合代码逻辑，给出可能的 Bug 位置和修复建议。</li>
 <li><strong>智能提示</strong>: 提供代码补全、参数提示、错误提示，减少编码错误。</li>
-</ul></li>
-</ul>
-</section>
-<section id="最佳实践案例" class="level3" data-number="3.4.3">
-<h3 data-number="3.4.3" class="anchored" data-anchor-id="最佳实践案例"><span class="header-section-number">3.4.3</span> 最佳实践案例</h3>
-<ul>
-<li><strong>案例 1: 生成基础数据分析代码</strong>
-<ul>
-<li><p><strong>场景</strong>: 需要生成一段完整的代码，用于获取茅台股票数据并进行基本分析。</p></li>
-<li><p><strong>操作</strong>: 在代码编辑器中输入以下注释，然后按下 <code>Ctrl+K</code>: <code>python     # 使用tushare获取贵州茅台(600519.SH)最近30天的日线数据     # 计算日收益率、5日均线、20日均线     # 使用matplotlib绘制K线图，并在图上显示均线</code></p></li>
-<li><p><strong>预期生成代码</strong>:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tushare <span class="im">as</span> ts</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 初始化tushare</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>ts.set_token(<span class="st">'你的token'</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>pro <span class="op">=</span> ts.pro_api()</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取数据</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>end_date <span class="op">=</span> pd.Timestamp.today().strftime(<span class="st">'%Y%m</span><span class="sc">%d</span><span class="st">'</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>start_date <span class="op">=</span> (pd.Timestamp.today() <span class="op">-</span> pd.Timedelta(days<span class="op">=</span><span class="dv">30</span>)).strftime(<span class="st">'%Y%m</span><span class="sc">%d</span><span class="st">'</span>)</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pro.daily(ts_code<span class="op">=</span><span class="st">'600519.SH'</span>, start_date<span class="op">=</span>start_date, end_date<span class="op">=</span>end_date)</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'trade_date'</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">'trade_date'</span>])</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.sort_values(<span class="st">'trade_date'</span>)</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算指标</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'daily_return'</span>] <span class="op">=</span> df[<span class="st">'close'</span>].pct_change()</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'MA5'</span>] <span class="op">=</span> df[<span class="st">'close'</span>].rolling(window<span class="op">=</span><span class="dv">5</span>).mean()</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'MA20'</span>] <span class="op">=</span> df[<span class="st">'close'</span>].rolling(window<span class="op">=</span><span class="dv">20</span>).mean()</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘图</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'trade_date'</span>], df[<span class="st">'close'</span>], label<span class="op">=</span><span class="st">'收盘价'</span>)</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'trade_date'</span>], df[<span class="st">'MA5'</span>], label<span class="op">=</span><span class="st">'5日均线'</span>)</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>plt.plot(df[<span class="st">'trade_date'</span>], df[<span class="st">'MA20'</span>], label<span class="op">=</span><span class="st">'20日均线'</span>)</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'贵州茅台股价走势'</span>)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'日期'</span>)</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'价格'</span>)</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ul></li>
-<li><strong>案例 2: 生成技术分析代码</strong>
-<ul>
-<li><p><strong>场景</strong>: 通过解释MACD指标的计算原理，生成更复杂的技术分析代码。</p></li>
-<li><p><strong>操作</strong>: 输入以下注释，然后按下 <code>Ctrl+L</code>: <code>python     # 请解释MACD指标的计算原理，并生成一个完整的函数来计算茅台股票的MACD指标     # 需要包含：     # 1. MACD的计算（快线、慢线、柱状图）     # 2. 买卖信号判断     # 3. 结果可视化</code></p></li>
-<li><p><strong>预期生成代码</strong>:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analyze_macd(stock_data, short_window<span class="op">=</span><span class="dv">12</span>, long_window<span class="op">=</span><span class="dv">26</span>, signal_window<span class="op">=</span><span class="dv">9</span>):</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">    计算并可视化MACD指标</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">    - DIF(MACD线): 快速EMA与慢速EMA的差</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">    - DEA(信号线): DIF的移动平均</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">    - MACD柱: DIF与DEA的差值</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 计算MACD</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    exp1 <span class="op">=</span> stock_data[<span class="st">'close'</span>].ewm(span<span class="op">=</span>short_window, adjust<span class="op">=</span><span class="va">False</span>).mean()</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    exp2 <span class="op">=</span> stock_data[<span class="st">'close'</span>].ewm(span<span class="op">=</span>long_window, adjust<span class="op">=</span><span class="va">False</span>).mean()</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    stock_data[<span class="st">'DIF'</span>] <span class="op">=</span> exp1 <span class="op">-</span> exp2</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    stock_data[<span class="st">'DEA'</span>] <span class="op">=</span> stock_data[<span class="st">'DIF'</span>].ewm(span<span class="op">=</span>signal_window, adjust<span class="op">=</span><span class="va">False</span>).mean()</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    stock_data[<span class="st">'MACD'</span>] <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> (stock_data[<span class="st">'DIF'</span>] <span class="op">-</span> stock_data[<span class="st">'DEA'</span>])</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 生成买卖信号</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    stock_data[<span class="st">'SIGNAL'</span>] <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    stock_data.loc[stock_data[<span class="st">'DIF'</span>] <span class="op">&gt;</span> stock_data[<span class="st">'DEA'</span>], <span class="st">'SIGNAL'</span>] <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    stock_data.loc[stock_data[<span class="st">'DIF'</span>] <span class="op">&lt;</span> stock_data[<span class="st">'DEA'</span>], <span class="st">'SIGNAL'</span>] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 可视化</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 绘制股价</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    ax1.plot(stock_data[<span class="st">'trade_date'</span>], stock_data[<span class="st">'close'</span>])</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    ax1.set_title(<span class="st">'茅台股价与MACD信号'</span>)</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    ax1.grid(<span class="va">True</span>)</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 绘制MACD</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    ax2.plot(stock_data[<span class="st">'trade_date'</span>], stock_data[<span class="st">'DIF'</span>], label<span class="op">=</span><span class="st">'DIF'</span>)</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    ax2.plot(stock_data[<span class="st">'trade_date'</span>], stock_data[<span class="st">'DEA'</span>], label<span class="op">=</span><span class="st">'DEA'</span>)</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    ax2.bar(stock_data[<span class="st">'trade_date'</span>], stock_data[<span class="st">'MACD'</span>], label<span class="op">=</span><span class="st">'MACD柱'</span>)</span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    ax2.grid(<span class="va">True</span>)</span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    ax2.legend()</span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> stock_data</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="co"># 调用函数</span></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> analyze_macd(df)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ul></li>
-<li><strong>案例 3: 生成性能优化代码</strong>
-<ul>
-<li><p><strong>场景</strong>: 优化股票数据分析代码，生成更高效的实现。</p></li>
-<li><p><strong>操作</strong>: 输入以下注释和代码，然后按下 <code>Ctrl+I</code>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 请优化以下计算波动率的代码，使用向量化操作提高性能</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 需要：</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 使用pandas的向量化操作</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 添加并行计算支持</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 增加性能监控</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_volatility(close_prices):</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    volatility <span class="op">=</span> []</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(close_prices)<span class="op">-</span><span class="dv">20</span>):</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        window <span class="op">=</span> close_prices[i:i<span class="op">+</span><span class="dv">20</span>]</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        daily_returns <span class="op">=</span> []</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(window)):</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>            daily_return <span class="op">=</span> (window[j] <span class="op">-</span> window[j<span class="op">-</span><span class="dv">1</span>]) <span class="op">/</span> window[j<span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>            daily_returns.append(daily_return)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        vol <span class="op">=</span> np.std(daily_returns) <span class="op">*</span> np.sqrt(<span class="dv">252</span>)</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        volatility.append(vol)</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> volatility</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p><strong>预期生成代码</strong>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> concurrent.futures <span class="im">import</span> ThreadPoolExecutor</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_volatility_optimized(close_prices):</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">    优化后的波动率计算函数</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">    - 使用pandas的向量化操作</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">    - 支持并行计算</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">    - 包含性能监控</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    start_time <span class="op">=</span> time.time()</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 计算日收益率（向量化操作）</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    returns <span class="op">=</span> pd.Series(close_prices).pct_change().dropna()</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 使用rolling计算滚动波动率</span></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    volatility <span class="op">=</span> returns.rolling(window<span class="op">=</span><span class="dv">20</span>).std() <span class="op">*</span> np.sqrt(<span class="dv">252</span>)</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 并行计算示例（处理多个股票时使用）</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> parallel_volatility(stock_returns):</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> stock_returns.rolling(window<span class="op">=</span><span class="dv">20</span>).std() <span class="op">*</span> np.sqrt(<span class="dv">252</span>)</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> ThreadPoolExecutor() <span class="im">as</span> executor:</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 这里可以处理多个股票的数据</span></span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        results <span class="op">=</span> <span class="bu">list</span>(executor.<span class="bu">map</span>(parallel_volatility, [returns]))</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    end_time <span class="op">=</span> time.time()</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"计算耗时: </span><span class="sc">{</span>end_time <span class="op">-</span> start_time<span class="sc">:.4f}</span><span class="ss"> 秒"</span>)</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> volatility</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="co"># 性能对比</span></span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>prices <span class="op">=</span> df[<span class="st">'close'</span>].values</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="co"># 测试原始版本</span></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> time.time()</span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>vol1 <span class="op">=</span> calculate_volatility(prices)</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"原始版本耗时: </span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> start<span class="sc">:.4f}</span><span class="ss"> 秒"</span>)</span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="co"># 测试优化版本</span></span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> time.time()</span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>vol2 <span class="op">=</span> calculate_volatility_optimized(prices)</span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"优化版本耗时: </span><span class="sc">{</span>time<span class="sc">.</span>time() <span class="op">-</span> start<span class="sc">:.4f}</span><span class="ss"> 秒"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ul></li>
 </ul>
 </section>
