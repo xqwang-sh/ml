@@ -185,7 +185,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2a_tspred.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">项目2：上证综指收益率时间序列预测</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -213,11 +213,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#数据接口使用tushare" id="toc-数据接口使用tushare" class="nav-link" data-scroll-target="#数据接口使用tushare"><span class="header-section-number">3.2.4</span> 数据接口使用：Tushare</a></li>
   <li><a href="#数据接口使用yahoo-finance" id="toc-数据接口使用yahoo-finance" class="nav-link" data-scroll-target="#数据接口使用yahoo-finance"><span class="header-section-number">3.2.5</span> 数据接口使用：Yahoo Finance</a></li>
   <li><a href="#上市公司财务报表数据" id="toc-上市公司财务报表数据" class="nav-link" data-scroll-target="#上市公司财务报表数据"><span class="header-section-number">3.2.6</span> 上市公司财务报表数据</a></li>
+  <li><a href="#金融文本数据" id="toc-金融文本数据" class="nav-link" data-scroll-target="#金融文本数据"><span class="header-section-number">3.2.7</span> 金融文本数据</a></li>
   </ul></li>
   <li><a href="#python数据分析基础" id="toc-python数据分析基础" class="nav-link" data-scroll-target="#python数据分析基础"><span class="header-section-number">3.3</span> Python数据分析基础</a>
   <ul class="collapse">
   <li><a href="#numpy-基础" id="toc-numpy-基础" class="nav-link" data-scroll-target="#numpy-基础"><span class="header-section-number">3.3.1</span> NumPy 基础</a></li>
-  <li><a href="#pandas-基础" id="toc-pandas-基础" class="nav-link" data-scroll-target="#pandas-基础"><span class="header-section-number">3.3.2</span> 2.2 Pandas 基础</a></li>
+  <li><a href="#pandas-基础" id="toc-pandas-基础" class="nav-link" data-scroll-target="#pandas-基础"><span class="header-section-number">3.3.2</span> Pandas 基础</a></li>
   <li><a href="#数据预处理与清洗" id="toc-数据预处理与清洗" class="nav-link" data-scroll-target="#数据预处理与清洗"><span class="header-section-number">3.3.3</span> 数据预处理与清洗</a></li>
   <li><a href="#探索性数据分析-eda" id="toc-探索性数据分析-eda" class="nav-link" data-scroll-target="#探索性数据分析-eda"><span class="header-section-number">3.3.4</span> 探索性数据分析 (EDA)</a></li>
   </ul></li>
@@ -355,7 +356,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>获取股票列表</strong>: <code>pro.stock_basic()</code></li>
 <li><strong>获取股票日线行情</strong>: <code>ts.get_k_data('600519', start='2023-01-01', end='2023-01-31')</code> (旧接口) 或 <code>pro.daily(ts_code='600519.SH', start_date='20230101', end_date='20230131')</code> (Pro接口)</li>
 <li><strong>获取公司财务报表</strong>: <code>pro.fina_indicator(ts_code='600519.SH', period='20221231')</code></li>
-<li><strong>更多API</strong>: 参考 Tushare 官方文档 (<a href="https://tushare.pro/document/2">https://tushare.pro/document/2</a>)</li>
+<li><strong>更多API</strong>: 参考 Tushare 官方文档 (<a href="https://tushare.pro/document/2" class="uri">https://tushare.pro/document/2</a>)</li>
 </ul></li>
 <li><p><strong>注意事项</strong>:</p>
 <ul>
@@ -410,6 +411,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 </ul>
 </section>
+<section id="金融文本数据" class="level3" data-number="3.2.7">
+<h3 data-number="3.2.7" class="anchored" data-anchor-id="金融文本数据"><span class="header-section-number">3.2.7</span> 金融文本数据</h3>
+<ul>
+<li><strong>数据类型</strong>:
+<ul>
+<li><strong>新闻</strong>: 上市公司新闻、行业新闻、宏观经济新闻</li>
+<li><strong>公告</strong>: 上市公司公告、证监会公告、交易所公告</li>
+<li><strong>研报</strong>: 券商研报、基金研报、保险研报</li>
+<li><strong>社交媒体</strong>: 上市公司社交媒体动态、投资者互动平台言论</li>
+</ul></li>
+<li><strong>数据来源</strong>:
+<ul>
+<li><strong>巨潮资讯网</strong> (cninfo.com.cn): 官方指定信息披露平台，提供最权威的上市公司公告、证监会公告、交易所公告等数据，但需要自行解析和整理</li>
+<li><strong>新浪财经</strong> (finance.sina.com.cn): 综合性财经门户，以新闻资讯见长，提供及时的市场动态和深度分析，同时也有公告和研报数据</li>
+<li><strong>东方财富网</strong> (eastmoney.com): 专业财经平台，特色是提供全面的市场数据和投资工具，新闻、公告、研报等数据较为系统</li>
+<li><strong>同花顺</strong> (10jqka.com): 老牌股票软件，以实时行情和交易功能为主，同时提供新闻、公告、研报等数据，适合投资者使用</li>
+<li><strong>雪球</strong> (xueqiu.com): 投资者社交平台，特色是用户生成内容，提供新闻、公告、研报等数据的同时，还有丰富的投资者讨论和观点</li>
+</ul></li>
+</ul>
+</section>
 </section>
 <section id="python数据分析基础" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="python数据分析基础"><span class="header-section-number">3.3</span> Python数据分析基础</h2>
@@ -442,7 +463,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 </section>
 <section id="pandas-基础" class="level3" data-number="3.3.2">
-<h3 data-number="3.3.2" class="anchored" data-anchor-id="pandas-基础"><span class="header-section-number">3.3.2</span> 2.2 Pandas 基础</h3>
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="pandas-基础"><span class="header-section-number">3.3.2</span> Pandas 基础</h3>
 <ul>
 <li><p><strong>Pandas (Panel Data)</strong>: 基于NumPy的数据分析库，提供 <code>Series</code> (一维带标签数组) 和 <code>DataFrame</code> (二维表格型数据) 数据结构</p></li>
 <li><p><strong>核心功能</strong>:</p>
