@@ -1,7 +1,7 @@
 ---
-title: "监督学习（下）"
+title: "神经网络"
 author: "汪小圈"
-date: 2025-03-17
+date: 2025-03-24
 format:
   beamer:
     theme: Copenhagen
@@ -81,6 +81,12 @@ lang: zh
 
 ---
 
+## 神经元图示
+
+![](images/Neural%20Network.jpg){width="80%"}
+
+---
+
 ## 浅层神经网络 - 感知机模型
 
 - **感知机 (Perceptron)** 是最基本的神经元模型
@@ -93,7 +99,7 @@ lang: zh
   - **激活函数**：$a = \sigma(z)$
   - **输出**：$\hat{y} = a$
 
-![感知机模型](images/Neural%20Network.png){width="60%"}
+![感知机模型](images/Neural%20Network.png){width="50%"}
 
 ---
 
@@ -102,8 +108,6 @@ lang: zh
 - **线性可分性限制**：
   - 单层感知机只能解决线性可分问题
   - 无法解决XOR等非线性问题
-
-![线性可分与非线性可分问题](images/linear_separable.png){width="70%"}
 
 - **解决方案**：
   - 引入多层结构
@@ -128,8 +132,6 @@ lang: zh
     - 计算简单，缓解梯度消失
     - 可能出现"神经元死亡"问题
 
-![常见激活函数](images/activation_functions.png){width="70%"}
-
 ---
 
 ## 浅层神经网络 - 多层感知机
@@ -147,7 +149,11 @@ lang: zh
   - $\mathbf{z}^{[2]} = \mathbf{W}^{[2]} \mathbf{a}^{[1]} + \mathbf{b}^{[2]}$
   - $\mathbf{a}^{[2]} = \sigma(\mathbf{z}^{[2]})$
 
-![多层感知机结构](images/mlp.png){width="60%"}
+---
+
+## 多层感知机结构
+
+![](images/Neural-Network-Architecture.png){width="80%"}
 
 ---
 
@@ -166,8 +172,6 @@ lang: zh
   - 计算资源需求高
   - 过拟合风险增加
 
-![深层神经网络与特征层次](images/deep_nn_features.png){width="65%"}
-
 ---
 
 ## 深层神经网络 - 表达能力
@@ -180,8 +184,6 @@ lang: zh
   - 参数数量随层数线性增长，而表达能力可指数增长
   - 能够学习更抽象的特征表示
   - 可以模拟复杂的决策过程
-
-![深度vs宽度](images/depth_vs_width.png){width="60%"}
 
 ---
 
@@ -223,7 +225,6 @@ lang: zh
     - 将输出转换为概率分布
     - 所有输出和为1
 
-
 ---
 
 ## 梯度下降与优化 - 基本原理
@@ -232,8 +233,6 @@ lang: zh
   - **核心思想**：沿着损失函数的负梯度方向更新参数
   - **参数更新公式**：$\theta = \theta - \alpha \nabla_{\theta} J(\theta)$
   - **学习率**$\alpha$控制更新步长
-
-![梯度下降原理](images/gradient_descent.png){width="60%"}
 
 - **梯度下降变体**：
   - **批量梯度下降 (BGD)**：使用所有样本计算梯度
@@ -252,8 +251,6 @@ lang: zh
   3. **反向传播误差**：$\delta^{[l]} = (W^{[l+1]})^T\delta^{[l+1]} \odot \sigma'(z^{[l]})$
   4. **计算梯度**：$\nabla_{W^{[l]}}J = \delta^{[l]}(a^{[l-1]})^T$
   5. **更新参数**：$W^{[l]} = W^{[l]} - \alpha \nabla_{W^{[l]}}J$
-
-![反向传播算法](images/backpropagation.png){width="65%"}
 
 ---
 
@@ -291,8 +288,6 @@ lang: zh
   - 过大初始值：导致梯度爆炸
   - 过小初始值：导致梯度消失
 
-![不同初始化对训练的影响](images/initialization_effect.png){width="60%"}
-
 ---
 
 ## 参数初始化 - 常用方法
@@ -328,8 +323,6 @@ lang: zh
   - 防止神经元共适应
   - 近似集成多个不同网络
   - 迫使网络学习更鲁棒的特征
-
-![Dropout原理](images/dropout.png){width="65%"}
 
 ---
 
@@ -368,8 +361,6 @@ lang: zh
   - **循环神经网络 (RNN/LSTM/GRU)**：处理序列数据
   - **Transformer**：处理序列数据，基于自注意力机制
 
-![深度学习架构](images/deep_learning_architectures.png){width="70%"}
-
 ---
 
 ## 深度学习应用与前沿
@@ -391,5 +382,3 @@ lang: zh
 - **自监督学习**：
   - 无需大量标注数据
   - 从数据本身学习有用表示
-
-![深度学习应用](images/deep_learning_applications.png){width="65%"} 

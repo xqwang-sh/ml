@@ -13,6 +13,7 @@ book:
     - 03_supervised.qmd
     - 04_supervised.qmd
     - 05_model_assess.qmd
+    - lab03_titanic.qmd
     - project1_LC.qmd
     - project2a_tspred.qmd
     - project2b_text.qmd

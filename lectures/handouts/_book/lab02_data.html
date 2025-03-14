@@ -178,20 +178,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./lab03_titanic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">泰坦尼克号生存预测实践</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./project1_LC.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2a_tspred.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2b_text.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
   </div>
 </li>
     </ul>
@@ -225,7 +231,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#ai-辅助编程实践" id="toc-ai-辅助编程实践" class="nav-link" data-scroll-target="#ai-辅助编程实践"><span class="header-section-number">3.4</span> AI 辅助编程实践</a>
   <ul class="collapse">
   <li><a href="#代码生成与解释" id="toc-代码生成与解释" class="nav-link" data-scroll-target="#代码生成与解释"><span class="header-section-number">3.4.1</span> 代码生成与解释</a></li>
-  <li><a href="#代码优化与调试" id="toc-代码优化与调试" class="nav-link" data-scroll-target="#代码优化与调试"><span class="header-section-number">3.4.2</span> 代码优化与调试</a></li>
+  <li><a href="#关于数据分析的具体操作建议" id="toc-关于数据分析的具体操作建议" class="nav-link" data-scroll-target="#关于数据分析的具体操作建议"><span class="header-section-number">3.4.2</span> 关于数据分析的具体操作建议</a></li>
   </ul></li>
   <li><a href="#总结" id="toc-总结" class="nav-link" data-scroll-target="#总结"><span class="header-section-number">3.5</span> 总结</a></li>
   </ul>
@@ -581,24 +587,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 data-number="3.4.1" class="anchored" data-anchor-id="代码生成与解释"><span class="header-section-number">3.4.1</span> 代码生成与解释</h3>
 <ul>
 <li><strong>AI 代码生成工具</strong>: GitHub Copilot</li>
-<li><strong>代码生成</strong>: 根据自然语言描述或代码上下文，自动生成代码片段或完整函数。</li>
-<li><strong>代码解释</strong>: 使用Ask Copilot，AI 可以解释选定代码的功能和逻辑，帮助理解代码。 例如，选中一段复杂的 Pandas 股票数据处理代码，使用 <code>Ctrl+L</code> 可以快速了解代码的功能。</li>
+<li><strong>Inline代码生成</strong>: 根据自然语言描述或代码上下文，自动生成代码片段或完整函数。</li>
+<li><strong>Ask Copilot</strong>: 使用Ask Copilot，AI 可以解释、修改选定代码的功能和逻辑。</li>
+<li><strong>Edit with Copilot</strong>: 使用Edit with Copilot，AI 可以根据多个文件的上下文，生成、修改代码。</li>
 </ul>
 </section>
-<section id="代码优化与调试" class="level3" data-number="3.4.2">
-<h3 data-number="3.4.2" class="anchored" data-anchor-id="代码优化与调试"><span class="header-section-number">3.4.2</span> 代码优化与调试</h3>
+<section id="关于数据分析的具体操作建议" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="关于数据分析的具体操作建议"><span class="header-section-number">3.4.2</span> 关于数据分析的具体操作建议</h3>
 <ul>
-<li><strong>AI 代码优化</strong>: AI 可以分析代码，提供性能优化建议，例如：
+<li><strong>数据读入</strong>: 新建一个文件夹，将所有数据文件放在该文件夹下的 <code>data</code> 文件夹中，然后使用 Pandas 读入数据。</li>
+<li><strong>数据清洗</strong>: 一次做一步，每一步都要检查。通过 <code>print</code> 输出中间结果，检查每一步的输出是否符合预期。
 <ul>
-<li><strong>代码效率优化</strong>: 改进算法、减少循环、使用向量化运算 (例如：优化股票数据批量处理循环)。 可以使用Edit with Copilot，请求 AI 检查代码并给出优化建议。</li>
-<li><strong>代码可读性优化</strong>: 代码格式化、变量命名建议、代码重构建议。 Edit with Copilot 同样可以用于代码可读性优化。</li>
+<li>检查观测值数量是否与原数据一致；</li>
+<li>检查变量名是否与原数据一致；</li>
+<li>检查数据类型是否符合预期；</li>
+<li>如果数据量很大，可以先读入一部分数据，检查数据是否符合预期，再决定是否读入全部数据。</li>
 </ul></li>
-<li><strong>AI 代码调试</strong>: AI 可以辅助代码调试，例如：
+<li><strong>处理报错</strong>: 如果遇到报错，先定位报错信息位置，检查那一段代码，可以把错误发给AI，让它帮你修改代码。如果代码没有问题，再检查上一步代码中的数据输出。</li>
+<li><strong>自然语言编程</strong>: 可以直接写注释，AI会根据你的注释生成代码。检查并运行代码。
 <ul>
-<li><strong>错误检测</strong>: 静态代码分析，检测潜在错误 (例如：检查股票数据处理代码中是否存在数据类型错误)。</li>
-<li><strong>Bug 定位</strong>: 根据错误信息和代码上下文，帮助定位 Bug。 AI 可以分析错误堆栈信息，并结合代码逻辑，给出可能的 Bug 位置和修复建议。</li>
-<li><strong>智能提示</strong>: 提供代码补全、参数提示、错误提示，减少编码错误。</li>
+<li>检查代码是否使用正确的数据与变量名；</li>
+<li>运行代码，检查代码的输出是否符合预期，如果符合预期，再进行下一步。</li>
+<li>如果代码涉及循环，可以先写一个，运行通过后，再改成循环。</li>
 </ul></li>
+<li><strong>慢就是快</strong>：代码需要一步一步生成，不要一次性生成与运行多行代码。勤检查，勤运行，勤对比。</li>
 </ul>
 </section>
 </section>
