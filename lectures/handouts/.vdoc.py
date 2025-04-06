@@ -1,61 +1,63 @@
----
-title: 泰坦尼克号生存预测实践
----
-
-# 导言
-
-## 泰坦尼克号乘客数据
-
-泰坦尼克号是历史上著名的客轮，1912年首航时与冰山相撞沉没，造成了1500多人遇难。本实践课我们将使用泰坦尼克号乘客数据，尝试预测乘客在这场灾难中的生存情况。
-
-数据分为两个数据集：
-- 训练集 `train.csv`：有关键变量`Survived`显示是否生还
-- 测试集 `test.csv`：没有`Survived`变量
-
-变量定义如下表所示：
-
-| 变量 | 定义 | 取值说明 |
-|------|------|----------|
-| Survived | 生存状态 | 0 = 未生存, 1 = 生存 |
-| Pclass | 船票等级 | 1 = 一等舱, 2 = 二等舱, 3 = 三等舱 |
-| Sex | 性别 | |
-| Age | 年龄 | |
-| SibSp | 船上兄弟姐妹/配偶数量 | |
-| Parch | 船上父母/子女数量 | |
-| Ticket | 船票号码 | |
-| Fare | 票价 | |
-| Cabin | 客舱号码 | |
-| Embarked | 登船港口 | C = 瑟堡, Q = 皇后镇, S = 南安普顿 |
-
-## 机器学习的一般步骤
-
-### 探索性分析
-- 对变量进行初步描述性统计分析，用以检测空值、不合法值、异常值等
-- 数据可视化展示，发现变量之间的关系
-
-### 数据清理与特征工程
-- 特征工程：从现有特征中提取更有价值的信息
-- 填补缺失值：对缺失数据进行合理的估计和填补
-
-### 数据建模与模型选择
-- 建立分类模型（sklearn包）
-  - 在训练集上拟合模型
-  - 根据交叉验证的模型评估指标选择超参数
-
-- 备选模型包括：
-  - 逻辑回归模型
-  - 决策树模型
-  - 随机森林
-  - 提升树（XGBoost）
-  - 神经网络
-
-- 模型评估指标包括：
-  - 精度accuracy
-  - 查全率recall与F1
-
-# 探索性数据分析
-
-```{python}
+# type: ignore
+# flake8: noqa
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 #| include: false
 import pandas as pd
 import numpy as np
@@ -83,11 +85,11 @@ plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 # 导入警告处理
 import warnings
 warnings.filterwarnings('ignore')
-```
-
-首先，我们需要读取数据，并对数据进行初步的探索分析。
-
-```{python}
+#
+#
+#
+#
+#
 #| label: load-data
 #| warning: false
 
@@ -106,69 +108,69 @@ all_data = pd.concat([train_data, test_data], axis=0)
 print(f"训练集样本数: {train_data.shape[0]}")
 print(f"测试集样本数: {test_data.shape[0]}")
 print(f"总样本数: {all_data.shape[0]}")
-```
-
-让我们先看看训练集的前几行数据，了解数据的基本结构：
-
-```{python}
+#
+#
+#
+#
+#
 #| label: head-data
 
 # 查看训练集前5行
 train_data.head()
-```
-
-## 数据基本信息与统计描述
-
-我们需要了解数据的基本信息，包括各变量的数据类型和缺失情况：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: info-data
 
 # 查看数据基本信息
 train_data.info()
-```
-
-对数值型变量进行统计描述，了解其分布特征：
-
-```{python}
+#
+#
+#
+#
+#
 #| label: describe-data
 
 # 统计描述
 train_data.describe()
-```
-
-检查各变量的缺失值情况：
-
-```{python}
+#
+#
+#
+#
+#
 #| label: missing-values
 
 # 检查缺失值
 print("缺失值统计:")
 all_data.isnull().sum()
-```
-
-从上面的分析可以看出：
-- Age（年龄）有一部分缺失
-- Cabin（船舱）缺失严重
-- Embarked（登船港口）有少量缺失
-
-## 生存情况分析
-
-首先我们看一下整体的生存率：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 #| label: survival-rate
 
 # 分析生存率
 survival_rate = train_data['Survived'].mean() * 100
 print(f"总体生存率: {survival_rate:.2f}%")
-```
-
-## 数据可视化分析
-
-通过可视化，我们可以更直观地了解不同特征与生存率之间的关系：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: visualization
 #| fig-width: 12
 #| fig-height: 10
@@ -206,26 +208,26 @@ plt.xlabel('家庭规模')
 plt.ylabel('人数')
 
 plt.tight_layout()
-```
-
-从以上可视化分析可以看出：
-
-1. **性别与生存率**：女性的生存率明显高于男性，这可能与"妇女和儿童优先"的救生原则有关。
-2. **船票等级与生存率**：一等舱乘客生存率最高，三等舱乘客生存率最低，表明社会经济地位可能影响了获救机会。
-3. **年龄分布与生存率**：儿童的生存率相对较高，而中年人的生存率较低。
-4. **家庭规模与生存率**：家庭规模中等(2-4人)的乘客生存率较高，而独自一人或家庭规模过大的乘客生存率较低。
-
-# 数据清理与特征工程
-
-在这一部分，我们将对数据进行清理和特征工程，为建模做准备。
-
-## 特征工程
-
-### 提取姓名中的头衔信息
-
-乘客的姓名中包含头衔信息（如Mr., Mrs., Miss等），这可能与社会地位和性别相关，进而影响生存率：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 #| label: extract-title
 
 # 提取姓名中的头衔
@@ -234,11 +236,11 @@ all_data['Title'] = all_data['Name'].str.extract(' ([A-Za-z]+)\.', expand=False)
 # 统计头衔分布
 print("头衔分布:")
 all_data['Title'].value_counts()
-```
-
-有些头衔出现次数很少，我们将它们合并为"Rare"类别：
-
-```{python}
+#
+#
+#
+#
+#
 #| label: combine-title
 
 # 合并稀有头衔
@@ -250,13 +252,13 @@ all_data['Title'] = all_data['Title'].replace('Mme', 'Mrs')
 # 合并后的头衔分布
 print("合并后的头衔分布:")
 all_data['Title'].value_counts()
-```
-
-### 创建家庭规模特征
-
-我们将SibSp（兄弟姐妹/配偶数量）和Parch（父母/子女数量）相加，再加1（乘客自己），创建家庭规模特征：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: family-size
 
 # 创建家庭规模特征
@@ -268,13 +270,13 @@ all_data['IsAlone'] = (all_data['FamilySize'] == 1).astype(int)
 # 查看是否独自一人的分布
 print("是否独自一人的分布:")
 all_data['IsAlone'].value_counts()
-```
-
-### 从Cabin提取信息
-
-虽然Cabin变量缺失严重，但我们仍可以提取是否有记录Cabin信息作为一个特征：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: cabin-info
 
 # 从Cabin提取信息：是否有Cabin记录
@@ -282,39 +284,39 @@ all_data['HasCabin'] = (~all_data['Cabin'].isnull()).astype(int)
 
 print("Cabin记录情况分布:")
 all_data['HasCabin'].value_counts()
-```
-
-## 缺失值处理
-
-### 处理Age缺失值
-
-对年龄的缺失值，我们使用按Pclass和Sex分组的中位数进行填充：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
 #| label: age-imputation
 
 # Age缺失值填充（按Pclass和Sex分组的中位数）
 age_imputer = all_data.groupby(['Pclass', 'Sex'])['Age'].transform('median')
 all_data['Age'] = all_data['Age'].fillna(age_imputer)
-```
-
-### 处理Embarked缺失值
-
-对登船港口缺失值，使用众数填充：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: embarked-imputation
 
 # Embarked缺失值用众数填充
 most_common_embarked = all_data['Embarked'].mode()[0]
 all_data['Embarked'] = all_data['Embarked'].fillna(most_common_embarked)
-```
-
-### 处理Fare缺失值
-
-对票价缺失值，使用相同船票等级的中位数填充：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: fare-imputation
 
 # Fare缺失值用Pclass中位数填充
@@ -324,24 +326,24 @@ all_data['Fare'] = all_data['Fare'].fillna(fare_imputer)
 # 检查缺失值是否都已处理
 print("缺失值处理后的统计:")
 all_data[['Age', 'Embarked', 'Fare']].isnull().sum()
-```
-
-## 数据转换
-
-将分类变量转换为数值型变量，便于模型处理：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: categorical-to-numerical
 
 # 类别特征转换为数值
 all_data['Sex'] = all_data['Sex'].map({'male': 0, 'female': 1})
 all_data['Embarked'] = all_data['Embarked'].map({'S': 0, 'C': 1, 'Q': 2})
 all_data['Title'] = all_data['Title'].map({'Mr': 0, 'Miss': 1, 'Mrs': 2, 'Master': 3, 'Rare': 4})
-```
-
-删除不需要的特征：
-
-```{python}
+#
+#
+#
+#
+#
 #| label: drop-features
 
 # 删除不需要的特征
@@ -349,13 +351,13 @@ all_data.drop(['Name', 'Ticket', 'Cabin', 'PassengerId'], axis=1, inplace=True)
 
 # 查看处理后的数据结构
 all_data.head()
-```
-
-# 数据建模与模型选择
-
-## 准备训练和测试数据
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: prepare-train-test
 
 # 准备训练和测试数据
@@ -368,13 +370,13 @@ y_train = train_data['Survived'].astype(int)
 print(f"训练特征形状: {X_train.shape}")
 print(f"训练标签形状: {y_train.shape}")
 print(f"测试特征形状: {test_data.shape}")
-```
-
-## 模型训练与评估函数
-
-定义一个通用函数用于训练模型并评估性能：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: train-evaluate-function
 
 # 模型训练与评估函数
@@ -398,11 +400,11 @@ def train_and_evaluate(model, X, y, cv=5, model_name="模型"):
     # 在全部训练数据上拟合模型
     model.fit(X, y)
     return model
-```
-
-## 逻辑回归模型
-
-```{python}
+#
+#
+#
+#
+#
 #| label: logistic-regression
 
 # 逻辑回归模型
@@ -418,11 +420,11 @@ logreg_coef = pd.DataFrame(
 
 print("\n逻辑回归系数（特征重要性）:")
 logreg_coef
-```
-
-## 决策树模型
-
-```{python}
+#
+#
+#
+#
+#
 #| label: decision-tree
 #| code-fold: true
 
@@ -472,11 +474,11 @@ dt_importance = pd.DataFrame(
 
 print("\n决策树特征重要性:")
 dt_importance
-```
-
-## 随机森林模型
-
-```{python}
+#
+#
+#
+#
+#
 #| label: random-forest
 #| code-fold: true
 
@@ -544,11 +546,11 @@ rf_importance = pd.DataFrame(
 
 print("\n随机森林特征重要性:")
 rf_importance
-```
-
-## XGBoost模型
-
-```{python}
+#
+#
+#
+#
+#
 #| label: xgboost
 #| code-fold: true
 
@@ -623,15 +625,15 @@ xgb_importance = pd.DataFrame(
 
 print("\nXGBoost特征重要性:")
 xgb_importance
-```
-
-## 神经网络模型
-
-在本节中，我们将从简单的全连接神经网络开始，逐步增加网络复杂度，并展示模型从欠拟合到过拟合的演变过程，最后通过引入正则化技术来解决过拟合问题。
-
-首先，我们需要对特征进行标准化，这对神经网络的训练非常重要：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
 #| label: nn-standardization
 
 # 对特征进行标准化
@@ -646,13 +648,13 @@ X_train_nn, X_val, y_train_nn, y_val = train_test_split(
 
 print(f"神经网络训练集形状: {X_train_nn.shape}")
 print(f"神经网络验证集形状: {X_val.shape}")
-```
-
-### 简单全连接网络 - 可能欠拟合
-
-我们先从一个非常简单的全连接网络开始，看看其性能如何：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: nn-simple
 
 # 定义简单的全连接网络
@@ -688,11 +690,11 @@ simple_val_loss, simple_val_acc = simple_nn.evaluate(X_val, y_val, verbose=0)
 
 print(f"简单网络 - 训练集准确率: {simple_train_acc:.4f}")
 print(f"简单网络 - 验证集准确率: {simple_val_acc:.4f}")
-```
-
-绘制简单网络的学习曲线：
-
-```{python}
+#
+#
+#
+#
+#
 #| label: nn-simple-curves
 #| fig-width: 12
 #| fig-height: 5
@@ -717,13 +719,13 @@ plt.xlabel('轮次')
 plt.legend(['训练集', '验证集'], loc='upper right')
 
 plt.tight_layout()
-```
-
-### 中等复杂度网络 - 适度拟合
-
-现在，让我们增加网络的复杂度，添加更多层和更多神经元：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: nn-medium
 
 # 定义中等复杂度的网络
@@ -760,11 +762,11 @@ medium_val_loss, medium_val_acc = medium_nn.evaluate(X_val, y_val, verbose=0)
 
 print(f"中等网络 - 训练集准确率: {medium_train_acc:.4f}")
 print(f"中等网络 - 验证集准确率: {medium_val_acc:.4f}")
-```
-
-绘制中等复杂度网络的学习曲线：
-
-```{python}
+#
+#
+#
+#
+#
 #| label: nn-medium-curves
 #| fig-width: 12
 #| fig-height: 5
@@ -789,13 +791,13 @@ plt.xlabel('轮次')
 plt.legend(['训练集', '验证集'], loc='upper right')
 
 plt.tight_layout()
-```
-
-### 复杂网络 - 可能过拟合
-
-现在，我们进一步增加网络复杂度，使其具有更多层和更多神经元，观察是否会出现过拟合：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: nn-complex
 
 # 定义复杂网络
@@ -834,11 +836,11 @@ complex_val_loss, complex_val_acc = complex_nn.evaluate(X_val, y_val, verbose=0)
 
 print(f"复杂网络 - 训练集准确率: {complex_train_acc:.4f}")
 print(f"复杂网络 - 验证集准确率: {complex_val_acc:.4f}")
-```
-
-绘制复杂网络的学习曲线：
-
-```{python}
+#
+#
+#
+#
+#
 #| label: nn-complex-curves
 #| fig-width: 12
 #| fig-height: 5
@@ -863,13 +865,13 @@ plt.xlabel('轮次')
 plt.legend(['训练集', '验证集'], loc='upper right')
 
 plt.tight_layout()
-```
-
-### 正则化网络 - 解决过拟合
-
-现在，我们将为复杂网络添加正则化技术，包括 Dropout 和 BatchNormalization，以解决过拟合问题：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: nn-regularized
 
 # 定义带有正则化的复杂网络
@@ -924,11 +926,11 @@ regularized_val_loss, regularized_val_acc = regularized_nn.evaluate(X_val, y_val
 
 print(f"正则化网络 - 训练集准确率: {regularized_train_acc:.4f}")
 print(f"正则化网络 - 验证集准确率: {regularized_val_acc:.4f}")
-```
-
-绘制正则化网络的学习曲线：
-
-```{python}
+#
+#
+#
+#
+#
 #| label: nn-regularized-curves
 #| fig-width: 12
 #| fig-height: 5
@@ -953,13 +955,13 @@ plt.xlabel('轮次')
 plt.legend(['训练集', '验证集'], loc='upper right')
 
 plt.tight_layout()
-```
-
-### 模型比较
-
-我们来比较不同复杂度和正则化策略下神经网络的性能：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: nn-comparison
 #| fig-width: 12
 #| fig-height: 6
@@ -987,13 +989,13 @@ for i in range(len(nn_models)):
     plt.text(i, 0.5, f'差距: {gap:.4f}', ha='center')
 
 plt.tight_layout()
-```
-
-### 最终神经网络模型
-
-基于上述实验，我们选择性能最好的正则化网络作为最终的神经网络模型：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: final-nn-model
 
 # 使用正则化网络作为最终模型
@@ -1010,24 +1012,24 @@ print(f"最终神经网络在训练集上的准确率: {nn_accuracy:.4f}")
 
 # 将正则化网络用于测试集预测
 test_pred_nn = (nn_model.predict(test_data_scaled) > 0.5).astype(int).flatten()
-```
-
-### 神经网络模型小结
-
-通过这一系列实验，我们观察到：
-
-1. **简单网络**：容易欠拟合，训练集和验证集性能都不够理想
-2. **中等网络**：提高了模型复杂度，性能有所改善
-3. **复杂网络**：进一步增加复杂度，在训练集表现良好但可能在验证集上表现下降，出现过拟合
-4. **正则化网络**：通过添加Dropout和BatchNormalization等正则化技术，在保持模型复杂度的同时有效减轻了过拟合，使训练集和验证集的性能差距减小
-
-这个过程展示了神经网络建模中的一个关键问题：如何在模型复杂度和泛化能力之间取得平衡。正则化技术是解决这一问题的有效工具。
-
-# 模型评估与比较
-
-在这一部分，我们将对所有训练好的模型进行评估和比较，选出性能最好的模型。
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
 #| label: model-comparison
 
 # 在整个训练集上再次训练各模型
@@ -1066,11 +1068,11 @@ for i, model_name in enumerate(models):
 
 print("各模型在训练集上的性能比较:")
 metrics_df
-```
-
-可视化模型性能比较：
-
-```{python}
+#
+#
+#
+#
+#
 #| label: model-comparison-plot
 #| fig-width: 12
 #| fig-height: 6
@@ -1083,13 +1085,13 @@ plt.ylabel('得分')
 plt.xlabel('模型')
 plt.legend(loc='lower right')
 plt.tight_layout()
-```
-
-# 测试集预测
-
-最后，我们使用训练好的模型对测试集进行预测：
-
-```{python}
+#
+#
+#
+#
+#
+#
+#
 #| label: test-prediction
 
 # 为所有模型生成预测
@@ -1110,11 +1112,11 @@ submission = pd.DataFrame({
 
 submission.to_csv('titanic_submission.csv', index=False)
 print("提交文件已保存为 'titanic_submission.csv'")
-```
-
-各模型预测结果的比较：
-
-```{python}
+#
+#
+#
+#
+#
 #| label: prediction-comparison
 
 # 各模型预测结果的比较
@@ -1134,20 +1136,22 @@ print(agreement.value_counts())
 
 print("\n各模型预测示例 (前10行):")
 test_predictions.head(10)
-```
-
-# 总结
-
-在这个实践中，我们通过对泰坦尼克号乘客数据的分析，建立了多个机器学习模型来预测乘客在灾难中的生存情况。主要步骤包括：
-
-1. **数据探索**：通过统计分析和可视化，我们发现了一些关键特征，如性别、船票等级和年龄对生存率有显著影响。
-
-2. **特征工程**：我们从原始数据中提取了更有价值的特征，如头衔、家庭规模等，并处理了缺失值。
-
-3. **模型建立与评估**：我们构建了多种机器学习模型，包括逻辑回归、决策树、随机森林、XGBoost和神经网络，并通过交叉验证评估了它们的性能。
-
-4. **模型比较与选择**：通过比较不同模型的性能指标，我们选择了最佳模型用于最终预测。
-
-5. **测试集预测**：最后，我们使用选择的模型对测试集进行了预测，并生成了提交文件。
-
-这个实践展示了机器学习在实际问题中的应用过程，从数据探索到模型部署的完整流程。通过这个实践，我们不仅掌握了机器学习的基本技术，还了解了如何将这些技术应用到实际问题中。 
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#

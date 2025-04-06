@@ -6,6 +6,8 @@ import io
 import base64
 from PIL import Image
 import os
+from matplotlib.lines import Line2D
+from sklearn.datasets import make_moons
 
 def cost_function(x, y, params):
     """
@@ -58,31 +60,46 @@ def animate_gradient_descent(x, y, learning_rate=0.1, num_iterations=20):
         for j in range(M.shape[1]):
             Z[i, j] = cost_function(x, y, [M[i, j], B[i, j]])
     
-    # 创建3D图形
-    fig = plt.figure(figsize=(18, 8))
+    # 创建3D图形 - 将布局从横向(1,3)改为竖向(3,1)
+    fig = plt.figure(figsize=(10, 18))
     
     # 代价函数轮廓图
-    ax1 = fig.add_subplot(1, 3, 1)
+    ax1 = fig.add_subplot(3, 1, 1)
     contour = ax1.contourf(M, B, Z, 50, cmap='viridis', alpha=0.8)
+    
+    # 先画一条完整路径，以便用户可以立即看到
+    m_values = [p[0] for p in all_params]
+    b_values = [p[1] for p in all_params]
+    ax1.plot(m_values, b_values, 'r-', linewidth=1, alpha=0.5)
+    
+    # 然后为动画准备空路径
     path_line, = ax1.plot([], [], 'r-', linewidth=2)
     path_point, = ax1.plot([], [], 'ro', markersize=8)
+    
     ax1.set_xlabel('斜率 (m)', fontsize=12)
     ax1.set_ylabel('截距 (b)', fontsize=12)
     ax1.set_title('代价函数轮廓与梯度下降路径', fontsize=14)
     plt.colorbar(contour, ax=ax1)
     
     # 代价函数3D表面
-    ax2 = fig.add_subplot(1, 3, 2, projection='3d')
+    ax2 = fig.add_subplot(3, 1, 2, projection='3d')
     surface = ax2.plot_surface(M, B, Z, cmap='viridis', alpha=0.8, edgecolor='none')
+    
+    # 为3D图添加完整路径
+    z_values = all_costs
+    ax2.plot(m_values, b_values, z_values, 'r-', linewidth=1, alpha=0.5)
+    
+    # 然后为动画准备空路径
     path_line_3d, = ax2.plot([], [], [], 'r-', linewidth=2)
     path_point_3d, = ax2.plot([], [], [], 'ro', markersize=8)
+    
     ax2.set_xlabel('斜率 (m)', fontsize=12)
     ax2.set_ylabel('截距 (b)', fontsize=12)
     ax2.set_zlabel('代价 J(m,b)', fontsize=12)
     ax2.set_title('代价函数3D表面', fontsize=14)
     
     # 数据拟合图
-    ax3 = fig.add_subplot(1, 3, 3)
+    ax3 = fig.add_subplot(3, 1, 3)
     scatter = ax3.scatter(x, y, color='blue', s=50, alpha=0.8)
     line, = ax3.plot([], [], 'r-', linewidth=2)
     ax3.set_xlabel('x', fontsize=12)
@@ -140,7 +157,7 @@ def animate_gradient_descent(x, y, learning_rate=0.1, num_iterations=20):
     buf = io.BytesIO()
     # 使用临时文件路径而不是直接保存到BytesIO
     temp_path = 'temp_animation.gif'
-    ani.save(temp_path, writer='pillow', fps=2)
+    ani.save(temp_path, writer='pillow', fps=2, dpi=80)
     
     # 读取临时文件到BytesIO
     with open(temp_path, 'rb') as f:
@@ -153,6 +170,26 @@ def animate_gradient_descent(x, y, learning_rate=0.1, num_iterations=20):
     
     return buf
 
+# --- 将 sigmoid 和 predict 定义移到顶层 --- 
+def sigmoid(z):
+    """ Sigmoid 激活函数 (带数值稳定性) """
+    z = np.clip(z, -500, 500) # 防止 overflow/underflow
+    return 1 / (1 + np.exp(-z))
+
+def sigmoid_derivative(z):
+    """ Sigmoid 函数的导数 """
+    s = sigmoid(z)
+    return s * (1 - s)
+
+def predict(X_pred, W1, b1, W2, b2):
+    """ 使用训练好的参数进行预测 """
+    Z1 = np.dot(X_pred, W1) + b1
+    A1 = sigmoid(Z1)
+    Z2 = np.dot(A1, W2) + b2
+    A2 = sigmoid(Z2)
+    return A2
+# ---------------------------------------------
+
 def simple_neural_network(X, y, hidden_size=4, learning_rate=0.5, epochs=15):
     """
     实现一个简单的神经网络训练过程，并记录训练历史
@@ -163,9 +200,9 @@ def simple_neural_network(X, y, hidden_size=4, learning_rate=0.5, epochs=15):
     output_size = 1
     
     # 初始化参数
-    W1 = np.random.randn(input_size, hidden_size) * 0.01
+    W1 = np.random.randn(input_size, hidden_size) * 0.1
     b1 = np.zeros((1, hidden_size))
-    W2 = np.random.randn(hidden_size, output_size) * 0.01
+    W2 = np.random.randn(hidden_size, output_size) * 0.1
     b2 = np.zeros((1, output_size))
     
     # 保存训练历史
@@ -173,16 +210,12 @@ def simple_neural_network(X, y, hidden_size=4, learning_rate=0.5, epochs=15):
         'loss': [],
         'params': []
     }
+    # 存储初始参数
+    history['params'].append({
+        'W1': W1.copy(), 'b1': b1.copy(), 'W2': W2.copy(), 'b2': b2.copy()
+    })
     
-    # 训练函数
-    def sigmoid(z):
-        return 1 / (1 + np.exp(-z))
-    
-    def sigmoid_derivative(z):
-        s = sigmoid(z)
-        return s * (1 - s)
-    
-    # 训练循环
+    # 训练循环 (现在调用顶层的 sigmoid 和 sigmoid_derivative)
     for i in range(epochs):
         # 前向传播
         Z1 = np.dot(X, W1) + b1
@@ -190,15 +223,15 @@ def simple_neural_network(X, y, hidden_size=4, learning_rate=0.5, epochs=15):
         Z2 = np.dot(A1, W2) + b2
         A2 = sigmoid(Z2)
         
-        # 计算代价
-        cost = -np.mean(y * np.log(A2) + (1 - y) * np.log(1 - A2))
+        # 计算代价 (添加 epsilon 防止 log(0))
+        cost = -np.mean(y * np.log(A2 + 1e-8) + (1 - y) * np.log(1 - A2 + 1e-8))
         history['loss'].append(cost)
         
         # 反向传播
         dZ2 = A2 - y
         dW2 = np.dot(A1.T, dZ2) / X.shape[0]
         db2 = np.sum(dZ2, axis=0, keepdims=True) / X.shape[0]
-        dZ1 = np.dot(dZ2, W2.T) * sigmoid_derivative(Z1)
+        dZ1 = np.dot(dZ2, W2.T) * sigmoid_derivative(Z1) # 使用顶层的 sigmoid_derivative
         dW1 = np.dot(X.T, dZ1) / X.shape[0]
         db1 = np.sum(dZ1, axis=0, keepdims=True) / X.shape[0]
         
@@ -222,13 +255,14 @@ def plot_neural_network_training(X, y, history):
     """
     绘制神经网络训练过程
     """
-    epochs = len(history['loss'])
+    epochs = len(history['loss'])  # 训练轮次数
+    params_count = len(history['params'])  # 参数集数量 (初始参数 + 每轮训练后参数)
     
-    # 创建图形
-    fig = plt.figure(figsize=(18, 6))
+    # 创建图形 - 将布局从横向(1,3)改为竖向(3,1)
+    fig = plt.figure(figsize=(10, 18))
     
     # 绘制损失函数变化
-    ax1 = fig.add_subplot(1, 3, 1)
+    ax1 = fig.add_subplot(3, 1, 1)
     ax1.plot(range(epochs), history['loss'], 'b-', linewidth=2)
     ax1.set_xlabel('训练轮次', fontsize=12)
     ax1.set_ylabel('损失', fontsize=12)
@@ -236,12 +270,12 @@ def plot_neural_network_training(X, y, history):
     ax1.grid(alpha=0.3)
     
     # 绘制决策边界变化
-    ax2 = fig.add_subplot(1, 3, 2)
+    ax2 = fig.add_subplot(3, 1, 2)
     
     # 创建网格
     x_min, x_max = X[:, 0].min() - 0.5, X[:, 0].max() + 0.5
     y_min, y_max = X[:, 1].min() - 0.5, X[:, 1].max() + 0.5
-    h = 0.01
+    h = 0.02
     xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
     grid_points = np.c_[xx.ravel(), yy.ravel()]
     
@@ -251,13 +285,7 @@ def plot_neural_network_training(X, y, history):
     W2_init = history['params'][0]['W2']
     b2_init = history['params'][0]['b2']
     
-    def predict(X, W1, b1, W2, b2):
-        Z1 = np.dot(X, W1) + b1
-        A1 = 1 / (1 + np.exp(-Z1))
-        Z2 = np.dot(A1, W2) + b2
-        A2 = 1 / (1 + np.exp(-Z2))
-        return A2
-    
+    # 现在调用顶层的 predict 函数
     Z_init = predict(grid_points, W1_init, b1_init, W2_init, b2_init)
     Z_init = Z_init.reshape(xx.shape)
     
@@ -267,36 +295,62 @@ def plot_neural_network_training(X, y, history):
     W2_final = history['params'][-1]['W2']
     b2_final = history['params'][-1]['b2']
     
+    # 现在调用顶层的 predict 函数
     Z_final = predict(grid_points, W1_final, b1_final, W2_final, b2_final)
     Z_final = Z_final.reshape(xx.shape)
     
-    # 绘制初始和最终决策边界
-    ax2.contour(xx, yy, Z_init, levels=[0.5], colors='r', linestyles='--', linewidths=2)
-    contour = ax2.contourf(xx, yy, Z_final, levels=50, cmap='Blues', alpha=0.8)
-    ax2.contour(xx, yy, Z_final, levels=[0.5], colors='g', linestyles='-', linewidths=2)
-    
     # 绘制数据点
     ax2.scatter(X[y.flatten() == 0, 0], X[y.flatten() == 0, 1], c='#D81B60', 
-               marker='o', s=100, label='类别 0', edgecolors='k')
+               marker='o', s=100, label='类别 0', edgecolors='k', zorder=10)
     ax2.scatter(X[y.flatten() == 1, 0], X[y.flatten() == 1, 1], c='#1E88E5', 
-               marker='^', s=100, label='类别 1', edgecolors='k')
+               marker='^', s=100, label='类别 1', edgecolors='k', zorder=10)
+               
+    # 绘制填充区域
+    contour = ax2.contourf(xx, yy, Z_final, levels=50, cmap='Blues', alpha=0.3, zorder=1)
+    
+    # 绘制初始边界
+    init_line = ax2.contour(xx, yy, Z_init, levels=[0.5], colors=['darkred'], 
+                           linestyles='--', linewidths=3, zorder=5)
+                           
+    # 绘制最终边界
+    final_line = ax2.contour(xx, yy, Z_final, levels=[0.5], colors=['darkgreen'], 
+                            linestyles='-', linewidths=3, zorder=5)
+    
+    # 添加手动图例
+    legend_elements = [
+        Line2D([0], [0], color='darkred', linestyle='--', lw=3, label='初始边界'),
+        Line2D([0], [0], color='darkgreen', linestyle='-', lw=3, label='最终边界')
+    ]
     
     ax2.set_xlim([x_min, x_max])
     ax2.set_ylim([y_min, y_max])
-    ax2.set_xlabel('特征 x₁', fontsize=12)
-    ax2.set_ylabel('特征 x₂', fontsize=12)
+    ax2.set_xlabel('特征 x1', fontsize=12)
+    ax2.set_ylabel('特征 x2', fontsize=12)
     ax2.set_title('决策边界变化', fontsize=14)
-    ax2.legend(loc='upper right')
+    
+    # 合并图例
+    handles, labels = ax2.get_legend_handles_labels()
+    init_handles = init_line.collections[0].get_paths() if init_line.collections else []
+    final_handles = final_line.collections[0].get_paths() if final_line.collections else []
+    valid_legend_elements = []
+    if init_handles:
+        valid_legend_elements.append(legend_elements[0])
+    if final_handles:
+        valid_legend_elements.append(legend_elements[1])
+        
+    ax2.legend(handles=valid_legend_elements + handles, loc='upper right', fontsize=10)
+    
     ax2.grid(alpha=0.3)
     
     # 绘制参数变化
-    ax3 = fig.add_subplot(1, 3, 3)
+    ax3 = fig.add_subplot(3, 1, 3)
     
-    # 跟踪几个主要参数的变化
-    w11 = [hist['W1'][0, 0] for hist in history['params']]
-    w12 = [hist['W1'][0, 1] for hist in history['params']]
-    w21 = [hist['W2'][0, 0] for hist in history['params']]
-    w22 = [hist['W2'][1, 0] for hist in history['params']]
+    # 跟踪几个主要参数的变化 - 修改以匹配 loss 的长度
+    # 使用 history['params'][1:] 跳过初始参数，只使用训练后的参数
+    w11 = [hist['W1'][0, 0] for hist in history['params'][1:]]  # 跳过初始参数
+    w12 = [hist['W1'][0, 1] for hist in history['params'][1:]]
+    w21 = [hist['W2'][0, 0] for hist in history['params'][1:]]
+    w22 = [hist['W2'][1, 0] for hist in history['params'][1:]]
     
     ax3.plot(range(epochs), w11, 'r-', label='W1[0,0]', linewidth=2)
     ax3.plot(range(epochs), w12, 'g-', label='W1[0,1]', linewidth=2)
@@ -363,18 +417,18 @@ def create_optimization_algorithms_comparison():
         x_new = x - lr * m_hat / (np.sqrt(v_hat) + epsilon)
         return x_new, m_new, v_new
     
-    # 创建图形
+    # 创建图形 - 将布局从横向(2,3)改为竖向(6,1)
     x = np.linspace(-3, 3, 1000)
-    y = complex_function(x)
+    y_func = complex_function(x)
     
-    fig, axs = plt.subplots(2, 3, figsize=(18, 10))
+    fig, axs = plt.subplots(6, 1, figsize=(10, 24))
     axs = axs.flatten()
     
     # 绘制目标函数
     for i in range(6):
-        axs[i].plot(x, y, 'b-', alpha=0.3)
+        axs[i].plot(x, y_func, 'b-', alpha=0.3)
         axs[i].set_xlim([-3, 3])
-        axs[i].set_ylim([min(y)-1, max(y)+1])
+        axs[i].set_ylim([min(y_func)-1, max(y_func)+1])
         axs[i].grid(alpha=0.3)
     
     # 优化起点
@@ -388,8 +442,8 @@ def create_optimization_algorithms_comparison():
         x_sgd = sgd(x_sgd)
         x_history_sgd.append(x_sgd)
     
-    axs[0].scatter(x_history_sgd, [complex_function(x) for x in x_history_sgd], c='r', s=50)
-    axs[0].plot(x_history_sgd, [complex_function(x) for x in x_history_sgd], 'r-')
+    axs[0].scatter(x_history_sgd, [complex_function(x_val) for x_val in x_history_sgd], c='r', s=50)
+    axs[0].plot(x_history_sgd, [complex_function(x_val) for x_val in x_history_sgd], 'r-')
     axs[0].set_title('随机梯度下降 (SGD)', fontsize=14)
     
     # Momentum
@@ -401,8 +455,8 @@ def create_optimization_algorithms_comparison():
         x_momentum, v_momentum = momentum(x_momentum, v_momentum)
         x_history_momentum.append(x_momentum)
     
-    axs[1].scatter(x_history_momentum, [complex_function(x) for x in x_history_momentum], c='g', s=50)
-    axs[1].plot(x_history_momentum, [complex_function(x) for x in x_history_momentum], 'g-')
+    axs[1].scatter(x_history_momentum, [complex_function(x_val) for x_val in x_history_momentum], c='g', s=50)
+    axs[1].plot(x_history_momentum, [complex_function(x_val) for x_val in x_history_momentum], 'g-')
     axs[1].set_title('动量法 (Momentum)', fontsize=14)
     
     # AdaGrad
@@ -414,8 +468,8 @@ def create_optimization_algorithms_comparison():
         x_adagrad, G_adagrad = adagrad(x_adagrad, G_adagrad)
         x_history_adagrad.append(x_adagrad)
     
-    axs[2].scatter(x_history_adagrad, [complex_function(x) for x in x_history_adagrad], c='m', s=50)
-    axs[2].plot(x_history_adagrad, [complex_function(x) for x in x_history_adagrad], 'm-')
+    axs[2].scatter(x_history_adagrad, [complex_function(x_val) for x_val in x_history_adagrad], c='m', s=50)
+    axs[2].plot(x_history_adagrad, [complex_function(x_val) for x_val in x_history_adagrad], 'm-')
     axs[2].set_title('AdaGrad', fontsize=14)
     
     # RMSProp
@@ -427,8 +481,8 @@ def create_optimization_algorithms_comparison():
         x_rmsprop, G_rmsprop = rmsprop(x_rmsprop, G_rmsprop)
         x_history_rmsprop.append(x_rmsprop)
     
-    axs[3].scatter(x_history_rmsprop, [complex_function(x) for x in x_history_rmsprop], c='c', s=50)
-    axs[3].plot(x_history_rmsprop, [complex_function(x) for x in x_history_rmsprop], 'c-')
+    axs[3].scatter(x_history_rmsprop, [complex_function(x_val) for x_val in x_history_rmsprop], c='c', s=50)
+    axs[3].plot(x_history_rmsprop, [complex_function(x_val) for x_val in x_history_rmsprop], 'c-')
     axs[3].set_title('RMSProp', fontsize=14)
     
     # Adam
@@ -441,16 +495,16 @@ def create_optimization_algorithms_comparison():
         x_adam, m_adam, v_adam = adam(x_adam, m_adam, v_adam, t)
         x_history_adam.append(x_adam)
     
-    axs[4].scatter(x_history_adam, [complex_function(x) for x in x_history_adam], c='y', s=50)
-    axs[4].plot(x_history_adam, [complex_function(x) for x in x_history_adam], 'y-')
+    axs[4].scatter(x_history_adam, [complex_function(x_val) for x_val in x_history_adam], c='y', s=50)
+    axs[4].plot(x_history_adam, [complex_function(x_val) for x_val in x_history_adam], 'y-')
     axs[4].set_title('Adam', fontsize=14)
     
     # 算法比较
-    axs[5].plot(x_history_sgd, [complex_function(x) for x in x_history_sgd], 'r-', label='SGD')
-    axs[5].plot(x_history_momentum, [complex_function(x) for x in x_history_momentum], 'g-', label='Momentum')
-    axs[5].plot(x_history_adagrad, [complex_function(x) for x in x_history_adagrad], 'm-', label='AdaGrad')
-    axs[5].plot(x_history_rmsprop, [complex_function(x) for x in x_history_rmsprop], 'c-', label='RMSProp')
-    axs[5].plot(x_history_adam, [complex_function(x) for x in x_history_adam], 'y-', label='Adam')
+    axs[5].plot(x_history_sgd, [complex_function(x_val) for x_val in x_history_sgd], 'r-', label='SGD')
+    axs[5].plot(x_history_momentum, [complex_function(x_val) for x_val in x_history_momentum], 'g-', label='Momentum')
+    axs[5].plot(x_history_adagrad, [complex_function(x_val) for x_val in x_history_adagrad], 'm-', label='AdaGrad')
+    axs[5].plot(x_history_rmsprop, [complex_function(x_val) for x_val in x_history_rmsprop], 'c-', label='RMSProp')
+    axs[5].plot(x_history_adam, [complex_function(x_val) for x_val in x_history_adam], 'y-', label='Adam')
     axs[5].set_title('优化算法比较', fontsize=14)
     axs[5].legend()
     
@@ -468,31 +522,34 @@ def show_training_page():
     
     st.markdown("""
     梯度下降是训练神经网络的基础优化算法。其核心思想是沿着损失函数的负梯度方向更新参数，以最小化损失函数。
+    """)
     
-    参数更新公式：$\\theta = \\theta - \\alpha \\nabla_{\\theta} J(\\theta)$
+    # 添加神经网络参数更新公式的详细说明
+    st.markdown("""
+    参数更新公式：模型参数 = 模型参数 - 学习率 × 梯度
     
     其中：
-    - $\\theta$ 是模型参数
-    - $\\alpha$ 是学习率
-    - $\\nabla_{\\theta} J(\\theta)$ 是损失函数对参数的梯度
+    - 模型参数：神经网络中需要学习的权重和偏置
+    - 学习率：控制每次更新的步长大小
+    - 梯度：损失函数对参数的导数，指示参数更新方向
     """)
     
     st.markdown("下面的动画展示了梯度下降如何优化线性回归模型的参数：")
     
     # 生成简单数据集
     np.random.seed(42)
-    x = np.random.rand(50) * 4 - 2
-    y = 1.5 * x - 0.5 + np.random.randn(50) * 0.2
+    x_lin = np.random.rand(50) * 4 - 2
+    y_lin = 1.5 * x_lin - 0.5 + np.random.randn(50) * 0.2
     
     # 控制学习率和迭代次数
     col1, col2 = st.columns(2)
     with col1:
-        learning_rate = st.slider("学习率", 0.01, 0.5, 0.1, 0.01)
+        gd_learning_rate = st.slider("梯度下降学习率", 0.01, 0.5, 0.1, 0.01, key="gd_lr")
     with col2:
-        iterations = st.slider("迭代次数", 5, 30, 15, 1)
+        gd_iterations = st.slider("梯度下降迭代次数", 5, 30, 15, 1, key="gd_iter")
     
     # 生成动画
-    gif_buffer = animate_gradient_descent(x, y, learning_rate, iterations)
+    gif_buffer = animate_gradient_descent(x_lin, y_lin, gd_learning_rate, gd_iterations)
     gif_data = create_animated_gif(gif_buffer)
     
     # 显示动画
@@ -510,27 +567,35 @@ def show_training_page():
     
     st.markdown("""
     反向传播是训练神经网络的核心算法，它通过链式法则高效计算梯度。
-    
-    算法步骤：
-    1. **前向传播**：计算每层的激活值和输出
-    2. **计算输出层误差**：$\\delta^{[L]} = \\nabla_{a^{[L]}}J \\odot \\sigma'(z^{[L]})$
-    3. **反向传播误差**：$\\delta^{[l]} = (W^{[l+1]})^T\\delta^{[l+1]} \\odot \\sigma'(z^{[l]})$
-    4. **计算梯度**：$\\nabla_{W^{[l]}}J = \\delta^{[l]}(a^{[l-1]})^T$
-    5. **更新参数**：$W^{[l]} = W^{[l]} - \\alpha \\nabla_{W^{[l]}}J$
     """)
     
-    # 生成分类数据
-    np.random.seed(42)
-    X = np.random.randn(100, 2)
-    y = np.array((X[:, 0]**2 + X[:, 1]**2 < 1).astype(int)).reshape(-1, 1)
+    st.markdown("""
+    **算法步骤：**
     
-    st.markdown("以下可视化展示了一个神经网络在分类问题上的训练过程：")
+    1. **前向传播**：从输入层到输出层依次计算每层的激活值和输出
+    
+    2. **计算输出层误差**：计算预测值与真实值之间的误差
+    
+    3. **反向传播误差**：将误差从输出层反向传播到各个隐藏层
+    
+    4. **计算梯度**：计算损失函数对各层权重和偏置的梯度
+    
+    5. **更新参数**：使用梯度下降法更新网络中的权重和偏置参数
+    """)
+    
+    # 生成 Moons 数据集
+    np.random.seed(42)
+    X, y = make_moons(n_samples=200, noise=0.20, random_state=42)
+    y = y.reshape(-1, 1) # 确保 y 是列向量
+    
+    st.markdown("以下可视化展示了一个神经网络在 Moons 数据集上的训练过程：")
     
     col1, col2 = st.columns(2)
     with col1:
-        nn_learning_rate = st.slider("神经网络学习率", 0.1, 1.0, 0.5, 0.1)
+        nn_learning_rate = st.slider("神经网络学习率", 0.1, 1.0, 0.5, 0.1, key="nn_lr")
     with col2:
-        nn_epochs = st.slider("训练轮次", 5, 30, 15, 1)
+        # 增加训练轮次的范围和默认值
+        nn_epochs = st.slider("训练轮次", 10, 200, 100, 10, key="nn_epochs")
     
     # 训练简单神经网络
     history = simple_neural_network(X, y, hidden_size=4, learning_rate=nn_learning_rate, epochs=nn_epochs)

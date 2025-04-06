@@ -71,10 +71,10 @@ st.markdown("<div class='main-header'>神经网络交互式学习</div>", unsafe
 # 侧边栏导航
 st.sidebar.title("导航")
 pages = [
-    "📊 单层与多层感知器",
-    "⚙️ 参数训练算法可视化",
-    "🛡️ 正则化方法",
-    "📝 练习"
+    "⚙️ 神经网络训练算法可视化",
+    "🔄 神经网络反向传播算法可视化",
+    "📉 梯度消失问题及解决方案",
+    "📈 梯度爆炸问题及解决方案"
 ]
 selection = st.sidebar.radio("选择一个部分:", pages)
 
@@ -89,23 +89,23 @@ with st.sidebar.expander("学习资源"):
 
 with st.sidebar.expander("关于"):
     st.markdown("""
-    此应用程序旨在帮助学生理解神经网络的基本概念、训练过程和优化方法。
+    此应用程序旨在帮助学生理解神经网络的训练过程、梯度问题及其解决方案。
     
-    通过交互式可视化和练习，您可以深入了解神经网络的工作原理。
+    通过交互式可视化，您可以深入了解神经网络的工作原理及常见问题的解决方法。
     
-    版本: 1.0.0
+    版本: 2.0.0
     """)
 
 # 根据选择加载不同页面的内容
-if selection == "📊 单层与多层感知器":
-    from perceptron import show_perceptron_page
-    show_perceptron_page()
-elif selection == "⚙️ 参数训练算法可视化":
+if selection == "⚙️ 神经网络训练算法可视化":
     from training import show_training_page
     show_training_page()
-elif selection == "🛡️ 正则化方法":
-    from regularization import show_regularization_page
-    show_regularization_page()
-elif selection == "📝 练习":
-    from exercises import show_exercises_page
-    show_exercises_page() 
+elif selection == "🔄 神经网络反向传播算法可视化":
+    from backpropagation import show_backpropagation_page
+    show_backpropagation_page()
+elif selection == "📉 梯度消失问题及解决方案":
+    from vanishing_gradient import show_vanishing_gradient_page
+    show_vanishing_gradient_page()
+elif selection == "📈 梯度爆炸问题及解决方案":
+    from exploding_gradient import show_exploding_gradient_page
+    show_exploding_gradient_page() 

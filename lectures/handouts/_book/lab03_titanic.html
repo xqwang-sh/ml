@@ -253,7 +253,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#决策树模型" id="toc-决策树模型" class="nav-link" data-scroll-target="#决策树模型"><span class="header-section-number">11.4</span> 决策树模型</a></li>
   <li><a href="#随机森林模型" id="toc-随机森林模型" class="nav-link" data-scroll-target="#随机森林模型"><span class="header-section-number">11.5</span> 随机森林模型</a></li>
   <li><a href="#xgboost模型" id="toc-xgboost模型" class="nav-link" data-scroll-target="#xgboost模型"><span class="header-section-number">11.6</span> XGBoost模型</a></li>
-  <li><a href="#神经网络模型" id="toc-神经网络模型" class="nav-link" data-scroll-target="#神经网络模型"><span class="header-section-number">11.7</span> 神经网络模型</a></li>
+  <li><a href="#神经网络模型" id="toc-神经网络模型" class="nav-link" data-scroll-target="#神经网络模型"><span class="header-section-number">11.7</span> 神经网络模型</a>
+  <ul class="collapse">
+  <li><a href="#简单全连接网络---可能欠拟合" id="toc-简单全连接网络---可能欠拟合" class="nav-link" data-scroll-target="#简单全连接网络---可能欠拟合"><span class="header-section-number">11.7.1</span> 简单全连接网络 - 可能欠拟合</a></li>
+  <li><a href="#中等复杂度网络---适度拟合" id="toc-中等复杂度网络---适度拟合" class="nav-link" data-scroll-target="#中等复杂度网络---适度拟合"><span class="header-section-number">11.7.2</span> 中等复杂度网络 - 适度拟合</a></li>
+  <li><a href="#复杂网络---可能过拟合" id="toc-复杂网络---可能过拟合" class="nav-link" data-scroll-target="#复杂网络---可能过拟合"><span class="header-section-number">11.7.3</span> 复杂网络 - 可能过拟合</a></li>
+  <li><a href="#正则化网络---解决过拟合" id="toc-正则化网络---解决过拟合" class="nav-link" data-scroll-target="#正则化网络---解决过拟合"><span class="header-section-number">11.7.4</span> 正则化网络 - 解决过拟合</a></li>
+  <li><a href="#模型比较" id="toc-模型比较" class="nav-link" data-scroll-target="#模型比较"><span class="header-section-number">11.7.5</span> 模型比较</a></li>
+  <li><a href="#最终神经网络模型" id="toc-最终神经网络模型" class="nav-link" data-scroll-target="#最终神经网络模型"><span class="header-section-number">11.7.6</span> 最终神经网络模型</a></li>
+  <li><a href="#神经网络模型小结" id="toc-神经网络模型小结" class="nav-link" data-scroll-target="#神经网络模型小结"><span class="header-section-number">11.7.7</span> 神经网络模型小结</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#模型评估与比较" id="toc-模型评估与比较" class="nav-link" data-scroll-target="#模型评估与比较"><span class="header-section-number">12</span> 模型评估与比较</a></li>
   <li><a href="#测试集预测" id="toc-测试集预测" class="nav-link" data-scroll-target="#测试集预测"><span class="header-section-number">13</span> 测试集预测</a></li>
@@ -1250,46 +1259,69 @@ ROC AUC: 0.8613 (±0.0194)
 </section>
 <section id="决策树模型" class="level2" data-number="11.4">
 <h2 data-number="11.4" class="anchored" data-anchor-id="决策树模型"><span class="header-section-number">11.4</span> 决策树模型</h2>
-<div id="cell-decision-tree" class="cell" data-execution_count="21">
+<div id="decision-tree" class="cell" data-execution_count="21">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 决策树模型</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 超参数网格搜索</span></span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>param_grid <span class="op">=</span> {</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: [<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>],</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_samples_split'</span>: [<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>],</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_samples_leaf'</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>]</span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>dt_model <span class="op">=</span> DecisionTreeClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>dt_grid <span class="op">=</span> GridSearchCV(dt_model, param_grid, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'accuracy'</span>)</span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>dt_grid.fit(X_train, y_train)</span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"决策树最佳参数: </span><span class="sc">{</span>dt_grid<span class="sc">.</span>best_params_<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>dt_fitted <span class="op">=</span> train_and_evaluate(dt_grid.best_estimator_, X_train, y_train, model_name<span class="op">=</span><span class="st">"决策树"</span>)</span>
-<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 特征重要性</span></span>
-<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>dt_importance <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>    dt_fitted.feature_importances_,</span>
-<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>X_train.columns,</span>
-<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">'重要性'</span>]</span>
-<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>).sort_values(<span class="st">'重要性'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">决策树特征重要性:"</span>)</span>
-<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>dt_importance</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">20</span>),</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_samples_split'</span>: <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">20</span>)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>dt_model <span class="op">=</span> DecisionTreeClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>dt_grid <span class="op">=</span> GridSearchCV(dt_model, param_grid, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'accuracy'</span>)</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>dt_grid.fit(X_train, y_train)</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"决策树最佳参数: </span><span class="sc">{</span>dt_grid<span class="sc">.</span>best_params_<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"最佳交叉验证分数: </span><span class="sc">{</span>dt_grid<span class="sc">.</span>best_score_<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化max_depth对模型性能的影响</span></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>max_depths <span class="op">=</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">20</span>)</span>
+<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>test_scores <span class="op">=</span> []</span>
+<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> depth <span class="kw">in</span> max_depths:</span>
+<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>    dt <span class="op">=</span> DecisionTreeClassifier(max_depth<span class="op">=</span>depth, </span>
+<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a>                              min_samples_split<span class="op">=</span>dt_grid.best_params_[<span class="st">'min_samples_split'</span>],</span>
+<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>                              random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>    dt.fit(X_train, y_train)</span>
+<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 使用交叉验证来评估</span></span>
+<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> cross_val_score(dt, X_train, y_train, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'accuracy'</span>).mean()</span>
+<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a>    test_scores.append(score)</span>
+<span id="cb37-28"><a href="#cb37-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-29"><a href="#cb37-29" aria-hidden="true" tabindex="-1"></a>plt.plot(max_depths, test_scores)</span>
+<span id="cb37-30"><a href="#cb37-30" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'max_depth (最大深度)'</span>)</span>
+<span id="cb37-31"><a href="#cb37-31" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'准确率'</span>)</span>
+<span id="cb37-32"><a href="#cb37-32" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'决策树性能随最大深度的变化'</span>)</span>
+<span id="cb37-33"><a href="#cb37-33" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb37-34"><a href="#cb37-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-35"><a href="#cb37-35" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用最佳参数训练模型并评估</span></span>
+<span id="cb37-36"><a href="#cb37-36" aria-hidden="true" tabindex="-1"></a>dt_fitted <span class="op">=</span> train_and_evaluate(dt_grid.best_estimator_, X_train, y_train, model_name<span class="op">=</span><span class="st">"决策树"</span>)</span>
+<span id="cb37-37"><a href="#cb37-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-38"><a href="#cb37-38" aria-hidden="true" tabindex="-1"></a><span class="co"># 特征重要性</span></span>
+<span id="cb37-39"><a href="#cb37-39" aria-hidden="true" tabindex="-1"></a>dt_importance <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb37-40"><a href="#cb37-40" aria-hidden="true" tabindex="-1"></a>    dt_fitted.feature_importances_,</span>
+<span id="cb37-41"><a href="#cb37-41" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>X_train.columns,</span>
+<span id="cb37-42"><a href="#cb37-42" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">'重要性'</span>]</span>
+<span id="cb37-43"><a href="#cb37-43" aria-hidden="true" tabindex="-1"></a>).sort_values(<span class="st">'重要性'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb37-44"><a href="#cb37-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-45"><a href="#cb37-45" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">决策树特征重要性:"</span>)</span>
+<span id="cb37-46"><a href="#cb37-46" aria-hidden="true" tabindex="-1"></a>dt_importance</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>决策树最佳参数: {'max_depth': 3, 'min_samples_leaf': 1, 'min_samples_split': 2}
+<pre><code>决策树最佳参数: {'max_depth': 4, 'min_samples_split': 17}
+最佳交叉验证分数: 0.8260
 决策树交叉验证结果：
-准确率: 0.8215 (±0.0278)
-精确率: 0.8035 (±0.0439)
-召回率: 0.7160 (±0.1021)
-F1分数: 0.7508 (±0.0588)
-ROC AUC: 0.8426 (±0.0392)
+准确率: 0.8260 (±0.0237)
+精确率: 0.8136 (±0.0331)
+召回率: 0.7159 (±0.1060)
+F1分数: 0.7549 (±0.0577)
+ROC AUC: 0.8510 (±0.0399)
 
 决策树特征重要性:</code></pre>
 </div>
-<div id="decision-tree" class="cell-output cell-output-display" data-execution_count="21">
+<div id="decision-tree-1" class="cell-output cell-output-display" data-execution_count="21">
 <div>
 
 
@@ -1303,98 +1335,145 @@ ROC AUC: 0.8426 (±0.0392)
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Title</td>
-<td>0.663739</td>
+<td>0.661197</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">FamilySize</td>
-<td>0.155270</td>
+<td>0.141799</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Fare</td>
-<td>0.132550</td>
+<td>0.131015</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">Pclass</td>
-<td>0.045894</td>
+<td>0.041912</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Age</td>
-<td>0.002547</td>
+<td>0.012085</td>
 </tr>
 <tr class="even">
+<td data-quarto-table-cell-role="th">HasCabin</td>
+<td>0.011992</td>
+</tr>
+<tr class="odd">
 <td data-quarto-table-cell-role="th">Sex</td>
 <td>0.000000</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">SibSp</td>
 <td>0.000000</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td data-quarto-table-cell-role="th">Parch</td>
 <td>0.000000</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td data-quarto-table-cell-role="th">Embarked</td>
 <td>0.000000</td>
 </tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">IsAlone</td>
-<td>0.000000</td>
-</tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">HasCabin</td>
+<td data-quarto-table-cell-role="th">IsAlone</td>
 <td>0.000000</td>
 </tr>
 </tbody>
 </table>
 
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab03_titanic_files/figure-html/decision-tree-output-3.png" id="decision-tree-2" width="812" height="524" class="figure-img"></p>
+</figure>
 </div>
 </div>
 </div>
 </section>
 <section id="随机森林模型" class="level2" data-number="11.5">
 <h2 data-number="11.5" class="anchored" data-anchor-id="随机森林模型"><span class="header-section-number">11.5</span> 随机森林模型</h2>
-<div id="cell-random-forest" class="cell" data-execution_count="22">
+<div id="random-forest" class="cell" data-execution_count="22">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 随机森林模型</span></span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 超参数网格搜索</span></span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>param_grid <span class="op">=</span> {</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n_estimators'</span>: [<span class="dv">100</span>, <span class="dv">200</span>],</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: [<span class="va">None</span>, <span class="dv">5</span>, <span class="dv">10</span>],</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_samples_split'</span>: [<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>],</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_samples_leaf'</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>]</span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>rf_model <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>rf_grid <span class="op">=</span> GridSearchCV(rf_model, param_grid, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'accuracy'</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>rf_grid.fit(X_train, y_train)</span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"随机森林最佳参数: </span><span class="sc">{</span>rf_grid<span class="sc">.</span>best_params_<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>rf_fitted <span class="op">=</span> train_and_evaluate(rf_grid.best_estimator_, X_train, y_train, model_name<span class="op">=</span><span class="st">"随机森林"</span>)</span>
-<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 特征重要性</span></span>
-<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>rf_importance <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>    rf_fitted.feature_importances_,</span>
-<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>X_train.columns,</span>
-<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">'重要性'</span>]</span>
-<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>).sort_values(<span class="st">'重要性'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">随机森林特征重要性:"</span>)</span>
-<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>rf_importance</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n_estimators'</span>: [<span class="dv">10</span>, <span class="dv">30</span>, <span class="dv">50</span>, <span class="dv">70</span>, <span class="dv">100</span>, <span class="dv">200</span>],</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: [<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="va">None</span>]</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>rf_model <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>rf_grid <span class="op">=</span> GridSearchCV(rf_model, param_grid, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'accuracy'</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>rf_grid.fit(X_train, y_train)</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"随机森林最佳参数: </span><span class="sc">{</span>rf_grid<span class="sc">.</span>best_params_<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"最佳交叉验证分数: </span><span class="sc">{</span>rf_grid<span class="sc">.</span>best_score_<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化n_estimators对模型性能的影响</span></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>n_estimators <span class="op">=</span> [<span class="dv">10</span>, <span class="dv">30</span>, <span class="dv">50</span>, <span class="dv">70</span>, <span class="dv">100</span>, <span class="dv">200</span>]</span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>test_scores <span class="op">=</span> []</span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> n_estimators:</span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>    rf <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span>n,</span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>                              max_depth<span class="op">=</span>rf_grid.best_params_[<span class="st">'max_depth'</span>],</span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>                              random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 使用交叉验证来评估</span></span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> cross_val_score(rf, X_train, y_train, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'accuracy'</span>).mean()</span>
+<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a>    test_scores.append(score)</span>
+<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-28"><a href="#cb39-28" aria-hidden="true" tabindex="-1"></a>plt.plot(n_estimators, test_scores)</span>
+<span id="cb39-29"><a href="#cb39-29" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'n_estimators (树的数量)'</span>)</span>
+<span id="cb39-30"><a href="#cb39-30" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'准确率'</span>)</span>
+<span id="cb39-31"><a href="#cb39-31" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'随机森林性能随树数量的变化'</span>)</span>
+<span id="cb39-32"><a href="#cb39-32" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb39-33"><a href="#cb39-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-34"><a href="#cb39-34" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化max_depth对模型性能的影响</span></span>
+<span id="cb39-35"><a href="#cb39-35" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb39-36"><a href="#cb39-36" aria-hidden="true" tabindex="-1"></a>max_depths <span class="op">=</span> [<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>]</span>
+<span id="cb39-37"><a href="#cb39-37" aria-hidden="true" tabindex="-1"></a>test_scores <span class="op">=</span> []</span>
+<span id="cb39-38"><a href="#cb39-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-39"><a href="#cb39-39" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> depth <span class="kw">in</span> max_depths:</span>
+<span id="cb39-40"><a href="#cb39-40" aria-hidden="true" tabindex="-1"></a>    rf <span class="op">=</span> RandomForestClassifier(n_estimators<span class="op">=</span>rf_grid.best_params_[<span class="st">'n_estimators'</span>],</span>
+<span id="cb39-41"><a href="#cb39-41" aria-hidden="true" tabindex="-1"></a>                              max_depth<span class="op">=</span>depth,</span>
+<span id="cb39-42"><a href="#cb39-42" aria-hidden="true" tabindex="-1"></a>                              random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb39-43"><a href="#cb39-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 使用交叉验证来评估</span></span>
+<span id="cb39-44"><a href="#cb39-44" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> cross_val_score(rf, X_train, y_train, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'accuracy'</span>).mean()</span>
+<span id="cb39-45"><a href="#cb39-45" aria-hidden="true" tabindex="-1"></a>    test_scores.append(score)</span>
+<span id="cb39-46"><a href="#cb39-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-47"><a href="#cb39-47" aria-hidden="true" tabindex="-1"></a>plt.plot(max_depths, test_scores)</span>
+<span id="cb39-48"><a href="#cb39-48" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'max_depth (最大深度)'</span>)</span>
+<span id="cb39-49"><a href="#cb39-49" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'准确率'</span>)</span>
+<span id="cb39-50"><a href="#cb39-50" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'随机森林性能随最大深度的变化'</span>)</span>
+<span id="cb39-51"><a href="#cb39-51" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb39-52"><a href="#cb39-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-53"><a href="#cb39-53" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用最佳参数训练模型并评估</span></span>
+<span id="cb39-54"><a href="#cb39-54" aria-hidden="true" tabindex="-1"></a>rf_fitted <span class="op">=</span> train_and_evaluate(rf_grid.best_estimator_, X_train, y_train, model_name<span class="op">=</span><span class="st">"随机森林"</span>)</span>
+<span id="cb39-55"><a href="#cb39-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-56"><a href="#cb39-56" aria-hidden="true" tabindex="-1"></a><span class="co"># 特征重要性</span></span>
+<span id="cb39-57"><a href="#cb39-57" aria-hidden="true" tabindex="-1"></a>rf_importance <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb39-58"><a href="#cb39-58" aria-hidden="true" tabindex="-1"></a>    rf_fitted.feature_importances_,</span>
+<span id="cb39-59"><a href="#cb39-59" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>X_train.columns,</span>
+<span id="cb39-60"><a href="#cb39-60" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">'重要性'</span>]</span>
+<span id="cb39-61"><a href="#cb39-61" aria-hidden="true" tabindex="-1"></a>).sort_values(<span class="st">'重要性'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb39-62"><a href="#cb39-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-63"><a href="#cb39-63" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">随机森林特征重要性:"</span>)</span>
+<span id="cb39-64"><a href="#cb39-64" aria-hidden="true" tabindex="-1"></a>rf_importance</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>随机森林最佳参数: {'max_depth': None, 'min_samples_leaf': 2, 'min_samples_split': 2, 'n_estimators': 100}
+<pre><code>随机森林最佳参数: {'max_depth': 5, 'n_estimators': 10}
+最佳交叉验证分数: 0.8294
 随机森林交叉验证结果：
-准确率: 0.8339 (±0.0323)
-精确率: 0.8263 (±0.0408)
-召回率: 0.7190 (±0.0766)
-F1分数: 0.7668 (±0.0540)
-ROC AUC: 0.8725 (±0.0400)
+准确率: 0.8294 (±0.0124)
+精确率: 0.7989 (±0.0240)
+召回率: 0.7453 (±0.0610)
+F1分数: 0.7690 (±0.0281)
+ROC AUC: 0.8710 (±0.0378)
 
 随机森林特征重要性:</code></pre>
 </div>
-<div id="random-forest" class="cell-output cell-output-display" data-execution_count="22">
+<div id="random-forest-1" class="cell-output cell-output-display" data-execution_count="22">
 <div>
 
 
@@ -1408,99 +1487,159 @@ ROC AUC: 0.8725 (±0.0400)
 <tbody>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Title</td>
-<td>0.235212</td>
+<td>0.367692</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Sex</td>
+<td>0.146653</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">Age</td>
+<td>0.097934</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">Fare</td>
-<td>0.188285</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Sex</td>
-<td>0.168802</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">Age</td>
-<td>0.148476</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Pclass</td>
-<td>0.075265</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">FamilySize</td>
-<td>0.051540</td>
+<td>0.093234</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">HasCabin</td>
-<td>0.040876</td>
+<td>0.089965</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Pclass</td>
+<td>0.085205</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">FamilySize</td>
+<td>0.052974</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">SibSp</td>
-<td>0.034464</td>
+<td>0.032125</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">Embarked</td>
-<td>0.027531</td>
+<td>0.018703</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">Parch</td>
-<td>0.017895</td>
+<td>0.011941</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">IsAlone</td>
-<td>0.011654</td>
+<td>0.003575</td>
 </tr>
 </tbody>
 </table>
 
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab03_titanic_files/figure-html/random-forest-output-3.png" id="random-forest-2" width="818" height="523" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab03_titanic_files/figure-html/random-forest-output-4.png" id="random-forest-3" width="818" height="524" class="figure-img"></p>
+</figure>
 </div>
 </div>
 </div>
 </section>
 <section id="xgboost模型" class="level2" data-number="11.6">
 <h2 data-number="11.6" class="anchored" data-anchor-id="xgboost模型"><span class="header-section-number">11.6</span> XGBoost模型</h2>
-<div id="cell-xgboost" class="cell" data-execution_count="23">
+<div id="xgboost" class="cell" data-execution_count="23">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># XGBoost模型</span></span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 超参数网格搜索</span></span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>param_grid <span class="op">=</span> {</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n_estimators'</span>: [<span class="dv">100</span>, <span class="dv">200</span>],</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: [<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>],</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'learning_rate'</span>: [<span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>],</span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'subsample'</span>: [<span class="fl">0.8</span>, <span class="fl">1.0</span>],</span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'colsample_bytree'</span>: [<span class="fl">0.8</span>, <span class="fl">1.0</span>]</span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>xgb_model <span class="op">=</span> xgb.XGBClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>xgb_grid <span class="op">=</span> GridSearchCV(xgb_model, param_grid, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'accuracy'</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
-<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>xgb_grid.fit(X_train, y_train)</span>
-<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"XGBoost最佳参数: </span><span class="sc">{</span>xgb_grid<span class="sc">.</span>best_params_<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>xgb_fitted <span class="op">=</span> train_and_evaluate(xgb_grid.best_estimator_, X_train, y_train, model_name<span class="op">=</span><span class="st">"XGBoost"</span>)</span>
-<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 特征重要性</span></span>
-<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>xgb_importance <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>    xgb_fitted.feature_importances_,</span>
-<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>X_train.columns,</span>
-<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">'重要性'</span>]</span>
-<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>).sort_values(<span class="st">'重要性'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">XGBoost特征重要性:"</span>)</span>
-<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a>xgb_importance</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n_estimators'</span>: [<span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>],</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: [<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>],</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'learning_rate'</span>: [<span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>]</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>xgb_model <span class="op">=</span> xgb.XGBClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>xgb_grid <span class="op">=</span> GridSearchCV(xgb_model, param_grid, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'accuracy'</span>, n_jobs<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>xgb_grid.fit(X_train, y_train)</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"XGBoost最佳参数: </span><span class="sc">{</span>xgb_grid<span class="sc">.</span>best_params_<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"最佳交叉验证分数: </span><span class="sc">{</span>xgb_grid<span class="sc">.</span>best_score_<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化max_depth对模型性能的影响</span></span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>max_depths <span class="op">=</span> [<span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">11</span>]</span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>test_scores <span class="op">=</span> []</span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> depth <span class="kw">in</span> max_depths:</span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>    xgb_model <span class="op">=</span> xgb.XGBClassifier(</span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>        n_estimators<span class="op">=</span>xgb_grid.best_params_[<span class="st">'n_estimators'</span>],</span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a>        max_depth<span class="op">=</span>depth,</span>
+<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a>        learning_rate<span class="op">=</span>xgb_grid.best_params_[<span class="st">'learning_rate'</span>],</span>
+<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a>        random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 使用交叉验证来评估</span></span>
+<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> cross_val_score(xgb_model, X_train, y_train, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'accuracy'</span>).mean()</span>
+<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a>    test_scores.append(score)</span>
+<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a>plt.plot(max_depths, test_scores)</span>
+<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'max_depth (最大深度)'</span>)</span>
+<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'准确率'</span>)</span>
+<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'XGBoost性能随最大深度的变化'</span>)</span>
+<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化learning_rate对模型性能的影响</span></span>
+<span id="cb41-39"><a href="#cb41-39" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb41-40"><a href="#cb41-40" aria-hidden="true" tabindex="-1"></a>learning_rates <span class="op">=</span> [<span class="fl">0.001</span>, <span class="fl">0.01</span>, <span class="fl">0.05</span>, <span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>]</span>
+<span id="cb41-41"><a href="#cb41-41" aria-hidden="true" tabindex="-1"></a>test_scores <span class="op">=</span> []</span>
+<span id="cb41-42"><a href="#cb41-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-43"><a href="#cb41-43" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> lr <span class="kw">in</span> learning_rates:</span>
+<span id="cb41-44"><a href="#cb41-44" aria-hidden="true" tabindex="-1"></a>    xgb_model <span class="op">=</span> xgb.XGBClassifier(</span>
+<span id="cb41-45"><a href="#cb41-45" aria-hidden="true" tabindex="-1"></a>        n_estimators<span class="op">=</span>xgb_grid.best_params_[<span class="st">'n_estimators'</span>],</span>
+<span id="cb41-46"><a href="#cb41-46" aria-hidden="true" tabindex="-1"></a>        max_depth<span class="op">=</span>xgb_grid.best_params_[<span class="st">'max_depth'</span>],</span>
+<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a>        learning_rate<span class="op">=</span>lr,</span>
+<span id="cb41-48"><a href="#cb41-48" aria-hidden="true" tabindex="-1"></a>        random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb41-49"><a href="#cb41-49" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb41-50"><a href="#cb41-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 使用交叉验证来评估</span></span>
+<span id="cb41-51"><a href="#cb41-51" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> cross_val_score(xgb_model, X_train, y_train, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">'accuracy'</span>).mean()</span>
+<span id="cb41-52"><a href="#cb41-52" aria-hidden="true" tabindex="-1"></a>    test_scores.append(score)</span>
+<span id="cb41-53"><a href="#cb41-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-54"><a href="#cb41-54" aria-hidden="true" tabindex="-1"></a>plt.plot(learning_rates, test_scores)</span>
+<span id="cb41-55"><a href="#cb41-55" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'learning_rate (学习率)'</span>)</span>
+<span id="cb41-56"><a href="#cb41-56" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'准确率'</span>)</span>
+<span id="cb41-57"><a href="#cb41-57" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'XGBoost性能随学习率的变化'</span>)</span>
+<span id="cb41-58"><a href="#cb41-58" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb41-59"><a href="#cb41-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-60"><a href="#cb41-60" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用最佳参数训练模型并评估</span></span>
+<span id="cb41-61"><a href="#cb41-61" aria-hidden="true" tabindex="-1"></a>xgb_fitted <span class="op">=</span> train_and_evaluate(xgb_grid.best_estimator_, X_train, y_train, model_name<span class="op">=</span><span class="st">"XGBoost"</span>)</span>
+<span id="cb41-62"><a href="#cb41-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-63"><a href="#cb41-63" aria-hidden="true" tabindex="-1"></a><span class="co"># 特征重要性</span></span>
+<span id="cb41-64"><a href="#cb41-64" aria-hidden="true" tabindex="-1"></a>xgb_importance <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb41-65"><a href="#cb41-65" aria-hidden="true" tabindex="-1"></a>    xgb_fitted.feature_importances_,</span>
+<span id="cb41-66"><a href="#cb41-66" aria-hidden="true" tabindex="-1"></a>    index<span class="op">=</span>X_train.columns,</span>
+<span id="cb41-67"><a href="#cb41-67" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>[<span class="st">'重要性'</span>]</span>
+<span id="cb41-68"><a href="#cb41-68" aria-hidden="true" tabindex="-1"></a>).sort_values(<span class="st">'重要性'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb41-69"><a href="#cb41-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-70"><a href="#cb41-70" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">XGBoost特征重要性:"</span>)</span>
+<span id="cb41-71"><a href="#cb41-71" aria-hidden="true" tabindex="-1"></a>xgb_importance</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>XGBoost最佳参数: {'colsample_bytree': 0.8, 'learning_rate': 0.1, 'max_depth': 5, 'n_estimators': 100, 'subsample': 0.8}
+<pre><code>XGBoost最佳参数: {'learning_rate': 0.05, 'max_depth': 7, 'n_estimators': 100}
+最佳交叉验证分数: 0.8440
 XGBoost交叉验证结果：
-准确率: 0.8429 (±0.0282)
-精确率: 0.8216 (±0.0303)
-召回率: 0.7542 (±0.0664)
-F1分数: 0.7852 (±0.0450)
-ROC AUC: 0.8765 (±0.0297)
+准确率: 0.8440 (±0.0229)
+精确率: 0.8236 (±0.0284)
+召回率: 0.7571 (±0.0667)
+F1分数: 0.7870 (±0.0394)
+ROC AUC: 0.8686 (±0.0345)
 
 XGBoost特征重要性:</code></pre>
 </div>
-<div id="xgboost" class="cell-output cell-output-display" data-execution_count="23">
+<div id="xgboost-1" class="cell-output cell-output-display" data-execution_count="23">
 <div>
 
 
@@ -1513,202 +1652,648 @@ XGBoost特征重要性:</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Sex</td>
-<td>0.357169</td>
-</tr>
-<tr class="even">
 <td data-quarto-table-cell-role="th">Title</td>
-<td>0.207890</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">HasCabin</td>
-<td>0.099631</td>
+<td>0.545888</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">Pclass</td>
-<td>0.084996</td>
+<td>0.111701</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">FamilySize</td>
-<td>0.048391</td>
+<td>0.095393</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">SibSp</td>
-<td>0.047371</td>
+<td data-quarto-table-cell-role="th">HasCabin</td>
+<td>0.082403</td>
 </tr>
 <tr class="odd">
+<td data-quarto-table-cell-role="th">Sex</td>
+<td>0.035206</td>
+</tr>
+<tr class="even">
 <td data-quarto-table-cell-role="th">Fare</td>
-<td>0.037986</td>
+<td>0.034001</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td data-quarto-table-cell-role="th">Age</td>
-<td>0.032251</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">Embarked</td>
-<td>0.031185</td>
+<td>0.027042</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">IsAlone</td>
-<td>0.029846</td>
+<td data-quarto-table-cell-role="th">Parch</td>
+<td>0.025975</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">Parch</td>
-<td>0.023284</td>
+<td data-quarto-table-cell-role="th">SibSp</td>
+<td>0.022535</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">Embarked</td>
+<td>0.019856</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">IsAlone</td>
+<td>0.000000</td>
 </tr>
 </tbody>
 </table>
 
 </div>
 </div>
-</div>
-</section>
-<section id="神经网络模型" class="level2" data-number="11.7">
-<h2 data-number="11.7" class="anchored" data-anchor-id="神经网络模型"><span class="header-section-number">11.7</span> 神经网络模型</h2>
-<div id="neural-network" class="cell" data-execution_count="24">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 神经网络模型</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 对特征进行标准化</span></span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>X_train_scaled <span class="op">=</span> scaler.fit_transform(X_train)</span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>test_data_scaled <span class="op">=</span> scaler.transform(test_data)</span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 构建神经网络模型</span></span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_nn_model():</span>
-<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> keras.Sequential([</span>
-<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">32</span>, activation<span class="op">=</span><span class="st">'relu'</span>, input_shape<span class="op">=</span>(X_train.shape[<span class="dv">1</span>],)),</span>
-<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>        layers.BatchNormalization(),</span>
-<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>        layers.Dropout(<span class="fl">0.3</span>),</span>
-<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">16</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
-<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>        layers.BatchNormalization(),</span>
-<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a>        layers.Dropout(<span class="fl">0.2</span>),</span>
-<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">1</span>, activation<span class="op">=</span><span class="st">'sigmoid'</span>)</span>
-<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>    ])</span>
-<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a>    model.<span class="bu">compile</span>(</span>
-<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>        optimizer<span class="op">=</span><span class="st">'adam'</span>,</span>
-<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>        loss<span class="op">=</span><span class="st">'binary_crossentropy'</span>,</span>
-<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a>        metrics<span class="op">=</span>[<span class="st">'accuracy'</span>]</span>
-<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> model</span>
-<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建并训练神经网络</span></span>
-<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a>nn_model <span class="op">=</span> create_nn_model()</span>
-<span id="cb43-28"><a href="#cb43-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-29"><a href="#cb43-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 早停策略</span></span>
-<span id="cb43-30"><a href="#cb43-30" aria-hidden="true" tabindex="-1"></a>early_stopping <span class="op">=</span> tf.keras.callbacks.EarlyStopping(</span>
-<span id="cb43-31"><a href="#cb43-31" aria-hidden="true" tabindex="-1"></a>    monitor<span class="op">=</span><span class="st">'val_loss'</span>,</span>
-<span id="cb43-32"><a href="#cb43-32" aria-hidden="true" tabindex="-1"></a>    patience<span class="op">=</span><span class="dv">10</span>,</span>
-<span id="cb43-33"><a href="#cb43-33" aria-hidden="true" tabindex="-1"></a>    restore_best_weights<span class="op">=</span><span class="va">True</span></span>
-<span id="cb43-34"><a href="#cb43-34" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb43-35"><a href="#cb43-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-36"><a href="#cb43-36" aria-hidden="true" tabindex="-1"></a><span class="co"># 划分验证集</span></span>
-<span id="cb43-37"><a href="#cb43-37" aria-hidden="true" tabindex="-1"></a>X_train_nn, X_val, y_train_nn, y_val <span class="op">=</span> train_test_split(</span>
-<span id="cb43-38"><a href="#cb43-38" aria-hidden="true" tabindex="-1"></a>    X_train_scaled, y_train, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span></span>
-<span id="cb43-39"><a href="#cb43-39" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb43-40"><a href="#cb43-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-41"><a href="#cb43-41" aria-hidden="true" tabindex="-1"></a><span class="co"># 训练模型</span></span>
-<span id="cb43-42"><a href="#cb43-42" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> nn_model.fit(</span>
-<span id="cb43-43"><a href="#cb43-43" aria-hidden="true" tabindex="-1"></a>    X_train_nn, y_train_nn,</span>
-<span id="cb43-44"><a href="#cb43-44" aria-hidden="true" tabindex="-1"></a>    epochs<span class="op">=</span><span class="dv">100</span>,</span>
-<span id="cb43-45"><a href="#cb43-45" aria-hidden="true" tabindex="-1"></a>    batch_size<span class="op">=</span><span class="dv">32</span>,</span>
-<span id="cb43-46"><a href="#cb43-46" aria-hidden="true" tabindex="-1"></a>    validation_data<span class="op">=</span>(X_val, y_val),</span>
-<span id="cb43-47"><a href="#cb43-47" aria-hidden="true" tabindex="-1"></a>    callbacks<span class="op">=</span>[early_stopping],</span>
-<span id="cb43-48"><a href="#cb43-48" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="dv">0</span></span>
-<span id="cb43-49"><a href="#cb43-49" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb43-50"><a href="#cb43-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-51"><a href="#cb43-51" aria-hidden="true" tabindex="-1"></a><span class="co"># 评估性能</span></span>
-<span id="cb43-52"><a href="#cb43-52" aria-hidden="true" tabindex="-1"></a>val_loss, val_accuracy <span class="op">=</span> nn_model.evaluate(X_val, y_val, verbose<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb43-53"><a href="#cb43-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"神经网络验证集准确率: </span><span class="sc">{</span>val_accuracy<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>神经网络验证集准确率: 0.8101</code></pre>
-</div>
-</div>
-<p>绘制神经网络学习曲线：</p>
-<div id="cell-nn-learning-curves" class="cell" data-fig-height="5" data-fig-width="12" data-execution_count="25">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制学习曲线</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>plt.plot(history.history[<span class="st">'accuracy'</span>])</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>plt.plot(history.history[<span class="st">'val_accuracy'</span>])</span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'模型准确率'</span>)</span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'准确率'</span>)</span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'轮次'</span>)</span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">'训练集'</span>, <span class="st">'验证集'</span>], loc<span class="op">=</span><span class="st">'lower right'</span>)</span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
-<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>plt.plot(history.history[<span class="st">'loss'</span>])</span>
-<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>plt.plot(history.history[<span class="st">'val_loss'</span>])</span>
-<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'模型损失'</span>)</span>
-<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'损失'</span>)</span>
-<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'轮次'</span>)</span>
-<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">'训练集'</span>, <span class="st">'验证集'</span>], loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
-<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="lab03_titanic_files/figure-html/nn-learning-curves-output-1.png" id="nn-learning-curves" width="1142" height="473" class="figure-img"></p>
+<p><img src="lab03_titanic_files/figure-html/xgboost-output-3.png" id="xgboost-2" width="818" height="524" class="figure-img"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab03_titanic_files/figure-html/xgboost-output-4.png" id="xgboost-3" width="812" height="523" class="figure-img"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
+<section id="神经网络模型" class="level2" data-number="11.7">
+<h2 data-number="11.7" class="anchored" data-anchor-id="神经网络模型"><span class="header-section-number">11.7</span> 神经网络模型</h2>
+<p>在本节中，我们将从简单的全连接神经网络开始，逐步增加网络复杂度，并展示模型从欠拟合到过拟合的演变过程，最后通过引入正则化技术来解决过拟合问题。</p>
+<p>首先，我们需要对特征进行标准化，这对神经网络的训练非常重要：</p>
+<div id="nn-standardization" class="cell" data-execution_count="24">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 对特征进行标准化</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>X_train_scaled <span class="op">=</span> scaler.fit_transform(X_train)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>test_data_scaled <span class="op">=</span> scaler.transform(test_data)</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 划分训练集和验证集</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>X_train_nn, X_val, y_train_nn, y_val <span class="op">=</span> train_test_split(</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>    X_train_scaled, y_train, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"神经网络训练集形状: </span><span class="sc">{</span>X_train_nn<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"神经网络验证集形状: </span><span class="sc">{</span>X_val<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>神经网络训练集形状: (712, 11)
+神经网络验证集形状: (179, 11)</code></pre>
+</div>
+</div>
+<section id="简单全连接网络---可能欠拟合" class="level3" data-number="11.7.1">
+<h3 data-number="11.7.1" class="anchored" data-anchor-id="简单全连接网络---可能欠拟合"><span class="header-section-number">11.7.1</span> 简单全连接网络 - 可能欠拟合</h3>
+<p>我们先从一个非常简单的全连接网络开始，看看其性能如何：</p>
+<div id="nn-simple" class="cell" data-execution_count="25">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义简单的全连接网络</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_simple_nn():</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> keras.Sequential([</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">8</span>, activation<span class="op">=</span><span class="st">'relu'</span>, input_shape<span class="op">=</span>(X_train.shape[<span class="dv">1</span>],)),</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">1</span>, activation<span class="op">=</span><span class="st">'sigmoid'</span>)</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>    model.<span class="bu">compile</span>(</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>        optimizer<span class="op">=</span><span class="st">'adam'</span>,</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>        loss<span class="op">=</span><span class="st">'binary_crossentropy'</span>,</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>        metrics<span class="op">=</span>[<span class="st">'accuracy'</span>]</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> model</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建并训练简单神经网络</span></span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>simple_nn <span class="op">=</span> create_simple_nn()</span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>simple_nn.summary()  <span class="co"># 显示模型结构</span></span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 训练模型</span></span>
+<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>simple_history <span class="op">=</span> simple_nn.fit(</span>
+<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>    X_train_nn, y_train_nn,</span>
+<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>    epochs<span class="op">=</span><span class="dv">50</span>,</span>
+<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>    batch_size<span class="op">=</span><span class="dv">32</span>,</span>
+<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>    validation_data<span class="op">=</span>(X_val, y_val),</span>
+<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-28"><a href="#cb45-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 评估性能</span></span>
+<span id="cb45-29"><a href="#cb45-29" aria-hidden="true" tabindex="-1"></a>simple_train_loss, simple_train_acc <span class="op">=</span> simple_nn.evaluate(X_train_nn, y_train_nn, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb45-30"><a href="#cb45-30" aria-hidden="true" tabindex="-1"></a>simple_val_loss, simple_val_acc <span class="op">=</span> simple_nn.evaluate(X_val, y_val, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb45-31"><a href="#cb45-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-32"><a href="#cb45-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"简单网络 - 训练集准确率: </span><span class="sc">{</span>simple_train_acc<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb45-33"><a href="#cb45-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"简单网络 - 验证集准确率: </span><span class="sc">{</span>simple_val_acc<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 8)                 96        
+                                                                 
+ dense_1 (Dense)             (None, 1)                 9         
+                                                                 
+=================================================================
+Total params: 105 (420.00 Byte)
+Trainable params: 105 (420.00 Byte)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+简单网络 - 训练集准确率: 0.8329
+简单网络 - 验证集准确率: 0.8045</code></pre>
+</div>
+</div>
+<p>绘制简单网络的学习曲线：</p>
+<div id="cell-nn-simple-curves" class="cell" data-fig-height="5" data-fig-width="12" data-execution_count="26">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制简单网络的学习曲线</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>plt.plot(simple_history.history[<span class="st">'accuracy'</span>])</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>plt.plot(simple_history.history[<span class="st">'val_accuracy'</span>])</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'简单网络准确率'</span>)</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'准确率'</span>)</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'轮次'</span>)</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">'训练集'</span>, <span class="st">'验证集'</span>], loc<span class="op">=</span><span class="st">'lower right'</span>)</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>plt.plot(simple_history.history[<span class="st">'loss'</span>])</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>plt.plot(simple_history.history[<span class="st">'val_loss'</span>])</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'简单网络损失'</span>)</span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'损失'</span>)</span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'轮次'</span>)</span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">'训练集'</span>, <span class="st">'验证集'</span>], loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab03_titanic_files/figure-html/nn-simple-curves-output-1.png" id="nn-simple-curves" width="1142" height="473" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="中等复杂度网络---适度拟合" class="level3" data-number="11.7.2">
+<h3 data-number="11.7.2" class="anchored" data-anchor-id="中等复杂度网络---适度拟合"><span class="header-section-number">11.7.2</span> 中等复杂度网络 - 适度拟合</h3>
+<p>现在，让我们增加网络的复杂度，添加更多层和更多神经元：</p>
+<div id="nn-medium" class="cell" data-execution_count="27">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义中等复杂度的网络</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_medium_nn():</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> keras.Sequential([</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">16</span>, activation<span class="op">=</span><span class="st">'relu'</span>, input_shape<span class="op">=</span>(X_train.shape[<span class="dv">1</span>],)),</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">8</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">1</span>, activation<span class="op">=</span><span class="st">'sigmoid'</span>)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>    model.<span class="bu">compile</span>(</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>        optimizer<span class="op">=</span><span class="st">'adam'</span>,</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>        loss<span class="op">=</span><span class="st">'binary_crossentropy'</span>,</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>        metrics<span class="op">=</span>[<span class="st">'accuracy'</span>]</span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> model</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建并训练中等复杂度神经网络</span></span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>medium_nn <span class="op">=</span> create_medium_nn()</span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>medium_nn.summary()  <span class="co"># 显示模型结构</span></span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 训练模型</span></span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>medium_history <span class="op">=</span> medium_nn.fit(</span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>    X_train_nn, y_train_nn,</span>
+<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a>    epochs<span class="op">=</span><span class="dv">50</span>,</span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a>    batch_size<span class="op">=</span><span class="dv">32</span>,</span>
+<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a>    validation_data<span class="op">=</span>(X_val, y_val),</span>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb48-28"><a href="#cb48-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-29"><a href="#cb48-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 评估性能</span></span>
+<span id="cb48-30"><a href="#cb48-30" aria-hidden="true" tabindex="-1"></a>medium_train_loss, medium_train_acc <span class="op">=</span> medium_nn.evaluate(X_train_nn, y_train_nn, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb48-31"><a href="#cb48-31" aria-hidden="true" tabindex="-1"></a>medium_val_loss, medium_val_acc <span class="op">=</span> medium_nn.evaluate(X_val, y_val, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb48-32"><a href="#cb48-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-33"><a href="#cb48-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"中等网络 - 训练集准确率: </span><span class="sc">{</span>medium_train_acc<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb48-34"><a href="#cb48-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"中等网络 - 验证集准确率: </span><span class="sc">{</span>medium_val_acc<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "sequential_1"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense_2 (Dense)             (None, 16)                192       
+                                                                 
+ dense_3 (Dense)             (None, 8)                 136       
+                                                                 
+ dense_4 (Dense)             (None, 1)                 9         
+                                                                 
+=================================================================
+Total params: 337 (1.32 KB)
+Trainable params: 337 (1.32 KB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+中等网络 - 训练集准确率: 0.8539
+中等网络 - 验证集准确率: 0.8101</code></pre>
+</div>
+</div>
+<p>绘制中等复杂度网络的学习曲线：</p>
+<div id="cell-nn-medium-curves" class="cell" data-fig-height="5" data-fig-width="12" data-execution_count="28">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制中等网络的学习曲线</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>plt.plot(medium_history.history[<span class="st">'accuracy'</span>])</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>plt.plot(medium_history.history[<span class="st">'val_accuracy'</span>])</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'中等网络准确率'</span>)</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'准确率'</span>)</span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'轮次'</span>)</span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">'训练集'</span>, <span class="st">'验证集'</span>], loc<span class="op">=</span><span class="st">'lower right'</span>)</span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>plt.plot(medium_history.history[<span class="st">'loss'</span>])</span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>plt.plot(medium_history.history[<span class="st">'val_loss'</span>])</span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'中等网络损失'</span>)</span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'损失'</span>)</span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'轮次'</span>)</span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">'训练集'</span>, <span class="st">'验证集'</span>], loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
+<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab03_titanic_files/figure-html/nn-medium-curves-output-1.png" id="nn-medium-curves" width="1142" height="472" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="复杂网络---可能过拟合" class="level3" data-number="11.7.3">
+<h3 data-number="11.7.3" class="anchored" data-anchor-id="复杂网络---可能过拟合"><span class="header-section-number">11.7.3</span> 复杂网络 - 可能过拟合</h3>
+<p>现在，我们进一步增加网络复杂度，使其具有更多层和更多神经元，观察是否会出现过拟合：</p>
+<div id="nn-complex" class="cell" data-execution_count="29">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义复杂网络</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_complex_nn():</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> keras.Sequential([</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">64</span>, activation<span class="op">=</span><span class="st">'relu'</span>, input_shape<span class="op">=</span>(X_train.shape[<span class="dv">1</span>],)),</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">32</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">16</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">8</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">1</span>, activation<span class="op">=</span><span class="st">'sigmoid'</span>)</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>    model.<span class="bu">compile</span>(</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>        optimizer<span class="op">=</span><span class="st">'adam'</span>,</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>        loss<span class="op">=</span><span class="st">'binary_crossentropy'</span>,</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>        metrics<span class="op">=</span>[<span class="st">'accuracy'</span>]</span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> model</span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建并训练复杂神经网络</span></span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>complex_nn <span class="op">=</span> create_complex_nn()</span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>complex_nn.summary()  <span class="co"># 显示模型结构</span></span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 训练模型</span></span>
+<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a>complex_history <span class="op">=</span> complex_nn.fit(</span>
+<span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a>    X_train_nn, y_train_nn,</span>
+<span id="cb51-25"><a href="#cb51-25" aria-hidden="true" tabindex="-1"></a>    epochs<span class="op">=</span><span class="dv">100</span>,  <span class="co"># 增加训练轮次以观察过拟合</span></span>
+<span id="cb51-26"><a href="#cb51-26" aria-hidden="true" tabindex="-1"></a>    batch_size<span class="op">=</span><span class="dv">16</span>,  <span class="co"># 减小批量大小</span></span>
+<span id="cb51-27"><a href="#cb51-27" aria-hidden="true" tabindex="-1"></a>    validation_data<span class="op">=</span>(X_val, y_val),</span>
+<span id="cb51-28"><a href="#cb51-28" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb51-29"><a href="#cb51-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb51-30"><a href="#cb51-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-31"><a href="#cb51-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 评估性能</span></span>
+<span id="cb51-32"><a href="#cb51-32" aria-hidden="true" tabindex="-1"></a>complex_train_loss, complex_train_acc <span class="op">=</span> complex_nn.evaluate(X_train_nn, y_train_nn, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb51-33"><a href="#cb51-33" aria-hidden="true" tabindex="-1"></a>complex_val_loss, complex_val_acc <span class="op">=</span> complex_nn.evaluate(X_val, y_val, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb51-34"><a href="#cb51-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-35"><a href="#cb51-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"复杂网络 - 训练集准确率: </span><span class="sc">{</span>complex_train_acc<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb51-36"><a href="#cb51-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"复杂网络 - 验证集准确率: </span><span class="sc">{</span>complex_val_acc<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "sequential_2"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense_5 (Dense)             (None, 64)                768       
+                                                                 
+ dense_6 (Dense)             (None, 32)                2080      
+                                                                 
+ dense_7 (Dense)             (None, 16)                528       
+                                                                 
+ dense_8 (Dense)             (None, 8)                 136       
+                                                                 
+ dense_9 (Dense)             (None, 1)                 9         
+                                                                 
+=================================================================
+Total params: 3521 (13.75 KB)
+Trainable params: 3521 (13.75 KB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+复杂网络 - 训练集准确率: 0.8947
+复杂网络 - 验证集准确率: 0.8045</code></pre>
+</div>
+</div>
+<p>绘制复杂网络的学习曲线：</p>
+<div id="cell-nn-complex-curves" class="cell" data-fig-height="5" data-fig-width="12" data-execution_count="30">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制复杂网络的学习曲线</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>plt.plot(complex_history.history[<span class="st">'accuracy'</span>])</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>plt.plot(complex_history.history[<span class="st">'val_accuracy'</span>])</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'复杂网络准确率'</span>)</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'准确率'</span>)</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'轮次'</span>)</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">'训练集'</span>, <span class="st">'验证集'</span>], loc<span class="op">=</span><span class="st">'lower right'</span>)</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>plt.plot(complex_history.history[<span class="st">'loss'</span>])</span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>plt.plot(complex_history.history[<span class="st">'val_loss'</span>])</span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'复杂网络损失'</span>)</span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'损失'</span>)</span>
+<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'轮次'</span>)</span>
+<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">'训练集'</span>, <span class="st">'验证集'</span>], loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
+<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-20"><a href="#cb53-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab03_titanic_files/figure-html/nn-complex-curves-output-1.png" id="nn-complex-curves" width="1142" height="473" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="正则化网络---解决过拟合" class="level3" data-number="11.7.4">
+<h3 data-number="11.7.4" class="anchored" data-anchor-id="正则化网络---解决过拟合"><span class="header-section-number">11.7.4</span> 正则化网络 - 解决过拟合</h3>
+<p>现在，我们将为复杂网络添加正则化技术，包括 Dropout 和 BatchNormalization，以解决过拟合问题：</p>
+<div id="nn-regularized" class="cell" data-execution_count="31">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义带有正则化的复杂网络</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_regularized_nn():</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> keras.Sequential([</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">64</span>, activation<span class="op">=</span><span class="st">'relu'</span>, input_shape<span class="op">=</span>(X_train.shape[<span class="dv">1</span>],)),</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>        layers.BatchNormalization(),</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>        layers.Dropout(<span class="fl">0.3</span>),</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">32</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>        layers.BatchNormalization(),</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>        layers.Dropout(<span class="fl">0.3</span>),</span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">16</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>        layers.BatchNormalization(),</span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>        layers.Dropout(<span class="fl">0.2</span>),</span>
+<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">8</span>, activation<span class="op">=</span><span class="st">'relu'</span>),</span>
+<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a>        layers.BatchNormalization(),</span>
+<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a>        layers.Dropout(<span class="fl">0.2</span>),</span>
+<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a>        layers.Dense(<span class="dv">1</span>, activation<span class="op">=</span><span class="st">'sigmoid'</span>)</span>
+<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb54-18"><a href="#cb54-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb54-19"><a href="#cb54-19" aria-hidden="true" tabindex="-1"></a>    model.<span class="bu">compile</span>(</span>
+<span id="cb54-20"><a href="#cb54-20" aria-hidden="true" tabindex="-1"></a>        optimizer<span class="op">=</span><span class="st">'adam'</span>,</span>
+<span id="cb54-21"><a href="#cb54-21" aria-hidden="true" tabindex="-1"></a>        loss<span class="op">=</span><span class="st">'binary_crossentropy'</span>,</span>
+<span id="cb54-22"><a href="#cb54-22" aria-hidden="true" tabindex="-1"></a>        metrics<span class="op">=</span>[<span class="st">'accuracy'</span>]</span>
+<span id="cb54-23"><a href="#cb54-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb54-24"><a href="#cb54-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> model</span>
+<span id="cb54-25"><a href="#cb54-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-26"><a href="#cb54-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建并训练带有正则化的神经网络</span></span>
+<span id="cb54-27"><a href="#cb54-27" aria-hidden="true" tabindex="-1"></a>regularized_nn <span class="op">=</span> create_regularized_nn()</span>
+<span id="cb54-28"><a href="#cb54-28" aria-hidden="true" tabindex="-1"></a>regularized_nn.summary()  <span class="co"># 显示模型结构</span></span>
+<span id="cb54-29"><a href="#cb54-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-30"><a href="#cb54-30" aria-hidden="true" tabindex="-1"></a><span class="co"># 添加早停策略</span></span>
+<span id="cb54-31"><a href="#cb54-31" aria-hidden="true" tabindex="-1"></a>early_stopping <span class="op">=</span> tf.keras.callbacks.EarlyStopping(</span>
+<span id="cb54-32"><a href="#cb54-32" aria-hidden="true" tabindex="-1"></a>    monitor<span class="op">=</span><span class="st">'val_loss'</span>,</span>
+<span id="cb54-33"><a href="#cb54-33" aria-hidden="true" tabindex="-1"></a>    patience<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb54-34"><a href="#cb54-34" aria-hidden="true" tabindex="-1"></a>    restore_best_weights<span class="op">=</span><span class="va">True</span></span>
+<span id="cb54-35"><a href="#cb54-35" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb54-36"><a href="#cb54-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-37"><a href="#cb54-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 训练模型</span></span>
+<span id="cb54-38"><a href="#cb54-38" aria-hidden="true" tabindex="-1"></a>regularized_history <span class="op">=</span> regularized_nn.fit(</span>
+<span id="cb54-39"><a href="#cb54-39" aria-hidden="true" tabindex="-1"></a>    X_train_nn, y_train_nn,</span>
+<span id="cb54-40"><a href="#cb54-40" aria-hidden="true" tabindex="-1"></a>    epochs<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb54-41"><a href="#cb54-41" aria-hidden="true" tabindex="-1"></a>    batch_size<span class="op">=</span><span class="dv">16</span>,</span>
+<span id="cb54-42"><a href="#cb54-42" aria-hidden="true" tabindex="-1"></a>    validation_data<span class="op">=</span>(X_val, y_val),</span>
+<span id="cb54-43"><a href="#cb54-43" aria-hidden="true" tabindex="-1"></a>    callbacks<span class="op">=</span>[early_stopping],</span>
+<span id="cb54-44"><a href="#cb54-44" aria-hidden="true" tabindex="-1"></a>    verbose<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb54-45"><a href="#cb54-45" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb54-46"><a href="#cb54-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-47"><a href="#cb54-47" aria-hidden="true" tabindex="-1"></a><span class="co"># 评估性能</span></span>
+<span id="cb54-48"><a href="#cb54-48" aria-hidden="true" tabindex="-1"></a>regularized_train_loss, regularized_train_acc <span class="op">=</span> regularized_nn.evaluate(X_train_nn, y_train_nn, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb54-49"><a href="#cb54-49" aria-hidden="true" tabindex="-1"></a>regularized_val_loss, regularized_val_acc <span class="op">=</span> regularized_nn.evaluate(X_val, y_val, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb54-50"><a href="#cb54-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-51"><a href="#cb54-51" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"正则化网络 - 训练集准确率: </span><span class="sc">{</span>regularized_train_acc<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb54-52"><a href="#cb54-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"正则化网络 - 验证集准确率: </span><span class="sc">{</span>regularized_val_acc<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model: "sequential_3"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense_10 (Dense)            (None, 64)                768       
+                                                                 
+ batch_normalization (Batch  (None, 64)                256       
+ Normalization)                                                  
+                                                                 
+ dropout (Dropout)           (None, 64)                0         
+                                                                 
+ dense_11 (Dense)            (None, 32)                2080      
+                                                                 
+ batch_normalization_1 (Bat  (None, 32)                128       
+ chNormalization)                                                
+                                                                 
+ dropout_1 (Dropout)         (None, 32)                0         
+                                                                 
+ dense_12 (Dense)            (None, 16)                528       
+                                                                 
+ batch_normalization_2 (Bat  (None, 16)                64        
+ chNormalization)                                                
+                                                                 
+ dropout_2 (Dropout)         (None, 16)                0         
+                                                                 
+ dense_13 (Dense)            (None, 8)                 136       
+                                                                 
+ batch_normalization_3 (Bat  (None, 8)                 32        
+ chNormalization)                                                
+                                                                 
+ dropout_3 (Dropout)         (None, 8)                 0         
+                                                                 
+ dense_14 (Dense)            (None, 1)                 9         
+                                                                 
+=================================================================
+Total params: 4001 (15.63 KB)
+Trainable params: 3761 (14.69 KB)
+Non-trainable params: 240 (960.00 Byte)
+_________________________________________________________________
+正则化网络 - 训练集准确率: 0.8511
+正则化网络 - 验证集准确率: 0.8212</code></pre>
+</div>
+</div>
+<p>绘制正则化网络的学习曲线：</p>
+<div id="cell-nn-regularized-curves" class="cell" data-fig-height="5" data-fig-width="12" data-execution_count="32">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制正则化网络的学习曲线</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>))</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>plt.plot(regularized_history.history[<span class="st">'accuracy'</span>])</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>plt.plot(regularized_history.history[<span class="st">'val_accuracy'</span>])</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'正则化网络准确率'</span>)</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'准确率'</span>)</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'轮次'</span>)</span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">'训练集'</span>, <span class="st">'验证集'</span>], loc<span class="op">=</span><span class="st">'lower right'</span>)</span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>plt.plot(regularized_history.history[<span class="st">'loss'</span>])</span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>plt.plot(regularized_history.history[<span class="st">'val_loss'</span>])</span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'正则化网络损失'</span>)</span>
+<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'损失'</span>)</span>
+<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'轮次'</span>)</span>
+<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a>plt.legend([<span class="st">'训练集'</span>, <span class="st">'验证集'</span>], loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
+<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab03_titanic_files/figure-html/nn-regularized-curves-output-1.png" id="nn-regularized-curves" width="1142" height="472" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="模型比较" class="level3" data-number="11.7.5">
+<h3 data-number="11.7.5" class="anchored" data-anchor-id="模型比较"><span class="header-section-number">11.7.5</span> 模型比较</h3>
+<p>我们来比较不同复杂度和正则化策略下神经网络的性能：</p>
+<div id="cell-nn-comparison" class="cell" data-fig-height="6" data-fig-width="12" data-execution_count="33">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 比较不同网络的性能</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>nn_models <span class="op">=</span> [<span class="st">'简单网络'</span>, <span class="st">'中等网络'</span>, <span class="st">'复杂网络'</span>, <span class="st">'正则化网络'</span>]</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>train_accuracy <span class="op">=</span> [simple_train_acc, medium_train_acc, complex_train_acc, regularized_train_acc]</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>val_accuracy <span class="op">=</span> [simple_val_acc, medium_val_acc, complex_val_acc, regularized_val_acc]</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="bu">len</span>(nn_models))</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="fl">0.35</span></span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>plt.bar(x <span class="op">-</span> width<span class="op">/</span><span class="dv">2</span>, train_accuracy, width, label<span class="op">=</span><span class="st">'训练集准确率'</span>)</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>plt.bar(x <span class="op">+</span> width<span class="op">/</span><span class="dv">2</span>, val_accuracy, width, label<span class="op">=</span><span class="st">'验证集准确率'</span>)</span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'准确率'</span>)</span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'不同神经网络模型的性能比较'</span>)</span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a>plt.xticks(x, nn_models)</span>
+<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 显示差距</span></span>
+<span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(nn_models)):</span>
+<span id="cb57-20"><a href="#cb57-20" aria-hidden="true" tabindex="-1"></a>    gap <span class="op">=</span> train_accuracy[i] <span class="op">-</span> val_accuracy[i]</span>
+<span id="cb57-21"><a href="#cb57-21" aria-hidden="true" tabindex="-1"></a>    plt.text(i, <span class="fl">0.5</span>, <span class="ss">f'差距: </span><span class="sc">{</span>gap<span class="sc">:.4f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>)</span>
+<span id="cb57-22"><a href="#cb57-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-23"><a href="#cb57-23" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="lab03_titanic_files/figure-html/nn-comparison-output-1.png" id="nn-comparison" width="1142" height="567" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="最终神经网络模型" class="level3" data-number="11.7.6">
+<h3 data-number="11.7.6" class="anchored" data-anchor-id="最终神经网络模型"><span class="header-section-number">11.7.6</span> 最终神经网络模型</h3>
+<p>基于上述实验，我们选择性能最好的正则化网络作为最终的神经网络模型：</p>
+<div id="final-nn-model" class="cell" data-execution_count="34">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用正则化网络作为最终模型</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>nn_model <span class="op">=</span> regularized_nn</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 在完整训练集上重新训练</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>X_full_scaled <span class="op">=</span> scaler.transform(X_train)</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>nn_model.fit(X_full_scaled, y_train, epochs<span class="op">=</span><span class="dv">50</span>, batch_size<span class="op">=</span><span class="dv">16</span>, verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成最终预测</span></span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>nn_pred <span class="op">=</span> (nn_model.predict(X_full_scaled) <span class="op">&gt;</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>).flatten()</span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>nn_accuracy <span class="op">=</span> accuracy_score(y_train, nn_pred)</span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"最终神经网络在训练集上的准确率: </span><span class="sc">{</span>nn_accuracy<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 将正则化网络用于测试集预测</span></span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>test_pred_nn <span class="op">=</span> (nn_model.predict(test_data_scaled) <span class="op">&gt;</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>).flatten()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> 1/28 [&gt;.............................] - ETA: 1s28/28 [==============================] - 0s 304us/step
+最终神经网络在训练集上的准确率: 0.8496
+ 1/14 [=&gt;............................] - ETA: 0s14/14 [==============================] - 0s 306us/step</code></pre>
+</div>
+</div>
+</section>
+<section id="神经网络模型小结" class="level3" data-number="11.7.7">
+<h3 data-number="11.7.7" class="anchored" data-anchor-id="神经网络模型小结"><span class="header-section-number">11.7.7</span> 神经网络模型小结</h3>
+<p>通过这一系列实验，我们观察到：</p>
+<ol type="1">
+<li><strong>简单网络</strong>：容易欠拟合，训练集和验证集性能都不够理想</li>
+<li><strong>中等网络</strong>：提高了模型复杂度，性能有所改善</li>
+<li><strong>复杂网络</strong>：进一步增加复杂度，在训练集表现良好但可能在验证集上表现下降，出现过拟合</li>
+<li><strong>正则化网络</strong>：通过添加Dropout和BatchNormalization等正则化技术，在保持模型复杂度的同时有效减轻了过拟合，使训练集和验证集的性能差距减小</li>
+</ol>
+<p>这个过程展示了神经网络建模中的一个关键问题：如何在模型复杂度和泛化能力之间取得平衡。正则化技术是解决这一问题的有效工具。</p>
+</section>
+</section>
 </section>
 <section id="模型评估与比较" class="level1" data-number="12">
 <h1 data-number="12"><span class="header-section-number">12</span> 模型评估与比较</h1>
 <p>在这一部分，我们将对所有训练好的模型进行评估和比较，选出性能最好的模型。</p>
-<div id="cell-model-comparison" class="cell" data-execution_count="26">
+<div id="cell-model-comparison" class="cell" data-execution_count="35">
 <details class="code-fold">
 <summary>代码</summary>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 在整个训练集上再次训练各模型</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>logreg_model <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>logreg_model.fit(X_train, y_train)</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>dt_model <span class="op">=</span> DecisionTreeClassifier(<span class="op">**</span>dt_grid.best_params_, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>dt_model.fit(X_train, y_train)</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>rf_model <span class="op">=</span> RandomForestClassifier(<span class="op">**</span>rf_grid.best_params_, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>rf_model.fit(X_train, y_train)</span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>xgb_model <span class="op">=</span> xgb.XGBClassifier(<span class="op">**</span>xgb_grid.best_params_, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>xgb_model.fit(X_train, y_train)</span>
-<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 在训练集上的预测</span></span>
-<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>y_pred_logreg <span class="op">=</span> logreg_model.predict(X_train)</span>
-<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>y_pred_dt <span class="op">=</span> dt_model.predict(X_train)</span>
-<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>y_pred_rf <span class="op">=</span> rf_model.predict(X_train)</span>
-<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>y_pred_xgb <span class="op">=</span> xgb_model.predict(X_train)</span>
-<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>y_pred_nn <span class="op">=</span> (nn_model.predict(X_train_scaled) <span class="op">&gt;</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>).flatten()</span>
-<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算各种评估指标</span></span>
-<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> [<span class="st">'逻辑回归'</span>, <span class="st">'决策树'</span>, <span class="st">'随机森林'</span>, <span class="st">'XGBoost'</span>, <span class="st">'神经网络'</span>]</span>
-<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> [y_pred_logreg, y_pred_dt, y_pred_rf, y_pred_xgb, y_pred_nn]</span>
-<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>metrics_df <span class="op">=</span> pd.DataFrame(index<span class="op">=</span>models, columns<span class="op">=</span>[<span class="st">'准确率'</span>, <span class="st">'精确率'</span>, <span class="st">'召回率'</span>, <span class="st">'F1分数'</span>])</span>
-<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, model_name <span class="kw">in</span> <span class="bu">enumerate</span>(models):</span>
-<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a>    acc <span class="op">=</span> accuracy_score(y_train, predictions[i])</span>
-<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a>    prec <span class="op">=</span> precision_score(y_train, predictions[i])</span>
-<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a>    rec <span class="op">=</span> recall_score(y_train, predictions[i])</span>
-<span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a>    f1 <span class="op">=</span> f1_score(y_train, predictions[i])</span>
-<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a>    metrics_df.loc[model_name] <span class="op">=</span> [acc, prec, rec, f1]</span>
-<span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-35"><a href="#cb46-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"各模型在训练集上的性能比较:"</span>)</span>
-<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a>metrics_df</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 在整个训练集上再次训练各模型</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>logreg_model <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>logreg_model.fit(X_train, y_train)</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>dt_model <span class="op">=</span> DecisionTreeClassifier(<span class="op">**</span>dt_grid.best_params_, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>dt_model.fit(X_train, y_train)</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>rf_model <span class="op">=</span> RandomForestClassifier(<span class="op">**</span>rf_grid.best_params_, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>rf_model.fit(X_train, y_train)</span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>xgb_model <span class="op">=</span> xgb.XGBClassifier(<span class="op">**</span>xgb_grid.best_params_, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>xgb_model.fit(X_train, y_train)</span>
+<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 在训练集上的预测</span></span>
+<span id="cb60-15"><a href="#cb60-15" aria-hidden="true" tabindex="-1"></a>y_pred_logreg <span class="op">=</span> logreg_model.predict(X_train)</span>
+<span id="cb60-16"><a href="#cb60-16" aria-hidden="true" tabindex="-1"></a>y_pred_dt <span class="op">=</span> dt_model.predict(X_train)</span>
+<span id="cb60-17"><a href="#cb60-17" aria-hidden="true" tabindex="-1"></a>y_pred_rf <span class="op">=</span> rf_model.predict(X_train)</span>
+<span id="cb60-18"><a href="#cb60-18" aria-hidden="true" tabindex="-1"></a>y_pred_xgb <span class="op">=</span> xgb_model.predict(X_train)</span>
+<span id="cb60-19"><a href="#cb60-19" aria-hidden="true" tabindex="-1"></a>y_pred_nn <span class="op">=</span> (nn_model.predict(X_train_scaled) <span class="op">&gt;</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>).flatten()</span>
+<span id="cb60-20"><a href="#cb60-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-21"><a href="#cb60-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算各种评估指标</span></span>
+<span id="cb60-22"><a href="#cb60-22" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> [<span class="st">'逻辑回归'</span>, <span class="st">'决策树'</span>, <span class="st">'随机森林'</span>, <span class="st">'XGBoost'</span>, <span class="st">'神经网络'</span>]</span>
+<span id="cb60-23"><a href="#cb60-23" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> [y_pred_logreg, y_pred_dt, y_pred_rf, y_pred_xgb, y_pred_nn]</span>
+<span id="cb60-24"><a href="#cb60-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-25"><a href="#cb60-25" aria-hidden="true" tabindex="-1"></a>metrics_df <span class="op">=</span> pd.DataFrame(index<span class="op">=</span>models, columns<span class="op">=</span>[<span class="st">'准确率'</span>, <span class="st">'精确率'</span>, <span class="st">'召回率'</span>, <span class="st">'F1分数'</span>])</span>
+<span id="cb60-26"><a href="#cb60-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-27"><a href="#cb60-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, model_name <span class="kw">in</span> <span class="bu">enumerate</span>(models):</span>
+<span id="cb60-28"><a href="#cb60-28" aria-hidden="true" tabindex="-1"></a>    acc <span class="op">=</span> accuracy_score(y_train, predictions[i])</span>
+<span id="cb60-29"><a href="#cb60-29" aria-hidden="true" tabindex="-1"></a>    prec <span class="op">=</span> precision_score(y_train, predictions[i])</span>
+<span id="cb60-30"><a href="#cb60-30" aria-hidden="true" tabindex="-1"></a>    rec <span class="op">=</span> recall_score(y_train, predictions[i])</span>
+<span id="cb60-31"><a href="#cb60-31" aria-hidden="true" tabindex="-1"></a>    f1 <span class="op">=</span> f1_score(y_train, predictions[i])</span>
+<span id="cb60-32"><a href="#cb60-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb60-33"><a href="#cb60-33" aria-hidden="true" tabindex="-1"></a>    metrics_df.loc[model_name] <span class="op">=</span> [acc, prec, rec, f1]</span>
+<span id="cb60-34"><a href="#cb60-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-35"><a href="#cb60-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"各模型在训练集上的性能比较:"</span>)</span>
+<span id="cb60-36"><a href="#cb60-36" aria-hidden="true" tabindex="-1"></a>metrics_df</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code> 1/28 [&gt;.............................] - ETA: 1s28/28 [==============================] - 0s 653us/step
+<pre><code> 1/28 [&gt;.............................] - ETA: 0s28/28 [==============================] - 0s 800us/step
 各模型在训练集上的性能比较:</code></pre>
 </div>
-<div id="model-comparison" class="cell-output cell-output-display" data-execution_count="26">
+<div id="model-comparison" class="cell-output cell-output-display" data-execution_count="35">
 <div>
 
 
@@ -1732,31 +2317,31 @@ XGBoost特征重要性:</code></pre>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">决策树</td>
-<td>0.830527</td>
-<td>0.776812</td>
-<td>0.783626</td>
-<td>0.780204</td>
+<td>0.839506</td>
+<td>0.80805</td>
+<td>0.763158</td>
+<td>0.784962</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">随机森林</td>
-<td>0.921437</td>
-<td>0.93038</td>
-<td>0.859649</td>
-<td>0.893617</td>
+<td>0.857464</td>
+<td>0.854785</td>
+<td>0.75731</td>
+<td>0.803101</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">XGBoost</td>
-<td>0.919192</td>
-<td>0.927215</td>
-<td>0.856725</td>
-<td>0.890578</td>
+<td>0.920314</td>
+<td>0.924765</td>
+<td>0.862573</td>
+<td>0.892587</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">神经网络</td>
-<td>0.842873</td>
-<td>0.827922</td>
-<td>0.745614</td>
-<td>0.784615</td>
+<td>0.849607</td>
+<td>0.88806</td>
+<td>0.695906</td>
+<td>0.780328</td>
 </tr>
 </tbody>
 </table>
@@ -1765,17 +2350,17 @@ XGBoost特征重要性:</code></pre>
 </div>
 </div>
 <p>可视化模型性能比较：</p>
-<div id="model-comparison-plot" class="cell" data-fig-height="6" data-fig-width="12" data-execution_count="27">
+<div id="model-comparison-plot" class="cell" data-fig-height="6" data-fig-width="12" data-execution_count="36">
 <details class="code-fold">
 <summary>代码</summary>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制性能比较图</span></span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>metrics_df.plot(kind<span class="op">=</span><span class="st">'bar'</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'各模型性能比较'</span>)</span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'得分'</span>)</span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'模型'</span>)</span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">'lower right'</span>)</span>
-<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制性能比较图</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>metrics_df.plot(kind<span class="op">=</span><span class="st">'bar'</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'各模型性能比较'</span>)</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'得分'</span>)</span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'模型'</span>)</span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">'lower right'</span>)</span>
+<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div id="model-comparison-plot-1" class="cell-output cell-output-display">
 <pre><code>&lt;Figure size 1152x576 with 0 Axes&gt;</code></pre>
@@ -1792,68 +2377,68 @@ XGBoost特征重要性:</code></pre>
 <section id="测试集预测" class="level1" data-number="13">
 <h1 data-number="13"><span class="header-section-number">13</span> 测试集预测</h1>
 <p>最后，我们使用训练好的模型对测试集进行预测：</p>
-<div id="test-prediction" class="cell" data-execution_count="28">
+<div id="test-prediction" class="cell" data-execution_count="37">
 <details class="code-fold">
 <summary>代码</summary>
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 为所有模型生成预测</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>test_pred_logreg <span class="op">=</span> logreg_model.predict(test_data)</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>test_pred_dt <span class="op">=</span> dt_model.predict(test_data)</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>test_pred_rf <span class="op">=</span> rf_model.predict(test_data)</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>test_pred_xgb <span class="op">=</span> xgb_model.predict(test_data)</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>test_pred_nn <span class="op">=</span> (nn_model.predict(test_data_scaled) <span class="op">&gt;</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>).flatten()</span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用随机森林的预测作为最终结果（可以根据交叉验证结果选择最佳模型）</span></span>
-<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>final_predictions <span class="op">=</span> test_pred_rf</span>
-<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建提交文件</span></span>
-<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>submission <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'PassengerId'</span>: pd.read_csv(<span class="st">"data/test.csv"</span>)[<span class="st">'PassengerId'</span>],</span>
-<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Survived'</span>: final_predictions</span>
-<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>submission.to_csv(<span class="st">'titanic_submission.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"提交文件已保存为 'titanic_submission.csv'"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 为所有模型生成预测</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>test_pred_logreg <span class="op">=</span> logreg_model.predict(test_data)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>test_pred_dt <span class="op">=</span> dt_model.predict(test_data)</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>test_pred_rf <span class="op">=</span> rf_model.predict(test_data)</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>test_pred_xgb <span class="op">=</span> xgb_model.predict(test_data)</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>test_pred_nn <span class="op">=</span> (nn_model.predict(test_data_scaled) <span class="op">&gt;</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>).flatten()</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用随机森林的预测作为最终结果（可以根据交叉验证结果选择最佳模型）</span></span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>final_predictions <span class="op">=</span> test_pred_rf</span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建提交文件</span></span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>submission <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'PassengerId'</span>: pd.read_csv(<span class="st">"data/test.csv"</span>)[<span class="st">'PassengerId'</span>],</span>
+<span id="cb64-14"><a href="#cb64-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Survived'</span>: final_predictions</span>
+<span id="cb64-15"><a href="#cb64-15" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb64-16"><a href="#cb64-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-17"><a href="#cb64-17" aria-hidden="true" tabindex="-1"></a>submission.to_csv(<span class="st">'titanic_submission.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb64-18"><a href="#cb64-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"提交文件已保存为 'titanic_submission.csv'"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code> 1/14 [=&gt;............................] - ETA: 0s14/14 [==============================] - 0s 463us/step
+<pre><code> 1/14 [=&gt;............................] - ETA: 0s14/14 [==============================] - 0s 400us/step
 提交文件已保存为 'titanic_submission.csv'</code></pre>
 </div>
 </div>
 <p>各模型预测结果的比较：</p>
-<div id="cell-prediction-comparison" class="cell" data-execution_count="29">
+<div id="cell-prediction-comparison" class="cell" data-execution_count="38">
 <details class="code-fold">
 <summary>代码</summary>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 各模型预测结果的比较</span></span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>test_predictions <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'PassengerId'</span>: pd.read_csv(<span class="st">"data/test.csv"</span>)[<span class="st">'PassengerId'</span>],</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'逻辑回归'</span>: test_pred_logreg,</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'决策树'</span>: test_pred_dt,</span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'随机森林'</span>: test_pred_rf,</span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'XGBoost'</span>: test_pred_xgb,</span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'神经网络'</span>: test_pred_nn</span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 检查不同模型预测的一致性</span></span>
-<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>agreement <span class="op">=</span> test_predictions.iloc[:, <span class="dv">1</span>:].<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"模型预测一致性统计:"</span>)</span>
-<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(agreement.value_counts())</span>
-<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">各模型预测示例 (前10行):"</span>)</span>
-<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>test_predictions.head(<span class="dv">10</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 各模型预测结果的比较</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>test_predictions <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'PassengerId'</span>: pd.read_csv(<span class="st">"data/test.csv"</span>)[<span class="st">'PassengerId'</span>],</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">'逻辑回归'</span>: test_pred_logreg,</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'决策树'</span>: test_pred_dt,</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'随机森林'</span>: test_pred_rf,</span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'XGBoost'</span>: test_pred_xgb,</span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'神经网络'</span>: test_pred_nn</span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 检查不同模型预测的一致性</span></span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>agreement <span class="op">=</span> test_predictions.iloc[:, <span class="dv">1</span>:].<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"模型预测一致性统计:"</span>)</span>
+<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(agreement.value_counts())</span>
+<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-16"><a href="#cb66-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">各模型预测示例 (前10行):"</span>)</span>
+<span id="cb66-17"><a href="#cb66-17" aria-hidden="true" tabindex="-1"></a>test_predictions.head(<span class="dv">10</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>模型预测一致性统计:
-0    227
-5    122
-3     27
-4     19
-1     12
-2     11
+0    229
+5    109
+4     28
+3     22
+2     17
+1     13
 Name: count, dtype: int64
 
 各模型预测示例 (前10行):</code></pre>
 </div>
-<div id="prediction-comparison" class="cell-output cell-output-display" data-execution_count="29">
+<div id="prediction-comparison" class="cell-output cell-output-display" data-execution_count="38">
 <div>
 
 
@@ -1886,7 +2471,7 @@ Name: count, dtype: int64
 <td>1</td>
 <td>0</td>
 <td>0</td>
-<td>1</td>
+<td>0</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
@@ -1913,7 +2498,7 @@ Name: count, dtype: int64
 <td>1</td>
 <td>1</td>
 <td>1</td>
-<td>1</td>
+<td>0</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">5</td>
