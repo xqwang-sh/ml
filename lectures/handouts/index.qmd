@@ -14,11 +14,15 @@ title: "前言"
 2.  [监督学习理论(上)](03_supervised.qmd)
 3.  [监督学习理论(下)](04_supervised.qmd)
 4.  [模型评估与优化](05_model_assess.qmd)
+5.  [信用评分](06_credit.qmd)
+6.  [无监督学习](07_unsupervised.qmd)
+7.  [聚类](07_cluster.qmd)
 
 **课程内容（实践）:**
 
 1. [金融数据获取与数据分析基础](lab02_data.qmd)
 2. [泰坦尼克号生存预测实践](lab03_titanic.qmd)
+3. [聚类算法实践](lab07_cluster.qmd)
 
 **课程项目:**
 

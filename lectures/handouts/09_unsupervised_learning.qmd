@@ -1,0 +1,1074 @@
+---
+title: "第9章 – 无监督学习"
+format: 
+  html:
+    code-fold: true
+jupyter: python3
+---
+
+**第9章 – 无监督学习**
+
+_本笔记本包含第9章中的所有示例代码和练习解答。_
+
+# 环境设置
+
+本项目需要 Python 3.7 或更高版本:
+
+```{python}
+import sys
+
+assert sys.version_info >= (3, 7)
+```
+
+还需要 Scikit-Learn ≥ 1.0.1:
+
+```{python}
+from packaging import version
+import sklearn
+
+assert version.parse(sklearn.__version__) >= version.parse("1.0.1")
+```
+
+与前几章一样，让我们定义默认字体大小以使图形更美观:
+
+```{python}
+import matplotlib.pyplot as plt
+
+plt.rc('font', size=14)
+plt.rc('axes', labelsize=14, titlesize=14)
+plt.rc('legend', fontsize=14)
+plt.rc('xtick', labelsize=10)
+plt.rc('ytick', labelsize=10)
+```
+
+让我们创建 `images/unsupervised_learning` 文件夹（如果尚不存在），并定义贯穿本笔记本使用的 `save_fig()` 函数，用于为书籍保存高分辨率图像：
+
+```{python}
+from pathlib import Path
+
+IMAGES_PATH = Path() / "images" / "unsupervised_learning"
+IMAGES_PATH.mkdir(parents=True, exist_ok=True)
+
+def save_fig(fig_id, tight_layout=True, fig_extension="png", resolution=300):
+    path = IMAGES_PATH / f"{fig_id}.{fig_extension}"
+    if tight_layout:
+        plt.tight_layout()
+    plt.savefig(path, format=fig_extension, dpi=resolution)
+```
+
+首先，让我们导入一些常用模块，确保 MatplotLib 内联显示图形，并准备一个保存图形的函数。
+
+# 聚类
+
+**简介 – 分类 _vs_ 聚类**
+
+```{python}
+# 额外代码 – 此单元生成并保存图 9–1
+
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+
+data = load_iris()
+X = data.data
+y = data.target
+data.target_names
+
+plt.figure(figsize=(9, 3.5))
+
+plt.subplot(121)
+plt.plot(X[y==0, 2], X[y==0, 3], "yo", label="Iris setosa")
+plt.plot(X[y==1, 2], X[y==1, 3], "bs", label="Iris versicolor")
+plt.plot(X[y==2, 2], X[y==2, 3], "g^", label="Iris virginica")
+plt.xlabel("Petal length")
+plt.ylabel("Petal width")
+plt.grid()
+plt.legend()
+
+plt.subplot(122)
+plt.scatter(X[:, 2], X[:, 3], c="k", marker=".")
+plt.xlabel("Petal length")
+plt.tick_params(labelleft=False)
+plt.gca().set_axisbelow(True)
+plt.grid()
+
+save_fig("classification_vs_clustering_plot")
+plt.show()
+```
+
+**注意**：下一个单元显示了高斯混合模型（本章后面将解释）如何使用所有 4 个特征：花瓣长度和宽度，以及萼片长度和宽度，实际上可以很好地分离这些簇。此代码将每个簇映射到一个类别。代码不是硬编码映射，而是使用 `scipy.stats.mode()` 函数为每个簇选择最常见的类别：
+
+```{python}
+# 额外代码
+
+import numpy as np
+from scipy import stats
+from sklearn.mixture import GaussianMixture
+
+y_pred = GaussianMixture(n_components=3, random_state=42).fit(X).predict(X)
+
+mapping = {}
+for class_id in np.unique(y):
+    mode, _ = stats.mode(y_pred[y==class_id])
+    mapping[mode] = class_id
+
+y_pred = np.array([mapping[cluster_id] for cluster_id in y_pred])
+
+plt.plot(X[y_pred==0, 2], X[y_pred==0, 3], "yo", label="Cluster 1")
+plt.plot(X[y_pred==1, 2], X[y_pred==1, 3], "bs", label="Cluster 2")
+plt.plot(X[y_pred==2, 2], X[y_pred==2, 3], "g^", label="Cluster 3")
+plt.xlabel("Petal length")
+plt.ylabel("Petal width")
+plt.legend(loc="upper left")
+plt.grid()
+plt.show()
+```
+
+我们分配给正确簇的鸢尾花植物的比例是多少？
+
+```{python}
+(y_pred==y).sum() / len(y_pred)
+```
+
+## K均值聚类
+
+**拟合和预测**
+
+让我们在一个斑点数据集上训练 K 均值聚类器。它将尝试找到每个斑点的中心并将每个实例分配给最近的斑点：
+
+```{python}
+from sklearn.cluster import KMeans
+from sklearn.datasets import make_blobs
+
+# 额外代码 – make_blobs() 的确切参数不重要
+blob_centers = np.array([[ 0.2,  2.3], [-1.5 ,  2.3], [-2.8,  1.8],
+                         [-2.8,  2.8], [-2.8,  1.3]])
+blob_std = np.array([0.4, 0.3, 0.1, 0.1, 0.1])
+X, y = make_blobs(n_samples=2000, centers=blob_centers, cluster_std=blob_std,
+                  random_state=7)
+
+k = 5
+kmeans = KMeans(n_clusters=k, n_init=10, random_state=42)
+y_pred = kmeans.fit_predict(X)
+```
+
+注意：在本笔记本中，当创建 `KMeans` 估计器时未设置 `n_init` 时，我显式地将其设置为 `n_init=10`，以避免关于此超参数的默认值将在 Scikit-Learn 1.4 中从 10 更改为 `"auto"` 的警告。
+
+现在让我们绘制它们：
+
+```{python}
+# 额外代码 – 此单元生成并保存图 9–2
+
+def plot_clusters(X, y=None):
+    plt.scatter(X[:, 0], X[:, 1], c=y, s=1)
+    plt.xlabel("$x_1$")
+    plt.ylabel("$x_2$", rotation=0)
+
+plt.figure(figsize=(8, 4))
+plot_clusters(X)
+plt.gca().set_axisbelow(True)
+plt.grid()
+save_fig("blobs_plot")
+plt.show()
+``` 
+
+每个实例被分配到 5 个簇中的一个：
+
+```{python}
+y_pred
+```
+
+```{python}
+y_pred is kmeans.labels_
+```
+
+并且估计了以下 5 个_质心_（即簇中心）：
+
+```{python}
+kmeans.cluster_centers_
+```
+
+请注意，`KMeans` 实例保留了其训练实例的标签。在这种情况下，实例的_标签_是该实例被分配到的簇的索引（它们不是目标，而是预测结果）：
+
+```{python}
+kmeans.labels_
+```
+
+当然，我们可以预测新实例的标签：
+
+```{python}
+import numpy as np
+
+X_new = np.array([[0, 2], [3, 2], [-3, 3], [-3, 2.5]])
+kmeans.predict(X_new)
+```
+
+**决策边界**
+
+让我们绘制模型的决策边界。这给我们一个_沃罗诺伊图_：
+
+```{python}
+# 额外代码 – 此单元生成并保存图 9–3
+
+def plot_data(X):
+    plt.plot(X[:, 0], X[:, 1], 'k.', markersize=2)
+
+def plot_centroids(centroids, weights=None, circle_color='w', cross_color='k'):
+    if weights is not None:
+        centroids = centroids[weights > weights.max() / 10]
+    plt.scatter(centroids[:, 0], centroids[:, 1],
+                marker='o', s=35, linewidths=8,
+                color=circle_color, zorder=10, alpha=0.9)
+    plt.scatter(centroids[:, 0], centroids[:, 1],
+                marker='x', s=2, linewidths=12,
+                color=cross_color, zorder=11, alpha=1)
+
+def plot_decision_boundaries(clusterer, X, resolution=1000, show_centroids=True,
+                             show_xlabels=True, show_ylabels=True):
+    mins = X.min(axis=0) - 0.1
+    maxs = X.max(axis=0) + 0.1
+    xx, yy = np.meshgrid(np.linspace(mins[0], maxs[0], resolution),
+                         np.linspace(mins[1], maxs[1], resolution))
+    Z = clusterer.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+
+    plt.contourf(Z, extent=(mins[0], maxs[0], mins[1], maxs[1]),
+                cmap="Pastel2")
+    plt.contour(Z, extent=(mins[0], maxs[0], mins[1], maxs[1]),
+                linewidths=1, colors='k')
+    plot_data(X)
+    if show_centroids:
+        plot_centroids(clusterer.cluster_centers_)
+
+    if show_xlabels:
+        plt.xlabel("$x_1$")
+    else:
+        plt.tick_params(labelbottom=False)
+    if show_ylabels:
+        plt.ylabel("$x_2$", rotation=0)
+    else:
+        plt.tick_params(labelleft=False)
+
+plt.figure(figsize=(8, 4))
+plot_decision_boundaries(kmeans, X)
+save_fig("voronoi_plot")
+plt.show()
+```
+
+不错！边缘附近的一些实例可能被分配到了错误的簇，但总体看起来相当不错。
+
+**硬聚类 _vs_ 软聚类**
+
+与其为每个实例任意选择最近的簇（称为_硬聚类_），不如测量每个实例到所有 5 个质心的距离。这就是 `transform()` 方法所做的： 
+```
+
+```{python}
+kmeans.transform(X_new).round(2)
+```
+
+您可以验证这确实是每个实例与每个质心之间的欧几里得距离：
+
+```{python}
+# 额外代码
+np.linalg.norm(np.tile(X_new, (1, k)).reshape(-1, k, 2)
+               - kmeans.cluster_centers_, axis=2).round(2)
+```
+
+### K均值算法
+
+K均值算法是最快的聚类算法之一，也是最简单的算法之一：
+* 首先随机初始化 $k$ 个质心：例如，从数据集中随机选择 $k$ 个不同的实例，并将质心放置在它们的位置上。
+* 重复直到收敛（即，直到质心停止移动）：
+    * 将每个实例分配给最近的质心。
+    * 更新质心，使其成为分配给它们的实例的均值。
+
+`KMeans` 类默认使用优化的初始化技术。要获得原始的 K 均值算法（仅用于教育目的），您必须设置 `init="random"` 和 `n_init=1`。本章稍后将详细介绍这一点。
+
+让我们运行 K 均值算法 1、2 和 3 次迭代，看看质心如何移动：
+
+```{python}
+# 额外代码 – 此单元生成并保存图 9–4
+
+kmeans_iter1 = KMeans(n_clusters=5, init="random", n_init=1, max_iter=1,
+                      random_state=5)
+kmeans_iter2 = KMeans(n_clusters=5, init="random", n_init=1, max_iter=2,
+                      random_state=5)
+kmeans_iter3 = KMeans(n_clusters=5, init="random", n_init=1, max_iter=3,
+                      random_state=5)
+kmeans_iter1.fit(X)
+kmeans_iter2.fit(X)
+kmeans_iter3.fit(X)
+
+plt.figure(figsize=(10, 8))
+
+plt.subplot(321)
+plot_data(X)
+plot_centroids(kmeans_iter1.cluster_centers_, circle_color='r', cross_color='w')
+plt.ylabel("$x_2$", rotation=0)
+plt.tick_params(labelbottom=False)
+plt.title("更新质心（初始随机）")
+
+plt.subplot(322)
+plot_decision_boundaries(kmeans_iter1, X, show_xlabels=False,
+                         show_ylabels=False)
+plt.title("标记实例")
+
+plt.subplot(323)
+plot_decision_boundaries(kmeans_iter1, X, show_centroids=False,
+                         show_xlabels=False)
+plot_centroids(kmeans_iter2.cluster_centers_)
+
+plt.subplot(324)
+plot_decision_boundaries(kmeans_iter2, X, show_xlabels=False,
+                         show_ylabels=False)
+
+plt.subplot(325)
+plot_decision_boundaries(kmeans_iter2, X, show_centroids=False)
+plot_centroids(kmeans_iter3.cluster_centers_)
+
+plt.subplot(326)
+plot_decision_boundaries(kmeans_iter3, X, show_ylabels=False)
+
+save_fig("kmeans_algorithm_plot")
+plt.show()
+```
+
+**K均值变异性**
+
+在原始的 K 均值算法中，质心只是随机初始化的，并且算法只是运行单次迭代来逐步改进质心，就像我们上面看到的那样。
+
+然而，这种方法的一个主要问题是，如果您多次运行 K 均值（或使用不同的随机种子），它可能会收敛到非常不同的解，如下所示：
+
+```{python}
+# 额外代码 – 此单元生成并保存图 9–5
+
+def plot_clusterer_comparison(clusterer1, clusterer2, X, title1=None,
+                              title2=None):
+    clusterer1.fit(X)
+    clusterer2.fit(X)
+
+    plt.figure(figsize=(10, 3.2))
+
+    plt.subplot(121)
+    plot_decision_boundaries(clusterer1, X)
+    if title1:
+        plt.title(title1)
+
+    plt.subplot(122)
+    plot_decision_boundaries(clusterer2, X, show_ylabels=False)
+    if title2:
+        plt.title(title2)
+
+kmeans_rnd_init1 = KMeans(n_clusters=5, init="random", n_init=1, random_state=2)
+kmeans_rnd_init2 = KMeans(n_clusters=5, init="random", n_init=1, random_state=9)
+
+plot_clusterer_comparison(kmeans_rnd_init1, kmeans_rnd_init2, X,
+                          "解决方案 1",
+                          "解决方案 2（使用不同的随机初始化）")
+
+save_fig("kmeans_variability_plot")
+plt.show()
+```
+
+```{python}
+good_init = np.array([[-3, 3], [-3, 2], [-3, 1], [-1, 2], [0, 2]])
+kmeans = KMeans(n_clusters=5, init=good_init, n_init=1, random_state=42)
+kmeans.fit(X)
+```
+
+```{python}
+# 额外代码
+plt.figure(figsize=(8, 4))
+plot_decision_boundaries(kmeans, X)
+```
+
+### 惯性
+
+为了选择最佳模型，我们需要一种方法来评估 K 均值模型的性能。不幸的是，聚类是一项无监督任务，所以我们没有目标值。但至少我们可以测量每个实例与其质心之间的距离。这就是_惯性_度量的思想：
+
+```{python}
+kmeans.inertia_
+```
+
+```{python}
+kmeans_rnd_init1.inertia_  # 额外代码
+```
+
+```{python}
+kmeans_rnd_init2.inertia_  # 额外代码
+```
+
+您可以轻松验证，惯性是每个训练实例与其最近质心之间的平方距离之和：
+
+```{python}
+# 额外代码
+X_dist = kmeans.transform(X)
+(X_dist[np.arange(len(X_dist)), kmeans.labels_] ** 2).sum()
+```
+
+`score()` 方法返回负惯性。为什么是负的？这是因为预测器的 `score()` 方法必须始终遵循"_越大越好_"的规则。
+
+```{python}
+kmeans.score(X)
+```
+
+### 多次初始化
+
+解决变异性问题的一种方法是简单地使用不同的随机初始化多次运行 K 均值算法，并选择使惯性最小化的解决方案。
+
+当您设置 `n_init` 超参数时，Scikit-Learn 运行原始算法 `n_init` 次，并选择使惯性最小化的解决方案。默认情况下，Scikit-Learn 设置 `n_init=10`。
+
+```{python}
+# 额外代码
+kmeans_rnd_10_inits = KMeans(n_clusters=5, init="random", n_init=10,
+                             random_state=2)
+kmeans_rnd_10_inits.fit(X)
+```
+
+如您所见，我们最终得到了初始模型，它无疑是最优的 K 均值解决方案（至少在惯性方面，并假设 $k=5$）。
+
+```{python}
+# 额外代码
+plt.figure(figsize=(8, 4))
+plot_decision_boundaries(kmeans_rnd_10_inits, X)
+plt.show()
+```
+
+```{python}
+kmeans_rnd_10_inits.inertia_
+```
+
+### 质心初始化方法
+
+与完全随机地初始化质心相比，最好使用以下算法进行初始化，该算法由 David Arthur 和 Sergei Vassilvitskii 在 [2006 年的论文](https://goo.gl/eNUPw6) 中提出：
+* 从数据集中均匀随机选择一个质心 $c_1$。
+* 选择新的中心 $c_i$，选择实例 $\mathbf{x}_i$ 的概率为：$D(\mathbf{x}_i)^2$ / $\sum\limits_{j=1}^{m}{D(\mathbf{x}_j)}^2$，其中 $D(\mathbf{x}_i)$ 是实例 $\mathbf{x}_i$ 与已选择的最近质心之间的距离。这种概率分布确保距离已选择质心更远的实例更有可能被选为质心。
+* 重复上一步，直到所有 $k$ 个质心都被选中。
+
+K-Means++ 算法的其余部分就是常规的 K 均值算法。使用这种初始化方法，K 均值算法收敛到次优解的可能性要小得多，因此可以大幅减少 `n_init`。大多数情况下，这在很大程度上弥补了初始化过程的额外复杂性。
+
+要将初始化设置为 K-Means++，只需设置 `init="k-means++"`（这实际上是默认值）：
+
+### 加速 K 均值
+
+K 均值算法有时可以通过避免许多不必要的距离计算来加速：这是通过利用三角不等式（给定三点 A、B 和 C，距离 AC 总是满足 AC ≤ AB + BC）并跟踪实例和质心之间距离的上下界来实现的（有关更多详细信息，请参阅 Charles Elkan 的 [2003 年论文](https://www.aaai.org/Papers/ICML/2003/ICML03-022.pdf)）。
+
+对于 Elkan 的 K 均值变体，使用 `algorithm="elkan"`。对于常规 K 均值，使用 `algorithm="full"`。默认值是 `"auto"`，自 Scikit-Learn 1.1 起使用完整算法（之前使用 Elkan 算法）。
+
+### 小批量 K 均值
+
+Scikit-Learn 还实现了一种支持小批量的 K 均值算法变体（参见[此论文](http://www.eecs.tufts.edu/~dsculley/papers/fastkmeans.pdf)）：
+
+```{python}
+from sklearn.cluster import MiniBatchKMeans
+
+minibatch_kmeans = MiniBatchKMeans(n_clusters=5, n_init=3, random_state=42)
+minibatch_kmeans.fit(X)
+```
+
+注意：在本笔记本中，当创建 `MiniBatchKMeans` 估计器时未设置 `n_init` 时，我显式地将其设置为 `n_init=3`，以避免关于此超参数的默认值将在 Scikit-Learn 1.4 中从 3 更改为 `"auto"` 的警告。
+
+```{python}
+minibatch_kmeans.inertia_
+```
+
+**结合 `memmap` 使用 `MiniBatchKMeans`**（书中未提及）
+
+如果数据集不适合内存，最简单的选择是使用 `memmap` 类，就像我们在上一章对增量 PCA 所做的那样。首先让我们加载 MNIST：
+
+```{python}
+from sklearn.datasets import fetch_openml
+
+mnist = fetch_openml('mnist_784', as_frame=False, parser="auto")
+```
+
+让我们分割数据集：
+
+```{python}
+X_train, y_train = mnist.data[:60000], mnist.target[:60000]
+X_test, y_test = mnist.data[60000:], mnist.target[60000:]
+```
+
+接下来，让我们将训练集写入 `memmap`：
+
+```{python}
+filename = "my_mnist.mmap"
+X_memmap = np.memmap(filename, dtype='float32', mode='write',
+                     shape=X_train.shape)
+X_memmap[:] = X_train
+X_memmap.flush()
+```
+
+```{python}
+from sklearn.cluster import MiniBatchKMeans
+
+minibatch_kmeans = MiniBatchKMeans(n_clusters=10, batch_size=10,
+                                   n_init=3, random_state=42)
+minibatch_kmeans.fit(X_memmap)
+```
+
+让我们绘制小批量 K 均值和常规 K 均值之间的惯性比率和训练时间比率：
+
+```{python}
+# 额外代码 – 此单元生成并保存图 9–6
+
+from timeit import timeit
+
+max_k = 100
+times = np.empty((max_k, 2))
+inertias = np.empty((max_k, 2))
+for k in range(1, max_k + 1):
+    kmeans_ = KMeans(n_clusters=k, algorithm="lloyd", n_init=10, random_state=42)
+    minibatch_kmeans = MiniBatchKMeans(n_clusters=k, n_init=10, random_state=42)
+    print(f"\r{k}/{max_k}", end="")  # \r 返回行首
+    times[k - 1, 0] = timeit("kmeans_.fit(X)", number=10, globals=globals())
+    times[k - 1, 1] = timeit("minibatch_kmeans.fit(X)", number=10,
+                             globals=globals())
+    inertias[k - 1, 0] = kmeans_.inertia_
+    inertias[k - 1, 1] = minibatch_kmeans.inertia_
+
+plt.figure(figsize=(10, 4))
+
+plt.subplot(121)
+plt.plot(range(1, max_k + 1), inertias[:, 0], "r--", label="K-Means")
+plt.plot(range(1, max_k + 1), inertias[:, 1], "b.-", label="Mini-batch K-Means")
+plt.xlabel("$k$")
+plt.title("惯性")
+plt.legend()
+plt.axis([1, max_k, 0, 100])
+plt.grid()
+
+plt.subplot(122)
+plt.plot(range(1, max_k + 1), times[:, 0], "r--", label="K-Means")
+plt.plot(range(1, max_k + 1), times[:, 1], "b.-", label="Mini-batch K-Means")
+plt.xlabel("$k$")
+plt.title("训练时间（秒）")
+plt.axis([1, max_k, 0, 4])
+plt.grid()
+
+save_fig("minibatch_kmeans_vs_kmeans_plot")
+plt.show()
+```
+
+### 查找最佳聚类数
+
+如果聚类数设置为高于或低于 5 会怎样？
+
+```{python}
+# 额外代码 – 此单元生成并保存图 9–7
+
+kmeans_k3 = KMeans(n_clusters=3, n_init=10, random_state=42)
+kmeans_k8 = KMeans(n_clusters=8, n_init=10, random_state=42)
+
+plot_clusterer_comparison(kmeans_k3, kmeans_k8, X, "$k=3$", "$k=8$")
+save_fig("bad_n_clusters_plot")
+plt.show()
+```
+
+哎呀，这两个模型看起来都不太好。它们的惯性如何？
+
+```{python}
+kmeans_k3.inertia_
+```
+
+```{python}
+kmeans_k8.inertia_
+```
+
+不，我们不能简单地选择使惯性最小化的 $k$ 值，因为随着 $k$ 的增加，惯性会持续降低。事实上，簇越多，每个实例与其最近质心之间的距离就越近，因此惯性也就越低。然而，我们可以绘制惯性作为 $k$ 的函数，并分析结果曲线：
+
+```{python}
+# 额外代码 – 此单元生成并保存图 9–8
+
+kmeans_per_k = [KMeans(n_clusters=k, n_init=10, random_state=42).fit(X)
+                for k in range(1, 10)]
+inertias = [model.inertia_ for model in kmeans_per_k]
+
+plt.figure(figsize=(8, 3.5))
+plt.plot(range(1, 10), inertias, "bo-")
+plt.xlabel("$k$")
+plt.ylabel("惯性")
+plt.annotate("", xy=(4, inertias[3]), xytext=(4.45, 650),
+             arrowprops=dict(facecolor='black', shrink=0.1))
+plt.text(4.5, 650, "肘部", horizontalalignment="center")
+plt.axis([1, 8.5, 0, 1300])
+plt.grid()
+save_fig("inertia_vs_k_plot")
+plt.show()
+```
+
+如您所见，在 $k=4$ 处有一个肘部，这意味着少于这个数量的簇会有不好的效果，而更多的簇也不会有太大帮助，甚至可能会将簇切成两半。所以 $k=4$ 是一个相当不错的选择。当然，在这个例子中，它并不完美，因为这意味着左下角的两个斑点将被视为单个簇，但总的来说，这是一个相当好的聚类。
+
+```{python}
+# 额外代码
+plot_decision_boundaries(kmeans_per_k[4 - 1], X)
+plt.show()
+```
+
+另一种方法是查看_轮廓分数_，它是所有实例的_轮廓系数_的平均值。一个实例的轮廓系数等于 (_b_ - _a_) / max(_a_, _b_)，其中 _a_ 是到同一簇中其他实例的平均距离（它是_平均簇内距离_），而 _b_ 是_平均最近簇距离_，即到下一个最近簇中实例的平均距离（定义为使 _b_ 最小化的簇，不包括实例自己的簇）。轮廓系数可以在 -1 和 +1 之间变化：接近 +1 的系数意味着实例在其自己的簇内部且远离其他簇，接近 0 的系数意味着它接近簇边界，而接近 -1 的系数意味着实例可能被分配到了错误的簇。
+
+让我们绘制轮廓分数作为 $k$ 的函数：
+
+```{python}
+from sklearn.metrics import silhouette_score
+```
+
+```{python}
+silhouette_score(X, kmeans.labels_)
+```
+
+```{python}
+# 额外代码 – 此单元生成并保存图 9–9
+
+silhouette_scores = [silhouette_score(X, model.labels_)
+                     for model in kmeans_per_k[1:]]
+
+plt.figure(figsize=(8, 3))
+plt.plot(range(2, 10), silhouette_scores, "bo-")
+plt.xlabel("$k$")
+plt.ylabel("轮廓分数")
+plt.axis([1.8, 8.5, 0.55, 0.7])
+plt.grid()
+save_fig("silhouette_score_vs_k_plot")
+plt.show()
+```
+
+如您所见，这种可视化比之前的要丰富得多：特别是，虽然它确认 $k=4$ 是一个非常好的选择，但它也强调了 $k=5$ 也相当不错这一事实。
+
+当您绘制每个实例的轮廓系数时，按照它们被分配到的簇和系数的值排序，会得到更加丰富的可视化。这被称为_轮廓图_：
+
+```{python}
+# 额外代码 – 此单元生成并保存图 9–10
+
+from sklearn.metrics import silhouette_samples
+from matplotlib.ticker import FixedLocator, FixedFormatter
+
+plt.figure(figsize=(11, 9))
+
+for k in (3, 4, 5, 6):
+    plt.subplot(2, 2, k - 2)
+    
+    y_pred = kmeans_per_k[k - 1].labels_
+    silhouette_coefficients = silhouette_samples(X, y_pred)
+
+    padding = len(X) // 30
+    pos = padding
+    ticks = []
+    for i in range(k):
+        coeffs = silhouette_coefficients[y_pred == i]
+        coeffs.sort()
+
+        color = plt.cm.Spectral(i / k)
+        plt.fill_betweenx(np.arange(pos, pos + len(coeffs)), 0, coeffs,
+                          facecolor=color, edgecolor=color, alpha=0.7)
+        ticks.append(pos + len(coeffs) // 2)
+        pos += len(coeffs) + padding
+
+    plt.gca().yaxis.set_major_locator(FixedLocator(ticks))
+    plt.gca().yaxis.set_major_formatter(FixedFormatter(range(k)))
+    if k in (3, 5):
+        plt.ylabel("簇")
+    
+    if k in (5, 6):
+        plt.gca().set_xticks([-0.1, 0, 0.2, 0.4, 0.6, 0.8, 1])
+        plt.xlabel("轮廓系数")
+    else:
+        plt.tick_params(labelbottom=False)
+
+    plt.axvline(x=silhouette_scores[k - 2], color="red", linestyle="--")
+    plt.title(f"$k={k}$")
+
+save_fig("silhouette_analysis_plot")
+plt.show()
+```
+
+如您所见，$k=5$ 在这里看起来是最佳选择，因为所有簇的大小大致相同，并且它们都穿过虚线，该虚线代表平均轮廓分数。
+
+## K均值的局限性
+
+让我们生成一个更困难的数据集，具有细长的斑点和不同的密度，并展示 K 均值在正确聚类方面的困难：
+
+```{python}
+# 额外代码 – 此单元生成并保存图 9–11
+
+X1, y1 = make_blobs(n_samples=1000, centers=((4, -4), (0, 0)), random_state=42)
+X1 = X1.dot(np.array([[0.374, 0.95], [0.732, 0.598]]))
+X2, y2 = make_blobs(n_samples=250, centers=1, random_state=42)
+X2 = X2 + [6, -8]
+X = np.r_[X1, X2]
+y = np.r_[y1, y2]
+
+kmeans_good = KMeans(n_clusters=3,
+                     init=np.array([[-1.5, 2.5], [0.5, 0], [4, 0]]),
+                     n_init=1, random_state=42)
+kmeans_bad = KMeans(n_clusters=3, n_init=10, random_state=42)
+kmeans_good.fit(X)
+kmeans_bad.fit(X)
+
+plt.figure(figsize=(10, 3.2))
+
+plt.subplot(121)
+plot_decision_boundaries(kmeans_good, X)
+plt.title(f"惯性 = {kmeans_good.inertia_:.1f}")
+
+plt.subplot(122)
+plot_decision_boundaries(kmeans_bad, X, show_ylabels=False)
+plt.title(f"惯性 = {kmeans_bad.inertia_:.1f}")
+
+save_fig("bad_kmeans_plot")
+plt.show()
+```
+
+## 使用聚类进行图像分割
+
+下载瓢虫图像：
+
+```{python}
+# 额外代码 – 下载瓢虫图像
+
+import urllib.request
+
+homl3_root = "https://github.com/ageron/handson-ml3/raw/main/"
+filename = "ladybug.png"
+filepath = IMAGES_PATH / filename
+if not filepath.is_file():
+    print("下载", filename)
+    url = f"{homl3_root}/images/unsupervised_learning/{filename}"
+    urllib.request.urlretrieve(url, filepath)
+```
+
+```{python}
+import PIL
+
+image = np.asarray(PIL.Image.open(filepath))
+image.shape
+```
+
+```{python}
+X = image.reshape(-1, 3)
+kmeans = KMeans(n_clusters=8, n_init=10, random_state=42).fit(X)
+segmented_img = kmeans.cluster_centers_[kmeans.labels_]
+segmented_img = segmented_img.reshape(image.shape)
+```
+
+```{python}
+# 额外代码 – 此单元生成并保存图 9–12
+
+segmented_imgs = []
+n_colors = (10, 8, 6, 4, 2)
+for n_clusters in n_colors:
+    kmeans = KMeans(n_clusters=n_clusters, n_init=10, random_state=42).fit(X)
+    segmented_img = kmeans.cluster_centers_[kmeans.labels_]
+    segmented_imgs.append(segmented_img.reshape(image.shape))
+
+plt.figure(figsize=(10, 5))
+plt.subplots_adjust(wspace=0.05, hspace=0.1)
+
+plt.subplot(2, 3, 1)
+plt.imshow(image)
+plt.title("原始图像")
+plt.axis('off')
+
+for idx, n_clusters in enumerate(n_colors):
+    plt.subplot(2, 3, 2 + idx)
+    plt.imshow(segmented_imgs[idx] / 255)
+    plt.title(f"{n_clusters} 种颜色")
+    plt.axis('off')
+
+save_fig('image_segmentation_plot', tight_layout=False)
+plt.show()
+```
+
+## 使用聚类进行半监督学习
+
+聚类的另一个用例是半监督学习，即我们有大量未标记的实例和很少的已标记实例。
+
+让我们处理_数字数据集_，这是一个简单的类似 MNIST 的数据集，包含 1,797 个 8×8 灰度图像，代表数字 0 到 9。
+
+```{python}
+from sklearn.datasets import load_digits
+
+X_digits, y_digits = load_digits(return_X_y=True)
+X_train, y_train = X_digits[:1400], y_digits[:1400]
+X_test, y_test = X_digits[1400:], y_digits[1400:]
+```
+
+让我们看看当我们只有 50 个已标记实例时，逻辑回归模型的性能：
+
+```{python}
+from sklearn.linear_model import LogisticRegression
+
+n_labeled = 50
+log_reg = LogisticRegression(max_iter=10_000)
+log_reg.fit(X_train[:n_labeled], y_train[:n_labeled])
+```
+
+```{python}
+log_reg.score(X_test, y_test)
+```
+
+```{python}
+# 额外代码 – 当我们使用整个训练集时测量准确率
+log_reg_full = LogisticRegression(max_iter=10_000)
+log_reg_full.fit(X_train, y_train)
+log_reg_full.score(X_test, y_test)
+```
+
+当然，这比之前要低得多。让我们看看如何做得更好。首先，让我们将训练集聚类成 50 个簇，然后对于每个簇，找到最接近质心的图像。我们将这些图像称为代表性图像：
+
+```{python}
+k = 50
+kmeans = KMeans(n_clusters=k, n_init=10, random_state=42)
+X_digits_dist = kmeans.fit_transform(X_train)
+representative_digit_idx = X_digits_dist.argmin(axis=0)
+X_representative_digits = X_train[representative_digit_idx]
+```
+
+现在让我们绘制这些代表性图像并手动标记它们：
+
+```{python}
+# 额外代码 – 此单元生成并保存图 9–13
+
+plt.figure(figsize=(8, 2))
+for index, X_representative_digit in enumerate(X_representative_digits):
+    plt.subplot(k // 10, 10, index + 1)
+    plt.imshow(X_representative_digit.reshape(8, 8), cmap="binary",
+               interpolation="bilinear")
+    plt.axis('off')
+
+save_fig("representative_images_plot", tight_layout=False)
+plt.show()
+```
+
+```{python}
+y_representative_digits = np.array([
+    1, 3, 6, 0, 7, 9, 2, 4, 8, 9,
+    5, 4, 7, 1, 2, 6, 1, 2, 5, 1,
+    4, 1, 3, 3, 8, 8, 2, 5, 6, 9,
+    1, 4, 0, 6, 8, 3, 4, 6, 7, 2,
+    4, 1, 0, 7, 5, 1, 9, 9, 3, 7
+])
+```
+
+现在我们有了一个只有 50 个已标记实例的数据集，但是它们不是完全随机的实例，而是每个簇的一个代表性图像。让我们看看性能是否有所提高：
+
+```{python}
+log_reg = LogisticRegression(max_iter=10_000)
+log_reg.fit(X_representative_digits, y_representative_digits)
+log_reg.score(X_test, y_test)
+```
+
+哇！我们的准确率从 74.8% 跃升至 84.9%，尽管我们仍然只用 50 个实例训练模型。由于标记实例通常成本高昂且痛苦，特别是当需要由专家手动完成时，让他们标记代表性实例而不是随机实例是个好主意。
+
+但也许我们可以更进一步：如果我们将标签传播到同一簇中的所有其他实例呢？
+
+```{python}
+y_train_propagated = np.empty(len(X_train), dtype=np.int64)
+for i in range(k):
+    y_train_propagated[kmeans.labels_ == i] = y_representative_digits[i]
+```
+
+```{python}
+log_reg = LogisticRegression(max_iter=10_000)
+log_reg.fit(X_train, y_train_propagated)
+```
+
+```{python}
+log_reg.score(X_test, y_test)
+```
+
+我们又获得了显著的准确率提升！让我们看看是否可以通过忽略距离其簇中心最远的 1% 的实例来做得更好：这应该消除一些异常值：
+
+```{python}
+percentile_closest = 99
+
+X_cluster_dist = X_digits_dist[np.arange(len(X_train)), kmeans.labels_]
+for i in range(k):
+    in_cluster = (kmeans.labels_ == i)
+    cluster_dist = X_cluster_dist[in_cluster]
+    cutoff_distance = np.percentile(cluster_dist, percentile_closest)
+    above_cutoff = (X_cluster_dist > cutoff_distance)
+    X_cluster_dist[in_cluster & above_cutoff] = -1
+
+partially_propagated = (X_cluster_dist != -1)
+X_train_partially_propagated = X_train[partially_propagated]
+y_train_partially_propagated = y_train_propagated[partially_propagated]
+```
+
+```{python}
+log_reg = LogisticRegression(max_iter=10_000)
+log_reg.fit(X_train_partially_propagated, y_train_partially_propagated)
+log_reg.score(X_test, y_test)
+```
+
+哇，又一次准确率提升！我们甚至略微超过了通过在完全标记的训练集上训练获得的性能！
+
+我们传播的标签实际上相当好：它们的准确率约为 97.6%：
+
+```{python}
+(y_train_partially_propagated == y_train[partially_propagated]).mean()
+```
+
+您现在可以进行几次*主动学习*迭代：
+1. 手动标记分类器最不确定的实例，如果可能的话，选择它们位于不同的簇中。
+2. 使用这些额外的标签训练新模型。
+
+## DBSCAN
+
+```{python}
+from sklearn.cluster import DBSCAN
+from sklearn.datasets import make_moons
+
+X, y = make_moons(n_samples=1000, noise=0.05, random_state=42)
+dbscan = DBSCAN(eps=0.05, min_samples=5)
+dbscan.fit(X)
+```
+
+```{python}
+dbscan.labels_[:10]
+```
+
+```{python}
+dbscan.core_sample_indices_[:10]
+```
+
+```{python}
+dbscan.components_
+```
+
+```{python}
+# 额外代码 – 此单元生成并保存图 9–14
+
+def plot_dbscan(dbscan, X, size, show_xlabels=True, show_ylabels=True):
+    core_mask = np.zeros_like(dbscan.labels_, dtype=bool)
+    core_mask[dbscan.core_sample_indices_] = True
+    anomalies_mask = dbscan.labels_ == -1
+    non_core_mask = ~(core_mask | anomalies_mask)
+
+    cores = dbscan.components_
+    anomalies = X[anomalies_mask]
+    non_cores = X[non_core_mask]
+    
+    plt.scatter(cores[:, 0], cores[:, 1],
+                c=dbscan.labels_[core_mask], marker='o', s=size, cmap="Paired")
+    plt.scatter(cores[:, 0], cores[:, 1], marker='*', s=20,
+                c=dbscan.labels_[core_mask])
+    plt.scatter(anomalies[:, 0], anomalies[:, 1],
+                c="r", marker="x", s=100)
+    plt.scatter(non_cores[:, 0], non_cores[:, 1],
+                c=dbscan.labels_[non_core_mask], marker=".")
+    if show_xlabels:
+        plt.xlabel("$x_1$")
+    else:
+        plt.tick_params(labelbottom=False)
+    if show_ylabels:
+        plt.ylabel("$x_2$", rotation=0)
+    else:
+        plt.tick_params(labelleft=False)
+    plt.title(f"eps={dbscan.eps:.2f}, min_samples={dbscan.min_samples}")
+    plt.grid()
+    plt.gca().set_axisbelow(True)
+
+dbscan2 = DBSCAN(eps=0.2)
+dbscan2.fit(X)
+
+plt.figure(figsize=(9, 3.2))
+
+plt.subplot(121)
+plot_dbscan(dbscan, X, size=100)
+
+plt.subplot(122)
+plot_dbscan(dbscan2, X, size=600, show_ylabels=False)
+
+save_fig("dbscan_plot")
+plt.show()
+```
+
+```{python}
+dbscan = dbscan2  # 额外代码 – 文本说我们现在使用 eps=0.2
+```
+
+```{python}
+from sklearn.neighbors import KNeighborsClassifier
+
+knn = KNeighborsClassifier(n_neighbors=50)
+knn.fit(dbscan.components_, dbscan.labels_[dbscan.core_sample_indices_])
+```
+
+```{python}
+X_new = np.array([[-0.5, 0], [0, 0.5], [1, -0.1], [2, 1]])
+knn.predict(X_new)
+```
+
+```{python}
+knn.predict_proba(X_new)
+```
+
+```{python}
+# 额外代码 – 此单元生成并保存图 9–15
+
+plt.figure(figsize=(6, 3))
+plot_decision_boundaries(knn, X, show_centroids=False)
+plt.scatter(X_new[:, 0], X_new[:, 1], c="b", marker="+", s=200, zorder=10)
+save_fig("cluster_classification_plot")
+plt.show()
+```
+
+```{python}
+y_dist, y_pred_idx = knn.kneighbors(X_new, n_neighbors=1)
+y_pred = dbscan.labels_[dbscan.core_sample_indices_][y_pred_idx]
+y_pred[y_dist > 0.2] = -1
+y_pred.ravel()
+```
+
+## 其他聚类算法
+
+本节中的代码是额外材料，不在书中。
+
+### 谱聚类
+
+```{python}
+from sklearn.cluster import SpectralClustering
+```
+
+```{python}
+sc1 = SpectralClustering(n_clusters=2, gamma=100, random_state=42)
+sc1.fit(X)
+```
+
+```{python}
+sc1.affinity_matrix_.round(2)
+```
+
+```{python}
+sc2 = SpectralClustering(n_clusters=2, gamma=1, random_state=42)
+sc2.fit(X)
+```
+
+```{python}
+def plot_spectral_clustering(sc, X, size, alpha, show_xlabels=True,
+                             show_ylabels=True):
+    plt.scatter(X[:, 0], X[:, 1], marker='o', s=size, c='gray', alpha=alpha)
+    plt.scatter(X[:, 0], X[:, 1], marker='o', s=30, c='w')
+    plt.scatter(X[:, 0], X[:, 1], marker='.', s=10, c=sc.labels_, cmap="Paired")
+    
+    if show_xlabels:
+        plt.xlabel("$x_1$")
+    else:
+        plt.tick_params(labelbottom=False)
+    if show_ylabels:
+        plt.ylabel("$x_2$", rotation=0)
+    else:
+        plt.tick_params(labelleft=False)
+    plt.title(f"RBF gamma={sc.gamma}")
+```
+
+```{python}
+plt.figure(figsize=(9, 3.2))
+
+plt.subplot(121)
+plot_spectral_clustering(sc1, X, size=500, alpha=0.1)
+
+plt.subplot(122)
+plot_spectral_clustering(sc2, X, size=4000, alpha=0.01, show_ylabels=False)
+
+plt.show()

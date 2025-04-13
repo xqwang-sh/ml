@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>10&nbsp; 项目2B：财务报表文本分析与企业网络安全风险评估 – 数据挖掘与机器学习课程讲义</title>
+<title>14&nbsp; 项目2B：财务报表文本分析与企业网络安全风险评估 – 数据挖掘与机器学习课程讲义</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -80,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./project2b_text.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./project2b_text.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="搜索" onclick="window.quartoOpenSearch();">
@@ -149,20 +149,44 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./06_credit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">信用评分理论基础</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_unsupervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">非监督学习技术概览及其金融应用</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_cluster.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">非监督学习：聚类 (Clustering)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lab07_cluster.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">聚类算法实践</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./project1_LC.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2a_tspred.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2b_text.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
   </div>
 </li>
     </ul>
@@ -175,19 +199,19 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">目录</h2>
    
   <ul>
-  <li><a href="#项目背景" id="toc-项目背景" class="nav-link active" data-scroll-target="#项目背景"><span class="header-section-number">10.1</span> 项目背景</a></li>
-  <li><a href="#项目目标" id="toc-项目目标" class="nav-link" data-scroll-target="#项目目标"><span class="header-section-number">10.2</span> 项目目标</a></li>
-  <li><a href="#数据简介" id="toc-数据简介" class="nav-link" data-scroll-target="#数据简介"><span class="header-section-number">10.3</span> 数据简介</a></li>
-  <li><a href="#数据特点与挑战" id="toc-数据特点与挑战" class="nav-link" data-scroll-target="#数据特点与挑战"><span class="header-section-number">10.4</span> 数据特点与挑战</a></li>
-  <li><a href="#项目步骤建议仅供参考" id="toc-项目步骤建议仅供参考" class="nav-link" data-scroll-target="#项目步骤建议仅供参考"><span class="header-section-number">10.5</span> 项目步骤建议（仅供参考）</a>
+  <li><a href="#项目背景" id="toc-项目背景" class="nav-link active" data-scroll-target="#项目背景"><span class="header-section-number">14.1</span> 项目背景</a></li>
+  <li><a href="#项目目标" id="toc-项目目标" class="nav-link" data-scroll-target="#项目目标"><span class="header-section-number">14.2</span> 项目目标</a></li>
+  <li><a href="#数据简介" id="toc-数据简介" class="nav-link" data-scroll-target="#数据简介"><span class="header-section-number">14.3</span> 数据简介</a></li>
+  <li><a href="#数据特点与挑战" id="toc-数据特点与挑战" class="nav-link" data-scroll-target="#数据特点与挑战"><span class="header-section-number">14.4</span> 数据特点与挑战</a></li>
+  <li><a href="#项目步骤建议仅供参考" id="toc-项目步骤建议仅供参考" class="nav-link" data-scroll-target="#项目步骤建议仅供参考"><span class="header-section-number">14.5</span> 项目步骤建议（仅供参考）</a>
   <ul class="collapse">
-  <li><a href="#数据收集与预处理" id="toc-数据收集与预处理" class="nav-link" data-scroll-target="#数据收集与预处理"><span class="header-section-number">10.5.1</span> 数据收集与预处理</a></li>
-  <li><a href="#特征工程与文本分析" id="toc-特征工程与文本分析" class="nav-link" data-scroll-target="#特征工程与文本分析"><span class="header-section-number">10.5.2</span> 特征工程与文本分析</a></li>
-  <li><a href="#模型构建与评估" id="toc-模型构建与评估" class="nav-link" data-scroll-target="#模型构建与评估"><span class="header-section-number">10.5.3</span> 模型构建与评估</a></li>
-  <li><a href="#分析与应用" id="toc-分析与应用" class="nav-link" data-scroll-target="#分析与应用"><span class="header-section-number">10.5.4</span> 分析与应用</a></li>
+  <li><a href="#数据收集与预处理" id="toc-数据收集与预处理" class="nav-link" data-scroll-target="#数据收集与预处理"><span class="header-section-number">14.5.1</span> 数据收集与预处理</a></li>
+  <li><a href="#特征工程与文本分析" id="toc-特征工程与文本分析" class="nav-link" data-scroll-target="#特征工程与文本分析"><span class="header-section-number">14.5.2</span> 特征工程与文本分析</a></li>
+  <li><a href="#模型构建与评估" id="toc-模型构建与评估" class="nav-link" data-scroll-target="#模型构建与评估"><span class="header-section-number">14.5.3</span> 模型构建与评估</a></li>
+  <li><a href="#分析与应用" id="toc-分析与应用" class="nav-link" data-scroll-target="#分析与应用"><span class="header-section-number">14.5.4</span> 分析与应用</a></li>
   </ul></li>
-  <li><a href="#提交要求" id="toc-提交要求" class="nav-link" data-scroll-target="#提交要求"><span class="header-section-number">10.6</span> 提交要求</a></li>
-  <li><a href="#评分标准" id="toc-评分标准" class="nav-link" data-scroll-target="#评分标准"><span class="header-section-number">10.7</span> 评分标准</a></li>
+  <li><a href="#提交要求" id="toc-提交要求" class="nav-link" data-scroll-target="#提交要求"><span class="header-section-number">14.6</span> 提交要求</a></li>
+  <li><a href="#评分标准" id="toc-评分标准" class="nav-link" data-scroll-target="#评分标准"><span class="header-section-number">14.7</span> 评分标准</a></li>
   </ul>
 </nav>
     </div>
@@ -196,7 +220,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></h1>
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></h1>
 </div>
 
 
@@ -213,14 +237,14 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="项目背景" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="项目背景"><span class="header-section-number">10.1</span> 项目背景</h2>
+<section id="项目背景" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="项目背景"><span class="header-section-number">14.1</span> 项目背景</h2>
 <p>随着数字化转型的加速，网络安全已成为现代企业面临的最重要风险之一。数据泄露、系统入侵、勒索软件攻击等安全事件不仅会导致直接的经济损失，还会损害企业声誉、客户信任，甚至引发监管处罚和法律诉讼。据相关统计，中国企业平均数据泄露成本持续上升，重大网络安全事件对企业造成的负面影响也日益加剧。</p>
 <p>中国证监会及相关监管机构近年来逐步加强了对上市公司信息披露的要求，特别是在企业风险管理方面。《公开发行证券的公司信息披露内容与格式准则》要求上市公司在年度报告中披露可能面临的各类风险，包括网络安全风险。2021年，《数据安全法》和《个人信息保护法》的实施进一步提高了企业对网络安全和数据保护的合规要求，使得上市公司在财务报表中更加详细地披露相关风险信息。</p>
 <p>这些文本披露为研究者提供了丰富的数据源，使我们能够通过自然语言处理和机器学习技术，从财务报表文本中提取、量化和分析企业的网络安全风险。这种基于文本的风险分析方法，不仅可以帮助投资者识别潜在的高风险企业，还可以帮助监管机构发现网络安全披露不足的公司，并为企业自身提供行业基准和改进方向。</p>
 </section>
-<section id="项目目标" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="项目目标"><span class="header-section-number">10.2</span> 项目目标</h2>
+<section id="项目目标" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="项目目标"><span class="header-section-number">14.2</span> 项目目标</h2>
 <p>本项目旨在通过对中国上市公司财务报表的文本分析，构建模型以评估和预测企业的网络安全风险水平。具体目标包括：</p>
 <ol type="1">
 <li>掌握中文财务文本数据的获取和预处理方法</li>
@@ -230,8 +254,8 @@ ul.task-list li input[type="checkbox"] {
 <li>探索网络安全风险与企业财务表现、股价波动等因素之间的关系</li>
 </ol>
 </section>
-<section id="数据简介" class="level2" data-number="10.3">
-<h2 data-number="10.3" class="anchored" data-anchor-id="数据简介"><span class="header-section-number">10.3</span> 数据简介</h2>
+<section id="数据简介" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="数据简介"><span class="header-section-number">14.3</span> 数据简介</h2>
 <p>本项目将使用中国A股上市公司的财务报表数据，时间范围为2018年至2023年，主要包含以下数据来源：</p>
 <ul>
 <li><strong>上市公司公告文本</strong>（巨潮网）：
@@ -261,8 +285,8 @@ ul.task-list li input[type="checkbox"] {
 </ul></li>
 </ul>
 </section>
-<section id="数据特点与挑战" class="level2" data-number="10.4">
-<h2 data-number="10.4" class="anchored" data-anchor-id="数据特点与挑战"><span class="header-section-number">10.4</span> 数据特点与挑战</h2>
+<section id="数据特点与挑战" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="数据特点与挑战"><span class="header-section-number">14.4</span> 数据特点与挑战</h2>
 <p>中文财务报表文本分析面临以下特点和挑战：</p>
 <ol type="1">
 <li><strong>中文文本特性</strong>：中文没有空格分词，需要特殊的分词技术；同时存在词义多样、同义词丰富等特点</li>
@@ -274,10 +298,10 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>因果关系复杂</strong>：网络安全风险与企业表现之间的因果关系难以确定</li>
 </ol>
 </section>
-<section id="项目步骤建议仅供参考" class="level2" data-number="10.5">
-<h2 data-number="10.5" class="anchored" data-anchor-id="项目步骤建议仅供参考"><span class="header-section-number">10.5</span> 项目步骤建议（仅供参考）</h2>
-<section id="数据收集与预处理" class="level3" data-number="10.5.1">
-<h3 data-number="10.5.1" class="anchored" data-anchor-id="数据收集与预处理"><span class="header-section-number">10.5.1</span> 数据收集与预处理</h3>
+<section id="项目步骤建议仅供参考" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="项目步骤建议仅供参考"><span class="header-section-number">14.5</span> 项目步骤建议（仅供参考）</h2>
+<section id="数据收集与预处理" class="level3" data-number="14.5.1">
+<h3 data-number="14.5.1" class="anchored" data-anchor-id="数据收集与预处理"><span class="header-section-number">14.5.1</span> 数据收集与预处理</h3>
 <ul>
 <li><strong>文本数据获取</strong>：
 <ul>
@@ -301,8 +325,8 @@ ul.task-list li input[type="checkbox"] {
 </ul></li>
 </ul>
 </section>
-<section id="特征工程与文本分析" class="level3" data-number="10.5.2">
-<h3 data-number="10.5.2" class="anchored" data-anchor-id="特征工程与文本分析"><span class="header-section-number">10.5.2</span> 特征工程与文本分析</h3>
+<section id="特征工程与文本分析" class="level3" data-number="14.5.2">
+<h3 data-number="14.5.2" class="anchored" data-anchor-id="特征工程与文本分析"><span class="header-section-number">14.5.2</span> 特征工程与文本分析</h3>
 <ul>
 <li><strong>网络安全关键词提取</strong>：
 <ul>
@@ -327,8 +351,8 @@ ul.task-list li input[type="checkbox"] {
 </ul></li>
 </ul>
 </section>
-<section id="模型构建与评估" class="level3" data-number="10.5.3">
-<h3 data-number="10.5.3" class="anchored" data-anchor-id="模型构建与评估"><span class="header-section-number">10.5.3</span> 模型构建与评估</h3>
+<section id="模型构建与评估" class="level3" data-number="14.5.3">
+<h3 data-number="14.5.3" class="anchored" data-anchor-id="模型构建与评估"><span class="header-section-number">14.5.3</span> 模型构建与评估</h3>
 <ul>
 <li><strong>基础文本聚类分析</strong>：
 <ul>
@@ -360,8 +384,8 @@ ul.task-list li input[type="checkbox"] {
 </ul></li>
 </ul>
 </section>
-<section id="分析与应用" class="level3" data-number="10.5.4">
-<h3 data-number="10.5.4" class="anchored" data-anchor-id="分析与应用"><span class="header-section-number">10.5.4</span> 分析与应用</h3>
+<section id="分析与应用" class="level3" data-number="14.5.4">
+<h3 data-number="14.5.4" class="anchored" data-anchor-id="分析与应用"><span class="header-section-number">14.5.4</span> 分析与应用</h3>
 <ul>
 <li><strong>跨行业比较分析</strong>：
 <ul>
@@ -390,8 +414,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </section>
 </section>
-<section id="提交要求" class="level2" data-number="10.6">
-<h2 data-number="10.6" class="anchored" data-anchor-id="提交要求"><span class="header-section-number">10.6</span> 提交要求</h2>
+<section id="提交要求" class="level2" data-number="14.6">
+<h2 data-number="14.6" class="anchored" data-anchor-id="提交要求"><span class="header-section-number">14.6</span> 提交要求</h2>
 <ol type="1">
 <li><strong>课堂展示Slides</strong>：
 <ul>
@@ -413,8 +437,8 @@ ul.task-list li input[type="checkbox"] {
 </ul></li>
 </ol>
 </section>
-<section id="评分标准" class="level2" data-number="10.7">
-<h2 data-number="10.7" class="anchored" data-anchor-id="评分标准"><span class="header-section-number">10.7</span> 评分标准</h2>
+<section id="评分标准" class="level2" data-number="14.7">
+<h2 data-number="14.7" class="anchored" data-anchor-id="评分标准"><span class="header-section-number">14.7</span> 评分标准</h2>
 <ul>
 <li><strong>课堂展示（40分）</strong>
 <ul>
@@ -870,7 +894,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./project2a_tspred.html" class="pagination-link" aria-label="项目2A：上证综指收益率时间序列预测">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

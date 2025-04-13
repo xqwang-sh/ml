@@ -14,6 +14,10 @@ book:
     - 04_supervised.qmd
     - 05_model_assess.qmd
     - lab03_titanic.qmd
+    - 06_credit.qmd
+    - 07_unsupervised.qmd
+    - 07_cluster.qmd
+    - lab07_cluster.qmd
     - project1_LC.qmd
     - project2a_tspred.qmd
     - project2b_text.qmd

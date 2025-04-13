@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./project1_LC.html" rel="next">
+<link href="./06_credit.html" rel="next">
 <link href="./05_model_assess.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -187,20 +187,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./06_credit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">信用评分理论基础</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_unsupervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">非监督学习技术概览及其金融应用</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_cluster.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">非监督学习：聚类 (Clustering)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lab07_cluster.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">聚类算法实践</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./project1_LC.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2a_tspred.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2b_text.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
   </div>
 </li>
     </ul>
@@ -1795,8 +1819,8 @@ Total params: 105 (420.00 Byte)
 Trainable params: 105 (420.00 Byte)
 Non-trainable params: 0 (0.00 Byte)
 _________________________________________________________________
-简单网络 - 训练集准确率: 0.8329
-简单网络 - 验证集准确率: 0.8045</code></pre>
+简单网络 - 训练集准确率: 0.8287
+简单网络 - 验证集准确率: 0.7989</code></pre>
 </div>
 </div>
 <p>绘制简单网络的学习曲线：</p>
@@ -1890,8 +1914,8 @@ Total params: 337 (1.32 KB)
 Trainable params: 337 (1.32 KB)
 Non-trainable params: 0 (0.00 Byte)
 _________________________________________________________________
-中等网络 - 训练集准确率: 0.8539
-中等网络 - 验证集准确率: 0.8101</code></pre>
+中等网络 - 训练集准确率: 0.8511
+中等网络 - 验证集准确率: 0.8045</code></pre>
 </div>
 </div>
 <p>绘制中等复杂度网络的学习曲线：</p>
@@ -1991,8 +2015,8 @@ Total params: 3521 (13.75 KB)
 Trainable params: 3521 (13.75 KB)
 Non-trainable params: 0 (0.00 Byte)
 _________________________________________________________________
-复杂网络 - 训练集准确率: 0.8947
-复杂网络 - 验证集准确率: 0.8045</code></pre>
+复杂网络 - 训练集准确率: 0.8975
+复杂网络 - 验证集准确率: 0.7989</code></pre>
 </div>
 </div>
 <p>绘制复杂网络的学习曲线：</p>
@@ -2128,8 +2152,8 @@ Total params: 4001 (15.63 KB)
 Trainable params: 3761 (14.69 KB)
 Non-trainable params: 240 (960.00 Byte)
 _________________________________________________________________
-正则化网络 - 训练集准确率: 0.8511
-正则化网络 - 验证集准确率: 0.8212</code></pre>
+正则化网络 - 训练集准确率: 0.8427
+正则化网络 - 验证集准确率: 0.8101</code></pre>
 </div>
 </div>
 <p>绘制正则化网络的学习曲线：</p>
@@ -2227,9 +2251,9 @@ _________________________________________________________________
 <span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>test_pred_nn <span class="op">=</span> (nn_model.predict(test_data_scaled) <span class="op">&gt;</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>).flatten()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code> 1/28 [&gt;.............................] - ETA: 1s28/28 [==============================] - 0s 304us/step
-最终神经网络在训练集上的准确率: 0.8496
- 1/14 [=&gt;............................] - ETA: 0s14/14 [==============================] - 0s 306us/step</code></pre>
+<pre><code> 1/28 [&gt;.............................] - ETA: 1s28/28 [==============================] - 0s 313us/step
+最终神经网络在训练集上的准确率: 0.8563
+ 1/14 [=&gt;............................] - ETA: 0s14/14 [==============================] - 0s 323us/step</code></pre>
 </div>
 </div>
 </section>
@@ -2290,7 +2314,7 @@ _________________________________________________________________
 <span id="cb60-36"><a href="#cb60-36" aria-hidden="true" tabindex="-1"></a>metrics_df</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code> 1/28 [&gt;.............................] - ETA: 0s28/28 [==============================] - 0s 800us/step
+<pre><code> 1/28 [&gt;.............................] - ETA: 0s28/28 [==============================] - 0s 1ms/step
 各模型在训练集上的性能比较:</code></pre>
 </div>
 <div id="model-comparison" class="cell-output cell-output-display" data-execution_count="35">
@@ -2338,10 +2362,10 @@ _________________________________________________________________
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">神经网络</td>
-<td>0.849607</td>
-<td>0.88806</td>
-<td>0.695906</td>
-<td>0.780328</td>
+<td>0.856341</td>
+<td>0.902256</td>
+<td>0.701754</td>
+<td>0.789474</td>
 </tr>
 </tbody>
 </table>
@@ -2400,7 +2424,7 @@ _________________________________________________________________
 <span id="cb64-18"><a href="#cb64-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"提交文件已保存为 'titanic_submission.csv'"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code> 1/14 [=&gt;............................] - ETA: 0s14/14 [==============================] - 0s 400us/step
+<pre><code> 1/14 [=&gt;............................] - ETA: 0s14/14 [==============================] - 0s 557us/step
 提交文件已保存为 'titanic_submission.csv'</code></pre>
 </div>
 </div>
@@ -2428,12 +2452,12 @@ _________________________________________________________________
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>模型预测一致性统计:
-0    229
-5    109
+0    231
+5    112
 4     28
-3     22
-2     17
-1     13
+2     23
+3     14
+1     10
 Name: count, dtype: int64
 
 各模型预测示例 (前10行):</code></pre>
@@ -2995,8 +3019,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./project1_LC.html" class="pagination-link" aria-label="项目1：借贷违约风险评估">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./06_credit.html" class="pagination-link" aria-label="信用评分理论基础">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">信用评分理论基础</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

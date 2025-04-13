@@ -1,0 +1,353 @@
+---
+title: "非监督学习：降维 (Dimensionality Reduction)"
+---
+
+## 降维技术
+
+在处理现实世界的数据时，我们经常会遇到特征维度非常高的情况（即有很多列）。高维度数据不仅会增加模型的计算复杂度、延长训练时间，还可能引入噪声、导致**维度灾难 (Curse of Dimensionality)**，使得模型难以学习有效的模式，甚至降低性能。本讲我们将专注于**降维 (Dimensionality Reduction)**技术，尤其是**主成分分析 (PCA)**为代表的线性降维方法，同时也会简要介绍一些非线性降维方法。这些技术能帮助我们简化数据、去除冗余、提高模型效率和性能。
+
+### 为什么需要降维？
+
+*   **降低计算复杂度:** 特征越少，模型训练和预测所需的时间和内存就越少。
+*   **缓解维度灾难:** 在高维空间中，数据点变得稀疏，距离度量失去意义，模型更难找到有效的模式。
+*   **去除冗余和噪声:** 并非所有特征都是有用的，有些特征可能高度相关（冗余），有些可能是噪声。去除它们有助于提高模型性能。
+*   **提高模型可解释性:** 使用更少的关键特征更容易理解模型的决策过程。
+*   **数据可视化:** 将高维数据降到 2 维或 3 维，方便我们进行可视化探索。
+
+### 降维的分类
+
+降维技术主要可以分为两大类：
+
+1. **线性降维方法**：假设数据位于线性子空间中
+   - 主成分分析 (PCA)
+   - 线性判别分析 (LDA)
+   - 因子分析 (FA)
+   
+2. **非线性降维方法**：处理位于非线性流形上的数据
+   - t-分布随机邻域嵌入 (t-SNE)
+   - 局部线性嵌入 (LLE)
+   - ISOMAP
+   - UMAP (Uniform Manifold Approximation and Projection)
+
+本讲我们将重点讨论最常用的线性降维方法——主成分分析(PCA)。
+
+### 主成分分析 (PCA - Principal Component Analysis) 深入
+
+PCA 是一种非常流行的**无监督线性降维**技术，属于**特征提取 (Feature Extraction)** 的范畴。它不是简单地选择一部分原始特征，而是将原始特征**线性组合**成一组新的、不相关的**主成分 (Principal Components)**，这些主成分能最大程度地保留原始数据的**方差 (Variance)**。
+
+#### 原理回顾与深入
+
+*   **目标:** 找到一组新的正交（相互垂直）坐标轴（即主成分），使得数据在这些轴上的投影方差最大化。
+*   **第一主成分:** 数据投影后方差最大的那个方向。
+*   **第二主成分:** 与第一主成分正交，并且是剩余方差最大的方向。
+*   **以此类推:** 第 k 个主成分与前 k-1 个主成分都正交，并且是剩余方差最大的方向。
+*   **降维:** 选择方差最大的前 k 个主成分来代表原始数据，从而达到降维的目的。这 k 个主成分是原始特征的线性组合。
+
+#### PCA的数学原理
+
+从线性代数角度，PCA可以通过以下步骤实现：
+
+1. **数据中心化**：将每个特征减去其均值，使得每个特征的均值为0
+2. **计算协方差矩阵**：$\Sigma = \frac{1}{n-1}X^TX$，其中X是中心化后的数据矩阵
+3. **计算协方差矩阵的特征值和特征向量**：求解$\Sigma v = \lambda v$，得到特征值$\lambda$和特征向量$v$
+4. **特征向量排序**：根据特征值大小降序排列特征向量
+5. **选择前k个特征向量**：构建投影矩阵$W$
+6. **数据投影**：$Z = XW$，得到降维后的数据
+
+#### 方差解释率 (Explained Variance Ratio)
+
+PCA 的一个重要输出是每个主成分能够解释原始数据**方差的比例** (`explained_variance_ratio_`)。
+
+*   第一个主成分解释的方差比例最高，第二个次之，以此类推。
+*   所有主成分解释的方差比例之和为 1 (或 100%)。
+*   通过计算**累积方差解释率**，我们可以决定需要保留多少个主成分才能保留足够的信息（例如，保留能够解释 95% 或 99% 方差的主成分）。
+
+#### 如何选择主成分数量 (`n_components`)
+
+*   **根据累积方差解释率:** 绘制累积方差解释率随主成分数量变化的曲线，选择能够达到目标方差解释率（如 95%）的最小主成分数量。
+*   **根据业务需求或可视化需求:** 如果是为了可视化，通常选择 2 或 3 个主成分。
+*   **作为超参数:** 在某些情况下，可以将 `n_components` 视为一个超参数，通过交叉验证来选择最佳值（例如，看哪个数量的主成分能让后续模型的性能最好）。
+*   **肘部法则(Elbow Method):** 绘制主成分数量与累积方差解释率的关系图，找到曲线拐点。
+
+#### 使用 Scikit-learn 实现
+
+::: {.callout-warning title="特征缩放"}
+PCA 对特征的尺度非常敏感。在应用 PCA 之前，**必须对数据进行特征缩放** (通常使用 `StandardScaler`)。
+:::
+
+```python
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import load_digits # 手写数字数据集示例
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+# --- 加载数据示例 (手写数字) ---
+digits = load_digits()
+X_digits = digits.data # (1797, 64) - 1797个样本，每个是8x8图像展平后的64个特征
+y_digits = digits.target
+print("原始数据形状:", X_digits.shape)
+
+# --- 特征缩放 ---
+scaler = StandardScaler()
+X_digits_scaled = scaler.fit_transform(X_digits)
+
+# --- 应用 PCA ---
+# 1. 先不指定 n_components，计算所有主成分的方差解释率
+pca_full = PCA(random_state=42)
+pca_full.fit(X_digits_scaled)
+
+# 计算累积方差解释率
+explained_variance_ratio_cumsum = np.cumsum(pca_full.explained_variance_ratio_)
+
+# 绘制累积方差解释率曲线
+plt.figure(figsize=(8, 5))
+plt.plot(range(1, len(explained_variance_ratio_cumsum) + 1), explained_variance_ratio_cumsum, marker='.', linestyle='--')
+plt.xlabel('Number of Components')
+plt.ylabel('Cumulative Explained Variance Ratio')
+plt.title('Explained Variance by Number of Components')
+plt.grid(True)
+# 添加阈值线 (例如 95%)
+plt.axhline(y=0.95, color='r', linestyle='-', label='95% Explained Variance')
+plt.legend(loc='best')
+# plt.show()
+
+# 2. 根据目标方差解释率选择 n_components
+# 例如，我们希望保留 95% 的方差
+pca_95 = PCA(n_components=0.95, random_state=42) # 直接传入比例
+X_digits_pca_95 = pca_95.fit_transform(X_digits_scaled)
+print(f"\n保留 95% 方差所需的主成分数量: {pca_95.n_components_}")
+print("降维后数据形状 (95%方差):", X_digits_pca_95.shape)
+
+# 3. 或者直接指定主成分数量 (例如用于可视化)
+pca_2d = PCA(n_components=2, random_state=42)
+X_digits_pca_2d = pca_2d.fit_transform(X_digits_scaled)
+print("\n降维到 2D 后的数据形状:", X_digits_pca_2d.shape)
+
+# --- 可视化降维结果 (2D) ---
+plt.figure(figsize=(10, 7))
+plt.scatter(X_digits_pca_2d[:, 0], X_digits_pca_2d[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
+plt.colorbar(label='Digit Label')
+plt.title('PCA of Digits Dataset (2 Components)')
+plt.xlabel('Principal Component 1')
+plt.ylabel('Principal Component 2')
+# plt.show()
+```
+
+#### 主成分的解释与可视化
+
+了解主成分的物理意义，对理解数据结构非常重要：
+
+```python
+# 对于图像数据，我们可以可视化主成分的"外观"
+# 假设我们有手写数字数据
+pca = PCA(n_components=10)
+pca.fit(X_digits_scaled)
+
+# 可视化前几个主成分
+fig, axes = plt.subplots(2, 5, figsize=(12, 5),
+                         subplot_kw={'xticks':[], 'yticks':[]})
+for i, (component, ax) in enumerate(zip(pca.components_, axes.ravel())):
+    ax.imshow(component.reshape(8, 8), cmap='viridis')
+    ax.set_title(f"PC {i+1}")
+plt.tight_layout()
+# plt.show()
+
+# 可视化原始图像及其重构
+n_components = 30
+pca = PCA(n_components=n_components).fit(X_digits_scaled)
+X_reduced = pca.transform(X_digits_scaled)
+X_restored = pca.inverse_transform(X_reduced)
+
+# 选择几个样本展示
+n_samples = 5
+fig, axes = plt.subplots(2, n_samples, figsize=(n_samples * 2, 4),
+                        subplot_kw={'xticks':[], 'yticks':[]})
+for i in range(n_samples):
+    # 原始图像
+    axes[0, i].imshow(X_digits[i].reshape(8, 8), cmap='gray')
+    axes[0, i].set_title('Original')
+    # 重构图像
+    axes[1, i].imshow(X_restored[i].reshape(8, 8), cmap='gray')
+    axes[1, i].set_title(f'Restored ({n_components} PCs)')
+plt.tight_layout()
+# plt.show()
+```
+
+#### PCA 应用与局限性
+
+*   **应用:**
+    *   **数据压缩:** 用更少的维度存储数据，减少存储空间和计算时间。
+    *   **噪声去除:** 保留方差较大的主成分通常能过滤掉部分噪声。
+    *   **可视化:** 将高维数据降到 2D 或 3D 进行可视化。
+    *   **作为预处理步骤:** 将降维后的数据输入到其他机器学习模型中（有时能提高性能，有时会损失信息导致性能下降，需要尝试）。
+*   **局限性:**
+    *   **线性假设:** PCA 假设数据的主要结构是线性的，对于高度非线性的数据效果可能不佳（可以考虑 Kernel PCA 等非线性方法）。
+    *   **可解释性差:** 主成分是原始特征的线性组合，其物理意义不如原始特征直观。
+    *   **对特征缩放敏感:** 必须进行特征缩放。
+
+### 其他线性降维方法
+
+#### 线性判别分析 (LDA - Linear Discriminant Analysis)
+
+LDA 是一种**有监督的**线性降维方法，它不仅考虑数据的方差，还考虑类别信息，尝试找到能够最大化类间方差和最小化类内方差的投影方向。
+
+```python
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+
+# 假设我们有分类数据 X_train, y_train
+# lda = LinearDiscriminantAnalysis(n_components=2)
+# X_train_lda = lda.fit_transform(X_train, y_train)
+
+# print("LDA 降维后的形状:", X_train_lda.shape)
+# print("每个类别的均值:", lda.means_)
+# print("LDA 的解释方差比:", lda.explained_variance_ratio_)
+```
+
+与PCA相比，LDA的主要特点：
+- **有监督学习**：利用标签信息进行降维
+- **目标**：最大化类间方差，最小化类内方差
+- **维度限制**：最多可降至C-1维（C为类别数量）
+- **应用**：更适合分类问题的降维
+
+#### 因子分析 (Factor Analysis)
+
+因子分析是一种统计方法，用于描述观察到的相关变量之间的变异性，试图将其归因于较少数量的未观察到的变量（称为因子）。
+
+```python
+from sklearn.decomposition import FactorAnalysis
+
+# n_components 是潜在因子的数量
+# fa = FactorAnalysis(n_components=5, random_state=42)
+# X_fa = fa.fit_transform(X_scaled)
+# print("因子分析后的形状:", X_fa.shape)
+# print("因子载荷矩阵:", fa.components_)
+```
+
+### 非线性降维方法
+
+当数据分布在非线性流形上时，线性降维方法可能效果不佳。这时我们需要考虑非线性降维方法。
+
+#### t-SNE (t-Distributed Stochastic Neighbor Embedding)
+
+t-SNE 是一种非常流行的非线性降维方法，特别适合数据可视化。它尝试在低维空间中保留高维空间中点的局部结构（即相似的点在降维后仍然靠近）。
+
+```python
+from sklearn.manifold import TSNE
+
+# n_components 通常是2或3 (用于可视化)
+# perplexity 是一个重要参数，通常在5-50之间，影响局部结构的保留
+# tsne = TSNE(n_components=2, perplexity=30, random_state=42, n_iter=1000)
+# X_tsne = tsne.fit_transform(X_digits)
+# print("t-SNE 降维后的形状:", X_tsne.shape)
+
+# 可视化 t-SNE 结果
+# plt.figure(figsize=(10, 7))
+# plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
+# plt.colorbar(label='Digit Label')
+# plt.title('t-SNE of Digits Dataset (2 Components)')
+# plt.xlabel('t-SNE 1')
+# plt.ylabel('t-SNE 2')
+# plt.show()
+```
+
+t-SNE的特点：
+- **优点**：能够保留局部结构，非常适合数据可视化
+- **缺点**：
+  - 计算复杂度高，不适合大数据集
+  - 参数敏感（特别是perplexity）
+  - 不支持transform新数据（需要重新拟合）
+  - 随机性高，不同运行可能产生不同结果
+
+#### UMAP (Uniform Manifold Approximation and Projection)
+
+UMAP 是一种较新的非线性降维技术，它基于黎曼几何和代数拓扑，在保持数据全局结构的同时，维持局部结构。比t-SNE更快，且能更好地保留全局结构。
+
+```python
+# 需要安装: pip install umap-learn
+import umap
+
+# n_neighbors 控制局部结构的保留程度
+# min_dist 控制嵌入中点的紧密程度
+# reducer = umap.UMAP(n_components=2, n_neighbors=15, min_dist=0.1, random_state=42)
+# X_umap = reducer.fit_transform(X_digits)
+# print("UMAP 降维后的形状:", X_umap.shape)
+
+# 可视化 UMAP 结果
+# plt.figure(figsize=(10, 7))
+# plt.scatter(X_umap[:, 0], X_umap[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
+# plt.colorbar(label='Digit Label')
+# plt.title('UMAP of Digits Dataset (2 Components)')
+# plt.xlabel('UMAP 1')
+# plt.ylabel('UMAP 2')
+# plt.show()
+```
+
+UMAP的优势：
+- 比t-SNE更快
+- 更好地保留全局结构
+- 能够transform新数据
+- 理论基础更坚实
+
+### 实践与讨论
+
+#### 各种降维方法的比较
+
+让我们比较PCA、t-SNE和UMAP在同一数据集上的表现：
+
+```python
+# 设置图形大小
+# plt.figure(figsize=(18, 6))
+
+# PCA
+# plt.subplot(1, 3, 1)
+# plt.scatter(X_digits_pca_2d[:, 0], X_digits_pca_2d[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
+# plt.title('PCA')
+# plt.colorbar()
+
+# t-SNE
+# plt.subplot(1, 3, 2)
+# plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
+# plt.title('t-SNE')
+# plt.colorbar()
+
+# UMAP
+# plt.subplot(1, 3, 3)
+# plt.scatter(X_umap[:, 0], X_umap[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
+# plt.title('UMAP')
+# plt.colorbar()
+
+# plt.tight_layout()
+# plt.show()
+```
+
+#### 如何选择合适的降维方法？
+
+选择降维方法时应考虑以下因素：
+
+1. **数据规模**：大数据集可能更适合PCA或UMAP，而不是计算密集的t-SNE
+2. **任务目标**：
+   - 可视化：t-SNE或UMAP通常效果更好
+   - 降噪：PCA
+   - 分类预处理：LDA或PCA
+3. **数据结构**：
+   - 线性结构：PCA或LDA
+   - 非线性流形：t-SNE、UMAP或其他流形学习方法
+4. **可解释性需求**：PCA的主成分有明确的数学解释，而非线性方法通常解释性较弱
+5. **计算资源**：PCA快速且高效，非线性方法计算密集
+
+#### 实践建议
+
+- **总是从PCA开始**：先尝试简单的线性方法，再逐步尝试复杂的非线性方法
+- **特征缩放非常重要**：大多数降维方法对特征尺度敏感
+- **可视化降维效果**：通过可视化了解数据的内在结构
+- **调整参数**：每种方法都有关键参数需要调整（如t-SNE的perplexity，UMAP的n_neighbors）
+- **结合领域知识**：利用对数据的领域理解来评估降维结果
+
+#### 本讲总结
+
+本讲我们学习了降维的重要性和各种降维技术，从线性方法（如PCA、LDA）到非线性方法（如t-SNE、UMAP）。我们重点讨论了PCA的原理、实现和应用，并简要介绍了其他降维方法的特点和适用场景。
+
+降维技术在机器学习中扮演着重要角色，它不仅能够减少计算复杂度，还能够帮助我们发现数据中的隐藏结构，提高模型性能，并实现数据可视化。掌握这些技术将使你能够更有效地处理高维数据。
+

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>13&nbsp; 项目2A：上证综指收益率时间序列预测 – 数据挖掘与机器学习课程讲义</title>
+<title>8&nbsp; 信用评分理论基础 – 数据挖掘与机器学习课程讲义</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./project2b_text.html" rel="next">
-<link href="./project1_LC.html" rel="prev">
+<link href="./07_unsupervised.html" rel="next">
+<link href="./lab03_titanic.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -81,7 +81,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./project2a_tspred.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06_credit.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">信用评分理论基础</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="搜索" onclick="window.quartoOpenSearch();">
@@ -150,7 +150,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06_credit.html" class="sidebar-item-text sidebar-link">
+  <a href="./06_credit.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">信用评分理论基础</span></span></a>
   </div>
 </li>
@@ -180,7 +180,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./project2a_tspred.html" class="sidebar-item-text sidebar-link active">
+  <a href="./project2a_tspred.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
   </div>
 </li>
@@ -200,18 +200,16 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">目录</h2>
    
   <ul>
-  <li><a href="#项目背景" id="toc-项目背景" class="nav-link active" data-scroll-target="#项目背景"><span class="header-section-number">13.1</span> 项目背景</a></li>
-  <li><a href="#项目目标" id="toc-项目目标" class="nav-link" data-scroll-target="#项目目标"><span class="header-section-number">13.2</span> 项目目标</a></li>
-  <li><a href="#数据简介" id="toc-数据简介" class="nav-link" data-scroll-target="#数据简介"><span class="header-section-number">13.3</span> 数据简介</a></li>
-  <li><a href="#数据特点与挑战" id="toc-数据特点与挑战" class="nav-link" data-scroll-target="#数据特点与挑战"><span class="header-section-number">13.4</span> 数据特点与挑战</a></li>
-  <li><a href="#项目步骤建议仅供参考" id="toc-项目步骤建议仅供参考" class="nav-link" data-scroll-target="#项目步骤建议仅供参考"><span class="header-section-number">13.5</span> 项目步骤建议（仅供参考）</a>
+  <li><a href="#信用评分理论基础" id="toc-信用评分理论基础" class="nav-link active" data-scroll-target="#信用评分理论基础"><span class="header-section-number">8.1</span> 信用评分理论基础</a>
   <ul class="collapse">
-  <li><a href="#数据预处理与探索性分析" id="toc-数据预处理与探索性分析" class="nav-link" data-scroll-target="#数据预处理与探索性分析"><span class="header-section-number">13.5.1</span> 数据预处理与探索性分析</a></li>
-  <li><a href="#模型构建与评估" id="toc-模型构建与评估" class="nav-link" data-scroll-target="#模型构建与评估"><span class="header-section-number">13.5.2</span> 模型构建与评估</a></li>
-  <li><a href="#预测结果分析与应用" id="toc-预测结果分析与应用" class="nav-link" data-scroll-target="#预测结果分析与应用"><span class="header-section-number">13.5.3</span> 预测结果分析与应用</a></li>
+  <li><a href="#信用评分的概念与意义" id="toc-信用评分的概念与意义" class="nav-link" data-scroll-target="#信用评分的概念与意义"><span class="header-section-number">8.1.1</span> 信用评分的概念与意义</a></li>
+  <li><a href="#信用风险度量" id="toc-信用风险度量" class="nav-link" data-scroll-target="#信用风险度量"><span class="header-section-number">8.1.2</span> 信用风险度量</a></li>
+  <li><a href="#评分卡模型原理" id="toc-评分卡模型原理" class="nav-link" data-scroll-target="#评分卡模型原理"><span class="header-section-number">8.1.3</span> 评分卡模型原理</a></li>
+  <li><a href="#经典信用评分理论" id="toc-经典信用评分理论" class="nav-link" data-scroll-target="#经典信用评分理论"><span class="header-section-number">8.1.4</span> 经典信用评分理论</a></li>
+  <li><a href="#fico-评分" id="toc-fico-评分" class="nav-link" data-scroll-target="#fico-评分"><span class="header-section-number">8.1.5</span> FICO 评分</a></li>
+  <li><a href="#信用评分面临的挑战与伦理考量" id="toc-信用评分面临的挑战与伦理考量" class="nav-link" data-scroll-target="#信用评分面临的挑战与伦理考量"><span class="header-section-number">8.1.6</span> 信用评分面临的挑战与伦理考量</a></li>
   </ul></li>
-  <li><a href="#提交要求" id="toc-提交要求" class="nav-link" data-scroll-target="#提交要求"><span class="header-section-number">13.6</span> 提交要求</a></li>
-  <li><a href="#评分标准" id="toc-评分标准" class="nav-link" data-scroll-target="#评分标准"><span class="header-section-number">13.7</span> 评分标准</a></li>
+  <li><a href="#互联网时代信用评分的新发展" id="toc-互联网时代信用评分的新发展" class="nav-link" data-scroll-target="#互联网时代信用评分的新发展"><span class="header-section-number">8.2</span> 互联网时代信用评分的新发展</a></li>
   </ul>
 </nav>
     </div>
@@ -220,7 +218,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></h1>
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">信用评分理论基础</span></h1>
 </div>
 
 
@@ -237,224 +235,218 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="项目背景" class="level2" data-number="13.1">
-<h2 data-number="13.1" class="anchored" data-anchor-id="项目背景"><span class="header-section-number">13.1</span> 项目背景</h2>
-<p>上海证券交易所(上交所)成立于1990年11月26日，是中国大陆第一家证券交易所，与深圳证券交易所、北京证券交易所并称为中国大陆三大证券交易所。上证综指(Shanghai Composite Index)是以上海证券交易所挂牌上市的所有股票为样本，以发行量为权数计算的加权综合股价指数，是反映上海证券市场整体走势的重要指标。</p>
-<p>上证综指自1991年7月15日正式发布，基日为1990年12月19日，基点为100点。作为中国股市最具代表性的指数之一，上证综指的走势不仅反映了中国资本市场的整体状况，也在很大程度上反映了中国宏观经济的发展态势。</p>
-<p>金融时间序列预测一直是金融数据分析和量化投资领域的重要研究方向。相比传统的截面数据分析，时间序列数据具有明显的时序依赖性，这使得时间序列预测面临更多的挑战。特别是金融市场数据，其高波动性、非线性特征以及受多种复杂因素影响的特点，进一步增加了预测的难度。</p>
-<p>随着机器学习技术的发展，各种先进的预测方法被应用于金融时间序列分析，从传统的ARIMA、GARCH模型，到现代的支持向量机(SVM)、随机森林、深度学习网络等，为金融时间序列预测提供了更多可能性。</p>
+<section id="信用评分理论基础" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="信用评分理论基础"><span class="header-section-number">8.1</span> 信用评分理论基础</h2>
+<section id="信用评分的概念与意义" class="level3" data-number="8.1.1">
+<h3 data-number="8.1.1" class="anchored" data-anchor-id="信用评分的概念与意义"><span class="header-section-number">8.1.1</span> 信用评分的概念与意义</h3>
+<p>信用评分是一种利用统计模型和机器学习技术，对借款人或交易对手的信用风险进行量化评估的方法。它通过分析借款人的各种信息，如个人特征、财务状况、还款历史等，预测其未来违约的可能性，并以分数的形式呈现。</p>
+<p><strong>信用评分的意义：</strong></p>
+<ul>
+<li><strong>风险管理：</strong> 帮助金融机构识别和评估信用风险，作为信贷决策的重要依据，降低坏账率。</li>
+<li><strong>效率提升：</strong> 自动化审批流程，提高信贷审批效率，降低人工审核成本。</li>
+<li><strong>差异化定价：</strong> 根据信用评分对客户进行风险分层，实现差异化定价，优化资源配置。</li>
+<li><strong>金融普惠：</strong> 使得更多信用记录不足但信用良好的人群获得金融服务。</li>
+</ul>
 </section>
-<section id="项目目标" class="level2" data-number="13.2">
-<h2 data-number="13.2" class="anchored" data-anchor-id="项目目标"><span class="header-section-number">13.2</span> 项目目标</h2>
-<p>本项目旨在利用机器学习方法对上证综指的收益率进行时间序列预测。具体目标包括：</p>
+<section id="信用风险度量" class="level3" data-number="8.1.2">
+<h3 data-number="8.1.2" class="anchored" data-anchor-id="信用风险度量"><span class="header-section-number">8.1.2</span> 信用风险度量</h3>
+<p>信用风险是指借款人未能按时足额偿还债务的可能性。常用的信用风险度量指标包括：</p>
+<ul>
+<li><strong>违约概率 (Probability of Default, PD)</strong>：指在一定时期内，借款人发生违约的可能性。信用评分模型的核心目标就是预测 PD。</li>
+<li><strong>违约损失率 (Loss Given Default, LGD)</strong>：指发生违约时，债权人可能遭受的损失占总风险暴露的比例。</li>
+<li><strong>违约风险暴露 (Exposure at Default, EAD)</strong>：指发生违约时，债权人面临的风险敞口总额。</li>
+</ul>
+<p>信用风险的期望损失 (Expected Loss, EL) 可以表示为：</p>
+<p>[ EL = PD LGD EAD ]</p>
+<p>信用评分模型主要关注违约概率 PD 的预测。</p>
+</section>
+<section id="评分卡模型原理" class="level3" data-number="8.1.3">
+<h3 data-number="8.1.3" class="anchored" data-anchor-id="评分卡模型原理"><span class="header-section-number">8.1.3</span> 评分卡模型原理</h3>
+<p>评分卡模型是一种常用的信用评分工具，它将借款人的各种特征转化为分数，然后将这些分数加总得到一个总分，总分越高表示信用风险越低。</p>
+<p><strong>评分卡模型的基本原理：</strong></p>
 <ol type="1">
-<li>理解并处理金融时间序列数据的特性，如平稳性、季节性、趋势等</li>
-<li>构建和评估不同的时间序列预测模型</li>
-<li>比较传统统计方法与现代机器学习方法在金融时间序列预测中的表现</li>
-<li>探索能够提高预测准确性的特征工程方法</li>
-<li>分析预测结果的经济意义和实际应用价值</li>
-</ol>
-</section>
-<section id="数据简介" class="level2" data-number="13.3">
-<h2 data-number="13.3" class="anchored" data-anchor-id="数据简介"><span class="header-section-number">13.3</span> 数据简介</h2>
-<p>本项目将使用上证综指的历史数据，时间范围为2000年1月至2023年12月，包含以下几类信息：</p>
+<li><strong>特征选择与处理：</strong> 选择与信用风险相关的特征，并进行数据清洗、缺失值处理、异常值处理、特征转换等。</li>
+<li><strong>模型选择与训练：</strong> 常用的模型包括逻辑回归、决策树、支持向量机、神经网络等。逻辑回归因其可解释性和稳定性在评分卡中应用最为广泛。</li>
+<li><strong>评分转换：</strong> 将模型预测的违约概率转换为评分值。常用的转换方法包括对数 odds 转换等。</li>
+<li><strong>模型验证与评估：</strong> 评估模型的区分能力、校准性、稳定性和业务有效性。常用的评估指标包括 AUC、KS 统计量、Lift 图、PSI 指数等。
 <ul>
-<li><strong>基础价格数据</strong>（CSMAR、WIND）：
+<li><strong>常用评估指标详解：</strong>
 <ul>
-<li><code>Date</code>：交易日期</li>
-<li><code>Open</code>：开盘价</li>
-<li><code>High</code>：最高价</li>
-<li><code>Low</code>：最低价</li>
-<li><code>Close</code>：收盘价</li>
-<li><code>Adj Close</code>：调整后收盘价</li>
-<li><code>Volume</code>：成交量</li>
+<li><strong>AUC (Area Under the ROC Curve):</strong> 衡量模型区分好坏客户的能力。AUC 值越接近 1，表示模型区分能力越强。ROC 曲线是以假正例率 (FPR) 为横轴，真正例率 (TPR) 为纵轴绘制的曲线。</li>
+<li><strong>KS (Kolmogorov-Smirnov) 统计量:</strong> 衡量模型区分度的指标，表示好坏样本累积分布差异的最大值。KS 值越大，表示模型区分能力越强，通常用于选择最佳阈值。</li>
+<li><strong>提升图 (Lift Chart):</strong> 展示模型相比随机选择，在识别好/坏客户方面的提升效果。</li>
+<li><strong>PSI (Population Stability Index):</strong> 衡量模型在不同时间段或不同数据集上评分分布的稳定性。PSI 过高可能表示模型需要重新训练或调整。</li>
 </ul></li>
-<li><strong>派生指标</strong>（CSMAR、WIND）：
-<ul>
-<li><code>Returns</code>：日收益率（当日收盘价相对前一日收盘价的百分比变化）</li>
-<li><code>Volatility</code>：基于历史窗口计算的波动率</li>
-</ul></li>
-<li><strong>技术指标</strong>（需自行构建）：
-<ul>
-<li>移动平均线(MA)：不同时间窗口的简单移动平均和指数移动平均</li>
-<li>相对强弱指数(RSI)</li>
-<li>布林带(Bollinger Bands)</li>
-<li>MACD(Moving Average Convergence Divergence)</li>
-</ul></li>
-<li><strong>宏观经济数据</strong>（CSMAR、WIND）：
-<ul>
-<li>中国GDP增长率</li>
-<li>CPI（消费者价格指数）</li>
-<li>利率</li>
-<li>汇率（美元/人民币）</li>
-</ul></li>
-</ul>
-</section>
-<section id="数据特点与挑战" class="level2" data-number="13.4">
-<h2 data-number="13.4" class="anchored" data-anchor-id="数据特点与挑战"><span class="header-section-number">13.4</span> 数据特点与挑战</h2>
-<p>金融时间序列数据具有以下特点，这些都给预测带来了挑战：</p>
-<ol type="1">
-<li><strong>非平稳性</strong>：金融市场数据通常表现出非平稳特性，即统计特性随时间变化</li>
-<li><strong>高噪声</strong>：市场价格受多种随机因素影响，含有大量噪声</li>
-<li><strong>异方差性</strong>：金融数据的波动性往往会随时间聚集，表现为波动聚类现象</li>
-<li><strong>胖尾分布</strong>：收益率分布常常表现出比正态分布更胖的尾部，意味着极端事件发生的概率更高</li>
-<li><strong>长期记忆和短期记忆</strong>：金融时间序列可能同时表现出短期和长期的相关性特征</li>
-</ol>
-</section>
-<section id="项目步骤建议仅供参考" class="level2" data-number="13.5">
-<h2 data-number="13.5" class="anchored" data-anchor-id="项目步骤建议仅供参考"><span class="header-section-number">13.5</span> 项目步骤建议（仅供参考）</h2>
-<section id="数据预处理与探索性分析" class="level3" data-number="13.5.1">
-<h3 data-number="13.5.1" class="anchored" data-anchor-id="数据预处理与探索性分析"><span class="header-section-number">13.5.1</span> 数据预处理与探索性分析</h3>
-<ul>
-<li><strong>数据获取与清洗</strong>：
-<ul>
-<li>下载上证综指历史数据</li>
-<li>处理缺失值（如节假日）</li>
-<li>检测并处理异常值</li>
-<li>确保时间索引的连续性和正确性</li>
-</ul></li>
-<li><strong>探索性数据分析</strong>：
-<ul>
-<li>绘制时间序列图，观察长期趋势和季节性模式</li>
-<li>计算并分析基本统计量（均值、标准差、偏度、峰度等）</li>
-<li>检验序列的平稳性（ADF检验、KPSS检验等）</li>
-<li>分析自相关性（ACF和PACF图）</li>
-<li>检测异方差性（ARCH效应检验）</li>
-</ul></li>
-<li><strong>特征工程</strong>：
-<ul>
-<li>构建基于不同滞后期的特征</li>
-<li>计算技术分析指标作为特征（如移动平均、相对强弱指数等）</li>
-<li>引入宏观经济变量作为外生变量</li>
-<li>特征选择与降维（如主成分分析）</li>
-<li>考虑时间结构特征（如一周中的某天、月份效应等）</li>
-</ul></li>
-<li><strong>数据转换</strong>：
-<ul>
-<li>差分变换以实现平稳性</li>
-<li>标准化或归一化处理</li>
-<li>考虑非线性变换（如对数变换）</li>
-<li>处理数据频率不匹配问题（如将宏观经济月度数据转换为日度数据）</li>
-</ul></li>
-</ul>
-</section>
-<section id="模型构建与评估" class="level3" data-number="13.5.2">
-<h3 data-number="13.5.2" class="anchored" data-anchor-id="模型构建与评估"><span class="header-section-number">13.5.2</span> 模型构建与评估</h3>
-<ul>
-<li><strong>传统时间序列模型</strong>：
-<ul>
-<li>自回归模型(AR)</li>
-<li>移动平均模型(MA)</li>
-<li>自回归移动平均模型(ARMA)</li>
-<li>自回归积分移动平均模型(ARIMA)</li>
-<li>广义自回归条件异方差模型(GARCH)及其变种</li>
-</ul></li>
-<li><strong>机器学习模型</strong>：
-<ul>
-<li>支持向量回归(SVR)</li>
-<li>随机森林(RF)</li>
-<li>梯度提升树(如XGBoost、LightGBM)</li>
-<li>K近邻回归(KNN)</li>
-<li>神经网络模型(如MLP、RNN、LSTM)</li>
-</ul></li>
-<li><strong>集成方法与混合模型</strong>：
-<ul>
-<li>组合不同模型的预测结果</li>
-<li>构建混合模型融合时间序列模型和机器学习模型的优势</li>
-</ul></li>
-<li><strong>交叉验证策略</strong>：
-<ul>
-<li>使用时间序列交叉验证方法（如时间滚动窗口法）</li>
-<li>避免数据泄露</li>
-<li>考虑不同长度的训练窗口和预测窗口</li>
-</ul></li>
-<li><strong>评估指标</strong>：
-<ul>
-<li>均方误差(MSE)</li>
-<li>平均绝对误差(MAE)</li>
-<li>平均绝对百分比误差(MAPE)</li>
-<li>方向准确率（预测涨跌方向的准确度）</li>
-<li>信息系数(IC)和累积信息系数(CIC)</li>
-</ul></li>
-</ul>
-</section>
-<section id="预测结果分析与应用" class="level3" data-number="13.5.3">
-<h3 data-number="13.5.3" class="anchored" data-anchor-id="预测结果分析与应用"><span class="header-section-number">13.5.3</span> 预测结果分析与应用</h3>
-<ul>
-<li><strong>模型解释性分析</strong>：
-<ul>
-<li>分析特征重要性</li>
-<li>理解模型学习到的模式</li>
-<li>分析不同市场条件下的预测表现</li>
-</ul></li>
-<li><strong>交易策略构建</strong>：
-<ul>
-<li>基于预测结果设计简单交易策略</li>
-<li>回测策略表现</li>
-<li>考虑交易成本和滑点</li>
-<li>计算策略风险调整后收益（如夏普比率）</li>
-</ul></li>
-<li><strong>鲁棒性分析</strong>：
-<ul>
-<li>在不同市场环境下测试模型性能</li>
-<li>分析模型对极端事件的适应能力</li>
-<li>考虑参数变化对预测结果的影响</li>
-</ul></li>
-</ul>
-</section>
-</section>
-<section id="提交要求" class="level2" data-number="13.6">
-<h2 data-number="13.6" class="anchored" data-anchor-id="提交要求"><span class="header-section-number">13.6</span> 提交要求</h2>
-<ol type="1">
-<li><strong>课堂展示Slides</strong>：
-<ul>
-<li>简明扼要展示项目主要发现和结果</li>
-<li>包含关键可视化图表</li>
-<li>演示时间控制在10分钟以内</li>
-</ul></li>
-<li><strong>项目代码文件</strong>：
-<ul>
-<li>提交完整的、有注释的Python代码（可以是多个Python文件）</li>
-<li>代码应包含从数据获取、清洗、特征工程到模型训练、评估的全过程</li>
-<li>确保代码可重复运行，并包含必要的环境依赖说明</li>
-</ul></li>
-<li><strong>提交方式与截止日期</strong>：
-<ul>
-<li>通过学习通平台提交所有文件</li>
-<li>项目Slides和项目代码打包为一个ZIP文件</li>
-<li>截止日期：2025年6月8日23:59</li>
 </ul></li>
 </ol>
 </section>
-<section id="评分标准" class="level2" data-number="13.7">
-<h2 data-number="13.7" class="anchored" data-anchor-id="评分标准"><span class="header-section-number">13.7</span> 评分标准</h2>
+<section id="经典信用评分理论" class="level3" data-number="8.1.4">
+<h3 data-number="8.1.4" class="anchored" data-anchor-id="经典信用评分理论"><span class="header-section-number">8.1.4</span> 经典信用评分理论</h3>
+<p>经典的信用评分理论，例如 <strong>5C 信用评估体系</strong>，为我们推测可能影响信用评分的指标提供了理论基础。5C 体系从五个方面评估借款人的信用状况：</p>
 <ul>
-<li><strong>课堂展示（40分）</strong>
+<li><strong>品格 (Character)</strong>：借款人的还款意愿和信用历史。
 <ul>
-<li>内容全面性：清晰展示数据分析、特征工程、模型构建和评估的完整流程</li>
-<li>技术理解：准确阐述金融时间序列特性及采用模型的优缺点</li>
-<li>结果分析：深入解读预测结果的经济意义和实际应用价值</li>
-<li>可视化呈现：包含时间序列分解图、ACF/PACF图、模型预测对比图等专业图表</li>
-<li>创新性：展示对模型局限性的思考或改进尝试</li>
-<li>时间控制：重点突出，在10分钟内完整呈现核心内容</li>
+<li><strong>可能指标：</strong>
+<ul>
+<li><strong>历史还款记录：</strong> 是否有逾期记录、逾期次数、逾期时长等。</li>
+<li><strong>稳定性：</strong> 居住时长、工作时长、工作稳定性等。</li>
+<li><strong>社交媒体行为：</strong> （在某些情况下）社交媒体上的信用相关行为。</li>
 </ul></li>
-<li><strong>代码质量（30分）</strong>
-<ul>
-<li>完整性：包含数据预处理、特征生成、模型训练、回测评估全流程</li>
-<li>时序处理：正确实现时间序列分割、滚动窗口验证，避免数据泄露</li>
-<li>可重复性：设置随机种子，保证结果可复现</li>
-<li>规范性：代码模块化设计，有清晰的函数注释和文档说明</li>
-<li>可视化：实现关键时序分析和预测结果的可视化功能</li>
 </ul></li>
-<li><strong>模型性能（30分）</strong>
+<li><strong>偿还能力 (Capacity)</strong>：借款人的收入水平和偿债能力。
 <ul>
-<li>基准模型：实现ARIMA/GARCH等传统时序模型作为基准</li>
-<li>优化模型：通过特征工程/模型融合提升预测精度</li>
-<li>模型多样性：至少包含3种不同类别模型（如ARIMA、LSTM、XGBoost）</li>
-<li>评估全面性：同时报告点预测精度（MSE）和方向准确性指标</li>
-<li>策略应用：设计基于预测结果的简单交易策略并评估其表现</li>
+<li><strong>可能指标：</strong>
+<ul>
+<li><strong>收入水平：</strong> 月收入、年收入、工资流水等。</li>
+<li><strong>职业类型：</strong> 职业稳定性、行业前景等。</li>
+<li><strong>资产状况：</strong> 房产、车辆、存款、投资等。</li>
+<li><strong>负债水平：</strong> 负债收入比、信用卡负债、其他贷款等。</li>
+</ul></li>
+</ul></li>
+<li><strong>资本 (Capital)</strong>：借款人的净资产和财务实力。
+<ul>
+<li><strong>可能指标：</strong>
+<ul>
+<li><strong>净资产：</strong> 总资产减去总负债。</li>
+<li><strong>自有资金比例：</strong> 例如，在购房贷款中，首付比例。</li>
+<li><strong>紧急备用金：</strong> 可随时动用的资金储备。</li>
+</ul></li>
+</ul></li>
+<li><strong>抵押品 (Collateral)</strong>：借款人提供的抵押物或担保物。
+<ul>
+<li><strong>可能指标：</strong>
+<ul>
+<li><strong>抵押物类型：</strong> 房产、车辆、设备等。</li>
+<li><strong>抵押物价值：</strong> 抵押物的评估价值。</li>
+<li><strong>抵押率：</strong> 贷款金额与抵押物价值的比例。</li>
+</ul></li>
+</ul></li>
+<li><strong>环境 (Condition)</strong>：外部经济环境和行业状况。
+<ul>
+<li><strong>可能指标：</strong>
+<ul>
+<li><strong>宏观经济指标：</strong> GDP 增长率、失业率、通货膨胀率、利率水平等。</li>
+<li><strong>行业景气度：</strong> 借款人所在行业的整体发展状况。</li>
+<li><strong>政策法规：</strong> 相关的信贷政策、监管法规等。</li>
+</ul></li>
 </ul></li>
 </ul>
+</section>
+<section id="fico-评分" class="level3" data-number="8.1.5">
+<h3 data-number="8.1.5" class="anchored" data-anchor-id="fico-评分"><span class="header-section-number">8.1.5</span> FICO 评分</h3>
+<p>FICO 评分是由美国 Fair Isaac Corporation (FICO) 公司开发的一种<strong>个人信用评分系统</strong>，是目前在美国最广泛应用的信用评分模型。它被广泛应用于信贷审批、贷款定价、风险管理等领域。</p>
+<p><strong>FICO 评分范围：</strong></p>
+<p>FICO 评分通常在 <strong>300 到 850</strong> 之间。分数越高，表示信用风险越低。</p>
+<p><strong>FICO 评分的主要影响因素 (权重由高到低):</strong></p>
+<ol type="1">
+<li><strong>还款历史 (Payment History) (约占 35%):</strong> 这是最重要的因素。包括：
+<ul>
+<li>是否按时还款 (信用卡、贷款等)。</li>
+<li>逾期记录 (逾期次数、逾期时长、逾期金额)。</li>
+<li>不良记录 (例如，催收、破产等)。</li>
+</ul></li>
+<li><strong>欠款金额 (Amounts Owed) (约占 30%):</strong> 包括：
+<ul>
+<li>总欠款金额。</li>
+<li>已用信用额度比例 (Utilization Ratio)：已用信用额度 / 总信用额度。 比例越低越好。</li>
+<li>欠款账户数量。</li>
+</ul></li>
+<li><strong>信用历史长度 (Length of Credit History) (约占 15%):</strong> 包括：
+<ul>
+<li>最早信用账户的开户时间。</li>
+<li>平均信用账户的开户时间。</li>
+<li>信用历史越长，通常评分越高。</li>
+</ul></li>
+<li><strong>新开立信用账户 (New Credit) (约占 10%):</strong> 包括：
+<ul>
+<li>新开立信用账户的数量。</li>
+<li>短期内申请信用账户的频率。</li>
+<li>频繁申请新的信用账户可能会降低评分。</li>
+</ul></li>
+<li><strong>信用类型 (Credit Mix) (约占 10%):</strong> 包括：
+<ul>
+<li>拥有的不同类型的信用账户，例如：
+<ul>
+<li>循环信用 (Revolving Credit)：信用卡、信用额度贷款等。</li>
+<li>分期付款信用 (Installment Credit)：房屋贷款、汽车贷款、个人贷款等。</li>
+</ul></li>
+<li>拥有多种类型的信用账户，并良好管理，通常对评分有正面影响。</li>
+</ul></li>
+</ol>
+<p><strong>FICO 评分的意义：</strong></p>
+<ul>
+<li><strong>信贷决策：</strong> 银行和其他金融机构使用 FICO 评分来评估借款人的信用风险，决定是否批准贷款、信用卡申请，以及确定贷款利率和额度。</li>
+<li><strong>消费者信用管理：</strong> 消费者可以通过了解 FICO 评分的影响因素，更好地管理自己的信用，提高信用评分，从而获得更好的金融服务。</li>
+</ul>
+<p><strong>总结：</strong></p>
+<p>信用评分理论基础是构建有效信用评分模型的基石。理解信用评分的概念、意义、风险度量方法和评分卡模型原理，并结合经典信用评估理论，可以帮助我们更好地选择和构建信用评分模型所需的特征指标，从而提升模型的预测能力和业务价值。</p>
+</section>
+<section id="信用评分面临的挑战与伦理考量" class="level3" data-number="8.1.6">
+<h3 data-number="8.1.6" class="anchored" data-anchor-id="信用评分面临的挑战与伦理考量"><span class="header-section-number">8.1.6</span> 信用评分面临的挑战与伦理考量</h3>
+<p>尽管信用评分在金融领域发挥着重要作用，但也面临着一些挑战和伦理问题：</p>
+<ul>
+<li><strong>数据稀疏性与冷启动问题 (Data Sparsity &amp; Cold Start):</strong> 对于缺乏信用历史记录的“白户”或“薄档”人群，难以建立准确的评分模型。</li>
+<li><strong>数据质量与准确性 (Data Quality &amp; Accuracy):</strong> 评分模型的准确性高度依赖于输入数据的质量。错误或过时的数据可能导致评分偏差。</li>
+<li><strong>模型偏见与公平性 (Model Bias &amp; Fairness):</strong> 模型可能无意中学习到数据中存在的社会偏见（如地域、种族、性别歧视），导致对特定群体的评分不公平。确保算法公平性是一个重要的研究方向。</li>
+<li><strong>模型可解释性与透明度 (Interpretability &amp; Transparency):</strong> 复杂的机器学习模型（如深度学习）往往缺乏可解释性，使得用户和监管机构难以理解评分决策的原因，这与“负责任的人工智能”原则相悖。</li>
+<li><strong>模型漂移与稳定性 (Model Drift &amp; Stability):</strong> 随着时间的推移，经济环境和用户行为会发生变化，导致模型性能下降（模型漂移）。需要定期监控和更新模型。</li>
+<li><strong>数据隐私与安全 (Data Privacy &amp; Security):</strong> 信用评分涉及大量敏感个人信息，必须严格遵守相关法律法规（如 GDPR、个人信息保护法），确保数据安全和用户隐私。</li>
+</ul>
+</section>
+</section>
+<section id="互联网时代信用评分的新发展" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="互联网时代信用评分的新发展"><span class="header-section-number">8.2</span> 互联网时代信用评分的新发展</h2>
+<p>随着互联网技术的发展和普及，越来越多的互联网企业开始构建自己的信用评分模型，以服务于其业务场景，例如消费金融、电商信贷、共享经济等。这些模型通常具有以下特点：</p>
+<ul>
+<li><strong>数据来源多样化：</strong> 除了传统的金融数据外，还包括大量的互联网行为数据，例如：
+<ul>
+<li><strong>电商数据：</strong> 购物历史、消费偏好、收货地址、退货记录等。</li>
+<li><strong>社交数据：</strong> 社交关系、社交行为、社交媒体信息等（需注意隐私合规）。</li>
+<li><strong>行为数据：</strong> App 使用行为、网站浏览行为、地理位置信息等。</li>
+<li><strong>运营商数据：</strong> 通话记录、短信记录、流量使用情况等（需注意隐私合规）。</li>
+</ul></li>
+<li><strong>模型算法更复杂：</strong> 更多地采用机器学习和人工智能技术，例如：
+<ul>
+<li><strong>集成学习模型：</strong> GBDT、XGBoost、LightGBM 等。</li>
+<li><strong>深度学习模型：</strong> 神经网络、循环神经网络等。</li>
+<li><strong>图神经网络：</strong> 用于分析社交网络和关系数据。</li>
+</ul></li>
+<li><strong>评分维度更丰富：</strong> 除了传统的信用风险评估，还可能包括：
+<ul>
+<li><strong>消费能力评估：</strong> 预测用户的消费潜力，用于授信额度确定。</li>
+<li><strong>欺诈风险评估：</strong> 识别欺诈行为，保障交易安全。</li>
+<li><strong>用户质量评估：</strong> 评估用户的活跃度、忠诚度、价值贡献等。</li>
+</ul></li>
+</ul>
+<p><strong>一些典型的互联网企业信用评分模型案例：</strong></p>
+<ul>
+<li><strong>蚂蚁金服 - 芝麻信用:</strong> 中国最早、也是最知名的互联网信用评分体系之一。
+<ul>
+<li><strong>数据来源：</strong> 支付宝、淘宝、天猫等阿里系电商和金融平台数据，以及合作机构数据。</li>
+<li><strong>评分维度：</strong> 身份特质、行为偏好、履约能力、信用历史、人脉关系五个维度。</li>
+<li><strong>应用场景：</strong> 消费金融（花呗、借呗）、免押服务、信用租房、信用出行等。</li>
+</ul></li>
+<li><strong>腾讯 - 腾讯信用分 (已停止更新):</strong> 腾讯也曾推出过信用评分产品，但目前已停止更新。
+<ul>
+<li><strong>数据来源：</strong> 微信、QQ 等社交平台数据，以及腾讯支付、游戏等业务数据。</li>
+<li><strong>评分维度：</strong> 财富、安全、守约、消费、社交五个维度。</li>
+<li><strong>应用场景：</strong> 微信支付分、部分消费金融场景。</li>
+</ul></li>
+<li><strong>京东 - 京东小白信用:</strong> 京东推出的信用评分产品。
+<ul>
+<li><strong>数据来源：</strong> 京东电商平台数据、京东金融数据等。</li>
+<li><strong>评分维度：</strong> 身份、资产、偏好、履约能力、关系五个维度。</li>
+<li><strong>应用场景：</strong> 京东白条、购物优惠、会员权益等。</li>
+</ul></li>
+<li><strong>Foursquare - Pilgrim SDK:</strong> 美国地理位置社交网络 Foursquare 提供的 Pilgrim SDK，可以基于用户的位置数据进行风险评估。
+<ul>
+<li><strong>数据来源：</strong> 用户的位置轨迹、签到数据等。</li>
+<li><strong>评分维度：</strong> 用户行为的真实性、稳定性、风险偏好等。</li>
+<li><strong>应用场景：</strong> 反欺诈、风险控制、个性化推荐等。</li>
+</ul></li>
+</ul>
+<p><strong>总结：</strong></p>
+<p>互联网企业信用评分模型是传统信用评分在互联网时代的创新和发展。它们利用更丰富的数据来源、更复杂的算法模型和更多样的评分维度，为互联网业务场景提供了更精准、更全面的信用风险评估和用户画像能力。但同时也面临着数据隐私、算法公平性、模型可解释性等新的挑战。</p>
 
 
 </section>
@@ -882,13 +874,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./project1_LC.html" class="pagination-link" aria-label="项目1：借贷违约风险评估">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span>
+      <a href="./lab03_titanic.html" class="pagination-link" aria-label="泰坦尼克号生存预测实践">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">泰坦尼克号生存预测实践</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./project2b_text.html" class="pagination-link" aria-label="项目2B：财务报表文本分析与企业网络安全风险评估">
-        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./07_unsupervised.html" class="pagination-link" aria-label="非监督学习技术概览及其金融应用">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">非监督学习技术概览及其金融应用</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

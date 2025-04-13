@@ -1,0 +1,680 @@
+---
+title: "降维实践：利用PCA识别股票市场的主要驱动因子"
+---
+
+# 导言
+
+## 降维与股票市场分析
+
+降维是一种将高维数据转换为低维表示的技术，同时尽可能保留原始数据的重要信息。在金融领域，尤其是股票市场分析中，降维技术（如PCA）可以帮助我们从嘈杂的市场数据中提取关键的潜在因子，理解市场的主要驱动力。
+
+本实验将使用主成分分析（PCA）方法，对中国A股市场的历史收益率数据进行分析，识别出驱动市场的主要潜在因子，并探讨不同股票在这些因子上的暴露程度。
+
+## 数据描述
+
+我们将使用以下数据：
+- 上证A股各股票月度收益率（过去20年）
+- 股票所属行业信息
+
+## 实验流程
+
+1. **数据收集与预处理**：
+   - 收集股票历史月度收益率
+   - 处理缺失值及异常值
+   - 数据标准化
+
+2. **PCA分析**：
+   - 应用PCA降维
+   - 解释主成分代表的潜在因子
+   - 分析各股票对主成分的暴露程度
+
+3. **结果可视化与解读**：
+   - 可视化主成分解释方差
+   - 分析主成分载荷
+   - 股票在主成分空间中的投影
+
+4. **应用案例**：
+   - 构建基于主成分的投资组合
+   - 风险管理与风格分析
+
+# 环境准备与数据获取
+
+```{python}
+#| include: false
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.preprocessing import StandardScaler
+from sklearn.decomposition import PCA
+import warnings
+warnings.filterwarnings('ignore')
+
+# 设置中文显示
+plt.rcParams['font.sans-serif'] = ['Songti SC']  # 用来正常显示中文标签
+plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
+
+# 设置随机种子，确保结果可复现
+np.random.seed(42)
+```
+
+## 生成模拟股票数据
+
+在实际应用中，我们可以使用真实的股票市场数据。为了教学目的，这里我们生成模拟的A股市场股票收益率数据：
+
+```{python}
+#| label: generate-stock-data
+#| warning: false
+
+# 模拟A股市场股票代码和行业分类
+def generate_stock_info():
+    # 定义股票行业分类
+    industries = {
+        "金融": ["银行", "证券", "保险"], 
+        "科技": ["软件", "硬件", "半导体"],
+        "消费": ["食品饮料", "医药", "家电"],
+        "周期": ["能源", "原材料", "工业"]
+    }
+    
+    # 生成股票信息
+    stock_data = []
+    stock_code = 600000
+    
+    for sector, industry_list in industries.items():
+        for industry in industry_list:
+            # 每个行业生成5只股票
+            for i in range(5):
+                stock_data.append({
+                    "股票代码": f"{stock_code}",
+                    "股票名称": f"{industry}{i+1}",
+                    "行业": industry,
+                    "板块": sector
+                })
+                stock_code += 1
+    
+    # 转换为DataFrame
+    stock_info = pd.DataFrame(stock_data)
+    return stock_info
+
+# 生成模拟的月度收益率数据
+def generate_returns_data(stock_info, months=60):
+    """
+    生成模拟的股票月度收益率数据
+    
+    参数:
+    - stock_info: 股票信息DataFrame
+    - months: 月份数量
+    
+    返回:
+    - 月度收益率DataFrame (时间 x 股票)
+    """
+    # 生成日期索引 (模拟过去5年的月度数据)
+    import datetime
+    end_date = datetime.datetime.now()
+    start_date = end_date - datetime.timedelta(days=30*months)
+    date_range = pd.date_range(start=start_date, end=end_date, freq='M')
+    
+    # 提取股票代码列表
+    stock_codes = stock_info['股票代码'].tolist()
+    
+    # 创建空的DataFrame用于存储收益率
+    returns_matrix = pd.DataFrame(index=date_range)
+    
+    # 生成市场共同因子 (影响所有股票)
+    market_factor = np.random.normal(0.005, 0.03, months)
+    
+    # 生成行业因子
+    industries = stock_info['行业'].unique()
+    industry_factors = {}
+    for industry in industries:
+        # 行业因子有一部分来自市场因子，一部分是行业特有的
+        industry_factors[industry] = 0.7 * market_factor + 0.3 * np.random.normal(0, 0.02, months)
+    
+    # 生成风格因子 (例如：大盘/小盘、价值/成长等)
+    style_factor1 = np.random.normal(0, 0.015, months)  # 价值/成长因子
+    style_factor2 = np.random.normal(0, 0.01, months)   # 大盘/小盘因子
+    
+    # 为每只股票生成月度收益率
+    for _, stock in stock_info.iterrows():
+        code = stock['股票代码']
+        industry = stock['行业']
+        
+        # 股票对各因子的敏感度 (暴露度)
+        market_beta = np.random.uniform(0.8, 1.2)  # 市场Beta
+        industry_beta = np.random.uniform(0.7, 1.3)  # 行业敏感度
+        style1_beta = np.random.uniform(-0.3, 0.3)  # 价值/成长敏感度
+        style2_beta = np.random.uniform(-0.2, 0.2)  # 大盘/小盘敏感度
+        
+        # 生成特定股票噪声
+        stock_specific = np.random.normal(0, 0.02, months)
+        
+        # 组合因子生成最终收益率
+        returns = (market_beta * market_factor +  
+                   industry_beta * industry_factors[industry] + 
+                   style1_beta * style_factor1 +
+                   style2_beta * style_factor2 +
+                   stock_specific)
+        
+        # 添加到DataFrame
+        returns_matrix[code] = returns
+    
+    return returns_matrix
+
+# 生成股票信息和收益率数据
+stock_info = generate_stock_info()
+returns_matrix = generate_returns_data(stock_info)
+
+print(f"生成了 {len(stock_info)} 只股票的模拟数据")
+print(f"收益率矩阵形状: {returns_matrix.shape}")
+
+# 显示股票信息样例
+stock_info.head(10)
+```
+
+## 数据预处理
+
+在应用PCA前，需要对收益率数据进行预处理，包括处理缺失值和进行标准化：
+
+```{python}
+#| label: data-preprocessing
+
+# 1. 检查缺失值
+missing_values = returns_matrix.isnull().sum().sum()
+print(f"收益率矩阵中的缺失值数量: {missing_values}")
+
+# 在实际应用中，我们通常需要处理缺失值
+# 如果有缺失值，可以进行如下处理:
+# returns_matrix = returns_matrix.fillna(returns_matrix.mean())
+
+# 2. 转置收益率矩阵，使行代表股票，列代表时间点
+# 这样处理是因为我们想要分析股票之间的关系
+# 在PCA中，我们通常把样本放在行中，特征放在列中
+returns_T = returns_matrix.T
+
+# 3. 数据标准化
+# 标准化每只股票的收益率序列（减均值，除标准差）
+# 这是PCA的重要步骤，确保每只股票对总体方差的贡献权重相当
+scaler = StandardScaler()
+returns_scaled = scaler.fit_transform(returns_T)
+
+print(f"标准化后的数据形状: {returns_scaled.shape}")
+```
+
+# 应用PCA进行因子分析
+
+现在我们将对标准化后的收益率数据应用PCA，以发现驱动股票市场的主要潜在因子：
+
+```{python}
+#| label: apply-pca
+#| fig-width: 12
+#| fig-height: 6
+
+# 应用PCA，不限制组件数量，让算法提取所有可能的主成分
+pca = PCA()
+principal_components = pca.fit_transform(returns_scaled)
+
+# 查看主成分解释的方差比例
+explained_variance_ratio = pca.explained_variance_ratio_
+cumulative_variance_ratio = np.cumsum(explained_variance_ratio)
+
+print(f"前5个主成分解释的方差比例:")
+for i in range(5):
+    print(f"PC{i+1}: {explained_variance_ratio[i]:.4f}")
+print(f"前5个主成分累计解释的方差比例: {cumulative_variance_ratio[4]:.4f}")
+
+# 可视化解释方差比例
+plt.figure(figsize=(12, 6))
+plt.subplot(1, 2, 1)
+plt.bar(range(1, 11), explained_variance_ratio[:10], alpha=0.7)
+plt.step(range(1, 11), cumulative_variance_ratio[:10], where='mid', color='red')
+plt.axhline(y=0.8, color='k', linestyle='--', alpha=0.3)
+plt.title('主成分解释的方差比例')
+plt.xlabel('主成分')
+plt.ylabel('解释方差比例')
+plt.xticks(range(1, 11), [f'PC{i}' for i in range(1, 11)])
+plt.grid(True, alpha=0.3)
+
+# 选择解释80%方差所需的主成分数量
+n_components_80 = np.argmax(cumulative_variance_ratio >= 0.8) + 1
+print(f"解释80%方差所需的主成分数量: {n_components_80}")
+
+# 碎石图 (Scree Plot)
+plt.subplot(1, 2, 2)
+plt.plot(range(1, 11), pca.explained_variance_[:10], 'o-')
+plt.title('碎石图')
+plt.xlabel('主成分')
+plt.ylabel('特征值(方差)')
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+# 确定要保留的主成分数量(通常基于解释方差比例、碎石图或业务需求)
+n_components = 3  # 假设我们决定保留前3个主成分
+
+# 重新运行PCA，只保留选定数量的主成分
+pca_final = PCA(n_components=n_components)
+principal_components_final = pca_final.fit_transform(returns_scaled)
+
+print(f"最终选择保留 {n_components} 个主成分，累计解释方差比例: {np.sum(pca_final.explained_variance_ratio_):.4f}")
+```
+
+## 主成分解读
+
+主成分分析得到的结果是主成分载荷矩阵和主成分得分。现在我们来解读这些主成分的经济学含义：
+
+```{python}
+#| label: interpret-pca
+#| fig-width: 14
+#| fig-height: 8
+
+# 获取主成分载荷矩阵
+loadings = pca_final.components_
+
+# 创建包含载荷的DataFrame
+loadings_df = pd.DataFrame(
+    loadings.T,  # 转置使股票为行，主成分为列
+    index=returns_matrix.columns,
+    columns=[f'PC{i+1}' for i in range(n_components)]
+)
+
+# 为每个主成分添加股票信息
+loadings_with_info = loadings_df.reset_index()
+loadings_with_info = loadings_with_info.rename(columns={'index': '股票代码'})
+loadings_with_info = pd.merge(loadings_with_info, stock_info, on='股票代码')
+
+# 1. 解读第一主成分(PC1)
+plt.figure(figsize=(14, 8))
+
+# 按行业分组绘制PC1载荷
+plt.subplot(2, 2, 1)
+for sector in stock_info['板块'].unique():
+    sector_stocks = loadings_with_info[loadings_with_info['板块'] == sector]
+    plt.scatter(range(len(sector_stocks)), sector_stocks['PC1'], label=sector, alpha=0.7)
+
+plt.title('第一主成分(PC1)载荷 - 按板块分组')
+plt.xlabel('股票')
+plt.ylabel('PC1载荷')
+plt.legend()
+plt.grid(True, alpha=0.3)
+
+# 计算各行业在PC1上的平均载荷
+plt.subplot(2, 2, 2)
+industry_pc1 = loadings_with_info.groupby('行业')['PC1'].mean().sort_values()
+industry_pc1.plot(kind='barh')
+plt.title('各行业在PC1上的平均载荷')
+plt.xlabel('PC1载荷')
+plt.grid(True, alpha=0.3)
+
+# 2. 解读第二主成分(PC2)
+plt.subplot(2, 2, 3)
+for sector in stock_info['板块'].unique():
+    sector_stocks = loadings_with_info[loadings_with_info['板块'] == sector]
+    plt.scatter(range(len(sector_stocks)), sector_stocks['PC2'], label=sector, alpha=0.7)
+
+plt.title('第二主成分(PC2)载荷 - 按板块分组')
+plt.xlabel('股票')
+plt.ylabel('PC2载荷')
+plt.legend()
+plt.grid(True, alpha=0.3)
+
+# 计算各行业在PC2上的平均载荷
+plt.subplot(2, 2, 4)
+industry_pc2 = loadings_with_info.groupby('行业')['PC2'].mean().sort_values()
+industry_pc2.plot(kind='barh')
+plt.title('各行业在PC2上的平均载荷')
+plt.xlabel('PC2载荷')
+plt.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+
+# 3. 解读第三主成分(PC3)
+plt.figure(figsize=(10, 5))
+
+plt.subplot(1, 2, 1)
+for sector in stock_info['板块'].unique():
+    sector_stocks = loadings_with_info[loadings_with_info['板块'] == sector]
+    plt.scatter(range(len(sector_stocks)), sector_stocks['PC3'], label=sector, alpha=0.7)
+
+plt.title('第三主成分(PC3)载荷 - 按板块分组')
+plt.xlabel('股票')
+plt.ylabel('PC3载荷')
+plt.legend()
+plt.grid(True, alpha=0.3)
+
+# 计算各行业在PC3上的平均载荷
+plt.subplot(1, 2, 2)
+industry_pc3 = loadings_with_info.groupby('行业')['PC3'].mean().sort_values()
+industry_pc3.plot(kind='barh')
+plt.title('各行业在PC3上的平均载荷')
+plt.xlabel('PC3载荷')
+plt.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+
+# 载荷热力图
+plt.figure(figsize=(14, 10))
+industry_loadings = loadings_with_info.groupby('行业')[['PC1', 'PC2', 'PC3']].mean()
+sns.heatmap(industry_loadings, cmap='coolwarm', center=0, annot=True, fmt='.3f')
+plt.title('各行业在前三个主成分上的平均载荷')
+plt.show()
+
+# 主成分经济学解读
+print("\n主成分经济学解读:")
+print("PC1 (第一主成分): 市场因子 - 几乎所有股票都正相关，代表整体市场走势")
+print("PC2 (第二主成分): 行业轮动因子 - 区分不同行业板块的相对表现")
+print("PC3 (第三主成分): 风格因子 - 可能代表价值vs成长或大盘vs小盘的风格差异")
+```
+
+## 股票在主成分空间的分布
+
+我们可以将股票投影到主成分空间中，观察它们的分布情况：
+
+```{python}
+#| label: stocks-in-pc-space
+#| fig-width: 12
+#| fig-height: 10
+
+# 创建包含主成分得分的DataFrame
+pc_scores = pd.DataFrame(
+    principal_components_final,
+    index=returns_matrix.columns,
+    columns=[f'PC{i+1}' for i in range(n_components)]
+)
+
+# 添加股票信息
+pc_scores_with_info = pc_scores.reset_index()
+pc_scores_with_info = pc_scores_with_info.rename(columns={'index': '股票代码'})
+pc_scores_with_info = pd.merge(pc_scores_with_info, stock_info, on='股票代码')
+
+# 在PC1-PC2平面上可视化股票分布
+plt.figure(figsize=(12, 10))
+
+# 按板块绘制散点图
+plt.subplot(2, 2, 1)
+for sector in stock_info['板块'].unique():
+    sector_stocks = pc_scores_with_info[pc_scores_with_info['板块'] == sector]
+    plt.scatter(sector_stocks['PC1'], sector_stocks['PC2'], label=sector, alpha=0.7)
+
+plt.title('股票在PC1-PC2平面的分布 (按板块分组)')
+plt.xlabel('PC1 (市场因子)')
+plt.ylabel('PC2 (行业轮动因子)')
+plt.legend()
+plt.grid(True, alpha=0.3)
+
+# 按行业绘制散点图
+plt.subplot(2, 2, 2)
+for industry in stock_info['行业'].unique():
+    industry_stocks = pc_scores_with_info[pc_scores_with_info['行业'] == industry]
+    plt.scatter(industry_stocks['PC1'], industry_stocks['PC2'], label=industry, alpha=0.7)
+
+plt.title('股票在PC1-PC2平面的分布 (按行业分组)')
+plt.xlabel('PC1 (市场因子)')
+plt.ylabel('PC2 (行业轮动因子)')
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.grid(True, alpha=0.3)
+
+# 在PC1-PC3平面上可视化股票分布
+plt.subplot(2, 2, 3)
+for sector in stock_info['板块'].unique():
+    sector_stocks = pc_scores_with_info[pc_scores_with_info['板块'] == sector]
+    plt.scatter(sector_stocks['PC1'], sector_stocks['PC3'], label=sector, alpha=0.7)
+
+plt.title('股票在PC1-PC3平面的分布 (按板块分组)')
+plt.xlabel('PC1 (市场因子)')
+plt.ylabel('PC3 (风格因子)')
+plt.legend()
+plt.grid(True, alpha=0.3)
+
+# 在PC2-PC3平面上可视化股票分布
+plt.subplot(2, 2, 4)
+for sector in stock_info['板块'].unique():
+    sector_stocks = pc_scores_with_info[pc_scores_with_info['板块'] == sector]
+    plt.scatter(sector_stocks['PC2'], sector_stocks['PC3'], label=sector, alpha=0.7)
+
+plt.title('股票在PC2-PC3平面的分布 (按板块分组)')
+plt.xlabel('PC2 (行业轮动因子)')
+plt.ylabel('PC3 (风格因子)')
+plt.legend()
+plt.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+# 应用案例：因子投资与风险管理
+
+## 主成分在投资组合构建中的应用
+
+现在我们将基于PCA分析结果，构建因子投资组合，并评估不同策略的表现：
+
+```{python}
+#| label: portfolio-construction
+#| fig-width: 12
+#| fig-height: 8
+
+# 重构收益率数据
+# 我们可以使用主成分得分和载荷重构原始数据，或者直接构建基于因子的投资组合
+
+# 1. 构建不同主成分暴露的投资组合
+def construct_pc_portfolio(pc_number, percentile=0.2, long_short=True):
+    """构建基于特定主成分的投资组合
+    
+    参数:
+    - pc_number: 主成分编号(1开始)
+    - percentile: 选择的百分位数(例如0.2表示选择前/后20%的股票)
+    - long_short: 是否构建多空组合，否则只构建多头组合
+    
+    返回:
+    - 投资组合的月度收益率序列
+    """
+    # 获取指定主成分的载荷
+    pc_column = f'PC{pc_number}'
+    
+    # 按载荷排序
+    sorted_loadings = loadings_with_info.sort_values(by=pc_column, ascending=False)
+    
+    # 选择头部和尾部股票
+    n_stocks = len(sorted_loadings)
+    n_select = int(n_stocks * percentile)
+    
+    # 头部股票(载荷高的)
+    top_stocks = sorted_loadings.iloc[:n_select]['股票代码'].tolist()
+    
+    # 构建多头组合(等权重)
+    if n_select > 0:
+        long_portfolio = returns_matrix[top_stocks].mean(axis=1)
+    else:
+        long_portfolio = pd.Series(0, index=returns_matrix.index)
+    
+    # 如果需要构建多空组合
+    if long_short:
+        # 尾部股票(载荷低的)
+        bottom_stocks = sorted_loadings.iloc[-n_select:]['股票代码'].tolist()
+        
+        # 构建空头组合
+        if n_select > 0:
+            short_portfolio = returns_matrix[bottom_stocks].mean(axis=1)
+            # 多空组合 = 多头 - 空头
+            return long_portfolio - short_portfolio
+        else:
+            return long_portfolio
+    else:
+        # 只返回多头组合
+        return long_portfolio
+
+# 构建基于各主成分的投资组合
+pc1_portfolio = construct_pc_portfolio(1, 0.2, True)
+pc2_portfolio = construct_pc_portfolio(2, 0.2, True)
+pc3_portfolio = construct_pc_portfolio(3, 0.2, True)
+
+# 计算投资组合的累积收益率
+portfolio_returns = pd.DataFrame({
+    'PC1投资组合(市场因子)': pc1_portfolio,
+    'PC2投资组合(行业轮动)': pc2_portfolio,
+    'PC3投资组合(风格因子)': pc3_portfolio
+})
+
+# 计算累积收益率
+cumulative_returns = (1 + portfolio_returns).cumprod() - 1
+
+# 可视化投资组合表现
+plt.figure(figsize=(12, 8))
+
+# 绘制累积收益曲线
+plt.subplot(2, 1, 1)
+cumulative_returns.plot()
+plt.title('基于主成分的投资组合累积收益')
+plt.xlabel('日期')
+plt.ylabel('累积收益率')
+plt.grid(True, alpha=0.3)
+plt.legend()
+
+# 计算月度收益的滚动波动率(年化)
+rolling_vol = portfolio_returns.rolling(window=12).std() * np.sqrt(12)
+
+# 绘制波动率曲线
+plt.subplot(2, 1, 2)
+rolling_vol.plot()
+plt.title('投资组合滚动波动率(年化)')
+plt.xlabel('日期')
+plt.ylabel('波动率')
+plt.grid(True, alpha=0.3)
+plt.legend()
+
+plt.tight_layout()
+plt.show()
+
+# 计算投资组合业绩指标
+def calculate_performance_metrics(returns):
+    """计算投资组合的业绩指标"""
+    # 年化收益率
+    annual_return = returns.mean() * 12
+    
+    # 年化波动率
+    annual_vol = returns.std() * np.sqrt(12)
+    
+    # 夏普比率(假设无风险收益率为0)
+    sharpe_ratio = annual_return / annual_vol if annual_vol != 0 else 0
+    
+    # 最大回撤
+    cumulative = (1 + returns).cumprod()
+    drawdown = 1 - cumulative / cumulative.cummax()
+    max_drawdown = drawdown.max()
+    
+    return pd.Series({
+        '年化收益率': annual_return,
+        '年化波动率': annual_vol,
+        '夏普比率': sharpe_ratio,
+        '最大回撤': max_drawdown
+    })
+
+# 计算各组合的业绩指标
+performance_metrics = pd.DataFrame({
+    'PC1投资组合(市场因子)': calculate_performance_metrics(pc1_portfolio),
+    'PC2投资组合(行业轮动)': calculate_performance_metrics(pc2_portfolio),
+    'PC3投资组合(风格因子)': calculate_performance_metrics(pc3_portfolio)
+})
+
+print("各投资组合业绩指标:")
+performance_metrics.T
+```
+
+## 投资组合因子暴露分析
+
+我们可以分析任意股票或投资组合对这些提取出的主要因子的暴露程度：
+
+```{python}
+#| label: factor-exposure
+#| fig-width: 12
+#| fig-height: 6
+
+# 构建一个示例投资组合
+# 例如，我们可以选择不同板块的代表性股票构建一个组合
+example_portfolio = {
+    '600000': 0.1,  # 金融-银行1
+    '600030': 0.1,  # 金融-证券1
+    '600036': 0.1,  # 科技-软件1
+    '600048': 0.2,  # 科技-硬件1
+    '600050': 0.2,  # 消费-食品饮料1
+    '600060': 0.3   # 周期-能源1
+}
+
+# 计算投资组合的月度收益率
+portfolio_stocks = list(example_portfolio.keys())
+portfolio_weights = list(example_portfolio.values())
+
+if all(stock in returns_matrix.columns for stock in portfolio_stocks):
+    portfolio_returns = returns_matrix[portfolio_stocks].dot(portfolio_weights)
+    
+    # 可视化投资组合收益率
+    plt.figure(figsize=(12, 6))
+    plt.subplot(1, 2, 1)
+    (1 + portfolio_returns).cumprod().plot()
+    plt.title('投资组合累积收益')
+    plt.xlabel('日期')
+    plt.ylabel('累积收益')
+    plt.grid(True, alpha=0.3)
+    
+    # 分析投资组合的因子暴露
+    # 计算投资组合在不同因子上的暴露程度
+    factor_exposures = {}
+    
+    for pc in range(1, n_components + 1):
+        # 获取每只股票在该主成分上的载荷
+        pc_loadings = loadings_df[f'PC{pc}']
+        
+        # 计算投资组合加权平均载荷(即因子暴露)
+        portfolio_exposure = sum(pc_loadings.loc[stock] * weight 
+                                for stock, weight in example_portfolio.items()
+                                if stock in pc_loadings.index)
+        
+        factor_exposures[f'PC{pc}'] = portfolio_exposure
+    
+    # 可视化投资组合的因子暴露
+    plt.subplot(1, 2, 2)
+    factor_names = [f'PC{i} ({name})' for i, name in 
+                   zip(range(1, n_components + 1), ['市场因子', '行业轮动', '风格因子'])]
+    
+    plt.bar(factor_names, list(factor_exposures.values()))
+    plt.title('投资组合的因子暴露')
+    plt.ylabel('暴露程度')
+    plt.grid(True, alpha=0.3, axis='y')
+    plt.xticks(rotation=45)
+    
+    plt.tight_layout()
+    plt.show()
+    
+    print("投资组合因子暴露:")
+    for factor, exposure in factor_exposures.items():
+        print(f"{factor}: {exposure:.4f}")
+else:
+    print("一些选定的股票不在数据集中，请检查股票代码")
+```
+
+# 总结与思考
+
+## PCA在股票市场分析中的应用价值
+
+在本实验中，我们使用主成分分析(PCA)对模拟的A股市场收益率数据进行了降维分析，识别出了驱动股票市场的主要潜在因子，并探讨了不同股票在这些因子上的暴露程度。
+
+主要发现：
+1. 股票收益率数据中存在明显的共同驱动因素，前几个主成分就可以解释大部分的收益率方差
+2. 第一主成分(PC1)通常代表整体市场因子，几乎所有股票都有正的载荷
+3. 第二主成分(PC2)表现为行业轮动因子，不同行业在该主成分上表现出明显的差异
+4. 第三主成分(PC3)可能代表投资风格因子，如价值vs成长、大盘vs小盘等
+5. 基于主成分构建的投资组合展示了不同风险收益特征，提供了多样化的投资策略选择
+
+## 思考问题
+
+1. **降维技术与传统因子模型的关系**：PCA是数据驱动的方法，提取出的主成分与传统的Fama-French多因子模型有何异同？这些统计意义上的因子是否能与经济学意义上的风险因子对应？
+
+2. **样本期依赖性**：PCA结果对样本期的选择有多大敏感性？在不同的市场环境下(如牛市、熊市、震荡市)，提取出的主要因子是否会发生显著变化？
+
+3. **主成分的稳定性与可解释性**：如何平衡统计意义上的方差解释能力与经济意义上的因子可解释性？数据驱动的因子能否用于投资决策？
+
+4. **风险管理应用**：如何利用PCA分析结果进行投资组合风险分解与管理？识别出的主要风险因子如何帮助投资者构建更稳健的投资组合？
+
+5. **与其他降维技术的比较**：除PCA外，还有哪些降维技术(如因子分析FA、独立成分分析ICA、t-SNE等)适用于金融数据分析？不同技术各有什么优势与局限性？
+

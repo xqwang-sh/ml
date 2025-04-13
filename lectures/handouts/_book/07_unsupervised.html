@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>13&nbsp; 项目2A：上证综指收益率时间序列预测 – 数据挖掘与机器学习课程讲义</title>
+<title>9&nbsp; 非监督学习技术概览及其金融应用 – 数据挖掘与机器学习课程讲义</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./project2b_text.html" rel="next">
-<link href="./project1_LC.html" rel="prev">
+<link href="./07_cluster.html" rel="next">
+<link href="./06_credit.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -81,7 +81,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./project2a_tspred.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07_unsupervised.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">非监督学习技术概览及其金融应用</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="搜索" onclick="window.quartoOpenSearch();">
@@ -156,7 +156,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./07_unsupervised.html" class="sidebar-item-text sidebar-link">
+  <a href="./07_unsupervised.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">非监督学习技术概览及其金融应用</span></span></a>
   </div>
 </li>
@@ -180,7 +180,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./project2a_tspred.html" class="sidebar-item-text sidebar-link active">
+  <a href="./project2a_tspred.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
   </div>
 </li>
@@ -200,18 +200,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">目录</h2>
    
   <ul>
-  <li><a href="#项目背景" id="toc-项目背景" class="nav-link active" data-scroll-target="#项目背景"><span class="header-section-number">13.1</span> 项目背景</a></li>
-  <li><a href="#项目目标" id="toc-项目目标" class="nav-link" data-scroll-target="#项目目标"><span class="header-section-number">13.2</span> 项目目标</a></li>
-  <li><a href="#数据简介" id="toc-数据简介" class="nav-link" data-scroll-target="#数据简介"><span class="header-section-number">13.3</span> 数据简介</a></li>
-  <li><a href="#数据特点与挑战" id="toc-数据特点与挑战" class="nav-link" data-scroll-target="#数据特点与挑战"><span class="header-section-number">13.4</span> 数据特点与挑战</a></li>
-  <li><a href="#项目步骤建议仅供参考" id="toc-项目步骤建议仅供参考" class="nav-link" data-scroll-target="#项目步骤建议仅供参考"><span class="header-section-number">13.5</span> 项目步骤建议（仅供参考）</a>
+  <li><a href="#非监督学习简介" id="toc-非监督学习简介" class="nav-link active" data-scroll-target="#非监督学习简介"><span class="header-section-number">9.1</span> 非监督学习简介</a></li>
+  <li><a href="#主要非监督学习技术" id="toc-主要非监督学习技术" class="nav-link" data-scroll-target="#主要非监督学习技术"><span class="header-section-number">9.2</span> 主要非监督学习技术</a>
   <ul class="collapse">
-  <li><a href="#数据预处理与探索性分析" id="toc-数据预处理与探索性分析" class="nav-link" data-scroll-target="#数据预处理与探索性分析"><span class="header-section-number">13.5.1</span> 数据预处理与探索性分析</a></li>
-  <li><a href="#模型构建与评估" id="toc-模型构建与评估" class="nav-link" data-scroll-target="#模型构建与评估"><span class="header-section-number">13.5.2</span> 模型构建与评估</a></li>
-  <li><a href="#预测结果分析与应用" id="toc-预测结果分析与应用" class="nav-link" data-scroll-target="#预测结果分析与应用"><span class="header-section-number">13.5.3</span> 预测结果分析与应用</a></li>
+  <li><a href="#聚类-clustering" id="toc-聚类-clustering" class="nav-link" data-scroll-target="#聚类-clustering"><span class="header-section-number">9.2.1</span> 1. 聚类 (Clustering)</a></li>
+  <li><a href="#降维-dimensionality-reduction" id="toc-降维-dimensionality-reduction" class="nav-link" data-scroll-target="#降维-dimensionality-reduction"><span class="header-section-number">9.2.2</span> 2. 降维 (Dimensionality Reduction)</a></li>
+  <li><a href="#文本分析-text-analysis-自然语言处理-nlp---非监督部分" id="toc-文本分析-text-analysis-自然语言处理-nlp---非监督部分" class="nav-link" data-scroll-target="#文本分析-text-analysis-自然语言处理-nlp---非监督部分"><span class="header-section-number">9.2.3</span> 3. 文本分析 (Text Analysis) / 自然语言处理 (NLP) - 非监督部分</a></li>
   </ul></li>
-  <li><a href="#提交要求" id="toc-提交要求" class="nav-link" data-scroll-target="#提交要求"><span class="header-section-number">13.6</span> 提交要求</a></li>
-  <li><a href="#评分标准" id="toc-评分标准" class="nav-link" data-scroll-target="#评分标准"><span class="header-section-number">13.7</span> 评分标准</a></li>
   </ul>
 </nav>
     </div>
@@ -220,7 +215,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></h1>
+<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">非监督学习技术概览及其金融应用</span></h1>
 </div>
 
 
@@ -237,226 +232,69 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="项目背景" class="level2" data-number="13.1">
-<h2 data-number="13.1" class="anchored" data-anchor-id="项目背景"><span class="header-section-number">13.1</span> 项目背景</h2>
-<p>上海证券交易所(上交所)成立于1990年11月26日，是中国大陆第一家证券交易所，与深圳证券交易所、北京证券交易所并称为中国大陆三大证券交易所。上证综指(Shanghai Composite Index)是以上海证券交易所挂牌上市的所有股票为样本，以发行量为权数计算的加权综合股价指数，是反映上海证券市场整体走势的重要指标。</p>
-<p>上证综指自1991年7月15日正式发布，基日为1990年12月19日，基点为100点。作为中国股市最具代表性的指数之一，上证综指的走势不仅反映了中国资本市场的整体状况，也在很大程度上反映了中国宏观经济的发展态势。</p>
-<p>金融时间序列预测一直是金融数据分析和量化投资领域的重要研究方向。相比传统的截面数据分析，时间序列数据具有明显的时序依赖性，这使得时间序列预测面临更多的挑战。特别是金融市场数据，其高波动性、非线性特征以及受多种复杂因素影响的特点，进一步增加了预测的难度。</p>
-<p>随着机器学习技术的发展，各种先进的预测方法被应用于金融时间序列分析，从传统的ARIMA、GARCH模型，到现代的支持向量机(SVM)、随机森林、深度学习网络等，为金融时间序列预测提供了更多可能性。</p>
+<section id="非监督学习简介" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="非监督学习简介"><span class="header-section-number">9.1</span> 非监督学习简介</h2>
+<p>非监督学习 (Unsupervised Learning) 是机器学习的一个分支，其主要特点是训练数据<strong>没有</strong>预先标记的输出标签。与监督学习不同，非监督学习的目标是从数据本身发现隐藏的结构、模式或关系。它试图理解数据的内在分布和特征，而不是预测一个特定的目标变量。</p>
+<p>非监督学习在探索性数据分析、数据预处理和发现未知模式方面非常有用。</p>
 </section>
-<section id="项目目标" class="level2" data-number="13.2">
-<h2 data-number="13.2" class="anchored" data-anchor-id="项目目标"><span class="header-section-number">13.2</span> 项目目标</h2>
-<p>本项目旨在利用机器学习方法对上证综指的收益率进行时间序列预测。具体目标包括：</p>
-<ol type="1">
-<li>理解并处理金融时间序列数据的特性，如平稳性、季节性、趋势等</li>
-<li>构建和评估不同的时间序列预测模型</li>
-<li>比较传统统计方法与现代机器学习方法在金融时间序列预测中的表现</li>
-<li>探索能够提高预测准确性的特征工程方法</li>
-<li>分析预测结果的经济意义和实际应用价值</li>
-</ol>
-</section>
-<section id="数据简介" class="level2" data-number="13.3">
-<h2 data-number="13.3" class="anchored" data-anchor-id="数据简介"><span class="header-section-number">13.3</span> 数据简介</h2>
-<p>本项目将使用上证综指的历史数据，时间范围为2000年1月至2023年12月，包含以下几类信息：</p>
+<section id="主要非监督学习技术" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="主要非监督学习技术"><span class="header-section-number">9.2</span> 主要非监督学习技术</h2>
+<p>以下是一些主要的非监督学习技术及其在金融领域的应用：</p>
+<section id="聚类-clustering" class="level3" data-number="9.2.1">
+<h3 data-number="9.2.1" class="anchored" data-anchor-id="聚类-clustering"><span class="header-section-number">9.2.1</span> 1. 聚类 (Clustering)</h3>
+<p>聚类是将数据集中的样本划分为若干个相似组（簇）的过程，使得同一簇内的样本彼此相似，而不同簇之间的样本差异较大。</p>
+<p><strong>常用算法：</strong></p>
 <ul>
-<li><strong>基础价格数据</strong>（CSMAR、WIND）：
+<li><strong>K-Means (K均值聚类):</strong> 基于距离的划分聚类算法，简单高效，适用于大数据集。需要预先指定簇的数量 K。</li>
+<li><strong>层次聚类 (Hierarchical Clustering):</strong> 通过构建样本间的层次结构来进行聚类，可以是凝聚式（自底向上）或分裂式（自顶向下）。不需要预先指定簇数，但计算复杂度较高。</li>
+<li><strong>DBSCAN (Density-Based Spatial Clustering of Applications with Noise):</strong> 基于密度的聚类算法，可以发现任意形状的簇，并能有效处理噪声点。不需要预先指定簇数。</li>
+<li><strong>高斯混合模型 (Gaussian Mixture Model, GMM):</strong> 基于概率模型的聚类方法，假设数据由多个高斯分布混合而成。</li>
+</ul>
+<p><strong>金融应用场景：</strong></p>
 <ul>
-<li><code>Date</code>：交易日期</li>
-<li><code>Open</code>：开盘价</li>
-<li><code>High</code>：最高价</li>
-<li><code>Low</code>：最低价</li>
-<li><code>Close</code>：收盘价</li>
-<li><code>Adj Close</code>：调整后收盘价</li>
-<li><code>Volume</code>：成交量</li>
-</ul></li>
-<li><strong>派生指标</strong>（CSMAR、WIND）：
-<ul>
-<li><code>Returns</code>：日收益率（当日收盘价相对前一日收盘价的百分比变化）</li>
-<li><code>Volatility</code>：基于历史窗口计算的波动率</li>
-</ul></li>
-<li><strong>技术指标</strong>（需自行构建）：
-<ul>
-<li>移动平均线(MA)：不同时间窗口的简单移动平均和指数移动平均</li>
-<li>相对强弱指数(RSI)</li>
-<li>布林带(Bollinger Bands)</li>
-<li>MACD(Moving Average Convergence Divergence)</li>
-</ul></li>
-<li><strong>宏观经济数据</strong>（CSMAR、WIND）：
-<ul>
-<li>中国GDP增长率</li>
-<li>CPI（消费者价格指数）</li>
-<li>利率</li>
-<li>汇率（美元/人民币）</li>
-</ul></li>
+<li><strong>客户细分 (Customer Segmentation):</strong> 根据客户的交易行为、人口统计特征、风险偏好等将客户分组，以便进行精准营销、个性化推荐和风险管理。</li>
+<li><strong>异常检测 (Anomaly Detection):</strong> 识别与正常模式显著不同的交易或行为，用于欺诈检测、洗钱识别等。</li>
+<li><strong>投资组合构建 (Portfolio Construction):</strong> 将具有相似风险收益特征的资产聚类，辅助构建多元化的投资组合。</li>
 </ul>
 </section>
-<section id="数据特点与挑战" class="level2" data-number="13.4">
-<h2 data-number="13.4" class="anchored" data-anchor-id="数据特点与挑战"><span class="header-section-number">13.4</span> 数据特点与挑战</h2>
-<p>金融时间序列数据具有以下特点，这些都给预测带来了挑战：</p>
-<ol type="1">
-<li><strong>非平稳性</strong>：金融市场数据通常表现出非平稳特性，即统计特性随时间变化</li>
-<li><strong>高噪声</strong>：市场价格受多种随机因素影响，含有大量噪声</li>
-<li><strong>异方差性</strong>：金融数据的波动性往往会随时间聚集，表现为波动聚类现象</li>
-<li><strong>胖尾分布</strong>：收益率分布常常表现出比正态分布更胖的尾部，意味着极端事件发生的概率更高</li>
-<li><strong>长期记忆和短期记忆</strong>：金融时间序列可能同时表现出短期和长期的相关性特征</li>
-</ol>
-</section>
-<section id="项目步骤建议仅供参考" class="level2" data-number="13.5">
-<h2 data-number="13.5" class="anchored" data-anchor-id="项目步骤建议仅供参考"><span class="header-section-number">13.5</span> 项目步骤建议（仅供参考）</h2>
-<section id="数据预处理与探索性分析" class="level3" data-number="13.5.1">
-<h3 data-number="13.5.1" class="anchored" data-anchor-id="数据预处理与探索性分析"><span class="header-section-number">13.5.1</span> 数据预处理与探索性分析</h3>
+<section id="降维-dimensionality-reduction" class="level3" data-number="9.2.2">
+<h3 data-number="9.2.2" class="anchored" data-anchor-id="降维-dimensionality-reduction"><span class="header-section-number">9.2.2</span> 2. 降维 (Dimensionality Reduction)</h3>
+<p>降维是指在保留数据主要信息的前提下，减少数据特征数量的过程。高维数据往往存在冗余信息、计算复杂度高、可视化困难等问题（“维度灾难”）。</p>
+<p><strong>常用算法：</strong></p>
 <ul>
-<li><strong>数据获取与清洗</strong>：
+<li><strong>主成分分析 (Principal Component Analysis, PCA):</strong> 最常用的线性降维方法，通过寻找数据方差最大的方向（主成分）来投影数据，实现降维。</li>
+<li><strong>线性判别分析 (Linear Discriminant Analysis, LDA):</strong> 一种<strong>有监督</strong>的降维方法（但也常与非监督场景对比），旨在最大化类间距离和最小化类内距离，常用于分类任务的预处理。<em>(注意：严格来说 LDA 是有监督的，但常与 PCA 一起讨论)</em></li>
+<li><strong>t-分布随机邻域嵌入 (t-Distributed Stochastic Neighbor Embedding, t-SNE):</strong> 非线性降维方法，特别擅长高维数据的可视化，能较好地保留数据的局部结构。</li>
+<li><strong>自编码器 (Autoencoders):</strong> 基于神经网络的非线性降维方法，通过编码器将数据压缩到低维表示，再通过解码器重构原始数据。</li>
+</ul>
+<p><strong>金融应用场景：</strong></p>
 <ul>
-<li>下载上证综指历史数据</li>
-<li>处理缺失值（如节假日）</li>
-<li>检测并处理异常值</li>
-<li>确保时间索引的连续性和正确性</li>
-</ul></li>
-<li><strong>探索性数据分析</strong>：
-<ul>
-<li>绘制时间序列图，观察长期趋势和季节性模式</li>
-<li>计算并分析基本统计量（均值、标准差、偏度、峰度等）</li>
-<li>检验序列的平稳性（ADF检验、KPSS检验等）</li>
-<li>分析自相关性（ACF和PACF图）</li>
-<li>检测异方差性（ARCH效应检验）</li>
-</ul></li>
-<li><strong>特征工程</strong>：
-<ul>
-<li>构建基于不同滞后期的特征</li>
-<li>计算技术分析指标作为特征（如移动平均、相对强弱指数等）</li>
-<li>引入宏观经济变量作为外生变量</li>
-<li>特征选择与降维（如主成分分析）</li>
-<li>考虑时间结构特征（如一周中的某天、月份效应等）</li>
-</ul></li>
-<li><strong>数据转换</strong>：
-<ul>
-<li>差分变换以实现平稳性</li>
-<li>标准化或归一化处理</li>
-<li>考虑非线性变换（如对数变换）</li>
-<li>处理数据频率不匹配问题（如将宏观经济月度数据转换为日度数据）</li>
-</ul></li>
+<li><strong>风险因子识别 (Risk Factor Identification):</strong> 从大量市场指标中提取主要的风险因子，简化风险模型。</li>
+<li><strong>数据可视化 (Data Visualization):</strong> 将高维金融数据（如客户特征、资产特征）降维到二维或三维空间进行可视化，便于理解和分析。</li>
+<li><strong>特征工程 (Feature Engineering):</strong> 减少模型输入的特征数量，提高模型训练效率和泛化能力，避免过拟合。</li>
+<li><strong>资产定价 (Asset Pricing):</strong> 减少影响资产价格的因素数量，构建更简洁的定价模型。</li>
 </ul>
 </section>
-<section id="模型构建与评估" class="level3" data-number="13.5.2">
-<h3 data-number="13.5.2" class="anchored" data-anchor-id="模型构建与评估"><span class="header-section-number">13.5.2</span> 模型构建与评估</h3>
+<section id="文本分析-text-analysis-自然语言处理-nlp---非监督部分" class="level3" data-number="9.2.3">
+<h3 data-number="9.2.3" class="anchored" data-anchor-id="文本分析-text-analysis-自然语言处理-nlp---非监督部分"><span class="header-section-number">9.2.3</span> 3. 文本分析 (Text Analysis) / 自然语言处理 (NLP) - 非监督部分</h3>
+<p>虽然 NLP 包含监督和非监督方法，但许多非监督技术在处理金融文本数据中至关重要。</p>
+<p><strong>常用非监督算法/技术：</strong></p>
 <ul>
-<li><strong>传统时间序列模型</strong>：
-<ul>
-<li>自回归模型(AR)</li>
-<li>移动平均模型(MA)</li>
-<li>自回归移动平均模型(ARMA)</li>
-<li>自回归积分移动平均模型(ARIMA)</li>
-<li>广义自回归条件异方差模型(GARCH)及其变种</li>
-</ul></li>
-<li><strong>机器学习模型</strong>：
-<ul>
-<li>支持向量回归(SVR)</li>
-<li>随机森林(RF)</li>
-<li>梯度提升树(如XGBoost、LightGBM)</li>
-<li>K近邻回归(KNN)</li>
-<li>神经网络模型(如MLP、RNN、LSTM)</li>
-</ul></li>
-<li><strong>集成方法与混合模型</strong>：
-<ul>
-<li>组合不同模型的预测结果</li>
-<li>构建混合模型融合时间序列模型和机器学习模型的优势</li>
-</ul></li>
-<li><strong>交叉验证策略</strong>：
-<ul>
-<li>使用时间序列交叉验证方法（如时间滚动窗口法）</li>
-<li>避免数据泄露</li>
-<li>考虑不同长度的训练窗口和预测窗口</li>
-</ul></li>
-<li><strong>评估指标</strong>：
-<ul>
-<li>均方误差(MSE)</li>
-<li>平均绝对误差(MAE)</li>
-<li>平均绝对百分比误差(MAPE)</li>
-<li>方向准确率（预测涨跌方向的准确度）</li>
-<li>信息系数(IC)和累积信息系数(CIC)</li>
-</ul></li>
+<li><strong>词嵌入 (Word Embeddings):</strong> 如 Word2Vec, GloVe, FastText。将词语表示为低维稠密向量，捕捉词语间的语义关系。</li>
+<li><strong>主题建模 (Topic Modeling):</strong> 如潜在狄利克雷分配 (Latent Dirichlet Allocation, LDA - <em>注意与线性判别分析区分</em>)。从大量文档中自动发现隐藏的主题结构。</li>
+<li><strong>文本聚类 (Text Clustering):</strong> 将相似的文本（如新闻、报告、评论）分组。</li>
 </ul>
-</section>
-<section id="预测结果分析与应用" class="level3" data-number="13.5.3">
-<h3 data-number="13.5.3" class="anchored" data-anchor-id="预测结果分析与应用"><span class="header-section-number">13.5.3</span> 预测结果分析与应用</h3>
+<p><strong>金融应用场景：</strong></p>
 <ul>
-<li><strong>模型解释性分析</strong>：
-<ul>
-<li>分析特征重要性</li>
-<li>理解模型学习到的模式</li>
-<li>分析不同市场条件下的预测表现</li>
-</ul></li>
-<li><strong>交易策略构建</strong>：
-<ul>
-<li>基于预测结果设计简单交易策略</li>
-<li>回测策略表现</li>
-<li>考虑交易成本和滑点</li>
-<li>计算策略风险调整后收益（如夏普比率）</li>
-</ul></li>
-<li><strong>鲁棒性分析</strong>：
-<ul>
-<li>在不同市场环境下测试模型性能</li>
-<li>分析模型对极端事件的适应能力</li>
-<li>考虑参数变化对预测结果的影响</li>
-</ul></li>
+<li><strong>舆情分析 (Sentiment Analysis):</strong> 分析新闻、社交媒体、研报等文本数据中的市场情绪或对特定公司/资产的情感倾向。（通常需要结合监督学习进行情感分类，但词嵌入和主题模型是基础）</li>
+<li><strong>信息提取 (Information Extraction):</strong> 从财报、公告、合同等非结构化文本中自动提取关键信息（如公司名称、财务数据、关键条款）。</li>
+<li><strong>文档摘要与分类 (Document Summarization &amp; Classification):</strong> 自动生成研报摘要，或将大量金融文档按主题分类。</li>
+<li><strong>风险信号挖掘 (Risk Signal Mining):</strong> 从新闻或监管文件中识别潜在的风险事件或趋势。</li>
 </ul>
-</section>
-</section>
-<section id="提交要求" class="level2" data-number="13.6">
-<h2 data-number="13.6" class="anchored" data-anchor-id="提交要求"><span class="header-section-number">13.6</span> 提交要求</h2>
-<ol type="1">
-<li><strong>课堂展示Slides</strong>：
-<ul>
-<li>简明扼要展示项目主要发现和结果</li>
-<li>包含关键可视化图表</li>
-<li>演示时间控制在10分钟以内</li>
-</ul></li>
-<li><strong>项目代码文件</strong>：
-<ul>
-<li>提交完整的、有注释的Python代码（可以是多个Python文件）</li>
-<li>代码应包含从数据获取、清洗、特征工程到模型训练、评估的全过程</li>
-<li>确保代码可重复运行，并包含必要的环境依赖说明</li>
-</ul></li>
-<li><strong>提交方式与截止日期</strong>：
-<ul>
-<li>通过学习通平台提交所有文件</li>
-<li>项目Slides和项目代码打包为一个ZIP文件</li>
-<li>截止日期：2025年6月8日23:59</li>
-</ul></li>
-</ol>
-</section>
-<section id="评分标准" class="level2" data-number="13.7">
-<h2 data-number="13.7" class="anchored" data-anchor-id="评分标准"><span class="header-section-number">13.7</span> 评分标准</h2>
-<ul>
-<li><strong>课堂展示（40分）</strong>
-<ul>
-<li>内容全面性：清晰展示数据分析、特征工程、模型构建和评估的完整流程</li>
-<li>技术理解：准确阐述金融时间序列特性及采用模型的优缺点</li>
-<li>结果分析：深入解读预测结果的经济意义和实际应用价值</li>
-<li>可视化呈现：包含时间序列分解图、ACF/PACF图、模型预测对比图等专业图表</li>
-<li>创新性：展示对模型局限性的思考或改进尝试</li>
-<li>时间控制：重点突出，在10分钟内完整呈现核心内容</li>
-</ul></li>
-<li><strong>代码质量（30分）</strong>
-<ul>
-<li>完整性：包含数据预处理、特征生成、模型训练、回测评估全流程</li>
-<li>时序处理：正确实现时间序列分割、滚动窗口验证，避免数据泄露</li>
-<li>可重复性：设置随机种子，保证结果可复现</li>
-<li>规范性：代码模块化设计，有清晰的函数注释和文档说明</li>
-<li>可视化：实现关键时序分析和预测结果的可视化功能</li>
-</ul></li>
-<li><strong>模型性能（30分）</strong>
-<ul>
-<li>基准模型：实现ARIMA/GARCH等传统时序模型作为基准</li>
-<li>优化模型：通过特征工程/模型融合提升预测精度</li>
-<li>模型多样性：至少包含3种不同类别模型（如ARIMA、LSTM、XGBoost）</li>
-<li>评估全面性：同时报告点预测精度（MSE）和方向准确性指标</li>
-<li>策略应用：设计基于预测结果的简单交易策略并评估其表现</li>
-</ul></li>
-</ul>
+<p>非监督学习为理解和利用没有明确标签的大量金融数据提供了强大的工具集，有助于发现隐藏的模式、简化复杂性并做出更明智的决策。</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -882,13 +720,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./project1_LC.html" class="pagination-link" aria-label="项目1：借贷违约风险评估">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span>
+      <a href="./06_credit.html" class="pagination-link" aria-label="信用评分理论基础">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">信用评分理论基础</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./project2b_text.html" class="pagination-link" aria-label="项目2B：财务报表文本分析与企业网络安全风险评估">
-        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./07_cluster.html" class="pagination-link" aria-label="非监督学习：聚类 (Clustering)">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">非监督学习：聚类 (Clustering)</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
