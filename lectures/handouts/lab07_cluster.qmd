@@ -2,7 +2,7 @@
 title: "聚类算法实践"
 ---
 
-## 1. 环境设置
+## 环境设置
 
 首先导入必要的库和设置绘图参数：
 
@@ -40,9 +40,9 @@ def save_fig(fig_id, tight_layout=True, fig_extension="png", resolution=300):
     plt.savefig(path, format=fig_extension, dpi=resolution)
 ```
 
-## 2. K均值聚类
+## K均值聚类
 
-### 2.1 分类 vs 聚类
+### 分类 vs 聚类
 
 我们先来看一个简单的例子，展示分类和聚类的区别：
 
@@ -80,7 +80,7 @@ save_fig("classification_vs_clustering_plot")
 plt.show()
 ```
 
-### 2.2 创建和拟合K均值模型
+### 创建和拟合K均值模型
 
 让我们生成一些数据点并应用K均值聚类：
 
@@ -111,7 +111,7 @@ print("预测的簇标签（前10个）:", y_pred[:10])
 print("簇中心:", kmeans.cluster_centers_)
 ```
 
-### 2.3 绘制决策边界（沃罗诺伊图）
+### 绘制决策边界（沃罗诺伊图）
 
 ```{python}
 #| eval: false
@@ -161,7 +161,7 @@ save_fig("voronoi_plot")
 plt.show()
 ```
 
-### 2.4 软聚类 vs 硬聚类
+### 软聚类 vs 硬聚类
 
 K-means通常执行硬聚类（每个点属于一个簇），但我们也可以查看每个点到各个簇中心的距离：
 
@@ -181,7 +181,7 @@ y_pred_new = kmeans.predict(X_new)
 print("预测的簇标签:", y_pred_new)
 ```
 
-### 2.5 K均值算法的步骤演示
+### K均值算法的步骤演示
 
 我们来看看K均值算法的迭代过程：
 
@@ -232,7 +232,7 @@ save_fig("kmeans_algorithm_plot")
 plt.show()
 ```
 
-### 2.6 K均值的变异性问题
+### K均值的变异性问题
 
 K均值对初始质心的位置很敏感，不同的初始点可能导致不同的结果：
 
@@ -270,7 +270,7 @@ print("解决方案1的惯性:", kmeans_rnd_init1.inertia_)
 print("解决方案2的惯性:", kmeans_rnd_init2.inertia_)
 ```
 
-### 2.7 确定最佳K值
+### 确定最佳K值
 
 #### 肘部法则
 
@@ -359,7 +359,7 @@ save_fig("silhouette_analysis_plot")
 plt.show()
 ```
 
-### 2.8 K均值的局限性
+### K均值的局限性
 
 K均值在处理非球形或不同密度的簇时效果不佳：
 
@@ -395,7 +395,7 @@ save_fig("bad_kmeans_plot")
 plt.show()
 ```
 
-### 2.9 图像分割应用
+### 图像分割应用
 
 让我们用K均值进行图像分割：
 
@@ -447,11 +447,11 @@ save_fig('image_segmentation_plot', tight_layout=False)
 plt.show()
 ```
 
-## 3. DBSCAN聚类
+## DBSCAN聚类
 
 DBSCAN是一种基于密度的聚类算法，特别适合处理形状不规则的簇。
 
-### 3.1 应用DBSCAN算法
+### 应用DBSCAN算法
 
 ```{python}
 #| eval: false
@@ -468,7 +468,7 @@ print("标签（前10个）:", dbscan.labels_[:10])
 print("核心样本索引（前10个）:", dbscan.core_sample_indices_[:10])
 ```
 
-### 3.2 可视化DBSCAN结果
+### 可视化DBSCAN结果
 
 ```{python}
 #| eval: false
@@ -519,7 +519,7 @@ save_fig("dbscan_plot")
 plt.show()
 ```
 
-### 3.3 基于DBSCAN的分类
+### 基于DBSCAN的分类
 
 可以使用DBSCAN找到的核心点构建分类器：
 
@@ -543,7 +543,7 @@ save_fig("cluster_classification_plot")
 plt.show()
 ```
 
-## 4. 使用聚类进行半监督学习
+## 使用聚类进行半监督学习
 
 聚类算法可以应用于半监督学习场景：
 ```{python}
@@ -628,9 +628,9 @@ print("传播标签的准确率:",
       (y_train_partially_propagated == y_train[partially_propagated]).mean())
 ```
 
-## 5. 总结与比较
+## 总结与比较
 
-### 5.1 K均值优缺点：
+### K均值优缺点：
 
 - **优点**：
   - 算法简单，易于实现
@@ -643,7 +643,7 @@ print("传播标签的准确率:",
   - 无法处理非球形簇
   - 对异常值敏感
 
-### 5.2 DBSCAN优缺点：
+### DBSCAN优缺点：
 
 - **优点**：
   - 不需要预先指定簇的数量
@@ -656,7 +656,7 @@ print("传播标签的准确率:",
   - 对密度差异大的簇效果不佳
   - 计算复杂度较高
 
-### 5.3 选择合适的聚类算法：
+### 选择合适的聚类算法：
 
 - 如果簇形状规则、大小相似，且需要明确的簇数量，选择K均值
 - 如果簇形状不规则、有噪声点，且不知道簇的确切数量，选择DBSCAN
