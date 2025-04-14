@@ -2,9 +2,7 @@
 title: "非监督学习：聚类 (Clustering)"
 ---
 
-## 聚类 (Clustering)
-
-### 核心概念
+## 核心概念
 
 聚类是一种非监督学习技术，其目标是将数据集中的样本根据它们的相似性划分为若干个组，这些组被称为"簇" (Cluster)。聚类的核心思想是：
 
@@ -17,247 +15,587 @@ title: "非监督学习：聚类 (Clustering)"
 *   **客户 (Customers):** 根据客户的交易行为、风险偏好、人口统计学特征等进行聚类。
 *   **市场时期 (Market Regimes):** 根据市场波动性、相关性等指标对不同的市场阶段进行聚类。
 
-### 常用算法简介
+### 分类 vs 聚类
 
-#### K-Means (K均值聚类)
+分类和聚类是机器学习中两种不同的任务，它们的关键区别在于是否有标签数据（有监督 vs 无监督）。以下通过实例来展示这两者的区别：
 
-*   **原理:** K-Means 是一种迭代算法，旨在将数据划分为预先指定的 K 个簇。它通过不断更新簇的中心点（质心）并将每个数据点分配给最近的质心来实现。
-    1.  随机选择 K 个初始质心。
-    2.  **分配步骤:** 将每个数据点分配给距离其最近的质心，形成 K 个簇。
-    3.  **更新步骤:** 重新计算每个簇的质心（通常是簇内所有点的均值）。
-    4.  重复步骤 2 和 3，直到质心不再发生显著变化或达到最大迭代次数。
-*   **优点:**
-    *   算法简单，容易理解和实现。
-    *   计算效率高，处理大数据集速度较快。
-*   **缺点:**
-    *   需要预先指定簇的数量 K，而 K 值的选择往往比较困难。
-    *   对初始质心的选择敏感，可能陷入局部最优解。
-    *   对非球状簇、不同大小和密度的簇效果不佳。
-    *   对异常值（Outliers）比较敏感。
+```python
+# 加载鸢尾花数据集
+data = load_iris()
+X = data.data
+y = data.target
 
-#### 层次聚类 (Hierarchical Clustering)
+plt.figure(figsize=(9, 3.5))
 
-*   **原理:** 层次聚类通过构建数据点之间的层次结构（通常表示为树状图，Dendrogram）来进行聚类。它有两种主要方式：
-    *   **凝聚式 (Agglomerative):** 自底向上，开始时每个点自成一簇，然后逐步合并最相似的簇，直到所有点合并为一个簇。
-    *   **分裂式 (Divisive):** 自顶向下，开始时所有点在一个簇，然后逐步分裂最不相似的簇，直到每个点自成一簇或满足停止条件。
-*   **优点:**
-    *   不需要预先指定簇的数量 K，可以根据树状图决定合适的簇数。
-    *   可以揭示数据的层次结构关系。
-    *   对簇的形状没有严格假设。
-*   **缺点:**
-    *   计算复杂度较高，特别是对于大数据集（通常为 O(n^2) 或 O(n^3)）。
-    *   一旦合并或分裂完成，就无法撤销，可能导致次优结果。
-    *   算法选择（如距离度量、合并策略）对结果影响较大。
+# 左侧：带有类别标签的数据（分类问题）
+plt.subplot(121)
+plt.plot(X[y==0, 2], X[y==0, 3], "yo", label="Iris setosa")
+plt.plot(X[y==1, 2], X[y==1, 3], "bs", label="Iris versicolor")
+plt.plot(X[y==2, 2], X[y==2, 3], "g^", label="Iris virginica")
+plt.xlabel("花瓣长度")
+plt.ylabel("花瓣宽度")
+plt.grid()
+plt.legend()
 
-#### DBSCAN (基于密度的聚类)
+# 右侧：不带标签的数据（聚类问题）
+plt.subplot(122)
+plt.scatter(X[:, 2], X[:, 3], c="k", marker=".")
+plt.xlabel("花瓣长度")
+plt.tick_params(labelleft=False)
+plt.gca().set_axisbelow(True)
+plt.grid()
+plt.show()
+```
 
-*   **原理:** DBSCAN (Density-Based Spatial Clustering of Applications with Noise) 是一种基于密度的聚类算法，它将密度相连的点划分为一个簇，并且能够发现任意形状的簇，同时自动识别噪声点。
-    1.  **核心概念:**
-        *   **ε (Epsilon):** 邻域半径，定义点之间的"近"的概念。
-        *   **MinPts:** 邻域内最少点数，用于判断密度。
-        *   **核心点 (Core Point):** 在其 ε 邻域内至少有 MinPts 个点的点。
-        *   **边界点 (Border Point):** 不是核心点，但在某个核心点的 ε 邻域内的点。
-        *   **噪声点 (Noise Point):** 既不是核心点也不是边界点的点。
-    2.  **算法步骤:**
-        *   任选一个未被访问的点 p。
-        *   标记 p 为已访问。
-        *   如果 p 是核心点，创建一个新簇，并将 p 的所有密度可达点加入该簇。
-        *   如果 p 不是核心点，标记为噪声点并继续。
-        *   重复以上步骤，直到所有点都被访问。
-*   **优点:**
-    *   不需要预先指定簇的数量。
-    *   能发现任意形状的簇，不限于球形簇。
-    *   能自动识别和处理噪声点。
-    *   对离群点不敏感。
-*   **缺点:**
-    *   参数选择（ε 和 MinPts）有时较为困难。
-    *   对数据集中密度差异较大的簇效果不佳。
-    *   计算复杂度较高（约为 O(n²)），但通常可以通过空间索引优化。
-    *   不能处理高维空间中的"维度灾难"问题。
+**关键区别：**
 
-### 具体金融市场应用实例：股票板块轮动分析
+- **分类（有监督学习）**:
+  - 有预先定义的类别标签
+  - 目标是学习将新样本分配到已知类别的规则
+  - 评估基于预测标签与真实标签的比较
+
+- **聚类（无监督学习）**:
+  - 没有预先定义的类别标签
+  - 目标是发现数据中的自然分组
+  - 评估基于分组的内部结构特性（如组内紧密度、组间分离度）
+
+## K均值聚类 (K-Means)
+
+### 算法原理
+
+K-Means 是一种迭代算法，旨在将数据划分为预先指定的 K 个簇。它通过不断更新簇的中心点（质心）并将每个数据点分配给最近的质心来实现。其算法步骤如下：
+
+1. 随机选择 K 个初始质心。
+2. **分配步骤:** 将每个数据点分配给距离其最近的质心，形成 K 个簇。
+3. **更新步骤:** 重新计算每个簇的质心（通常是簇内所有点的均值）。
+4. 重复步骤 2 和 3，直到质心不再发生显著变化或达到最大迭代次数。
+
+### 算法优缺点
+
+**优点:**
+- 算法简单，容易理解和实现。
+- 计算效率高，处理大数据集速度较快。
+
+**缺点:**
+- 需要预先指定簇的数量 K，而 K 值的选择往往比较困难。
+- 对初始质心的选择敏感，可能陷入局部最优解。
+- 对非球状簇、不同大小和密度的簇效果不佳。
+- 对异常值（Outliers）比较敏感。
+
+### K-Means实践
+
+让我们通过一个实例来演示K-Means聚类的应用：
+
+```python
+# 生成模拟数据
+blob_centers = np.array([[ 0.2,  2.3], [-1.5 ,  2.3], [-2.8,  1.8],
+                        [-2.8,  2.8], [-2.8,  1.3]])
+blob_std = np.array([0.4, 0.3, 0.1, 0.1, 0.1])
+X, y = make_blobs(n_samples=2000, centers=blob_centers, cluster_std=blob_std,
+                  random_state=7)
+
+# 可视化数据
+plt.figure(figsize=(8, 4))
+plt.scatter(X[:, 0], X[:, 1], c='k', s=1)
+plt.xlabel("$x_1$")
+plt.ylabel("$x_2$", rotation=0)
+plt.grid()
+plt.show()
+
+# 使用K-Means聚类
+k = 5
+kmeans = KMeans(n_clusters=k, n_init=10, random_state=42)
+y_pred = kmeans.fit_predict(X)
+
+print("预测的簇标签（前10个）:", y_pred[:10])
+print("簇中心:", kmeans.cluster_centers_)
+```
+
+### K-Means的决策边界
+
+K-Means的决策边界形成了沃罗诺伊图(Voronoi diagram)，即每个区域内的点到对应质心的距离比到其他质心的距离更近。
+
+```python
+# 绘制决策边界（沃罗诺伊图）
+plt.figure(figsize=(8, 4))
+plot_decision_boundaries(kmeans, X)
+plt.show()
+```
+
+### K-Means的迭代过程
+
+下面演示K-Means算法的迭代过程：
+
+```python
+# K均值算法的步骤演示
+kmeans_iter1 = KMeans(n_clusters=5, init="random", n_init=1, max_iter=1,
+                    random_state=5)
+kmeans_iter2 = KMeans(n_clusters=5, init="random", n_init=1, max_iter=2,
+                    random_state=5)
+kmeans_iter3 = KMeans(n_clusters=5, init="random", n_init=1, max_iter=3,
+                    random_state=5)
+kmeans_iter1.fit(X)
+kmeans_iter2.fit(X)
+kmeans_iter3.fit(X)
+
+plt.figure(figsize=(10, 8))
+
+plt.subplot(321)
+plot_data(X)
+plot_centroids(kmeans_iter1.cluster_centers_, circle_color='r', cross_color='w')
+plt.ylabel("$x_2$", rotation=0)
+plt.tick_params(labelbottom=False)
+plt.title("更新质心（初始随机）")
+
+plt.subplot(322)
+plot_decision_boundaries(kmeans_iter1, X, show_xlabels=False,
+                        show_ylabels=False)
+plt.title("标记实例")
+
+# 更多迭代图示...
+plt.show()
+```
+
+### 初始化敏感性问题
+
+K-Means对初始质心的选择十分敏感，不同的初始点可能导致完全不同的聚类结果：
+
+```python
+# K均值的变异性问题
+kmeans_rnd_init1 = KMeans(n_clusters=5, init="random", n_init=1, random_state=2)
+kmeans_rnd_init2 = KMeans(n_clusters=5, init="random", n_init=1, random_state=9)
+
+plot_clusterer_comparison(kmeans_rnd_init1, kmeans_rnd_init2, X,
+                        "解决方案 1",
+                        "解决方案 2（使用不同的随机初始化）")
+
+# 查看惯性值
+print("解决方案1的惯性:", kmeans_rnd_init1.inertia_)
+print("解决方案2的惯性:", kmeans_rnd_init2.inertia_)
+```
+
+**解决方案**：使用多次不同的初始化，选择惯性（簇内平方和）最小的结果。scikit-learn中的K-Means默认进行10次不同的初始化。
+
+### 聚类评估方法
+
+如何评估聚类效果的好坏，以及如何选择合适的参数（如K-Means中的K值）？以下介绍几种常用的评估方法：
+
+#### 肘部法则 (Elbow Method)
+
+**原理：**
+- 对不同的K值运行K-Means算法，计算每个K值对应的惯性（簇内平方和，WCSS）。
+- 随着K值的增加，惯性总体呈下降趋势，但下降速率会逐渐变缓。
+- 寻找图中的"肘部"，即曲线下降速率发生明显变化的点。该点对应的K值被视为较佳选择。
+
+**注意事项：**
+- 肘部法则是一种视觉方法，有时肘部可能不够明显。
+- 需要结合业务理解和其他评估指标来确定最终的K值。
+- 该方法主要适用于球形簇，对于复杂形状的簇可能效果不佳。
+
+肘部法则是一种启发式方法，用于确定K-Means中的最佳聚类数量K：
+
+```python
+# 肘部法则
+kmeans_per_k = [KMeans(n_clusters=k, n_init=10, random_state=42).fit(X)
+                for k in range(1, 10)]
+inertias = [model.inertia_ for model in kmeans_per_k]
+
+plt.figure(figsize=(8, 3.5))
+plt.plot(range(1, 10), inertias, "bo-")
+plt.xlabel("$k$")
+plt.ylabel("惯性")
+plt.annotate("", xy=(4, inertias[3]), xytext=(4.45, 650),
+            arrowprops=dict(facecolor='black', shrink=0.1))
+plt.text(4.5, 650, "肘部", horizontalalignment="center")
+plt.axis([1, 8.5, 0, 1300])
+plt.grid()
+plt.show()
+```
+
+#### 轮廓系数 (Silhouette Coefficient)
+
+轮廓系数是评估聚类质量的一种方法，它综合考虑了簇内的紧密度和簇间的分离度。
+
+**计算方法:**
+- 对于数据集中的每个样本点 i：
+  - 计算 a(i): 点 i 与同簇中其他所有点的平均距离（衡量簇内紧密度）。
+  - 计算 b(i): 点 i 与距离最近的其他簇中所有点的平均距离（衡量簇间分离度）。
+  - 轮廓系数 s(i) = (b(i) - a(i)) / max(a(i), b(i))。
+- 数据集的整体轮廓系数是所有样本点轮廓系数的平均值。
+
+**轮廓系数解读:**
+- 值域范围：[-1, 1]
+- 接近 +1：表示样本与自己的簇很匹配，与相邻簇的差距很大，聚类效果好。
+- 接近 0：表示样本处于两个簇的边界附近。
+- 接近 -1：表示样本可能被分配到了错误的簇。
+- 通常认为，平均轮廓系数大于 0.5 是较好的聚类结果，大于 0.7 是优秀的聚类结果。
+
+下面是使用轮廓系数选择最佳K值的例子：
+
+```python
+# 轮廓系数
+silhouette_scores = [silhouette_score(X, model.labels_)
+                    for model in kmeans_per_k[1:]]
+
+plt.figure(figsize=(8, 3))
+plt.plot(range(2, 10), silhouette_scores, "bo-")
+plt.xlabel("$k$")
+plt.ylabel("轮廓分数")
+plt.axis([1.8, 8.5, 0.55, 0.7])
+plt.grid()
+plt.show()
+```
+
+更详细的轮廓分析可以通过轮廓图(Silhouette Plot)进行：
+
+```python
+# 轮廓图分析
+plt.figure(figsize=(11, 9))
+
+for k in (3, 4, 5, 6):
+    plt.subplot(2, 2, k - 2)
+    
+    y_pred = kmeans_per_k[k - 1].labels_
+    silhouette_coefficients = silhouette_samples(X, y_pred)
+
+    padding = len(X) // 30
+    pos = padding
+    ticks = []
+    for i in range(k):
+        coeffs = silhouette_coefficients[y_pred == i]
+        coeffs.sort()
+
+        color = plt.cm.Spectral(i / k)
+        plt.fill_betweenx(np.arange(pos, pos + len(coeffs)), 0, coeffs,
+                        facecolor=color, edgecolor=color, alpha=0.7)
+        ticks.append(pos + len(coeffs) // 2)
+        pos += len(coeffs) + padding
+
+    plt.gca().yaxis.set_major_locator(FixedLocator(ticks))
+    plt.gca().yaxis.set_major_formatter(FixedFormatter(range(k)))
+    if k in (3, 5):
+        plt.ylabel("簇")
+    
+    if k in (5, 6):
+        plt.gca().set_xticks([-0.1, 0, 0.2, 0.4, 0.6, 0.8, 1])
+        plt.xlabel("轮廓系数")
+    else:
+        plt.tick_params(labelbottom=False)
+
+    plt.axvline(x=silhouette_scores[k - 2], color="red", linestyle="--")
+    plt.title(f"$k={k}$")
+
+plt.show()
+```
+
+在轮廓图中，每个簇都有对应的条形图，条形图的长度表示该簇内每个样本的轮廓系数。较宽且一致的条形图意味着聚类质量较好。
+
+#### 戴维斯-布尔丁指数 (Davies-Bouldin Index)
+
+戴维斯-布尔丁指数是另一种评估聚类质量的度量，它关注簇内相似度和簇间差异性的比率：
+
+```python
+from sklearn.metrics import davies_bouldin_score
+
+dbi = davies_bouldin_score(X, labels)
+print(f"Davies-Bouldin Index: {dbi:.3f}")
+```
+
+**解读：**
+- 值越小越好，表示簇内紧密且簇间分离。
+- 理想的聚类会产生低的DBI值。
+
+通过综合使用上述评估方法，我们可以更客观、定量地判断聚类算法的效果，选择合适的参数，从而获得更有意义的聚类结果。
+
+### K-Means的局限性
+
+K-Means对复杂形状的簇表现不佳：
+
+```python
+# 生成一个更难聚类的数据集
+X1, y1 = make_blobs(n_samples=1000, centers=((4, -4), (0, 0)), random_state=42)
+X1 = X1.dot(np.array([[0.374, 0.95], [0.732, 0.598]]))
+X2, y2 = make_blobs(n_samples=250, centers=1, random_state=42)
+X2 = X2 + [6, -8]
+X_difficult = np.r_[X1, X2]
+
+# 两种不同初始化方式的K-means
+kmeans_good = KMeans(n_clusters=3,
+                    init=np.array([[-1.5, 2.5], [0.5, 0], [4, 0]]),
+                    n_init=1, random_state=42)
+kmeans_bad = KMeans(n_clusters=3, n_init=10, random_state=42)
+kmeans_good.fit(X_difficult)
+kmeans_bad.fit(X_difficult)
+
+# 比较结果
+plt.figure(figsize=(10, 3.2))
+plt.subplot(121)
+plot_decision_boundaries(kmeans_good, X_difficult)
+plt.title(f"惯性 = {kmeans_good.inertia_:.1f}")
+plt.subplot(122)
+plot_decision_boundaries(kmeans_bad, X_difficult, show_ylabels=False)
+plt.title(f"惯性 = {kmeans_bad.inertia_:.1f}")
+plt.show()
+```
+
+### DBSCAN聚类
+
+#### 算法原理
+
+DBSCAN (Density-Based Spatial Clustering of Applications with Noise) 是一种基于密度的聚类算法，它将密度相连的点划分为一个簇，并且能够发现任意形状的簇，同时自动识别噪声点。
+
+**核心概念:**
+- **ε (Epsilon):** 邻域半径，定义点之间的"近"的概念。
+- **MinPts:** 邻域内最少点数，用于判断密度。
+- **核心点 (Core Point):** 在其 ε 邻域内至少有 MinPts 个点的点。
+- **边界点 (Border Point):** 不是核心点，但在某个核心点的 ε 邻域内的点。
+- **噪声点 (Noise Point):** 既不是核心点也不是边界点的点。
+
+**算法步骤:**
+1. 任选一个未被访问的点 p。
+2. 标记 p 为已访问。
+3. 如果 p 是核心点，创建一个新簇，并将 p 的所有密度可达点加入该簇。
+4. 如果 p 不是核心点，标记为噪声点并继续。
+5. 重复以上步骤，直到所有点都被访问。
+
+### 算法优缺点
+
+**优点:**
+- 不需要预先指定簇的数量。
+- 能发现任意形状的簇，不限于球形簇。
+- 能自动识别和处理噪声点。
+- 对离群点不敏感。
+
+**缺点:**
+- 参数选择（ε 和 MinPts）有时较为困难。
+- 对数据集中密度差异较大的簇效果不佳。
+- 计算复杂度较高（约为 O(n²)），但通常可以通过空间索引优化。
+- 不能处理高维空间中的"维度灾难"问题。
+
+### DBSCAN实践
+
+我们通过一个新月形数据集来演示DBSCAN的效果，这种形状对K-Means来说是很难处理的：
+
+```python
+# 创建一个新月形数据集
+X, y = make_moons(n_samples=1000, noise=0.05, random_state=42)
+
+# 应用DBSCAN
+dbscan = DBSCAN(eps=0.05, min_samples=5)
+dbscan.fit(X)
+
+# 查看结果
+print("标签（前10个）:", dbscan.labels_[:10])
+print("核心样本索引（前10个）:", dbscan.core_sample_indices_[:10])
+
+# 可视化DBSCAN结果
+plt.figure(figsize=(6, 3))
+plot_dbscan(dbscan, X, size=100)
+plt.show()
+```
+
+### 参数敏感性
+
+DBSCAN的关键参数是epsilon (ε)和min_samples。以下展示不同epsilon值对聚类结果的影响：
+
+```python
+# 试两个不同的epsilon值
+dbscan2 = DBSCAN(eps=0.2)
+dbscan2.fit(X)
+
+plt.figure(figsize=(9, 3.2))
+
+plt.subplot(121)
+plot_dbscan(dbscan, X, size=100)
+
+plt.subplot(122)
+plot_dbscan(dbscan2, X, size=600, show_ylabels=False)
+
+plt.show()
+```
+
+当ε值增大时，更多的点被连接成簇，噪声点减少。但ε值过大也可能导致不同本应分开的簇被合并。
+
+### 参数选择方法
+
+为DBSCAN选择合适的参数是一个挑战。一种常用的方法是K-距离图（K-distance plot）：
+
+```python
+# 选择 MinPts 值，例如 4
+MinPts = 4
+
+# 找到每个点的 k 个最近邻
+nbrs = NearestNeighbors(n_neighbors=MinPts).fit(X)
+distances, indices = nbrs.kneighbors(X)
+
+# 距离排序
+distances = np.sort(distances[:, MinPts-1])
+
+# 绘制 K-距离图
+plt.figure(figsize=(10, 6))
+plt.plot(range(len(distances)), distances)
+plt.title('K-Distance Plot (k={})'.format(MinPts))
+plt.xlabel('Points sorted by distance')
+plt.ylabel('Distance to k-th nearest neighbor')
+plt.grid(True)
+plt.show()
+```
+
+在K-距离图中，我们寻找曲线的"拐点"，该点对应的距离值可作为ε的值。拐点表示密度发生显著变化的地方。
+
+### 基于DBSCAN的分类
+
+DBSCAN可以与监督学习方法结合，用于半监督学习：
+
+```python
+# 基于DBSCAN的分类
+# 使用核心点构建KNN分类器
+knn = KNeighborsClassifier(n_neighbors=50)
+knn.fit(dbscan2.components_, dbscan2.labels_[dbscan2.core_sample_indices_])
+
+# 预测新点的类别
+X_new = np.array([[-0.5, 0], [0, 0.5], [1, -0.1], [2, 1]])
+print("预测标签:", knn.predict(X_new))
+print("预测概率:", knn.predict_proba(X_new).round(2))
+
+# 可视化分类边界
+plt.figure(figsize=(6, 3))
+plot_decision_boundaries(knn, X, show_centroids=False)
+plt.scatter(X_new[:, 0], X_new[:, 1], c="b", marker="+", s=200, zorder=10)
+plt.show()
+```
+
+在这个例子中，我们首先使用DBSCAN找到核心点和它们的簇标签，然后用这些信息训练KNN分类器。这种方法结合了DBSCAN处理复杂形状的能力和KNN的分类能力。
+
+
+## 聚类应用实例
+
+### 图像分割应用
+
+K-Means可用于图像分割，将图像像素分为几个颜色簇，实现颜色量化：
+
+```python
+# 读取图像并应用K-means
+image = np.asarray(PIL.Image.open(filename))
+X_img = image.reshape(-1, 3)
+segmented_imgs = []
+n_colors = (10, 8, 6, 4, 2)
+
+for n_clusters in n_colors:
+    kmeans = KMeans(n_clusters=n_clusters, n_init=10, random_state=42).fit(X_img)
+    segmented_img = kmeans.cluster_centers_[kmeans.labels_]
+    segmented_imgs.append(segmented_img.reshape(image.shape))
+
+# 显示结果
+plt.figure(figsize=(10, 5))
+plt.subplot(2, 3, 1)
+plt.imshow(image)
+plt.title("原始图像")
+plt.axis('off')
+
+for idx, n_clusters in enumerate(n_colors):
+    plt.subplot(2, 3, 2 + idx)
+    plt.imshow(segmented_imgs[idx] / 255)
+    plt.title(f"{n_clusters} 种颜色")
+    plt.axis('off')
+
+plt.show()
+```
+
+### 半监督学习：使用聚类辅助分类
+
+聚类可以在标记数据稀少的情况下帮助分类任务：
+
+```python
+# 加载digits数据集
+X_digits, y_digits = load_digits(return_X_y=True)
+X_train, X_test = X_digits[:1400], X_digits[1400:]
+y_train, y_test = y_digits[:1400], y_digits[1400:]
+
+# 仅使用少量标记数据训练
+n_labeled = 50
+log_reg = LogisticRegression(max_iter=10_000)
+log_reg.fit(X_train[:n_labeled], y_train[:n_labeled])
+print(f"使用{n_labeled}个标记样本的准确率:", log_reg.score(X_test, y_test))
+
+# 使用K-means找到代表性数字
+k = 50
+kmeans = KMeans(n_clusters=k, n_init=10, random_state=42)
+X_digits_dist = kmeans.fit_transform(X_train)
+representative_digit_idx = X_digits_dist.argmin(axis=0)
+X_representative_digits = X_train[representative_digit_idx]
+
+# 绘制代表性数字
+plt.figure(figsize=(8, 2))
+for index, X_representative_digit in enumerate(X_representative_digits):
+    plt.subplot(k // 10, 10, index + 1)
+    plt.imshow(X_representative_digit.reshape(8, 8), cmap="binary",
+            interpolation="bilinear")
+    plt.axis('off')
+plt.show()
+
+# 手动标记这些代表性数字
+y_representative_digits = np.array([
+    1, 3, 6, 0, 7, 9, 2, 4, 8, 9,
+    5, 4, 7, 1, 2, 6, 1, 2, 5, 1,
+    4, 1, 3, 3, 8, 8, 2, 5, 6, 9,
+    1, 4, 0, 6, 8, 3, 4, 6, 7, 2,
+    4, 1, 0, 7, 5, 1, 9, 9, 3, 7
+])
+
+# 使用代表性数字训练模型
+log_reg = LogisticRegression(max_iter=10_000)
+log_reg.fit(X_representative_digits, y_representative_digits)
+print("使用代表性数字的准确率:", log_reg.score(X_test, y_test))
+
+# 将标签传播到同一簇中的所有实例
+y_train_propagated = np.empty(len(X_train), dtype=np.int64)
+for i in range(k):
+    y_train_propagated[kmeans.labels_ == i] = y_representative_digits[i]
+
+# 使用扩展的训练集
+log_reg = LogisticRegression(max_iter=10_000)
+log_reg.fit(X_train, y_train_propagated)
+print("使用标签传播后的准确率:", log_reg.score(X_test, y_test))
+```
+
+在这个例子中，我们使用K-Means找到代表性样本，只对这些样本手动标记，然后将标签传播到同一簇的所有样本。这种方法可以大大减少标记工作量。
+
+### 金融市场应用：股票板块轮动分析
+
+聚类技术可以用于识别股票市场中的板块轮动现象：
 
 **目标:** 利用聚类技术识别股票市场中可能存在的板块轮动现象或隐藏的股票群体特征。
 
 **步骤:**
 
-1.  **数据收集:**
-    *   选择一个股票池，例如沪深300指数的成分股。
-    *   收集这些股票在过去一段时间（如一年）的每日收益率数据。
+1. **数据收集:**
+   - 选择一个股票池，例如上证A股。
+   - 收集这些股票在过去一段时间（如一年）的每日收益率数据。
 
-2.  **数据预处理:**
-    *   处理缺失值（如有）。
-    *   可以考虑对收益率数据进行标准化，以消除量纲影响。
+2. **数据预处理:**
+   - 处理缺失值。
+   - 对收益率数据进行标准化，以消除量纲影响。
 
-3.  **聚类分析 (使用 K-Means):**
-    *   选择 K-Means 算法对股票进行聚类，输入数据为每只股票的日收益率序列（可以看作一个高维向量）。
-    *   尝试不同的 K 值（例如，从 K=5 到 K=10）。可以使用肘部法则或轮廓系数等方法辅助选择最优的 K 值（见下文评估方法）。
+3. **聚类分析:**
+   - 使用K-Means对股票进行聚类，输入数据为每只股票的日收益率序列。
+   - 使用肘部法则或轮廓系数选择最优的K值。
 
-4.  **结果解读与分析:**
-    *   **簇成员分析:** 查看每个形成的簇中包含哪些股票。
-        *   **传统行业板块验证:** 这些簇是否大致对应于已知的传统行业板块（如银行、地产、科技、消费、医药等）？
-        *   **跨行业/因子聚类发现:** 是否出现了跨越传统行业的聚类？例如，一个簇可能同时包含高分红的银行股、公用事业股和部分稳定消费股，这可能揭示了一个基于"价值"或"低波动"因子的股票群体。另一个簇可能包含新能源、半导体和部分高端制造股票，揭示了基于"高成长性"或"科技主题"的群体。
-    *   **簇表现分析:** 计算每个簇内股票在不同时间段（如最近一个月、一个季度）的平均收益率、整体波动性（如平均标准差）。
-        *   **识别强势/弱势群体:** 比较各簇的表现，识别出近期表现显著优于或劣于市场平均水平的股票群体。例如，如果发现某个包含新能源和高端制造的簇近期平均收益率远超大盘指数，这可能指示了当前的市场热点和资金流向。
-        *   **板块轮动证据:** 观察不同时间段内各簇表现的相对变化，可以为板块轮动的投资策略提供数据支持。例如，上个季度表现强势的"价值"簇本季度表现平平，而"成长"簇开始领涨。
+4. **结果解读与分析:**
+   - **簇成员分析:** 查看每个簇中包含哪些股票，是否对应传统行业板块或揭示跨行业的投资因子。
+   - **簇表现分析:** 计算每个簇在不同时间段的表现，识别强势/弱势群体，寻找板块轮动证据。
 
-**意义:** 通过聚类，可以超越传统的行业划分，从数据驱动的角度发现股票之间更深层次的关联性（如同涨同跌模式），为投资组合构建和择时策略提供新的视角。
+**意义:** 通过聚类，可以超越传统的行业划分，从数据驱动的角度发现股票之间更深层次的关联性，为投资组合构建和择时策略提供新的视角。
 
-### 评估方法 (详细介绍)
+## 总结
 
-如何评估聚类效果的好坏，以及如何选择合适的 K 值？
+聚类是一种强大的无监督学习技术，可以在没有标签数据的情况下发现数据中的自然分组。本讲义介绍了两种主要的聚类算法：K-Means和DBSCAN，它们各有优缺点：
 
-#### 1. 轮廓系数 (Silhouette Coefficient)
+- **K-Means**: 简单高效，但需要预先指定簇数量，对簇形状有假设，对异常值敏感。
+- **DBSCAN**: 能处理任意形状的簇，自动识别噪声点，不需要预先指定簇数量，但参数选择较为困难。
 
-轮廓系数是评估聚类质量的一种方法，它综合考虑了簇内的紧密度和簇间的分离度。
+聚类算法的评估需要使用特定的指标，如轮廓系数、肘部法则等，而不是传统的分类准确率。
 
-*   **计算方法:**
-    *   对于数据集中的每个样本点 i：
-        *   计算 a(i): 点 i 与同簇中其他所有点的平均距离（衡量簇内紧密度）。
-        *   计算 b(i): 点 i 与距离最近的其他簇中所有点的平均距离（衡量簇间分离度）。
-        *   轮廓系数 s(i) = (b(i) - a(i)) / max(a(i), b(i))。
-    *   数据集的整体轮廓系数是所有样本点轮廓系数的平均值。
+聚类在图像处理、客户分群、异常检测、半监督学习等领域有广泛的应用。在金融领域，聚类可以用于资产分组、市场状态识别、风险管理等多个方面。
 
-*   **轮廓系数解读:**
-    *   值域范围：[-1, 1]
-    *   接近 +1：表示样本与自己的簇很匹配，与相邻簇的差距很大，聚类效果好。
-    *   接近 0：表示样本处于两个簇的边界附近。
-    *   接近 -1：表示样本可能被分配到了错误的簇。
-    *   通常认为，平均轮廓系数大于 0.5 是较好的聚类结果，大于 0.7 是优秀的聚类结果。
-
-*   **使用方法:**
-    *   对不同的簇数量 (K) 计算平均轮廓系数。
-    *   选择平均轮廓系数最大的 K 值。
-    *   可以额外检查每个簇的平均轮廓系数，以识别问题簇（轮廓系数较低的簇）。
-
-*   **Python 实现:**
-    ```python
-    from sklearn.metrics import silhouette_score, silhouette_samples
-    
-    # 计算整体轮廓系数
-    sil_score = silhouette_score(X, labels)
-    
-    # 计算每个样本的轮廓系数
-    sil_samples = silhouette_samples(X, labels)
-    
-    # 计算每个簇的平均轮廓系数
-    for i in range(n_clusters):
-        cluster_sil = sil_samples[labels == i].mean()
-        print(f"Cluster {i} silhouette coefficient: {cluster_sil:.3f}")
-    ```
-
-#### 2. 肘部法则 (Elbow Method)
-
-肘部法则是一种启发式方法，用于确定 K-Means 中的最佳聚类数量 K。
-
-*   **原理:**
-    *   对不同的 K 值运行 K-Means 算法，计算每个 K 值对应的簇内平方和 (WCSS, Within-Cluster Sum of Squares)。WCSS 是每个点与其所属簇的中心点之间距离的平方和。
-    *   绘制 K 值与 WCSS 的关系图。
-    *   随着 K 值的增加，WCSS 总体呈下降趋势，但下降速率会逐渐变缓。
-    *   寻找图中的"肘部"，即曲线下降速率发生明显变化的点。该点对应的 K 值被视为较佳选择。
-
-*   **数学表示:**
-    *   WCSS = Σ(xi - μj)²，其中 xi 是簇 j 中的点，μj 是簇 j 的中心点。
-    *   在 scikit-learn 中，WCSS 可以通过 K-Means 的 `inertia_` 属性获取。
-
-*   **选择肘部的依据:**
-    *   当 K 值小于真实簇数时，增加 K 会显著减少 WCSS（曲线陡峭部分）。
-    *   当 K 值超过真实簇数时，再增加 K 对 WCSS 的减少效果不再明显（曲线平缓部分）。
-    *   肘部通常是曲线从陡峭变为平缓的转折点。
-
-*   **Python 实现:**
-    ```python
-    from sklearn.cluster import KMeans
-    import matplotlib.pyplot as plt
-    
-    wcss = []
-    k_range = range(1, 11)
-    
-    for k in k_range:
-        kmeans = KMeans(n_clusters=k, n_init='auto', random_state=42)
-        kmeans.fit(X)
-        wcss.append(kmeans.inertia_)
-    
-    plt.figure(figsize=(10, 6))
-    plt.plot(k_range, wcss, marker='o')
-    plt.title('Elbow Method for Optimal K')
-    plt.xlabel('Number of Clusters (K)')
-    plt.ylabel('WCSS (Inertia)')
-    plt.grid(True)
-    plt.show()
-    ```
-
-*   **注意事项:**
-    *   肘部法则是一种视觉方法，有时肘部可能不够明显，需要结合业务理解和其他评估指标（如轮廓系数）来确定最终的 K 值。
-    *   如果数据中的簇数量不明显，曲线可能会很平滑，没有明显的肘部。
-    *   该方法主要适用于球形簇，对于复杂形状的簇可能效果不佳。
-
-#### 3. 戴维斯-布尔丁指数 (Davies-Bouldin Index, DBI)
-
-戴维斯-布尔丁指数是另一种评估聚类质量的度量，它关注簇内相似度和簇间差异性的比率。
-
-*   **计算方法:**
-    *   对于每对簇 i 和 j，计算两个簇的"相似度" Rij = (Si + Sj) / Dij，其中：
-        *   Si 和 Sj 分别是簇 i 和簇 j 的平均点到中心的距离（簇内散布度）。
-        *   Dij 是簇 i 和簇 j 中心之间的距离（簇间距离）。
-    *   对于每个簇 i，找到它与其他所有簇 j 的最大相似度 max(Rij)。
-    *   DBI 是所有簇最大相似度的平均值。
-
-*   **DBI 解读:**
-    *   值越小越好，表示簇内紧密且簇间分离。
-    *   理想的聚类会产生低的 DBI 值。
-
-*   **使用方法:**
-    *   对不同的簇数量 (K) 计算 DBI。
-    *   选择 DBI 值最小的 K 值。
-
-*   **Python 实现:**
-    ```python
-    from sklearn.metrics import davies_bouldin_score
-    
-    dbi = davies_bouldin_score(X, labels)
-    print(f"Davies-Bouldin Index: {dbi:.3f}")
-    ```
-
-#### 4. 为 DBSCAN 选择参数
-
-与 K-Means 不同，DBSCAN 不需要预先指定簇的数量，但需要选择两个关键参数：邻域半径 ε 和最小点数 MinPts。
-
-*   **选择 MinPts:**
-    *   一般经验法则是设置 MinPts ≥ 维度 + 1，例如对于二维数据，MinPts ≥ 3。
-    *   更大的 MinPts 值可以减少噪声点的误判，但也可能导致小簇被视为噪声。
-    *   常用值范围：3-10，但对于大型数据集可能需要更大的值。
-
-*   **选择 ε (Epsilon):**
-    *   **K-距离图:**
-        1. 对每个点，计算到其第 k 个最近邻点 (k = MinPts) 的距离。
-        2. 对这些距离进行升序排序，并绘制成图。
-        3. 寻找曲线上的"拐点"，该点对应的距离值可作为 ε 的值。
-    
-    *   **Python 实现 K-距离图:**
-        ```python
-        from sklearn.neighbors import NearestNeighbors
-        import numpy as np
-        import matplotlib.pyplot as plt
-        
-        # 选择 MinPts 值，例如 4
-        MinPts = 4
-        
-        # 找到每个点的 k 个最近邻
-        nbrs = NearestNeighbors(n_neighbors=MinPts).fit(X)
-        distances, indices = nbrs.kneighbors(X)
-        
-        # 距离排序
-        distances = np.sort(distances[:, MinPts-1])
-        
-        # 绘制 K-距离图
-        plt.figure(figsize=(10, 6))
-        plt.plot(range(len(distances)), distances)
-        plt.title('K-Distance Plot (k={})'.format(MinPts))
-        plt.xlabel('Points sorted by distance')
-        plt.ylabel('Distance to k-th nearest neighbor')
-        plt.grid(True)
-        plt.show()
-        ```
-
-通过综合使用上述评估方法，我们可以更客观、定量地判断聚类算法的效果，选择合适的参数，从而获得更有意义的聚类结果。
+通过本讲义的学习，读者应该能够理解聚类的基本原理，掌握K-Means和DBSCAN算法的使用方法，学会如何评估聚类结果，并能将聚类技术应用到实际问题中。 

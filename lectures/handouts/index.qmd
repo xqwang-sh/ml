@@ -22,7 +22,6 @@ title: "前言"
 
 1. [金融数据获取与数据分析基础](lab02_data.qmd)
 2. [泰坦尼克号生存预测实践](lab03_titanic.qmd)
-3. [聚类算法实践](lab07_cluster.qmd)
 
 **课程项目:**
 

@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./lab07_cluster.html" rel="next">
+<link href="./project1_LC.html" rel="next">
 <link href="./07_unsupervised.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -202,26 +202,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lab07_cluster.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">聚类算法实践</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./project1_LC.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2a_tspred.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2b_text.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
   </div>
 </li>
     </ul>
@@ -234,13 +228,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">目录</h2>
    
   <ul>
-  <li><a href="#聚类-clustering" id="toc-聚类-clustering" class="nav-link active" data-scroll-target="#聚类-clustering"><span class="header-section-number">10.1</span> 聚类 (Clustering)</a>
+  <li><a href="#核心概念" id="toc-核心概念" class="nav-link active" data-scroll-target="#核心概念"><span class="header-section-number">10.1</span> 核心概念</a>
   <ul class="collapse">
-  <li><a href="#核心概念" id="toc-核心概念" class="nav-link" data-scroll-target="#核心概念"><span class="header-section-number">10.1.1</span> 核心概念</a></li>
-  <li><a href="#常用算法简介" id="toc-常用算法简介" class="nav-link" data-scroll-target="#常用算法简介"><span class="header-section-number">10.1.2</span> 常用算法简介</a></li>
-  <li><a href="#具体金融市场应用实例股票板块轮动分析" id="toc-具体金融市场应用实例股票板块轮动分析" class="nav-link" data-scroll-target="#具体金融市场应用实例股票板块轮动分析"><span class="header-section-number">10.1.3</span> 具体金融市场应用实例：股票板块轮动分析</a></li>
-  <li><a href="#评估方法-详细介绍" id="toc-评估方法-详细介绍" class="nav-link" data-scroll-target="#评估方法-详细介绍"><span class="header-section-number">10.1.4</span> 评估方法 (详细介绍)</a></li>
+  <li><a href="#分类-vs-聚类" id="toc-分类-vs-聚类" class="nav-link" data-scroll-target="#分类-vs-聚类"><span class="header-section-number">10.1.1</span> 分类 vs 聚类</a></li>
   </ul></li>
+  <li><a href="#k均值聚类-k-means" id="toc-k均值聚类-k-means" class="nav-link" data-scroll-target="#k均值聚类-k-means"><span class="header-section-number">10.2</span> K均值聚类 (K-Means)</a>
+  <ul class="collapse">
+  <li><a href="#算法原理" id="toc-算法原理" class="nav-link" data-scroll-target="#算法原理"><span class="header-section-number">10.2.1</span> 算法原理</a></li>
+  <li><a href="#算法优缺点" id="toc-算法优缺点" class="nav-link" data-scroll-target="#算法优缺点"><span class="header-section-number">10.2.2</span> 算法优缺点</a></li>
+  <li><a href="#k-means实践" id="toc-k-means实践" class="nav-link" data-scroll-target="#k-means实践"><span class="header-section-number">10.2.3</span> K-Means实践</a></li>
+  <li><a href="#k-means的决策边界" id="toc-k-means的决策边界" class="nav-link" data-scroll-target="#k-means的决策边界"><span class="header-section-number">10.2.4</span> K-Means的决策边界</a></li>
+  <li><a href="#k-means的迭代过程" id="toc-k-means的迭代过程" class="nav-link" data-scroll-target="#k-means的迭代过程"><span class="header-section-number">10.2.5</span> K-Means的迭代过程</a></li>
+  <li><a href="#初始化敏感性问题" id="toc-初始化敏感性问题" class="nav-link" data-scroll-target="#初始化敏感性问题"><span class="header-section-number">10.2.6</span> 初始化敏感性问题</a></li>
+  <li><a href="#聚类评估方法" id="toc-聚类评估方法" class="nav-link" data-scroll-target="#聚类评估方法"><span class="header-section-number">10.2.7</span> 聚类评估方法</a></li>
+  <li><a href="#k-means的局限性" id="toc-k-means的局限性" class="nav-link" data-scroll-target="#k-means的局限性"><span class="header-section-number">10.2.8</span> K-Means的局限性</a></li>
+  <li><a href="#实际应用图像分割" id="toc-实际应用图像分割" class="nav-link" data-scroll-target="#实际应用图像分割"><span class="header-section-number">10.2.9</span> 实际应用：图像分割</a></li>
+  <li><a href="#dbscan聚类" id="toc-dbscan聚类" class="nav-link" data-scroll-target="#dbscan聚类"><span class="header-section-number">10.2.10</span> DBSCAN聚类</a></li>
+  <li><a href="#算法优缺点-1" id="toc-算法优缺点-1" class="nav-link" data-scroll-target="#算法优缺点-1"><span class="header-section-number">10.2.11</span> 算法优缺点</a></li>
+  <li><a href="#dbscan实践" id="toc-dbscan实践" class="nav-link" data-scroll-target="#dbscan实践"><span class="header-section-number">10.2.12</span> DBSCAN实践</a></li>
+  <li><a href="#参数敏感性" id="toc-参数敏感性" class="nav-link" data-scroll-target="#参数敏感性"><span class="header-section-number">10.2.13</span> 参数敏感性</a></li>
+  <li><a href="#参数选择方法" id="toc-参数选择方法" class="nav-link" data-scroll-target="#参数选择方法"><span class="header-section-number">10.2.14</span> 参数选择方法</a></li>
+  <li><a href="#基于dbscan的分类" id="toc-基于dbscan的分类" class="nav-link" data-scroll-target="#基于dbscan的分类"><span class="header-section-number">10.2.15</span> 基于DBSCAN的分类</a></li>
+  </ul></li>
+  <li><a href="#聚类应用实例" id="toc-聚类应用实例" class="nav-link" data-scroll-target="#聚类应用实例"><span class="header-section-number">10.3</span> 聚类应用实例</a>
+  <ul class="collapse">
+  <li><a href="#图像分割应用" id="toc-图像分割应用" class="nav-link" data-scroll-target="#图像分割应用"><span class="header-section-number">10.3.1</span> 图像分割应用</a></li>
+  <li><a href="#半监督学习使用聚类辅助分类" id="toc-半监督学习使用聚类辅助分类" class="nav-link" data-scroll-target="#半监督学习使用聚类辅助分类"><span class="header-section-number">10.3.2</span> 半监督学习：使用聚类辅助分类</a></li>
+  <li><a href="#金融市场应用股票板块轮动分析" id="toc-金融市场应用股票板块轮动分析" class="nav-link" data-scroll-target="#金融市场应用股票板块轮动分析"><span class="header-section-number">10.3.3</span> 金融市场应用：股票板块轮动分析</a></li>
+  </ul></li>
+  <li><a href="#总结" id="toc-总结" class="nav-link" data-scroll-target="#总结"><span class="header-section-number">10.4</span> 总结</a></li>
   </ul>
 </nav>
     </div>
@@ -266,10 +282,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="聚类-clustering" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="聚类-clustering"><span class="header-section-number">10.1</span> 聚类 (Clustering)</h2>
-<section id="核心概念" class="level3" data-number="10.1.1">
-<h3 data-number="10.1.1" class="anchored" data-anchor-id="核心概念"><span class="header-section-number">10.1.1</span> 核心概念</h3>
+<section id="核心概念" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="核心概念"><span class="header-section-number">10.1</span> 核心概念</h2>
 <p>聚类是一种非监督学习技术，其目标是将数据集中的样本根据它们的相似性划分为若干个组，这些组被称为”簇” (Cluster)。聚类的核心思想是：</p>
 <ul>
 <li><strong>簇内相似性最大化 (Maximize Intra-cluster Similarity):</strong> 同一个簇内的数据点（样本）应该尽可能相似。</li>
@@ -281,304 +295,522 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>客户 (Customers):</strong> 根据客户的交易行为、风险偏好、人口统计学特征等进行聚类。</li>
 <li><strong>市场时期 (Market Regimes):</strong> 根据市场波动性、相关性等指标对不同的市场阶段进行聚类。</li>
 </ul>
-</section>
-<section id="常用算法简介" class="level3" data-number="10.1.2">
-<h3 data-number="10.1.2" class="anchored" data-anchor-id="常用算法简介"><span class="header-section-number">10.1.2</span> 常用算法简介</h3>
-<section id="k-means-k均值聚类" class="level4" data-number="10.1.2.1">
-<h4 data-number="10.1.2.1" class="anchored" data-anchor-id="k-means-k均值聚类"><span class="header-section-number">10.1.2.1</span> K-Means (K均值聚类)</h4>
+<section id="分类-vs-聚类" class="level3" data-number="10.1.1">
+<h3 data-number="10.1.1" class="anchored" data-anchor-id="分类-vs-聚类"><span class="header-section-number">10.1.1</span> 分类 vs 聚类</h3>
+<p>分类和聚类是机器学习中两种不同的任务，它们的关键区别在于是否有标签数据（有监督 vs 无监督）。以下通过实例来展示这两者的区别：</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载鸢尾花数据集</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_iris()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data.data</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> data.target</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">3.5</span>))</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 左侧：带有类别标签的数据（分类问题）</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">121</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>plt.plot(X[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">2</span>], X[y<span class="op">==</span><span class="dv">0</span>, <span class="dv">3</span>], <span class="st">"yo"</span>, label<span class="op">=</span><span class="st">"Iris setosa"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>plt.plot(X[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">2</span>], X[y<span class="op">==</span><span class="dv">1</span>, <span class="dv">3</span>], <span class="st">"bs"</span>, label<span class="op">=</span><span class="st">"Iris versicolor"</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>plt.plot(X[y<span class="op">==</span><span class="dv">2</span>, <span class="dv">2</span>], X[y<span class="op">==</span><span class="dv">2</span>, <span class="dv">3</span>], <span class="st">"g^"</span>, label<span class="op">=</span><span class="st">"Iris virginica"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"花瓣长度"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"花瓣宽度"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 右侧：不带标签的数据（聚类问题）</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">122</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[:, <span class="dv">2</span>], X[:, <span class="dv">3</span>], c<span class="op">=</span><span class="st">"k"</span>, marker<span class="op">=</span><span class="st">"."</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"花瓣长度"</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>plt.tick_params(labelleft<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>plt.gca().set_axisbelow(<span class="va">True</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>关键区别：</strong></p>
 <ul>
-<li><strong>原理:</strong> K-Means 是一种迭代算法，旨在将数据划分为预先指定的 K 个簇。它通过不断更新簇的中心点（质心）并将每个数据点分配给最近的质心来实现。
+<li><strong>分类（有监督学习）</strong>:
+<ul>
+<li>有预先定义的类别标签</li>
+<li>目标是学习将新样本分配到已知类别的规则</li>
+<li>评估基于预测标签与真实标签的比较</li>
+</ul></li>
+<li><strong>聚类（无监督学习）</strong>:
+<ul>
+<li>没有预先定义的类别标签</li>
+<li>目标是发现数据中的自然分组</li>
+<li>评估基于分组的内部结构特性（如组内紧密度、组间分离度）</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="k均值聚类-k-means" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="k均值聚类-k-means"><span class="header-section-number">10.2</span> K均值聚类 (K-Means)</h2>
+<section id="算法原理" class="level3" data-number="10.2.1">
+<h3 data-number="10.2.1" class="anchored" data-anchor-id="算法原理"><span class="header-section-number">10.2.1</span> 算法原理</h3>
+<p>K-Means 是一种迭代算法，旨在将数据划分为预先指定的 K 个簇。它通过不断更新簇的中心点（质心）并将每个数据点分配给最近的质心来实现。其算法步骤如下：</p>
 <ol type="1">
 <li>随机选择 K 个初始质心。</li>
 <li><strong>分配步骤:</strong> 将每个数据点分配给距离其最近的质心，形成 K 个簇。</li>
 <li><strong>更新步骤:</strong> 重新计算每个簇的质心（通常是簇内所有点的均值）。</li>
 <li>重复步骤 2 和 3，直到质心不再发生显著变化或达到最大迭代次数。</li>
-</ol></li>
-<li><strong>优点:</strong>
-<ul>
-<li>算法简单，容易理解和实现。</li>
-<li>计算效率高，处理大数据集速度较快。</li>
-</ul></li>
-<li><strong>缺点:</strong>
-<ul>
-<li>需要预先指定簇的数量 K，而 K 值的选择往往比较困难。</li>
-<li>对初始质心的选择敏感，可能陷入局部最优解。</li>
-<li>对非球状簇、不同大小和密度的簇效果不佳。</li>
-<li>对异常值（Outliers）比较敏感。</li>
-</ul></li>
-</ul>
+</ol>
 </section>
-<section id="层次聚类-hierarchical-clustering" class="level4" data-number="10.1.2.2">
-<h4 data-number="10.1.2.2" class="anchored" data-anchor-id="层次聚类-hierarchical-clustering"><span class="header-section-number">10.1.2.2</span> 层次聚类 (Hierarchical Clustering)</h4>
-<ul>
-<li><strong>原理:</strong> 层次聚类通过构建数据点之间的层次结构（通常表示为树状图，Dendrogram）来进行聚类。它有两种主要方式：
-<ul>
-<li><strong>凝聚式 (Agglomerative):</strong> 自底向上，开始时每个点自成一簇，然后逐步合并最相似的簇，直到所有点合并为一个簇。</li>
-<li><strong>分裂式 (Divisive):</strong> 自顶向下，开始时所有点在一个簇，然后逐步分裂最不相似的簇，直到每个点自成一簇或满足停止条件。</li>
-</ul></li>
-<li><strong>优点:</strong>
-<ul>
-<li>不需要预先指定簇的数量 K，可以根据树状图决定合适的簇数。</li>
-<li>可以揭示数据的层次结构关系。</li>
-<li>对簇的形状没有严格假设。</li>
-</ul></li>
-<li><strong>缺点:</strong>
-<ul>
-<li>计算复杂度较高，特别是对于大数据集（通常为 O(n^2) 或 O(n^3)）。</li>
-<li>一旦合并或分裂完成，就无法撤销，可能导致次优结果。</li>
-<li>算法选择（如距离度量、合并策略）对结果影响较大。</li>
-</ul></li>
-</ul>
+<section id="算法优缺点" class="level3" data-number="10.2.2">
+<h3 data-number="10.2.2" class="anchored" data-anchor-id="算法优缺点"><span class="header-section-number">10.2.2</span> 算法优缺点</h3>
+<p><strong>优点:</strong> - 算法简单，容易理解和实现。 - 计算效率高，处理大数据集速度较快。</p>
+<p><strong>缺点:</strong> - 需要预先指定簇的数量 K，而 K 值的选择往往比较困难。 - 对初始质心的选择敏感，可能陷入局部最优解。 - 对非球状簇、不同大小和密度的簇效果不佳。 - 对异常值（Outliers）比较敏感。</p>
 </section>
-<section id="dbscan-基于密度的聚类" class="level4" data-number="10.1.2.3">
-<h4 data-number="10.1.2.3" class="anchored" data-anchor-id="dbscan-基于密度的聚类"><span class="header-section-number">10.1.2.3</span> DBSCAN (基于密度的聚类)</h4>
-<ul>
-<li><strong>原理:</strong> DBSCAN (Density-Based Spatial Clustering of Applications with Noise) 是一种基于密度的聚类算法，它将密度相连的点划分为一个簇，并且能够发现任意形状的簇，同时自动识别噪声点。
-<ol type="1">
-<li><strong>核心概念:</strong>
-<ul>
-<li><strong>ε (Epsilon):</strong> 邻域半径，定义点之间的”近”的概念。</li>
-<li><strong>MinPts:</strong> 邻域内最少点数，用于判断密度。</li>
-<li><strong>核心点 (Core Point):</strong> 在其 ε 邻域内至少有 MinPts 个点的点。</li>
-<li><strong>边界点 (Border Point):</strong> 不是核心点，但在某个核心点的 ε 邻域内的点。</li>
-<li><strong>噪声点 (Noise Point):</strong> 既不是核心点也不是边界点的点。</li>
-</ul></li>
-<li><strong>算法步骤:</strong>
-<ul>
-<li>任选一个未被访问的点 p。</li>
-<li>标记 p 为已访问。</li>
-<li>如果 p 是核心点，创建一个新簇，并将 p 的所有密度可达点加入该簇。</li>
-<li>如果 p 不是核心点，标记为噪声点并继续。</li>
-<li>重复以上步骤，直到所有点都被访问。</li>
-</ul></li>
-</ol></li>
-<li><strong>优点:</strong>
-<ul>
-<li>不需要预先指定簇的数量。</li>
-<li>能发现任意形状的簇，不限于球形簇。</li>
-<li>能自动识别和处理噪声点。</li>
-<li>对离群点不敏感。</li>
-</ul></li>
-<li><strong>缺点:</strong>
-<ul>
-<li>参数选择（ε 和 MinPts）有时较为困难。</li>
-<li>对数据集中密度差异较大的簇效果不佳。</li>
-<li>计算复杂度较高（约为 O(n²)），但通常可以通过空间索引优化。</li>
-<li>不能处理高维空间中的”维度灾难”问题。</li>
-</ul></li>
-</ul>
+<section id="k-means实践" class="level3" data-number="10.2.3">
+<h3 data-number="10.2.3" class="anchored" data-anchor-id="k-means实践"><span class="header-section-number">10.2.3</span> K-Means实践</h3>
+<p>让我们通过一个实例来演示K-Means聚类的应用：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成模拟数据</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>blob_centers <span class="op">=</span> np.array([[ <span class="fl">0.2</span>,  <span class="fl">2.3</span>], [<span class="op">-</span><span class="fl">1.5</span> ,  <span class="fl">2.3</span>], [<span class="op">-</span><span class="fl">2.8</span>,  <span class="fl">1.8</span>],</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                        [<span class="op">-</span><span class="fl">2.8</span>,  <span class="fl">2.8</span>], [<span class="op">-</span><span class="fl">2.8</span>,  <span class="fl">1.3</span>]])</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>blob_std <span class="op">=</span> np.array([<span class="fl">0.4</span>, <span class="fl">0.3</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>])</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">2000</span>, centers<span class="op">=</span>blob_centers, cluster_std<span class="op">=</span>blob_std,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                  random_state<span class="op">=</span><span class="dv">7</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化数据</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>plt.scatter(X[:, <span class="dv">0</span>], X[:, <span class="dv">1</span>], c<span class="op">=</span><span class="st">'k'</span>, s<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$x_1$"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"$x_2$"</span>, rotation<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用K-Means聚类</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> kmeans.fit_predict(X)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"预测的簇标签（前10个）:"</span>, y_pred[:<span class="dv">10</span>])</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"簇中心:"</span>, kmeans.cluster_centers_)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="k-means的决策边界" class="level3" data-number="10.2.4">
+<h3 data-number="10.2.4" class="anchored" data-anchor-id="k-means的决策边界"><span class="header-section-number">10.2.4</span> K-Means的决策边界</h3>
+<p>K-Means的决策边界形成了沃罗诺伊图(Voronoi diagram)，即每个区域内的点到对应质心的距离比到其他质心的距离更近。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制决策边界（沃罗诺伊图）</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>plot_decision_boundaries(kmeans, X)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="k-means的迭代过程" class="level3" data-number="10.2.5">
+<h3 data-number="10.2.5" class="anchored" data-anchor-id="k-means的迭代过程"><span class="header-section-number">10.2.5</span> K-Means的迭代过程</h3>
+<p>下面演示K-Means算法的迭代过程：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># K均值算法的步骤演示</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>kmeans_iter1 <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">5</span>, init<span class="op">=</span><span class="st">"random"</span>, n_init<span class="op">=</span><span class="dv">1</span>, max_iter<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                    random_state<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>kmeans_iter2 <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">5</span>, init<span class="op">=</span><span class="st">"random"</span>, n_init<span class="op">=</span><span class="dv">1</span>, max_iter<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                    random_state<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>kmeans_iter3 <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">5</span>, init<span class="op">=</span><span class="st">"random"</span>, n_init<span class="op">=</span><span class="dv">1</span>, max_iter<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                    random_state<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>kmeans_iter1.fit(X)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>kmeans_iter2.fit(X)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>kmeans_iter3.fit(X)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">321</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>plot_data(X)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>plot_centroids(kmeans_iter1.cluster_centers_, circle_color<span class="op">=</span><span class="st">'r'</span>, cross_color<span class="op">=</span><span class="st">'w'</span>)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"$x_2$"</span>, rotation<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>plt.tick_params(labelbottom<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"更新质心（初始随机）"</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">322</span>)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>plot_decision_boundaries(kmeans_iter1, X, show_xlabels<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>                        show_ylabels<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"标记实例"</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 更多迭代图示...</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="初始化敏感性问题" class="level3" data-number="10.2.6">
+<h3 data-number="10.2.6" class="anchored" data-anchor-id="初始化敏感性问题"><span class="header-section-number">10.2.6</span> 初始化敏感性问题</h3>
+<p>K-Means对初始质心的选择十分敏感，不同的初始点可能导致完全不同的聚类结果：</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># K均值的变异性问题</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>kmeans_rnd_init1 <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">5</span>, init<span class="op">=</span><span class="st">"random"</span>, n_init<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>kmeans_rnd_init2 <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">5</span>, init<span class="op">=</span><span class="st">"random"</span>, n_init<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>plot_clusterer_comparison(kmeans_rnd_init1, kmeans_rnd_init2, X,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"解决方案 1"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                        <span class="st">"解决方案 2（使用不同的随机初始化）"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看惯性值</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"解决方案1的惯性:"</span>, kmeans_rnd_init1.inertia_)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"解决方案2的惯性:"</span>, kmeans_rnd_init2.inertia_)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>解决方案</strong>：使用多次不同的初始化，选择惯性（簇内平方和）最小的结果。scikit-learn中的K-Means默认进行10次不同的初始化。</p>
+</section>
+<section id="聚类评估方法" class="level3" data-number="10.2.7">
+<h3 data-number="10.2.7" class="anchored" data-anchor-id="聚类评估方法"><span class="header-section-number">10.2.7</span> 聚类评估方法</h3>
+<p>如何评估聚类效果的好坏，以及如何选择合适的参数（如K-Means中的K值）？以下介绍几种常用的评估方法：</p>
+<section id="肘部法则-elbow-method" class="level4" data-number="10.2.7.1">
+<h4 data-number="10.2.7.1" class="anchored" data-anchor-id="肘部法则-elbow-method"><span class="header-section-number">10.2.7.1</span> 肘部法则 (Elbow Method)</h4>
+<p><strong>原理：</strong> - 对不同的K值运行K-Means算法，计算每个K值对应的惯性（簇内平方和，WCSS）。 - 随着K值的增加，惯性总体呈下降趋势，但下降速率会逐渐变缓。 - 寻找图中的”肘部”，即曲线下降速率发生明显变化的点。该点对应的K值被视为较佳选择。</p>
+<p><strong>注意事项：</strong> - 肘部法则是一种视觉方法，有时肘部可能不够明显。 - 需要结合业务理解和其他评估指标来确定最终的K值。 - 该方法主要适用于球形簇，对于复杂形状的簇可能效果不佳。</p>
+<p>肘部法则是一种启发式方法，用于确定K-Means中的最佳聚类数量K：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 肘部法则</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>kmeans_per_k <span class="op">=</span> [KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(X)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">10</span>)]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>inertias <span class="op">=</span> [model.inertia_ <span class="cf">for</span> model <span class="kw">in</span> kmeans_per_k]</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">3.5</span>))</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">10</span>), inertias, <span class="st">"bo-"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$k$"</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"惯性"</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>plt.annotate(<span class="st">""</span>, xy<span class="op">=</span>(<span class="dv">4</span>, inertias[<span class="dv">3</span>]), xytext<span class="op">=</span>(<span class="fl">4.45</span>, <span class="dv">650</span>),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>            arrowprops<span class="op">=</span><span class="bu">dict</span>(facecolor<span class="op">=</span><span class="st">'black'</span>, shrink<span class="op">=</span><span class="fl">0.1</span>))</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>plt.text(<span class="fl">4.5</span>, <span class="dv">650</span>, <span class="st">"肘部"</span>, horizontalalignment<span class="op">=</span><span class="st">"center"</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>plt.axis([<span class="dv">1</span>, <span class="fl">8.5</span>, <span class="dv">0</span>, <span class="dv">1300</span>])</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="轮廓系数-silhouette-coefficient" class="level4" data-number="10.2.7.2">
+<h4 data-number="10.2.7.2" class="anchored" data-anchor-id="轮廓系数-silhouette-coefficient"><span class="header-section-number">10.2.7.2</span> 轮廓系数 (Silhouette Coefficient)</h4>
+<p>轮廓系数是评估聚类质量的一种方法，它综合考虑了簇内的紧密度和簇间的分离度。</p>
+<p><strong>计算方法:</strong> - 对于数据集中的每个样本点 i： - 计算 a(i): 点 i 与同簇中其他所有点的平均距离（衡量簇内紧密度）。 - 计算 b(i): 点 i 与距离最近的其他簇中所有点的平均距离（衡量簇间分离度）。 - 轮廓系数 s(i) = (b(i) - a(i)) / max(a(i), b(i))。 - 数据集的整体轮廓系数是所有样本点轮廓系数的平均值。</p>
+<p><strong>轮廓系数解读:</strong> - 值域范围：[-1, 1] - 接近 +1：表示样本与自己的簇很匹配，与相邻簇的差距很大，聚类效果好。 - 接近 0：表示样本处于两个簇的边界附近。 - 接近 -1：表示样本可能被分配到了错误的簇。 - 通常认为，平均轮廓系数大于 0.5 是较好的聚类结果，大于 0.7 是优秀的聚类结果。</p>
+<p>下面是使用轮廓系数选择最佳K值的例子：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 轮廓系数</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>silhouette_scores <span class="op">=</span> [silhouette_score(X, model.labels_)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">for</span> model <span class="kw">in</span> kmeans_per_k[<span class="dv">1</span>:]]</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">3</span>))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">10</span>), silhouette_scores, <span class="st">"bo-"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"$k$"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"轮廓分数"</span>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>plt.axis([<span class="fl">1.8</span>, <span class="fl">8.5</span>, <span class="fl">0.55</span>, <span class="fl">0.7</span>])</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>更详细的轮廓分析可以通过轮廓图(Silhouette Plot)进行：</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 轮廓图分析</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="dv">9</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> (<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">2</span>, k <span class="op">-</span> <span class="dv">2</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> kmeans_per_k[k <span class="op">-</span> <span class="dv">1</span>].labels_</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    silhouette_coefficients <span class="op">=</span> silhouette_samples(X, y_pred)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    padding <span class="op">=</span> <span class="bu">len</span>(X) <span class="op">//</span> <span class="dv">30</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    pos <span class="op">=</span> padding</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    ticks <span class="op">=</span> []</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(k):</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        coeffs <span class="op">=</span> silhouette_coefficients[y_pred <span class="op">==</span> i]</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        coeffs.sort()</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        color <span class="op">=</span> plt.cm.Spectral(i <span class="op">/</span> k)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>        plt.fill_betweenx(np.arange(pos, pos <span class="op">+</span> <span class="bu">len</span>(coeffs)), <span class="dv">0</span>, coeffs,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>                        facecolor<span class="op">=</span>color, edgecolor<span class="op">=</span>color, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>        ticks.append(pos <span class="op">+</span> <span class="bu">len</span>(coeffs) <span class="op">//</span> <span class="dv">2</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>        pos <span class="op">+=</span> <span class="bu">len</span>(coeffs) <span class="op">+</span> padding</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    plt.gca().yaxis.set_major_locator(FixedLocator(ticks))</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    plt.gca().yaxis.set_major_formatter(FixedFormatter(<span class="bu">range</span>(k)))</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> k <span class="kw">in</span> (<span class="dv">3</span>, <span class="dv">5</span>):</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>        plt.ylabel(<span class="st">"簇"</span>)</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> k <span class="kw">in</span> (<span class="dv">5</span>, <span class="dv">6</span>):</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>        plt.gca().set_xticks([<span class="op">-</span><span class="fl">0.1</span>, <span class="dv">0</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="dv">1</span>])</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>        plt.xlabel(<span class="st">"轮廓系数"</span>)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>        plt.tick_params(labelbottom<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    plt.axvline(x<span class="op">=</span>silhouette_scores[k <span class="op">-</span> <span class="dv">2</span>], color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"$k=</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">$"</span>)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>在轮廓图中，每个簇都有对应的条形图，条形图的长度表示该簇内每个样本的轮廓系数。较宽且一致的条形图意味着聚类质量较好。</p>
+</section>
+<section id="戴维斯-布尔丁指数-davies-bouldin-index" class="level4" data-number="10.2.7.3">
+<h4 data-number="10.2.7.3" class="anchored" data-anchor-id="戴维斯-布尔丁指数-davies-bouldin-index"><span class="header-section-number">10.2.7.3</span> 戴维斯-布尔丁指数 (Davies-Bouldin Index)</h4>
+<p>戴维斯-布尔丁指数是另一种评估聚类质量的度量，它关注簇内相似度和簇间差异性的比率：</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> davies_bouldin_score</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>dbi <span class="op">=</span> davies_bouldin_score(X, labels)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Davies-Bouldin Index: </span><span class="sc">{</span>dbi<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>解读：</strong> - 值越小越好，表示簇内紧密且簇间分离。 - 理想的聚类会产生低的DBI值。</p>
+<p>通过综合使用上述评估方法，我们可以更客观、定量地判断聚类算法的效果，选择合适的参数，从而获得更有意义的聚类结果。</p>
 </section>
 </section>
-<section id="具体金融市场应用实例股票板块轮动分析" class="level3" data-number="10.1.3">
-<h3 data-number="10.1.3" class="anchored" data-anchor-id="具体金融市场应用实例股票板块轮动分析"><span class="header-section-number">10.1.3</span> 具体金融市场应用实例：股票板块轮动分析</h3>
+<section id="k-means的局限性" class="level3" data-number="10.2.8">
+<h3 data-number="10.2.8" class="anchored" data-anchor-id="k-means的局限性"><span class="header-section-number">10.2.8</span> K-Means的局限性</h3>
+<p>K-Means对复杂形状的簇表现不佳：</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成一个更难聚类的数据集</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>X1, y1 <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">1000</span>, centers<span class="op">=</span>((<span class="dv">4</span>, <span class="op">-</span><span class="dv">4</span>), (<span class="dv">0</span>, <span class="dv">0</span>)), random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> X1.dot(np.array([[<span class="fl">0.374</span>, <span class="fl">0.95</span>], [<span class="fl">0.732</span>, <span class="fl">0.598</span>]]))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>X2, y2 <span class="op">=</span> make_blobs(n_samples<span class="op">=</span><span class="dv">250</span>, centers<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>X2 <span class="op">=</span> X2 <span class="op">+</span> [<span class="dv">6</span>, <span class="op">-</span><span class="dv">8</span>]</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>X_difficult <span class="op">=</span> np.r_[X1, X2]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 两种不同初始化方式的K-means</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>kmeans_good <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>                    init<span class="op">=</span>np.array([[<span class="op">-</span><span class="fl">1.5</span>, <span class="fl">2.5</span>], [<span class="fl">0.5</span>, <span class="dv">0</span>], [<span class="dv">4</span>, <span class="dv">0</span>]]),</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>                    n_init<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>kmeans_bad <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">3</span>, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>kmeans_good.fit(X_difficult)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>kmeans_bad.fit(X_difficult)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 比较结果</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">3.2</span>))</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">121</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>plot_decision_boundaries(kmeans_good, X_difficult)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"惯性 = </span><span class="sc">{</span>kmeans_good<span class="sc">.</span>inertia_<span class="sc">:.1f}</span><span class="ss">"</span>)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">122</span>)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>plot_decision_boundaries(kmeans_bad, X_difficult, show_ylabels<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f"惯性 = </span><span class="sc">{</span>kmeans_bad<span class="sc">.</span>inertia_<span class="sc">:.1f}</span><span class="ss">"</span>)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="实际应用图像分割" class="level3" data-number="10.2.9">
+<h3 data-number="10.2.9" class="anchored" data-anchor-id="实际应用图像分割"><span class="header-section-number">10.2.9</span> 实际应用：图像分割</h3>
+<p>K-Means的一个常见应用是图像分割和颜色量化：</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取图像并应用K-means</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>image <span class="op">=</span> np.asarray(PIL.Image.<span class="bu">open</span>(filename))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>X_img <span class="op">=</span> image.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>segmented_imgs <span class="op">=</span> []</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>n_colors <span class="op">=</span> (<span class="dv">10</span>, <span class="dv">8</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">2</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n_clusters <span class="kw">in</span> n_colors:</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>n_clusters, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(X_img)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    segmented_img <span class="op">=</span> kmeans.cluster_centers_[kmeans.labels_]</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    segmented_imgs.append(segmented_img.reshape(image.shape))</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 显示不同颜色数量的分割结果</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>plt.subplots_adjust(wspace<span class="op">=</span><span class="fl">0.05</span>, hspace<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>plt.imshow(image)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"原始图像"</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, n_clusters <span class="kw">in</span> <span class="bu">enumerate</span>(n_colors):</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span> <span class="op">+</span> idx)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    plt.imshow(segmented_imgs[idx] <span class="op">/</span> <span class="dv">255</span>)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"</span><span class="sc">{</span>n_clusters<span class="sc">}</span><span class="ss"> 种颜色"</span>)</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="dbscan聚类" class="level3" data-number="10.2.10">
+<h3 data-number="10.2.10" class="anchored" data-anchor-id="dbscan聚类"><span class="header-section-number">10.2.10</span> DBSCAN聚类</h3>
+<section id="算法原理-1" class="level4" data-number="10.2.10.1">
+<h4 data-number="10.2.10.1" class="anchored" data-anchor-id="算法原理-1"><span class="header-section-number">10.2.10.1</span> 算法原理</h4>
+<p>DBSCAN (Density-Based Spatial Clustering of Applications with Noise) 是一种基于密度的聚类算法，它将密度相连的点划分为一个簇，并且能够发现任意形状的簇，同时自动识别噪声点。</p>
+<p><strong>核心概念:</strong> - <strong>ε (Epsilon):</strong> 邻域半径，定义点之间的”近”的概念。 - <strong>MinPts:</strong> 邻域内最少点数，用于判断密度。 - <strong>核心点 (Core Point):</strong> 在其 ε 邻域内至少有 MinPts 个点的点。 - <strong>边界点 (Border Point):</strong> 不是核心点，但在某个核心点的 ε 邻域内的点。 - <strong>噪声点 (Noise Point):</strong> 既不是核心点也不是边界点的点。</p>
+<p><strong>算法步骤:</strong> 1. 任选一个未被访问的点 p。 2. 标记 p 为已访问。 3. 如果 p 是核心点，创建一个新簇，并将 p 的所有密度可达点加入该簇。 4. 如果 p 不是核心点，标记为噪声点并继续。 5. 重复以上步骤，直到所有点都被访问。</p>
+</section>
+</section>
+<section id="算法优缺点-1" class="level3" data-number="10.2.11">
+<h3 data-number="10.2.11" class="anchored" data-anchor-id="算法优缺点-1"><span class="header-section-number">10.2.11</span> 算法优缺点</h3>
+<p><strong>优点:</strong> - 不需要预先指定簇的数量。 - 能发现任意形状的簇，不限于球形簇。 - 能自动识别和处理噪声点。 - 对离群点不敏感。</p>
+<p><strong>缺点:</strong> - 参数选择（ε 和 MinPts）有时较为困难。 - 对数据集中密度差异较大的簇效果不佳。 - 计算复杂度较高（约为 O(n²)），但通常可以通过空间索引优化。 - 不能处理高维空间中的”维度灾难”问题。</p>
+</section>
+<section id="dbscan实践" class="level3" data-number="10.2.12">
+<h3 data-number="10.2.12" class="anchored" data-anchor-id="dbscan实践"><span class="header-section-number">10.2.12</span> DBSCAN实践</h3>
+<p>我们通过一个新月形数据集来演示DBSCAN的效果，这种形状对K-Means来说是很难处理的：</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建一个新月形数据集</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> make_moons(n_samples<span class="op">=</span><span class="dv">1000</span>, noise<span class="op">=</span><span class="fl">0.05</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 应用DBSCAN</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>dbscan <span class="op">=</span> DBSCAN(eps<span class="op">=</span><span class="fl">0.05</span>, min_samples<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>dbscan.fit(X)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看结果</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"标签（前10个）:"</span>, dbscan.labels_[:<span class="dv">10</span>])</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"核心样本索引（前10个）:"</span>, dbscan.core_sample_indices_[:<span class="dv">10</span>])</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化DBSCAN结果</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>))</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>plot_dbscan(dbscan, X, size<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="参数敏感性" class="level3" data-number="10.2.13">
+<h3 data-number="10.2.13" class="anchored" data-anchor-id="参数敏感性"><span class="header-section-number">10.2.13</span> 参数敏感性</h3>
+<p>DBSCAN的关键参数是epsilon (ε)和min_samples。以下展示不同epsilon值对聚类结果的影响：</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 试两个不同的epsilon值</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>dbscan2 <span class="op">=</span> DBSCAN(eps<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>dbscan2.fit(X)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="fl">3.2</span>))</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">121</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>plot_dbscan(dbscan, X, size<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">122</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>plot_dbscan(dbscan2, X, size<span class="op">=</span><span class="dv">600</span>, show_ylabels<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>当ε值增大时，更多的点被连接成簇，噪声点减少。但ε值过大也可能导致不同本应分开的簇被合并。</p>
+</section>
+<section id="参数选择方法" class="level3" data-number="10.2.14">
+<h3 data-number="10.2.14" class="anchored" data-anchor-id="参数选择方法"><span class="header-section-number">10.2.14</span> 参数选择方法</h3>
+<p>为DBSCAN选择合适的参数是一个挑战。一种常用的方法是K-距离图（K-distance plot）：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 选择 MinPts 值，例如 4</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>MinPts <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 找到每个点的 k 个最近邻</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>nbrs <span class="op">=</span> NearestNeighbors(n_neighbors<span class="op">=</span>MinPts).fit(X)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>distances, indices <span class="op">=</span> nbrs.kneighbors(X)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 距离排序</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>distances <span class="op">=</span> np.sort(distances[:, MinPts<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制 K-距离图</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="bu">len</span>(distances)), distances)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'K-Distance Plot (k=</span><span class="sc">{}</span><span class="st">)'</span>.<span class="bu">format</span>(MinPts))</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Points sorted by distance'</span>)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Distance to k-th nearest neighbor'</span>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>在K-距离图中，我们寻找曲线的”拐点”，该点对应的距离值可作为ε的值。拐点表示密度发生显著变化的地方。</p>
+</section>
+<section id="基于dbscan的分类" class="level3" data-number="10.2.15">
+<h3 data-number="10.2.15" class="anchored" data-anchor-id="基于dbscan的分类"><span class="header-section-number">10.2.15</span> 基于DBSCAN的分类</h3>
+<p>DBSCAN可以与监督学习方法结合，用于半监督学习：</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 基于DBSCAN的分类</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用核心点构建KNN分类器</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>knn.fit(dbscan2.components_, dbscan2.labels_[dbscan2.core_sample_indices_])</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 预测新点的类别</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>X_new <span class="op">=</span> np.array([[<span class="op">-</span><span class="fl">0.5</span>, <span class="dv">0</span>], [<span class="dv">0</span>, <span class="fl">0.5</span>], [<span class="dv">1</span>, <span class="op">-</span><span class="fl">0.1</span>], [<span class="dv">2</span>, <span class="dv">1</span>]])</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"预测标签:"</span>, knn.predict(X_new))</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"预测概率:"</span>, knn.predict_proba(X_new).<span class="bu">round</span>(<span class="dv">2</span>))</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化分类边界</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">3</span>))</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>plot_decision_boundaries(knn, X, show_centroids<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_new[:, <span class="dv">0</span>], X_new[:, <span class="dv">1</span>], c<span class="op">=</span><span class="st">"b"</span>, marker<span class="op">=</span><span class="st">"+"</span>, s<span class="op">=</span><span class="dv">200</span>, zorder<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>在这个例子中，我们首先使用DBSCAN找到核心点和它们的簇标签，然后用这些信息训练KNN分类器。这种方法结合了DBSCAN处理复杂形状的能力和KNN的分类能力。</p>
+</section>
+</section>
+<section id="聚类应用实例" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="聚类应用实例"><span class="header-section-number">10.3</span> 聚类应用实例</h2>
+<section id="图像分割应用" class="level3" data-number="10.3.1">
+<h3 data-number="10.3.1" class="anchored" data-anchor-id="图像分割应用"><span class="header-section-number">10.3.1</span> 图像分割应用</h3>
+<p>K-Means可用于图像分割，将图像像素分为几个颜色簇，实现颜色量化：</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取图像并应用K-means</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>image <span class="op">=</span> np.asarray(PIL.Image.<span class="bu">open</span>(filename))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>X_img <span class="op">=</span> image.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">3</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>segmented_imgs <span class="op">=</span> []</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>n_colors <span class="op">=</span> (<span class="dv">10</span>, <span class="dv">8</span>, <span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">2</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n_clusters <span class="kw">in</span> n_colors:</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>n_clusters, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(X_img)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    segmented_img <span class="op">=</span> kmeans.cluster_centers_[kmeans.labels_]</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    segmented_imgs.append(segmented_img.reshape(image.shape))</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 显示结果</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>plt.imshow(image)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"原始图像"</span>)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, n_clusters <span class="kw">in</span> <span class="bu">enumerate</span>(n_colors):</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span> <span class="op">+</span> idx)</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    plt.imshow(segmented_imgs[idx] <span class="op">/</span> <span class="dv">255</span>)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"</span><span class="sc">{</span>n_clusters<span class="sc">}</span><span class="ss"> 种颜色"</span>)</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="半监督学习使用聚类辅助分类" class="level3" data-number="10.3.2">
+<h3 data-number="10.3.2" class="anchored" data-anchor-id="半监督学习使用聚类辅助分类"><span class="header-section-number">10.3.2</span> 半监督学习：使用聚类辅助分类</h3>
+<p>聚类可以在标记数据稀少的情况下帮助分类任务：</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载digits数据集</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>X_digits, y_digits <span class="op">=</span> load_digits(return_X_y<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>X_train, X_test <span class="op">=</span> X_digits[:<span class="dv">1400</span>], X_digits[<span class="dv">1400</span>:]</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>y_train, y_test <span class="op">=</span> y_digits[:<span class="dv">1400</span>], y_digits[<span class="dv">1400</span>:]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 仅使用少量标记数据训练</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>n_labeled <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>log_reg <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">10_000</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>log_reg.fit(X_train[:n_labeled], y_train[:n_labeled])</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"使用</span><span class="sc">{</span>n_labeled<span class="sc">}</span><span class="ss">个标记样本的准确率:"</span>, log_reg.score(X_test, y_test))</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用K-means找到代表性数字</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>X_digits_dist <span class="op">=</span> kmeans.fit_transform(X_train)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>representative_digit_idx <span class="op">=</span> X_digits_dist.argmin(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>X_representative_digits <span class="op">=</span> X_train[representative_digit_idx]</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制代表性数字</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">2</span>))</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> index, X_representative_digit <span class="kw">in</span> <span class="bu">enumerate</span>(X_representative_digits):</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>    plt.subplot(k <span class="op">//</span> <span class="dv">10</span>, <span class="dv">10</span>, index <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    plt.imshow(X_representative_digit.reshape(<span class="dv">8</span>, <span class="dv">8</span>), cmap<span class="op">=</span><span class="st">"binary"</span>,</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>            interpolation<span class="op">=</span><span class="st">"bilinear"</span>)</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 手动标记这些代表性数字</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>y_representative_digits <span class="op">=</span> np.array([</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">0</span>, <span class="dv">7</span>, <span class="dv">9</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">9</span>,</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>    <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">7</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">1</span>,</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>    <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">9</span>,</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">6</span>, <span class="dv">8</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">2</span>,</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>    <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">7</span>, <span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">9</span>, <span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">7</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用代表性数字训练模型</span></span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a>log_reg <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">10_000</span>)</span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a>log_reg.fit(X_representative_digits, y_representative_digits)</span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"使用代表性数字的准确率:"</span>, log_reg.score(X_test, y_test))</span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a><span class="co"># 将标签传播到同一簇中的所有实例</span></span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a>y_train_propagated <span class="op">=</span> np.empty(<span class="bu">len</span>(X_train), dtype<span class="op">=</span>np.int64)</span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(k):</span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a>    y_train_propagated[kmeans.labels_ <span class="op">==</span> i] <span class="op">=</span> y_representative_digits[i]</span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用扩展的训练集</span></span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a>log_reg <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">10_000</span>)</span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a>log_reg.fit(X_train, y_train_propagated)</span>
+<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"使用标签传播后的准确率:"</span>, log_reg.score(X_test, y_test))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>在这个例子中，我们使用K-Means找到代表性样本，只对这些样本手动标记，然后将标签传播到同一簇的所有样本。这种方法可以大大减少标记工作量。</p>
+</section>
+<section id="金融市场应用股票板块轮动分析" class="level3" data-number="10.3.3">
+<h3 data-number="10.3.3" class="anchored" data-anchor-id="金融市场应用股票板块轮动分析"><span class="header-section-number">10.3.3</span> 金融市场应用：股票板块轮动分析</h3>
+<p>聚类技术可以用于识别股票市场中的板块轮动现象：</p>
 <p><strong>目标:</strong> 利用聚类技术识别股票市场中可能存在的板块轮动现象或隐藏的股票群体特征。</p>
 <p><strong>步骤:</strong></p>
 <ol type="1">
 <li><strong>数据收集:</strong>
 <ul>
-<li>选择一个股票池，例如沪深300指数的成分股。</li>
+<li>选择一个股票池，例如上证A股。</li>
 <li>收集这些股票在过去一段时间（如一年）的每日收益率数据。</li>
 </ul></li>
 <li><strong>数据预处理:</strong>
 <ul>
-<li>处理缺失值（如有）。</li>
-<li>可以考虑对收益率数据进行标准化，以消除量纲影响。</li>
+<li>处理缺失值。</li>
+<li>对收益率数据进行标准化，以消除量纲影响。</li>
 </ul></li>
-<li><strong>聚类分析 (使用 K-Means):</strong>
+<li><strong>聚类分析:</strong>
 <ul>
-<li>选择 K-Means 算法对股票进行聚类，输入数据为每只股票的日收益率序列（可以看作一个高维向量）。</li>
-<li>尝试不同的 K 值（例如，从 K=5 到 K=10）。可以使用肘部法则或轮廓系数等方法辅助选择最优的 K 值（见下文评估方法）。</li>
+<li>使用K-Means对股票进行聚类，输入数据为每只股票的日收益率序列。</li>
+<li>使用肘部法则或轮廓系数选择最优的K值。</li>
 </ul></li>
 <li><strong>结果解读与分析:</strong>
 <ul>
-<li><strong>簇成员分析:</strong> 查看每个形成的簇中包含哪些股票。
-<ul>
-<li><strong>传统行业板块验证:</strong> 这些簇是否大致对应于已知的传统行业板块（如银行、地产、科技、消费、医药等）？</li>
-<li><strong>跨行业/因子聚类发现:</strong> 是否出现了跨越传统行业的聚类？例如，一个簇可能同时包含高分红的银行股、公用事业股和部分稳定消费股，这可能揭示了一个基于”价值”或”低波动”因子的股票群体。另一个簇可能包含新能源、半导体和部分高端制造股票，揭示了基于”高成长性”或”科技主题”的群体。</li>
-</ul></li>
-<li><strong>簇表现分析:</strong> 计算每个簇内股票在不同时间段（如最近一个月、一个季度）的平均收益率、整体波动性（如平均标准差）。
-<ul>
-<li><strong>识别强势/弱势群体:</strong> 比较各簇的表现，识别出近期表现显著优于或劣于市场平均水平的股票群体。例如，如果发现某个包含新能源和高端制造的簇近期平均收益率远超大盘指数，这可能指示了当前的市场热点和资金流向。</li>
-<li><strong>板块轮动证据:</strong> 观察不同时间段内各簇表现的相对变化，可以为板块轮动的投资策略提供数据支持。例如，上个季度表现强势的”价值”簇本季度表现平平，而”成长”簇开始领涨。</li>
-</ul></li>
+<li><strong>簇成员分析:</strong> 查看每个簇中包含哪些股票，是否对应传统行业板块或揭示跨行业的投资因子。</li>
+<li><strong>簇表现分析:</strong> 计算每个簇在不同时间段的表现，识别强势/弱势群体，寻找板块轮动证据。</li>
 </ul></li>
 </ol>
-<p><strong>意义:</strong> 通过聚类，可以超越传统的行业划分，从数据驱动的角度发现股票之间更深层次的关联性（如同涨同跌模式），为投资组合构建和择时策略提供新的视角。</p>
+<p><strong>意义:</strong> 通过聚类，可以超越传统的行业划分，从数据驱动的角度发现股票之间更深层次的关联性，为投资组合构建和择时策略提供新的视角。</p>
 </section>
-<section id="评估方法-详细介绍" class="level3" data-number="10.1.4">
-<h3 data-number="10.1.4" class="anchored" data-anchor-id="评估方法-详细介绍"><span class="header-section-number">10.1.4</span> 评估方法 (详细介绍)</h3>
-<p>如何评估聚类效果的好坏，以及如何选择合适的 K 值？</p>
-<section id="轮廓系数-silhouette-coefficient" class="level4" data-number="10.1.4.1">
-<h4 data-number="10.1.4.1" class="anchored" data-anchor-id="轮廓系数-silhouette-coefficient"><span class="header-section-number">10.1.4.1</span> 1. 轮廓系数 (Silhouette Coefficient)</h4>
-<p>轮廓系数是评估聚类质量的一种方法，它综合考虑了簇内的紧密度和簇间的分离度。</p>
-<ul>
-<li><p><strong>计算方法:</strong></p>
-<ul>
-<li>对于数据集中的每个样本点 i：
-<ul>
-<li>计算 a(i): 点 i 与同簇中其他所有点的平均距离（衡量簇内紧密度）。</li>
-<li>计算 b(i): 点 i 与距离最近的其他簇中所有点的平均距离（衡量簇间分离度）。</li>
-<li>轮廓系数 s(i) = (b(i) - a(i)) / max(a(i), b(i))。</li>
-</ul></li>
-<li>数据集的整体轮廓系数是所有样本点轮廓系数的平均值。</li>
-</ul></li>
-<li><p><strong>轮廓系数解读:</strong></p>
-<ul>
-<li>值域范围：[-1, 1]</li>
-<li>接近 +1：表示样本与自己的簇很匹配，与相邻簇的差距很大，聚类效果好。</li>
-<li>接近 0：表示样本处于两个簇的边界附近。</li>
-<li>接近 -1：表示样本可能被分配到了错误的簇。</li>
-<li>通常认为，平均轮廓系数大于 0.5 是较好的聚类结果，大于 0.7 是优秀的聚类结果。</li>
-</ul></li>
-<li><p><strong>使用方法:</strong></p>
-<ul>
-<li>对不同的簇数量 (K) 计算平均轮廓系数。</li>
-<li>选择平均轮廓系数最大的 K 值。</li>
-<li>可以额外检查每个簇的平均轮廓系数，以识别问题簇（轮廓系数较低的簇）。</li>
-</ul></li>
-<li><p><strong>Python 实现:</strong></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> silhouette_score, silhouette_samples</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算整体轮廓系数</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>sil_score <span class="op">=</span> silhouette_score(X, labels)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算每个样本的轮廓系数</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>sil_samples <span class="op">=</span> silhouette_samples(X, labels)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算每个簇的平均轮廓系数</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_clusters):</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    cluster_sil <span class="op">=</span> sil_samples[labels <span class="op">==</span> i].mean()</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Cluster </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> silhouette coefficient: </span><span class="sc">{</span>cluster_sil<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ul>
 </section>
-<section id="肘部法则-elbow-method" class="level4" data-number="10.1.4.2">
-<h4 data-number="10.1.4.2" class="anchored" data-anchor-id="肘部法则-elbow-method"><span class="header-section-number">10.1.4.2</span> 2. 肘部法则 (Elbow Method)</h4>
-<p>肘部法则是一种启发式方法，用于确定 K-Means 中的最佳聚类数量 K。</p>
+<section id="总结" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="总结"><span class="header-section-number">10.4</span> 总结</h2>
+<p>聚类是一种强大的无监督学习技术，可以在没有标签数据的情况下发现数据中的自然分组。本讲义介绍了两种主要的聚类算法：K-Means和DBSCAN，它们各有优缺点：</p>
 <ul>
-<li><p><strong>原理:</strong></p>
-<ul>
-<li>对不同的 K 值运行 K-Means 算法，计算每个 K 值对应的簇内平方和 (WCSS, Within-Cluster Sum of Squares)。WCSS 是每个点与其所属簇的中心点之间距离的平方和。</li>
-<li>绘制 K 值与 WCSS 的关系图。</li>
-<li>随着 K 值的增加，WCSS 总体呈下降趋势，但下降速率会逐渐变缓。</li>
-<li>寻找图中的”肘部”，即曲线下降速率发生明显变化的点。该点对应的 K 值被视为较佳选择。</li>
-</ul></li>
-<li><p><strong>数学表示:</strong></p>
-<ul>
-<li>WCSS = Σ(xi - μj)²，其中 xi 是簇 j 中的点，μj 是簇 j 的中心点。</li>
-<li>在 scikit-learn 中，WCSS 可以通过 K-Means 的 <code>inertia_</code> 属性获取。</li>
-</ul></li>
-<li><p><strong>选择肘部的依据:</strong></p>
-<ul>
-<li>当 K 值小于真实簇数时，增加 K 会显著减少 WCSS（曲线陡峭部分）。</li>
-<li>当 K 值超过真实簇数时，再增加 K 对 WCSS 的减少效果不再明显（曲线平缓部分）。</li>
-<li>肘部通常是曲线从陡峭变为平缓的转折点。</li>
-</ul></li>
-<li><p><strong>Python 实现:</strong></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>wcss <span class="op">=</span> []</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>k_range <span class="op">=</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">11</span>)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> k_range:</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="st">'auto'</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    kmeans.fit(X)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    wcss.append(kmeans.inertia_)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>plt.plot(k_range, wcss, marker<span class="op">=</span><span class="st">'o'</span>)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Elbow Method for Optimal K'</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Number of Clusters (K)'</span>)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'WCSS (Inertia)'</span>)</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-<li><p><strong>注意事项:</strong></p>
-<ul>
-<li>肘部法则是一种视觉方法，有时肘部可能不够明显，需要结合业务理解和其他评估指标（如轮廓系数）来确定最终的 K 值。</li>
-<li>如果数据中的簇数量不明显，曲线可能会很平滑，没有明显的肘部。</li>
-<li>该方法主要适用于球形簇，对于复杂形状的簇可能效果不佳。</li>
-</ul></li>
+<li><strong>K-Means</strong>: 简单高效，但需要预先指定簇数量，对簇形状有假设，对异常值敏感。</li>
+<li><strong>DBSCAN</strong>: 能处理任意形状的簇，自动识别噪声点，不需要预先指定簇数量，但参数选择较为困难。</li>
 </ul>
-</section>
-<section id="戴维斯-布尔丁指数-davies-bouldin-index-dbi" class="level4" data-number="10.1.4.3">
-<h4 data-number="10.1.4.3" class="anchored" data-anchor-id="戴维斯-布尔丁指数-davies-bouldin-index-dbi"><span class="header-section-number">10.1.4.3</span> 3. 戴维斯-布尔丁指数 (Davies-Bouldin Index, DBI)</h4>
-<p>戴维斯-布尔丁指数是另一种评估聚类质量的度量，它关注簇内相似度和簇间差异性的比率。</p>
-<ul>
-<li><p><strong>计算方法:</strong></p>
-<ul>
-<li>对于每对簇 i 和 j，计算两个簇的”相似度” Rij = (Si + Sj) / Dij，其中：
-<ul>
-<li>Si 和 Sj 分别是簇 i 和簇 j 的平均点到中心的距离（簇内散布度）。</li>
-<li>Dij 是簇 i 和簇 j 中心之间的距离（簇间距离）。</li>
-</ul></li>
-<li>对于每个簇 i，找到它与其他所有簇 j 的最大相似度 max(Rij)。</li>
-<li>DBI 是所有簇最大相似度的平均值。</li>
-</ul></li>
-<li><p><strong>DBI 解读:</strong></p>
-<ul>
-<li>值越小越好，表示簇内紧密且簇间分离。</li>
-<li>理想的聚类会产生低的 DBI 值。</li>
-</ul></li>
-<li><p><strong>使用方法:</strong></p>
-<ul>
-<li>对不同的簇数量 (K) 计算 DBI。</li>
-<li>选择 DBI 值最小的 K 值。</li>
-</ul></li>
-<li><p><strong>Python 实现:</strong></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> davies_bouldin_score</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>dbi <span class="op">=</span> davies_bouldin_score(X, labels)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Davies-Bouldin Index: </span><span class="sc">{</span>dbi<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ul>
-</section>
-<section id="为-dbscan-选择参数" class="level4" data-number="10.1.4.4">
-<h4 data-number="10.1.4.4" class="anchored" data-anchor-id="为-dbscan-选择参数"><span class="header-section-number">10.1.4.4</span> 4. 为 DBSCAN 选择参数</h4>
-<p>与 K-Means 不同，DBSCAN 不需要预先指定簇的数量，但需要选择两个关键参数：邻域半径 ε 和最小点数 MinPts。</p>
-<ul>
-<li><strong>选择 MinPts:</strong>
-<ul>
-<li>一般经验法则是设置 MinPts ≥ 维度 + 1，例如对于二维数据，MinPts ≥ 3。</li>
-<li>更大的 MinPts 值可以减少噪声点的误判，但也可能导致小簇被视为噪声。</li>
-<li>常用值范围：3-10，但对于大型数据集可能需要更大的值。</li>
-</ul></li>
-<li><strong>选择 ε (Epsilon):</strong>
-<ul>
-<li><p><strong>K-距离图:</strong></p>
-<ol type="1">
-<li>对每个点，计算到其第 k 个最近邻点 (k = MinPts) 的距离。</li>
-<li>对这些距离进行升序排序，并绘制成图。</li>
-<li>寻找曲线上的”拐点”，该点对应的距离值可作为 ε 的值。</li>
-</ol></li>
-<li><p><strong>Python 实现 K-距离图:</strong></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> NearestNeighbors</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 选择 MinPts 值，例如 4</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>MinPts <span class="op">=</span> <span class="dv">4</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 找到每个点的 k 个最近邻</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>nbrs <span class="op">=</span> NearestNeighbors(n_neighbors<span class="op">=</span>MinPts).fit(X)</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>distances, indices <span class="op">=</span> nbrs.kneighbors(X)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 距离排序</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>distances <span class="op">=</span> np.sort(distances[:, MinPts<span class="op">-</span><span class="dv">1</span>])</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制 K-距离图</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="bu">len</span>(distances)), distances)</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'K-Distance Plot (k=</span><span class="sc">{}</span><span class="st">)'</span>.<span class="bu">format</span>(MinPts))</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Points sorted by distance'</span>)</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Distance to k-th nearest neighbor'</span>)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
-</ul></li>
-</ul>
-<p>通过综合使用上述评估方法，我们可以更客观、定量地判断聚类算法的效果，选择合适的参数，从而获得更有意义的聚类结果。</p>
+<p>聚类算法的评估需要使用特定的指标，如轮廓系数、肘部法则等，而不是传统的分类准确率。</p>
+<p>聚类在图像处理、客户分群、异常检测、半监督学习等领域有广泛的应用。在金融领域，聚类可以用于资产分组、市场状态识别、风险管理等多个方面。</p>
+<p>通过本讲义的学习，读者应该能够理解聚类的基本原理，掌握K-Means和DBSCAN算法的使用方法，学会如何评估聚类结果，并能将聚类技术应用到实际问题中。</p>
 
 
-</section>
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1009,8 +1241,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./lab07_cluster.html" class="pagination-link" aria-label="聚类算法实践">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">聚类算法实践</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./project1_LC.html" class="pagination-link" aria-label="项目1：借贷违约风险评估">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
