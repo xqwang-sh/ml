@@ -324,13 +324,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>关键区别：</strong></p>
 <ul>
-<li><strong>分类（有监督学习）</strong>:
+<li><p><strong>分类（有监督学习）</strong>:</p>
 <ul>
 <li>有预先定义的类别标签</li>
 <li>目标是学习将新样本分配到已知类别的规则</li>
 <li>评估基于预测标签与真实标签的比较</li>
 </ul></li>
-<li><strong>聚类（无监督学习）</strong>:
+<li><p><strong>聚类（无监督学习）</strong>:</p>
 <ul>
 <li>没有预先定义的类别标签</li>
 <li>目标是发现数据中的自然分组</li>
@@ -353,8 +353,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="算法优缺点" class="level3" data-number="10.2.2">
 <h3 data-number="10.2.2" class="anchored" data-anchor-id="算法优缺点"><span class="header-section-number">10.2.2</span> 算法优缺点</h3>
-<p><strong>优点:</strong> - 算法简单，容易理解和实现。 - 计算效率高，处理大数据集速度较快。</p>
-<p><strong>缺点:</strong> - 需要预先指定簇的数量 K，而 K 值的选择往往比较困难。 - 对初始质心的选择敏感，可能陷入局部最优解。 - 对非球状簇、不同大小和密度的簇效果不佳。 - 对异常值（Outliers）比较敏感。</p>
+<p><strong>优点:</strong></p>
+<ul>
+<li>算法简单，容易理解和实现。</li>
+<li>计算效率高，处理大数据集速度较快。</li>
+</ul>
+<p><strong>缺点:</strong></p>
+<ul>
+<li>需要预先指定簇的数量 K，而 K 值的选择往往比较困难。</li>
+<li>对初始质心的选择敏感，可能陷入局部最优解。</li>
+<li>对非球状簇、不同大小和密度的簇效果不佳。</li>
+<li>对异常值（Outliers）比较敏感。</li>
+</ul>
 </section>
 <section id="k-means实践" class="level3" data-number="10.2.3">
 <h3 data-number="10.2.3" class="anchored" data-anchor-id="k-means实践"><span class="header-section-number">10.2.3</span> K-Means实践</h3>
@@ -442,8 +452,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>如何评估聚类效果的好坏，以及如何选择合适的参数（如K-Means中的K值）？以下介绍几种常用的评估方法：</p>
 <section id="肘部法则-elbow-method" class="level4" data-number="10.2.7.1">
 <h4 data-number="10.2.7.1" class="anchored" data-anchor-id="肘部法则-elbow-method"><span class="header-section-number">10.2.7.1</span> 肘部法则 (Elbow Method)</h4>
-<p><strong>原理：</strong> - 对不同的K值运行K-Means算法，计算每个K值对应的惯性（簇内平方和，WCSS）。 - 随着K值的增加，惯性总体呈下降趋势，但下降速率会逐渐变缓。 - 寻找图中的”肘部”，即曲线下降速率发生明显变化的点。该点对应的K值被视为较佳选择。</p>
-<p><strong>注意事项：</strong> - 肘部法则是一种视觉方法，有时肘部可能不够明显。 - 需要结合业务理解和其他评估指标来确定最终的K值。 - 该方法主要适用于球形簇，对于复杂形状的簇可能效果不佳。</p>
+<p><strong>原理：</strong></p>
+<ul>
+<li>对不同的K值运行K-Means算法，计算每个K值对应的惯性（簇内平方和，WCSS）。</li>
+<li>随着K值的增加，惯性总体呈下降趋势，但下降速率会逐渐变缓。</li>
+<li>寻找图中的”肘部”，即曲线下降速率发生明显变化的点。该点对应的K值被视为较佳选择。</li>
+</ul>
+<p><strong>注意事项：</strong></p>
+<ul>
+<li>肘部法则是一种视觉方法，有时肘部可能不够明显。</li>
+<li>需要结合业务理解和其他评估指标来确定最终的K值。</li>
+<li>该方法主要适用于球形簇，对于复杂形状的簇可能效果不佳。</li>
+</ul>
 <p>肘部法则是一种启发式方法，用于确定K-Means中的最佳聚类数量K：</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 肘部法则</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>kmeans_per_k <span class="op">=</span> [KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(X)</span>
@@ -464,8 +484,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="轮廓系数-silhouette-coefficient" class="level4" data-number="10.2.7.2">
 <h4 data-number="10.2.7.2" class="anchored" data-anchor-id="轮廓系数-silhouette-coefficient"><span class="header-section-number">10.2.7.2</span> 轮廓系数 (Silhouette Coefficient)</h4>
 <p>轮廓系数是评估聚类质量的一种方法，它综合考虑了簇内的紧密度和簇间的分离度。</p>
-<p><strong>计算方法:</strong> - 对于数据集中的每个样本点 i： - 计算 a(i): 点 i 与同簇中其他所有点的平均距离（衡量簇内紧密度）。 - 计算 b(i): 点 i 与距离最近的其他簇中所有点的平均距离（衡量簇间分离度）。 - 轮廓系数 s(i) = (b(i) - a(i)) / max(a(i), b(i))。 - 数据集的整体轮廓系数是所有样本点轮廓系数的平均值。</p>
-<p><strong>轮廓系数解读:</strong> - 值域范围：[-1, 1] - 接近 +1：表示样本与自己的簇很匹配，与相邻簇的差距很大，聚类效果好。 - 接近 0：表示样本处于两个簇的边界附近。 - 接近 -1：表示样本可能被分配到了错误的簇。 - 通常认为，平均轮廓系数大于 0.5 是较好的聚类结果，大于 0.7 是优秀的聚类结果。</p>
+<p><strong>计算方法:</strong></p>
+<ul>
+<li>对于数据集中的每个样本点 i：
+<ul>
+<li>计算 a(i): 点 i 与同簇中其他所有点的平均距离（衡量簇内紧密度）。</li>
+<li>计算 b(i): 点 i 与距离最近的其他簇中所有点的平均距离（衡量簇间分离度）。</li>
+<li>轮廓系数 s(i) = (b(i) - a(i)) / max(a(i), b(i))。</li>
+</ul></li>
+<li>数据集的整体轮廓系数是所有样本点轮廓系数的平均值。</li>
+</ul>
+<p><strong>轮廓系数解读:</strong></p>
+<ul>
+<li>值域范围：[-1, 1]</li>
+<li>接近 +1：表示样本与自己的簇很匹配，与相邻簇的差距很大，聚类效果好。</li>
+<li>接近 0：表示样本处于两个簇的边界附近。</li>
+<li>接近 -1：表示样本可能被分配到了错误的簇。</li>
+<li>通常认为，平均轮廓系数大于 0.5 是较好的聚类结果，大于 0.7 是优秀的聚类结果。</li>
+</ul>
 <p>下面是使用轮廓系数选择最佳K值的例子：</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 轮廓系数</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>silhouette_scores <span class="op">=</span> [silhouette_score(X, model.labels_)</span>
@@ -525,7 +561,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>dbi <span class="op">=</span> davies_bouldin_score(X, labels)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Davies-Bouldin Index: </span><span class="sc">{</span>dbi<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>解读：</strong> - 值越小越好，表示簇内紧密且簇间分离。 - 理想的聚类会产生低的DBI值。</p>
+<p><strong>解读：</strong></p>
+<ul>
+<li>值越小越好，表示簇内紧密且簇间分离。</li>
+<li>理想的聚类会产生低的DBI值。</li>
+</ul>
 <p>通过综合使用上述评估方法，我们可以更客观、定量地判断聚类算法的效果，选择合适的参数，从而获得更有意义的聚类结果。</p>
 </section>
 </section>
@@ -562,14 +602,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="算法原理-1" class="level4" data-number="10.2.9.1">
 <h4 data-number="10.2.9.1" class="anchored" data-anchor-id="算法原理-1"><span class="header-section-number">10.2.9.1</span> 算法原理</h4>
 <p>DBSCAN (Density-Based Spatial Clustering of Applications with Noise) 是一种基于密度的聚类算法，它将密度相连的点划分为一个簇，并且能够发现任意形状的簇，同时自动识别噪声点。</p>
-<p><strong>核心概念:</strong> - <strong>ε (Epsilon):</strong> 邻域半径，定义点之间的”近”的概念。 - <strong>MinPts:</strong> 邻域内最少点数，用于判断密度。 - <strong>核心点 (Core Point):</strong> 在其 ε 邻域内至少有 MinPts 个点的点。 - <strong>边界点 (Border Point):</strong> 不是核心点，但在某个核心点的 ε 邻域内的点。 - <strong>噪声点 (Noise Point):</strong> 既不是核心点也不是边界点的点。</p>
-<p><strong>算法步骤:</strong> 1. 任选一个未被访问的点 p。 2. 标记 p 为已访问。 3. 如果 p 是核心点，创建一个新簇，并将 p 的所有密度可达点加入该簇。 4. 如果 p 不是核心点，标记为噪声点并继续。 5. 重复以上步骤，直到所有点都被访问。</p>
+<p><strong>核心概念:</strong></p>
+<ul>
+<li><strong>ε (Epsilon):</strong> 邻域半径，定义点之间的”近”的概念。</li>
+<li><strong>MinPts:</strong> 邻域内最少点数，用于判断密度。</li>
+<li><strong>核心点 (Core Point):</strong> 在其 ε 邻域内至少有 MinPts 个点的点。</li>
+<li><strong>边界点 (Border Point):</strong> 不是核心点，但在某个核心点的 ε 邻域内的点。</li>
+<li><strong>噪声点 (Noise Point):</strong> 既不是核心点也不是边界点的点。</li>
+</ul>
+<p><strong>算法步骤:</strong></p>
+<ol type="1">
+<li>任选一个未被访问的点 p。</li>
+<li>标记 p 为已访问。</li>
+<li>如果 p 是核心点，创建一个新簇，并将 p 的所有密度可达点加入该簇。</li>
+<li>如果 p 不是核心点，标记为噪声点并继续。</li>
+<li>重复以上步骤，直到所有点都被访问。</li>
+</ol>
 </section>
 </section>
 <section id="算法优缺点-1" class="level3" data-number="10.2.10">
 <h3 data-number="10.2.10" class="anchored" data-anchor-id="算法优缺点-1"><span class="header-section-number">10.2.10</span> 算法优缺点</h3>
-<p><strong>优点:</strong> - 不需要预先指定簇的数量。 - 能发现任意形状的簇，不限于球形簇。 - 能自动识别和处理噪声点。 - 对离群点不敏感。</p>
-<p><strong>缺点:</strong> - 参数选择（ε 和 MinPts）有时较为困难。 - 对数据集中密度差异较大的簇效果不佳。 - 计算复杂度较高（约为 O(n²)），但通常可以通过空间索引优化。 - 不能处理高维空间中的”维度灾难”问题。</p>
+<p><strong>优点:</strong></p>
+<ul>
+<li>不需要预先指定簇的数量。</li>
+<li>能发现任意形状的簇，不限于球形簇。</li>
+<li>能自动识别和处理噪声点。</li>
+<li>对离群点不敏感。</li>
+</ul>
+<p><strong>缺点:</strong></p>
+<ul>
+<li>参数选择（ε 和 MinPts）有时较为困难。</li>
+<li>对数据集中密度差异较大的簇效果不佳。</li>
+<li>计算复杂度较高（约为 O(n²)），但通常可以通过空间索引优化。</li>
+<li>不能处理高维空间中的”维度灾难”问题。</li>
+</ul>
 </section>
 <section id="dbscan实践" class="level3" data-number="10.2.11">
 <h3 data-number="10.2.11" class="anchored" data-anchor-id="dbscan实践"><span class="header-section-number">10.2.11</span> DBSCAN实践</h3>
@@ -744,22 +810,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>目标:</strong> 利用聚类技术识别股票市场中可能存在的板块轮动现象或隐藏的股票群体特征。</p>
 <p><strong>步骤:</strong></p>
 <ol type="1">
-<li><strong>数据收集:</strong>
+<li><p><strong>数据收集:</strong></p>
 <ul>
 <li>选择一个股票池，例如上证A股。</li>
 <li>收集这些股票在过去一段时间（如一年）的每日收益率数据。</li>
 </ul></li>
-<li><strong>数据预处理:</strong>
+<li><p><strong>数据预处理:</strong></p>
 <ul>
 <li>处理缺失值。</li>
 <li>对收益率数据进行标准化，以消除量纲影响。</li>
 </ul></li>
-<li><strong>聚类分析:</strong>
+<li><p><strong>聚类分析:</strong></p>
 <ul>
 <li>使用K-Means对股票进行聚类，输入数据为每只股票的日收益率序列。</li>
 <li>使用肘部法则或轮廓系数选择最优的K值。</li>
 </ul></li>
-<li><strong>结果解读与分析:</strong>
+<li><p><strong>结果解读与分析:</strong></p>
 <ul>
 <li><strong>簇成员分析:</strong> 查看每个簇中包含哪些股票，是否对应传统行业板块或揭示跨行业的投资因子。</li>
 <li><strong>簇表现分析:</strong> 计算每个簇在不同时间段的表现，识别强势/弱势群体，寻找板块轮动证据。</li>
