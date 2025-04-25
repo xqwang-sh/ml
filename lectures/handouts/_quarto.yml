@@ -17,6 +17,7 @@ book:
     - 06_credit.qmd
     - 07_unsupervised.qmd
     - 07_cluster.qmd
+    - 09_dimension.qmd
     - project1_LC.qmd
     - project2a_tspred.qmd
     - project2b_text.qmd

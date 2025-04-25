@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>11&nbsp; 项目1：借贷违约风险评估 – 数据挖掘与机器学习课程讲义</title>
+<title>12&nbsp; 项目1：借贷违约风险评估 – 数据挖掘与机器学习课程讲义</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./project2a_tspred.html" rel="next">
-<link href="./07_cluster.html" rel="prev">
+<link href="./09_dimension.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -81,7 +81,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./project1_LC.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./project1_LC.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="搜索" onclick="window.quartoOpenSearch();">
@@ -168,20 +168,26 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./09_dimension.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">非监督学习：降维 (Dimensionality Reduction)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./project1_LC.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2a_tspred.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2b_text.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
   </div>
 </li>
     </ul>
@@ -194,17 +200,17 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">目录</h2>
    
   <ul>
-  <li><a href="#项目背景" id="toc-项目背景" class="nav-link active" data-scroll-target="#项目背景"><span class="header-section-number">11.1</span> 项目背景</a></li>
-  <li><a href="#项目目标" id="toc-项目目标" class="nav-link" data-scroll-target="#项目目标"><span class="header-section-number">11.2</span> 项目目标</a></li>
-  <li><a href="#数据简介" id="toc-数据简介" class="nav-link" data-scroll-target="#数据简介"><span class="header-section-number">11.3</span> 数据简介</a></li>
-  <li><a href="#样本与变量选择" id="toc-样本与变量选择" class="nav-link" data-scroll-target="#样本与变量选择"><span class="header-section-number">11.4</span> 样本与变量选择</a></li>
-  <li><a href="#项目步骤建议仅供参考" id="toc-项目步骤建议仅供参考" class="nav-link" data-scroll-target="#项目步骤建议仅供参考"><span class="header-section-number">11.5</span> 项目步骤建议（仅供参考）</a>
+  <li><a href="#项目背景" id="toc-项目背景" class="nav-link active" data-scroll-target="#项目背景"><span class="header-section-number">12.1</span> 项目背景</a></li>
+  <li><a href="#项目目标" id="toc-项目目标" class="nav-link" data-scroll-target="#项目目标"><span class="header-section-number">12.2</span> 项目目标</a></li>
+  <li><a href="#数据简介" id="toc-数据简介" class="nav-link" data-scroll-target="#数据简介"><span class="header-section-number">12.3</span> 数据简介</a></li>
+  <li><a href="#样本与变量选择" id="toc-样本与变量选择" class="nav-link" data-scroll-target="#样本与变量选择"><span class="header-section-number">12.4</span> 样本与变量选择</a></li>
+  <li><a href="#项目步骤建议仅供参考" id="toc-项目步骤建议仅供参考" class="nav-link" data-scroll-target="#项目步骤建议仅供参考"><span class="header-section-number">12.5</span> 项目步骤建议（仅供参考）</a>
   <ul class="collapse">
-  <li><a href="#数据清理与特征工程" id="toc-数据清理与特征工程" class="nav-link" data-scroll-target="#数据清理与特征工程"><span class="header-section-number">11.5.1</span> 数据清理与特征工程</a></li>
-  <li><a href="#数据建模与模型评估" id="toc-数据建模与模型评估" class="nav-link" data-scroll-target="#数据建模与模型评估"><span class="header-section-number">11.5.2</span> 数据建模与模型评估</a></li>
+  <li><a href="#数据清理与特征工程" id="toc-数据清理与特征工程" class="nav-link" data-scroll-target="#数据清理与特征工程"><span class="header-section-number">12.5.1</span> 数据清理与特征工程</a></li>
+  <li><a href="#数据建模与模型评估" id="toc-数据建模与模型评估" class="nav-link" data-scroll-target="#数据建模与模型评估"><span class="header-section-number">12.5.2</span> 数据建模与模型评估</a></li>
   </ul></li>
-  <li><a href="#提交要求" id="toc-提交要求" class="nav-link" data-scroll-target="#提交要求"><span class="header-section-number">11.6</span> 提交要求</a></li>
-  <li><a href="#评分标准" id="toc-评分标准" class="nav-link" data-scroll-target="#评分标准"><span class="header-section-number">11.7</span> 评分标准</a></li>
+  <li><a href="#提交要求" id="toc-提交要求" class="nav-link" data-scroll-target="#提交要求"><span class="header-section-number">12.6</span> 提交要求</a></li>
+  <li><a href="#评分标准" id="toc-评分标准" class="nav-link" data-scroll-target="#评分标准"><span class="header-section-number">12.7</span> 评分标准</a></li>
   </ul>
 </nav>
     </div>
@@ -213,7 +219,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></h1>
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></h1>
 </div>
 
 
@@ -230,8 +236,8 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="项目背景" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="项目背景"><span class="header-section-number">11.1</span> 项目背景</h2>
+<section id="项目背景" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="项目背景"><span class="header-section-number">12.1</span> 项目背景</h2>
 <p>Lending Club（NYSE：LC）创立于2006年，是一家在线撮合借款和出借的P2P平台，公司位于美国旧金山。公司上线运营初期仅提供个人贷款（personal loans）服务，后增加了医疗信贷（patient loans）、车贷分期（auto refinancing loans）。2014年12月12日开始在纽交所挂牌交易，成为当年最大的科技股IPO，2014年前后公司增加小微企业贷（small business loans）服务。该公司报告称，截至2015年12月31日，已通过其平台发放了159.8亿美元的贷款。</p>
 <p>借款人可以在LC平台上申请1,000美元到40,000美元之间的无担保个人贷款。标准贷款期限为三年。投资者可以在LC网站上搜索和浏览贷款清单，并根据提供的有关借款人、贷款金额、贷款等级和贷款目的的信息选择他们想要投资的贷款。投资者从这些贷款的利息中获利。</p>
 <p>LC负责贷款的审批和定价，贷款对应票据凭证的发行，以及贷后月度收款付款以及逾期后催收等服务。贷款的实际发放者是一家注册在犹他州的商业银行Web Bank。贷款产生的违约风险、提前还款和再投资风险，都由投资者自行承担。</p>
@@ -240,12 +246,12 @@ ul.task-list li input[type="checkbox"] {
 <p>尽管被视为金融科技行业的先驱和最大的此类公司之一，LC在2016年初遇到了问题，难以吸引投资者，公司的一些贷款丑闻以及董事会对首席执行官雷诺拉普朗什披露信息的担忧导致其股价大幅下跌和拉普朗什辞职。</p>
 <p>2020年，LC收购了Radius Bank，并宣布将关闭其P2P借贷平台。现有账户持有人将继续对现有票据收取利息，直到每笔贷款还清或违约，但没有新贷款可用于个人投资。也不再可能像以前那样通过二级市场出售现有贷款。</p>
 </section>
-<section id="项目目标" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="项目目标"><span class="header-section-number">11.2</span> 项目目标</h2>
+<section id="项目目标" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="项目目标"><span class="header-section-number">12.2</span> 项目目标</h2>
 <p>本项目旨在利用Lending Club提供的历史贷款数据，构建机器学习模型以预测贷款是否会违约。</p>
 </section>
-<section id="数据简介" class="level2" data-number="11.3">
-<h2 data-number="11.3" class="anchored" data-anchor-id="数据简介"><span class="header-section-number">11.3</span> 数据简介</h2>
+<section id="数据简介" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="数据简介"><span class="header-section-number">12.3</span> 数据简介</h2>
 <p>Lending Club贷款数据，覆盖2007.6-2018.12时间段，包含以下几类信息：</p>
 <ul>
 <li><strong>贷款基本信息</strong>：
@@ -278,8 +284,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>原始数据集包含145个变量和约200万条记录。本项目将使用其中的子集进行分析。</p>
 </section>
-<section id="样本与变量选择" class="level2" data-number="11.4">
-<h2 data-number="11.4" class="anchored" data-anchor-id="样本与变量选择"><span class="header-section-number">11.4</span> 样本与变量选择</h2>
+<section id="样本与变量选择" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="样本与变量选择"><span class="header-section-number">12.4</span> 样本与变量选择</h2>
 <ul>
 <li><p><strong>时间范围</strong>：选择2013-2014年发放的、期限为3年的贷款数据。这些贷款在2018年底已全部结束，因此有完整的还款结果。</p></li>
 <li><p><strong>特征选择原则</strong>：</p>
@@ -296,10 +302,10 @@ ul.task-list li input[type="checkbox"] {
 </ul></li>
 </ul>
 </section>
-<section id="项目步骤建议仅供参考" class="level2" data-number="11.5">
-<h2 data-number="11.5" class="anchored" data-anchor-id="项目步骤建议仅供参考"><span class="header-section-number">11.5</span> 项目步骤建议（仅供参考）</h2>
-<section id="数据清理与特征工程" class="level3" data-number="11.5.1">
-<h3 data-number="11.5.1" class="anchored" data-anchor-id="数据清理与特征工程"><span class="header-section-number">11.5.1</span> 数据清理与特征工程</h3>
+<section id="项目步骤建议仅供参考" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="项目步骤建议仅供参考"><span class="header-section-number">12.5</span> 项目步骤建议（仅供参考）</h2>
+<section id="数据清理与特征工程" class="level3" data-number="12.5.1">
+<h3 data-number="12.5.1" class="anchored" data-anchor-id="数据清理与特征工程"><span class="header-section-number">12.5.1</span> 数据清理与特征工程</h3>
 <ul>
 <li><strong>数据探索分析</strong>：
 <ul>
@@ -327,8 +333,8 @@ ul.task-list li input[type="checkbox"] {
 </ul></li>
 </ul>
 </section>
-<section id="数据建模与模型评估" class="level3" data-number="11.5.2">
-<h3 data-number="11.5.2" class="anchored" data-anchor-id="数据建模与模型评估"><span class="header-section-number">11.5.2</span> 数据建模与模型评估</h3>
+<section id="数据建模与模型评估" class="level3" data-number="12.5.2">
+<h3 data-number="12.5.2" class="anchored" data-anchor-id="数据建模与模型评估"><span class="header-section-number">12.5.2</span> 数据建模与模型评估</h3>
 <ul>
 <li><strong>数据集划分</strong>：
 <ul>
@@ -378,8 +384,8 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </section>
 </section>
-<section id="提交要求" class="level2" data-number="11.6">
-<h2 data-number="11.6" class="anchored" data-anchor-id="提交要求"><span class="header-section-number">11.6</span> 提交要求</h2>
+<section id="提交要求" class="level2" data-number="12.6">
+<h2 data-number="12.6" class="anchored" data-anchor-id="提交要求"><span class="header-section-number">12.6</span> 提交要求</h2>
 <ol type="1">
 <li><strong>项目报告</strong>：
 <ul>
@@ -413,8 +419,8 @@ ul.task-list li input[type="checkbox"] {
 </ul></li>
 </ol>
 </section>
-<section id="评分标准" class="level2" data-number="11.7">
-<h2 data-number="11.7" class="anchored" data-anchor-id="评分标准"><span class="header-section-number">11.7</span> 评分标准</h2>
+<section id="评分标准" class="level2" data-number="12.7">
+<h2 data-number="12.7" class="anchored" data-anchor-id="评分标准"><span class="header-section-number">12.7</span> 评分标准</h2>
 <ul>
 <li><strong>项目报告（40分）</strong>
 <ul>
@@ -872,13 +878,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./07_cluster.html" class="pagination-link" aria-label="非监督学习：聚类 (Clustering)">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">非监督学习：聚类 (Clustering)</span></span>
+      <a href="./09_dimension.html" class="pagination-link" aria-label="非监督学习：降维 (Dimensionality Reduction)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">非监督学习：降维 (Dimensionality Reduction)</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./project2a_tspred.html" class="pagination-link" aria-label="项目2A：上证综指收益率时间序列预测">
-        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

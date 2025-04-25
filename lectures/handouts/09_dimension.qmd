@@ -48,7 +48,7 @@ PCA 是一种非常流行的**无监督线性降维**技术，属于**特征提�
 从线性代数角度，PCA可以通过以下步骤实现：
 
 1. **数据中心化**：将每个特征减去其均值，使得每个特征的均值为0
-2. **计算协方差矩阵**：$\Sigma = \frac{1}{n-1}X^TX$，其中X是中心化后的数据矩阵
+2. **计算协方差矩阵**：$\Sigma = \frac{1}{n-1}X^{T}X$，其中X是中心化后的数据矩阵
 3. **计算协方差矩阵的特征值和特征向量**：求解$\Sigma v = \lambda v$，得到特征值$\lambda$和特征向量$v$
 4. **特征向量排序**：根据特征值大小降序排列特征向量
 5. **选择前k个特征向量**：构建投影矩阵$W$
@@ -111,7 +111,7 @@ plt.grid(True)
 # 添加阈值线 (例如 95%)
 plt.axhline(y=0.95, color='r', linestyle='-', label='95% Explained Variance')
 plt.legend(loc='best')
-# plt.show()
+plt.show()
 
 # 2. 根据目标方差解释率选择 n_components
 # 例如，我们希望保留 95% 的方差
@@ -132,7 +132,7 @@ plt.colorbar(label='Digit Label')
 plt.title('PCA of Digits Dataset (2 Components)')
 plt.xlabel('Principal Component 1')
 plt.ylabel('Principal Component 2')
-# plt.show()
+plt.show()
 ```
 
 #### 主成分的解释与可视化
@@ -152,7 +152,7 @@ for i, (component, ax) in enumerate(zip(pca.components_, axes.ravel())):
     ax.imshow(component.reshape(8, 8), cmap='viridis')
     ax.set_title(f"PC {i+1}")
 plt.tight_layout()
-# plt.show()
+plt.show()
 
 # 可视化原始图像及其重构
 n_components = 30
@@ -172,7 +172,7 @@ for i in range(n_samples):
     axes[1, i].imshow(X_restored[i].reshape(8, 8), cmap='gray')
     axes[1, i].set_title(f'Restored ({n_components} PCs)')
 plt.tight_layout()
-# plt.show()
+plt.show()
 ```
 
 #### PCA 应用与局限性
@@ -197,12 +197,12 @@ LDA 是一种**有监督的**线性降维方法，它不仅考虑数据的方差
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 # 假设我们有分类数据 X_train, y_train
-# lda = LinearDiscriminantAnalysis(n_components=2)
-# X_train_lda = lda.fit_transform(X_train, y_train)
+lda = LinearDiscriminantAnalysis(n_components=2)
+X_train_lda = lda.fit_transform(X_train, y_train)
 
-# print("LDA 降维后的形状:", X_train_lda.shape)
-# print("每个类别的均值:", lda.means_)
-# print("LDA 的解释方差比:", lda.explained_variance_ratio_)
+print("LDA 降维后的形状:", X_train_lda.shape)
+print("每个类别的均值:", lda.means_)
+print("LDA 的解释方差比:", lda.explained_variance_ratio_)
 ```
 
 与PCA相比，LDA的主要特点：
@@ -219,10 +219,10 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.decomposition import FactorAnalysis
 
 # n_components 是潜在因子的数量
-# fa = FactorAnalysis(n_components=5, random_state=42)
-# X_fa = fa.fit_transform(X_scaled)
-# print("因子分析后的形状:", X_fa.shape)
-# print("因子载荷矩阵:", fa.components_)
+fa = FactorAnalysis(n_components=5, random_state=42)
+X_fa = fa.fit_transform(X_scaled)
+print("因子分析后的形状:", X_fa.shape)
+print("因子载荷矩阵:", fa.components_)
 ```
 
 ### 非线性降维方法
@@ -238,18 +238,18 @@ from sklearn.manifold import TSNE
 
 # n_components 通常是2或3 (用于可视化)
 # perplexity 是一个重要参数，通常在5-50之间，影响局部结构的保留
-# tsne = TSNE(n_components=2, perplexity=30, random_state=42, n_iter=1000)
-# X_tsne = tsne.fit_transform(X_digits)
-# print("t-SNE 降维后的形状:", X_tsne.shape)
+tsne = TSNE(n_components=2, perplexity=30, random_state=42, n_iter=1000)
+X_tsne = tsne.fit_transform(X_digits)
+print("t-SNE 降维后的形状:", X_tsne.shape)
 
 # 可视化 t-SNE 结果
-# plt.figure(figsize=(10, 7))
-# plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
-# plt.colorbar(label='Digit Label')
-# plt.title('t-SNE of Digits Dataset (2 Components)')
-# plt.xlabel('t-SNE 1')
-# plt.ylabel('t-SNE 2')
-# plt.show()
+plt.figure(figsize=(10, 7))
+plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
+plt.colorbar(label='Digit Label')
+plt.title('t-SNE of Digits Dataset (2 Components)')
+plt.xlabel('t-SNE 1')
+plt.ylabel('t-SNE 2')
+plt.show()
 ```
 
 t-SNE的特点：
@@ -270,18 +270,18 @@ import umap
 
 # n_neighbors 控制局部结构的保留程度
 # min_dist 控制嵌入中点的紧密程度
-# reducer = umap.UMAP(n_components=2, n_neighbors=15, min_dist=0.1, random_state=42)
-# X_umap = reducer.fit_transform(X_digits)
-# print("UMAP 降维后的形状:", X_umap.shape)
+reducer = umap.UMAP(n_components=2, n_neighbors=15, min_dist=0.1, random_state=42)
+X_umap = reducer.fit_transform(X_digits)
+print("UMAP 降维后的形状:", X_umap.shape)
 
 # 可视化 UMAP 结果
-# plt.figure(figsize=(10, 7))
-# plt.scatter(X_umap[:, 0], X_umap[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
-# plt.colorbar(label='Digit Label')
-# plt.title('UMAP of Digits Dataset (2 Components)')
-# plt.xlabel('UMAP 1')
-# plt.ylabel('UMAP 2')
-# plt.show()
+plt.figure(figsize=(10, 7))
+plt.scatter(X_umap[:, 0], X_umap[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
+plt.colorbar(label='Digit Label')
+plt.title('UMAP of Digits Dataset (2 Components)')
+plt.xlabel('UMAP 1')
+plt.ylabel('UMAP 2')
+plt.show()
 ```
 
 UMAP的优势：
@@ -298,28 +298,28 @@ UMAP的优势：
 
 ```python
 # 设置图形大小
-# plt.figure(figsize=(18, 6))
+plt.figure(figsize=(18, 6))
 
 # PCA
-# plt.subplot(1, 3, 1)
-# plt.scatter(X_digits_pca_2d[:, 0], X_digits_pca_2d[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
-# plt.title('PCA')
-# plt.colorbar()
+plt.subplot(1, 3, 1)
+plt.scatter(X_digits_pca_2d[:, 0], X_digits_pca_2d[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
+plt.title('PCA')
+plt.colorbar()
 
 # t-SNE
-# plt.subplot(1, 3, 2)
-# plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
-# plt.title('t-SNE')
-# plt.colorbar()
+plt.subplot(1, 3, 2)
+plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
+plt.title('t-SNE')
+plt.colorbar()
 
 # UMAP
-# plt.subplot(1, 3, 3)
-# plt.scatter(X_umap[:, 0], X_umap[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
-# plt.title('UMAP')
-# plt.colorbar()
+plt.subplot(1, 3, 3)
+plt.scatter(X_umap[:, 0], X_umap[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
+plt.title('UMAP')
+plt.colorbar()
 
-# plt.tight_layout()
-# plt.show()
+plt.tight_layout()
+plt.show()
 ```
 
 #### 如何选择合适的降维方法？

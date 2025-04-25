@@ -17,6 +17,7 @@ title: "前言"
 5.  [信用评分](06_credit.qmd)
 6.  [无监督学习](07_unsupervised.qmd)
 7.  [聚类](07_cluster.qmd)
+8.  [降维](09_dimension.qmd)
 
 **课程内容（实践）:**
 
