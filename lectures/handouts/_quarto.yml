@@ -13,11 +13,15 @@ book:
     - 03_supervised.qmd
     - 04_supervised.qmd
     - 05_model_assess.qmd
+    - 09_ts.qmd
     - lab03_titanic.qmd
     - 06_credit.qmd
     - 07_unsupervised.qmd
     - 07_cluster.qmd
     - 09_dimension.qmd
+    - 11_nlp.qmd
+    - 12_embedding.qmd
+    - 13_llm.qmd
     - project1_LC.qmd
     - project2a_tspred.qmd
     - project2b_text.qmd

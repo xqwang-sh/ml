@@ -20,13 +20,9 @@ title: "非监督学习：降维 (Dimensionality Reduction)"
 
 1. **线性降维方法**：假设数据位于线性子空间中
    - 主成分分析 (PCA)
-   - 线性判别分析 (LDA)
-   - 因子分析 (FA)
    
 2. **非线性降维方法**：处理位于非线性流形上的数据
    - t-分布随机邻域嵌入 (t-SNE)
-   - 局部线性嵌入 (LLE)
-   - ISOMAP
    - UMAP (Uniform Manifold Approximation and Projection)
 
 本讲我们将重点讨论最常用的线性降维方法——主成分分析(PCA)。
@@ -53,6 +49,20 @@ PCA 是一种非常流行的**无监督线性降维**技术，属于**特征提�
 4. **特征向量排序**：根据特征值大小降序排列特征向量
 5. **选择前k个特征向量**：构建投影矩阵$W$
 6. **数据投影**：$Z = XW$，得到降维后的数据
+
+#### PCA的几何解释
+
+从几何角度看，PCA寻找的是数据中的主要变化方向。想象一个三维空间中的扁平椭球体数据云：
+
+- 第一主成分是椭球体最长的轴
+- 第二主成分是次长的轴
+- 第三主成分是最短的轴
+
+通过保留变化最大的方向，PCA能够用较少的维度捕捉数据的主要结构。
+
+#### PCA的统计理解
+
+从统计角度看，PCA是一种最大化数据方差的特征转换方法。这背后的假设是，数据的方差越大，包含的信息量就越多。主成分既相互正交（不相关），又能按重要性排序（由特征值大小决定）。
 
 #### 方差解释率 (Explained Variance Ratio)
 
@@ -84,10 +94,24 @@ import numpy as np
 import pandas as pd
 
 # --- 加载数据示例 (手写数字) ---
+# MNIST数据集的简化版本 - Digits数据集
 digits = load_digits()
 X_digits = digits.data # (1797, 64) - 1797个样本，每个是8x8图像展平后的64个特征
 y_digits = digits.target
 print("原始数据形状:", X_digits.shape)
+print("类别分布:", np.bincount(y_digits))
+
+# --- 可视化原始数据 ---
+# 展示几个样本示例
+fig, axes = plt.subplots(2, 10, figsize=(15, 4), 
+                         subplot_kw={'xticks':[], 'yticks':[]})
+for i, ax in enumerate(axes.flat):
+    ax.imshow(digits.images[i], cmap='gray')
+    ax.set_title(f'{y_digits[i]}')
+plt.suptitle('MNIST Digits数据集示例', fontsize=16)
+plt.tight_layout()
+plt.subplots_adjust(top=0.88)
+plt.show()
 
 # --- 特征缩放 ---
 scaler = StandardScaler()
@@ -102,15 +126,25 @@ pca_full.fit(X_digits_scaled)
 explained_variance_ratio_cumsum = np.cumsum(pca_full.explained_variance_ratio_)
 
 # 绘制累积方差解释率曲线
-plt.figure(figsize=(8, 5))
+plt.figure(figsize=(10, 6))
 plt.plot(range(1, len(explained_variance_ratio_cumsum) + 1), explained_variance_ratio_cumsum, marker='.', linestyle='--')
-plt.xlabel('Number of Components')
-plt.ylabel('Cumulative Explained Variance Ratio')
-plt.title('Explained Variance by Number of Components')
+plt.xlabel('主成分数量')
+plt.ylabel('累积方差解释率')
+plt.title('主成分数量与方差解释率关系')
 plt.grid(True)
 # 添加阈值线 (例如 95%)
-plt.axhline(y=0.95, color='r', linestyle='-', label='95% Explained Variance')
+plt.axhline(y=0.95, color='r', linestyle='-', label='95% 方差解释率')
 plt.legend(loc='best')
+plt.show()
+
+# 绘制各个主成分的方差解释率
+plt.figure(figsize=(10, 6))
+plt.bar(range(1, 21), pca_full.explained_variance_ratio_[:20] * 100)
+plt.xlabel('主成分')
+plt.ylabel('方差解释率 (%)')
+plt.title('前20个主成分的方差解释率')
+plt.xticks(range(1, 21))
+plt.grid(axis='y', linestyle='--', alpha=0.7)
 plt.show()
 
 # 2. 根据目标方差解释率选择 n_components
@@ -124,14 +158,46 @@ print("降维后数据形状 (95%方差):", X_digits_pca_95.shape)
 pca_2d = PCA(n_components=2, random_state=42)
 X_digits_pca_2d = pca_2d.fit_transform(X_digits_scaled)
 print("\n降维到 2D 后的数据形状:", X_digits_pca_2d.shape)
+print("前两个主成分解释的方差比例: {:.2f}%".format(
+    pca_full.explained_variance_ratio_[:2].sum() * 100))
 
-# --- 可视化降维结果 (2D) ---
-plt.figure(figsize=(10, 7))
-plt.scatter(X_digits_pca_2d[:, 0], X_digits_pca_2d[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
-plt.colorbar(label='Digit Label')
-plt.title('PCA of Digits Dataset (2 Components)')
-plt.xlabel('Principal Component 1')
-plt.ylabel('Principal Component 2')
+# --- 可视化降维结果 (2D) 并标注数字标签 ---
+plt.figure(figsize=(12, 10))
+scatter = plt.scatter(X_digits_pca_2d[:, 0], X_digits_pca_2d[:, 1], 
+                     c=y_digits, cmap='tab10', 
+                     edgecolor='k', alpha=0.8, s=60)
+plt.colorbar(scatter, label='数字标签')
+plt.title('MNIST Digits数据的PCA降维结果 (2个主成分)', fontsize=16)
+plt.xlabel('主成分 1', fontsize=12)
+plt.ylabel('主成分 2', fontsize=12)
+
+# 添加数字标签
+for i, (x, y) in enumerate(X_digits_pca_2d):
+    # 只标记部分点以避免过度拥挤
+    if i % 50 == 0:  
+        plt.text(x, y, str(y_digits[i]), 
+                 fontsize=12, color='black',
+                 bbox=dict(facecolor='white', alpha=0.7))
+
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.show()
+
+# 三维可视化 (使用3个主成分)
+pca_3d = PCA(n_components=3, random_state=42)
+X_digits_pca_3d = pca_3d.fit_transform(X_digits_scaled)
+
+from mpl_toolkits.mplot3d import Axes3D
+fig = plt.figure(figsize=(12, 10))
+ax = fig.add_subplot(111, projection='3d')
+scatter = ax.scatter(X_digits_pca_3d[:, 0], X_digits_pca_3d[:, 1], X_digits_pca_3d[:, 2],
+                     c=y_digits, cmap='tab10', 
+                     edgecolor='k', s=60, alpha=0.8)
+ax.set_title('MNIST Digits数据的PCA降维结果 (3个主成分)', fontsize=16)
+ax.set_xlabel('主成分 1', fontsize=12)
+ax.set_ylabel('主成分 2', fontsize=12)
+ax.set_zlabel('主成分 3', fontsize=12)
+plt.colorbar(scatter, ax=ax, label='数字标签')
+plt.tight_layout()
 plt.show()
 ```
 
@@ -142,36 +208,52 @@ plt.show()
 ```python
 # 对于图像数据，我们可以可视化主成分的"外观"
 # 假设我们有手写数字数据
-pca = PCA(n_components=10)
+pca = PCA(n_components=16)
 pca.fit(X_digits_scaled)
 
 # 可视化前几个主成分
-fig, axes = plt.subplots(2, 5, figsize=(12, 5),
+fig, axes = plt.subplots(4, 4, figsize=(12, 12),
                          subplot_kw={'xticks':[], 'yticks':[]})
 for i, (component, ax) in enumerate(zip(pca.components_, axes.ravel())):
     ax.imshow(component.reshape(8, 8), cmap='viridis')
-    ax.set_title(f"PC {i+1}")
+    ax.set_title(f"PC {i+1}\n({pca.explained_variance_ratio_[i]:.2%})")
+plt.suptitle('MNIST数据的前16个主成分', fontsize=16)
 plt.tight_layout()
+plt.subplots_adjust(top=0.95)
 plt.show()
 
 # 可视化原始图像及其重构
-n_components = 30
-pca = PCA(n_components=n_components).fit(X_digits_scaled)
-X_reduced = pca.transform(X_digits_scaled)
-X_restored = pca.inverse_transform(X_reduced)
+# 使用不同数量的主成分进行重构，观察信息保留情况
+n_components_list = [5, 10, 20, 30, 40, 64]
+n_samples = 4
 
-# 选择几个样本展示
-n_samples = 5
-fig, axes = plt.subplots(2, n_samples, figsize=(n_samples * 2, 4),
-                        subplot_kw={'xticks':[], 'yticks':[]})
-for i in range(n_samples):
-    # 原始图像
-    axes[0, i].imshow(X_digits[i].reshape(8, 8), cmap='gray')
-    axes[0, i].set_title('Original')
-    # 重构图像
-    axes[1, i].imshow(X_restored[i].reshape(8, 8), cmap='gray')
-    axes[1, i].set_title(f'Restored ({n_components} PCs)')
+fig, axes = plt.subplots(len(n_components_list) + 1, n_samples, 
+                         figsize=(n_samples * 2, (len(n_components_list) + 1) * 2),
+                         subplot_kw={'xticks':[], 'yticks':[]})
+
+# 选择几个样本进行展示
+sample_indices = [42, 100, 500, 800]  # 选择不同数字的样本
+
+# 显示原始图像
+for i, idx in enumerate(sample_indices):
+    axes[0, i].imshow(X_digits[idx].reshape(8, 8), cmap='gray')
+    axes[0, i].set_title(f'原始图像\n(数字: {y_digits[idx]})')
+
+# 使用不同数量的主成分重构
+for row, n_comp in enumerate(n_components_list, 1):
+    pca_recon = PCA(n_components=n_comp).fit(X_digits_scaled)
+    X_reduced = pca_recon.transform(X_digits_scaled)
+    X_restored = pca_recon.inverse_transform(X_reduced)
+    
+    var_explained = sum(pca_recon.explained_variance_ratio_) * 100
+    
+    for i, idx in enumerate(sample_indices):
+        axes[row, i].imshow(X_restored[idx].reshape(8, 8), cmap='gray')
+        axes[row, i].set_title(f'{n_comp}个主成分\n({var_explained:.1f}%方差)')
+
 plt.tight_layout()
+plt.subplots_adjust(top=0.95)
+plt.suptitle('使用不同数量主成分重构MNIST图像', fontsize=16)
 plt.show()
 ```
 
@@ -187,43 +269,6 @@ plt.show()
     *   **可解释性差:** 主成分是原始特征的线性组合，其物理意义不如原始特征直观。
     *   **对特征缩放敏感:** 必须进行特征缩放。
 
-### 其他线性降维方法
-
-#### 线性判别分析 (LDA - Linear Discriminant Analysis)
-
-LDA 是一种**有监督的**线性降维方法，它不仅考虑数据的方差，还考虑类别信息，尝试找到能够最大化类间方差和最小化类内方差的投影方向。
-
-```python
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-
-# 假设我们有分类数据 X_train, y_train
-lda = LinearDiscriminantAnalysis(n_components=2)
-X_train_lda = lda.fit_transform(X_train, y_train)
-
-print("LDA 降维后的形状:", X_train_lda.shape)
-print("每个类别的均值:", lda.means_)
-print("LDA 的解释方差比:", lda.explained_variance_ratio_)
-```
-
-与PCA相比，LDA的主要特点：
-- **有监督学习**：利用标签信息进行降维
-- **目标**：最大化类间方差，最小化类内方差
-- **维度限制**：最多可降至C-1维（C为类别数量）
-- **应用**：更适合分类问题的降维
-
-#### 因子分析 (Factor Analysis)
-
-因子分析是一种统计方法，用于描述观察到的相关变量之间的变异性，试图将其归因于较少数量的未观察到的变量（称为因子）。
-
-```python
-from sklearn.decomposition import FactorAnalysis
-
-# n_components 是潜在因子的数量
-fa = FactorAnalysis(n_components=5, random_state=42)
-X_fa = fa.fit_transform(X_scaled)
-print("因子分析后的形状:", X_fa.shape)
-print("因子载荷矩阵:", fa.components_)
-```
 
 ### 非线性降维方法
 
@@ -233,62 +278,270 @@ print("因子载荷矩阵:", fa.components_)
 
 t-SNE 是一种非常流行的非线性降维方法，特别适合数据可视化。它尝试在低维空间中保留高维空间中点的局部结构（即相似的点在降维后仍然靠近）。
 
+##### t-SNE的核心原理
+
+t-SNE与PCA的根本区别在于其目标函数：PCA最大化投影方差，而t-SNE尝试保留数据点之间的相似度关系。其工作原理包括：
+
+1. **高维相似度计算**：在原始高维空间中，使用高斯分布计算点对之间的条件概率，作为相似度度量：
+   
+   $$p_{j|i} = \frac{\exp(-||x_i - x_j||^2/2\sigma_i^2)}{\sum_{k \neq i}\exp(-||x_i - x_k||^2/2\sigma_i^2)}$$
+   
+   这里$\sigma_i$是根据困惑度(perplexity)参数调整的局部高斯分布的宽度
+
+2. **低维映射**：在低维空间中，使用t分布（而非高斯分布）计算点对之间的相似度：
+   
+   $$q_{ij} = \frac{(1 + ||y_i - y_j||^2)^{-1}}{\sum_{k \neq l}(1 + ||y_k - y_l||^2)^{-1}}$$
+
+3. **优化目标**：最小化高维空间和低维空间中相似度分布的KL散度：
+   
+   $$KL(P||Q) = \sum_i \sum_j p_{ij} \log \frac{p_{ij}}{q_{ij}}$$
+
+##### t-SNE的特点与理解
+
+- **使用t分布的原因**：在低维空间使用t分布（重尾分布）而非高斯分布，可以缓解"拥挤问题"（高维空间中适度远距离的点在低维投影中过于靠近）
+- **perplexity参数**：困惑度控制考虑每个点的局部邻域大小，可理解为"有效邻居数量"
+- **随机初始化**：结果依赖于随机初始化，每次运行可能得到不同结果
+- **注重局部结构**：t-SNE特别擅长保留局部结构，但可能扭曲全局关系
+
 ```python
 from sklearn.manifold import TSNE
+import time
 
-# n_components 通常是2或3 (用于可视化)
-# perplexity 是一个重要参数，通常在5-50之间，影响局部结构的保留
-tsne = TSNE(n_components=2, perplexity=30, random_state=42, n_iter=1000)
-X_tsne = tsne.fit_transform(X_digits)
-print("t-SNE 降维后的形状:", X_tsne.shape)
+# 展示不同perplexity参数对t-SNE结果的影响
+perplexities = [5, 30, 50, 100]
+fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+axes = axes.flatten()
 
-# 可视化 t-SNE 结果
-plt.figure(figsize=(10, 7))
-plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
-plt.colorbar(label='Digit Label')
-plt.title('t-SNE of Digits Dataset (2 Components)')
-plt.xlabel('t-SNE 1')
-plt.ylabel('t-SNE 2')
+for i, perplexity in enumerate(perplexities):
+    t0 = time.time()
+    tsne = TSNE(n_components=2, perplexity=perplexity, random_state=42, 
+                n_iter=1000, learning_rate='auto', init='pca')
+    X_tsne = tsne.fit_transform(X_digits)
+    t1 = time.time()
+    
+    # 可视化结果
+    scatter = axes[i].scatter(X_tsne[:, 0], X_tsne[:, 1], 
+                             c=y_digits, cmap='tab10', edgecolor='k', alpha=0.8, s=60)
+    axes[i].set_title(f'perplexity={perplexity} (计算时间: {t1-t0:.2f}秒)', fontsize=14)
+    axes[i].set_xlabel('t-SNE 1', fontsize=12)
+    axes[i].set_ylabel('t-SNE 2', fontsize=12)
+    
+    # 添加数字标签
+    for j, (x, y) in enumerate(X_tsne):
+        if j % 70 == 0:  # 标记部分点
+            axes[i].text(x, y, str(y_digits[j]), 
+                         fontsize=12, color='black',
+                         bbox=dict(facecolor='white', alpha=0.7))
+
+plt.colorbar(scatter, ax=axes, label='数字标签')
+plt.suptitle('t-SNE降维结果 - 不同perplexity参数对比', fontsize=16)
+plt.tight_layout()
+plt.subplots_adjust(top=0.94)
+plt.show()
+
+# 深入分析最优t-SNE结果
+best_perplexity = 30
+tsne_best = TSNE(n_components=2, perplexity=best_perplexity, random_state=42, 
+               n_iter=1000, learning_rate='auto', init='pca')
+X_tsne_best = tsne_best.fit_transform(X_digits)
+
+# 详细可视化最佳t-SNE结果
+plt.figure(figsize=(14, 10))
+scatter = plt.scatter(X_tsne_best[:, 0], X_tsne_best[:, 1], 
+                     c=y_digits, cmap='tab10', edgecolor='k', alpha=0.8, s=70)
+plt.title(f't-SNE降维结果 (perplexity={best_perplexity})', fontsize=16)
+plt.xlabel('t-SNE 1', fontsize=14)
+plt.ylabel('t-SNE 2', fontsize=14)
+
+# 添加数字标签和聚类边界
+for i, (x, y) in enumerate(X_tsne_best):
+    if i % 50 == 0:
+        plt.text(x, y, str(y_digits[i]), 
+                fontsize=12, color='black',
+                bbox=dict(facecolor='white', alpha=0.7))
+
+# 添加图例和网格
+plt.colorbar(scatter, label='数字标签')
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.tight_layout()
 plt.show()
 ```
-
-t-SNE的特点：
-- **优点**：能够保留局部结构，非常适合数据可视化
-- **缺点**：
-  - 计算复杂度高，不适合大数据集
-  - 参数敏感（特别是perplexity）
-  - 不支持transform新数据（需要重新拟合）
-  - 随机性高，不同运行可能产生不同结果
 
 #### UMAP (Uniform Manifold Approximation and Projection)
 
 UMAP 是一种较新的非线性降维技术，它基于黎曼几何和代数拓扑，在保持数据全局结构的同时，维持局部结构。比t-SNE更快，且能更好地保留全局结构。
 
+##### UMAP的理论基础
+
+UMAP建立在更坚实的数学基础上，主要基于：
+
+1. **黎曼几何和流形理论**：假设高维数据位于低维流形上
+2. **代数拓扑**：使用简化拓扑表示数据
+
+##### UMAP的工作原理
+
+UMAP的算法步骤包括：
+
+1. **构建局部流形近似**：为每个数据点构建局部流形的模糊拓扑表示
+   
+   $$\rho_i = \min\{d(x_i, x_j) | 1 \leq j \leq k, j \neq i\}$$
+   
+   $$\sigma_i$$通过二分搜索求解，使得：
+   
+   $$\sum_{j=1}^n \exp(-\max(0, d(x_i, x_j) - \rho_i)/\sigma_i) = \log_2(k)$$
+
+2. **构建高维模糊图**：基于局部距离创建模糊图表示
+   
+   $$v_{ij} = \exp(-\max(0, d(x_i, x_j) - \rho_i)/\sigma_i)$$
+
+3. **低维嵌入优化**：通过力导向图布局算法，优化低维表示以匹配高维拓扑结构
+   
+   $$v_{ij} \log\left(\frac{v_{ij}}{w_{ij}}\right) + (1-v_{ij})\log\left(\frac{1-v_{ij}}{1-w_{ij}}\right)$$
+
+##### UMAP与t-SNE的关键区别
+
+- **理论基础**：UMAP基于拓扑学和流形理论，t-SNE基于概率论
+- **全局结构**：UMAP通常更好地保留全局结构
+- **计算效率**：UMAP比t-SNE更快，尤其是对大型数据集
+- **超参数**：UMAP的主要参数是n_neighbors（类似于t-SNE的perplexity）和min_dist（控制点的紧密程度）
+- **可扩展性**：UMAP支持新数据点的transform，t-SNE不支持
+
 ```python
 # 需要安装: pip install umap-learn
 import umap
+import time
 
-# n_neighbors 控制局部结构的保留程度
-# min_dist 控制嵌入中点的紧密程度
-reducer = umap.UMAP(n_components=2, n_neighbors=15, min_dist=0.1, random_state=42)
-X_umap = reducer.fit_transform(X_digits)
-print("UMAP 降维后的形状:", X_umap.shape)
+# 探索不同参数对UMAP结果的影响
+n_neighbors_list = [5, 15, 30, 50]  # 邻居数量影响局部结构保留程度
+min_dist_list = [0.0, 0.1, 0.5, 0.8]  # 最小距离影响数据点分布紧密度
 
-# 可视化 UMAP 结果
-plt.figure(figsize=(10, 7))
-plt.scatter(X_umap[:, 0], X_umap[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
-plt.colorbar(label='Digit Label')
-plt.title('UMAP of Digits Dataset (2 Components)')
-plt.xlabel('UMAP 1')
-plt.ylabel('UMAP 2')
+fig, axes = plt.subplots(len(n_neighbors_list), len(min_dist_list), 
+                         figsize=(20, 20))
+
+for i, n_neighbors in enumerate(n_neighbors_list):
+    for j, min_dist in enumerate(min_dist_list):
+        t0 = time.time()
+        reducer = umap.UMAP(n_components=2, 
+                           n_neighbors=n_neighbors, 
+                           min_dist=min_dist, 
+                           random_state=42)
+        X_umap = reducer.fit_transform(X_digits)
+        t1 = time.time()
+        
+        # 可视化结果
+        scatter = axes[i, j].scatter(X_umap[:, 0], X_umap[:, 1], 
+                                    c=y_digits, cmap='tab10', 
+                                    edgecolor='k', alpha=0.8, s=40)
+        axes[i, j].set_title(f'n_neighbors={n_neighbors}, min_dist={min_dist}\n计算时间: {t1-t0:.2f}秒', 
+                            fontsize=12)
+        
+        # 仅在最左侧添加y标签，最底部添加x标签
+        if j == 0:
+            axes[i, j].set_ylabel('UMAP 2', fontsize=12)
+        if i == len(n_neighbors_list) - 1:
+            axes[i, j].set_xlabel('UMAP 1', fontsize=12)
+            
+plt.colorbar(scatter, ax=axes.ravel().tolist(), label='数字标签')
+plt.suptitle('UMAP降维结果 - 不同参数组合对比', fontsize=20)
+plt.tight_layout()
+plt.subplots_adjust(top=0.95)
+plt.show()
+
+# 深入分析最优UMAP结果
+best_n_neighbors = 15
+best_min_dist = 0.1
+
+umap_best = umap.UMAP(n_components=2, 
+                     n_neighbors=best_n_neighbors, 
+                     min_dist=best_min_dist, 
+                     random_state=42)
+X_umap_best = umap_best.fit_transform(X_digits)
+
+# 详细可视化最佳UMAP结果
+plt.figure(figsize=(14, 10))
+scatter = plt.scatter(X_umap_best[:, 0], X_umap_best[:, 1], 
+                     c=y_digits, cmap='tab10', 
+                     edgecolor='k', alpha=0.8, s=70)
+plt.title(f'UMAP降维结果 (n_neighbors={best_n_neighbors}, min_dist={best_min_dist})', 
+         fontsize=16)
+plt.xlabel('UMAP 1', fontsize=14)
+plt.ylabel('UMAP 2', fontsize=14)
+
+# 添加数字标签
+for i, (x, y) in enumerate(X_umap_best):
+    if i % 50 == 0:  # 只标记部分点
+        plt.text(x, y, str(y_digits[i]), 
+                fontsize=12, color='black',
+                bbox=dict(facecolor='white', alpha=0.7))
+
+plt.colorbar(scatter, label='数字标签')
+plt.grid(True, linestyle='--', alpha=0.6)
+plt.tight_layout()
+plt.show()
+
+# 3D可视化
+umap_3d = umap.UMAP(n_components=3, 
+                   n_neighbors=best_n_neighbors, 
+                   min_dist=best_min_dist, 
+                   random_state=42)
+X_umap_3d = umap_3d.fit_transform(X_digits)
+
+fig = plt.figure(figsize=(12, 10))
+ax = fig.add_subplot(111, projection='3d')
+scatter = ax.scatter(X_umap_3d[:, 0], X_umap_3d[:, 1], X_umap_3d[:, 2],
+                    c=y_digits, cmap='tab10', 
+                    edgecolor='k', s=40, alpha=0.8)
+ax.set_title('MNIST Digits数据的UMAP 3D降维结果', fontsize=16)
+ax.set_xlabel('UMAP 1', fontsize=12)
+ax.set_ylabel('UMAP 2', fontsize=12)
+ax.set_zlabel('UMAP 3', fontsize=12)
+plt.colorbar(scatter, ax=ax, label='数字标签')
+plt.tight_layout()
 plt.show()
 ```
 
 UMAP的优势：
-- 比t-SNE更快
-- 更好地保留全局结构
+- 比t-SNE更快，特别是对大型数据集
+- 更好地保留全局和局部结构
 - 能够transform新数据
 - 理论基础更坚实
+- 参数对结果的影响相对更可预测
+
+### 三种降维方法的理论比较
+
+为了更清晰地理解PCA、t-SNE和UMAP的区别，我们可以从多个角度进行比较：
+
+#### 数学理论基础
+
+- **PCA**：线性代数和方差最大化，基于特征值分解或奇异值分解
+- **t-SNE**：概率论和信息论，基于高维和低维概率分布的KL散度最小化
+- **UMAP**：代数拓扑和流形理论，基于拓扑结构保持
+
+#### 优化目标
+
+- **PCA**：最大化投影方差，保留全局结构
+- **t-SNE**：最小化高维和低维概率分布的KL散度，保留局部结构
+- **UMAP**：优化模糊拓扑表示，平衡局部和全局结构
+
+#### 数据假设
+
+- **PCA**：假设数据位于线性子空间
+- **t-SNE**：无明确的数据分布假设，但注重局部相似性保持
+- **UMAP**：假设数据位于均匀分布的黎曼流形上
+
+#### 计算复杂度
+
+- **PCA**：$O(min(nd^2, n^2d))$，其中n是样本数，d是特征数
+- **t-SNE**：$O(n^2)$，优化版本可达到$O(n\log n)$
+- **UMAP**：$O(n^{1.14})$，实际应用中通常快于t-SNE
+
+#### 各自的适用场景
+
+| 方法 | 数据规模 | 局部结构保持 | 全局结构保持 | 计算速度 | 可视化效果 | 新数据处理 |
+|------|----------|------------|------------|----------|----------|----------|
+| PCA  | 任何规模 | 一般       | 好          | 非常快   | 一般     | 支持     |
+| t-SNE | 中小规模 | 非常好     | 一般        | 慢       | 优秀     | 不支持   |
+| UMAP | 各种规模 | 非常好     | 好          | 快       | 优秀     | 支持     |
 
 ### 实践与讨论
 
@@ -302,24 +555,87 @@ plt.figure(figsize=(18, 6))
 
 # PCA
 plt.subplot(1, 3, 1)
-plt.scatter(X_digits_pca_2d[:, 0], X_digits_pca_2d[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
-plt.title('PCA')
-plt.colorbar()
+plt.scatter(X_digits_pca_2d[:, 0], X_digits_pca_2d[:, 1], 
+           c=y_digits, cmap='tab10', edgecolor='k', alpha=0.7, s=50)
+plt.title('PCA', fontsize=14)
+plt.xlabel('主成分 1')
+plt.ylabel('主成分 2')
+plt.grid(True, linestyle='--', alpha=0.5)
+# 标注部分数字
+for i, (x, y) in enumerate(X_digits_pca_2d):
+    if i % 200 == 0:
+        plt.text(x, y, str(y_digits[i]), fontsize=12)
 
 # t-SNE
 plt.subplot(1, 3, 2)
-plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
-plt.title('t-SNE')
-plt.colorbar()
+plt.scatter(X_tsne_best[:, 0], X_tsne_best[:, 1], 
+           c=y_digits, cmap='tab10', edgecolor='k', alpha=0.7, s=50)
+plt.title('t-SNE', fontsize=14)
+plt.xlabel('t-SNE 1')
+plt.ylabel('t-SNE 2')
+plt.grid(True, linestyle='--', alpha=0.5)
+# 标注部分数字
+for i, (x, y) in enumerate(X_tsne_best):
+    if i % 200 == 0:
+        plt.text(x, y, str(y_digits[i]), fontsize=12)
 
 # UMAP
 plt.subplot(1, 3, 3)
-plt.scatter(X_umap[:, 0], X_umap[:, 1], c=y_digits, cmap='viridis', edgecolor='none', alpha=0.7, s=40)
-plt.title('UMAP')
-plt.colorbar()
+plt.scatter(X_umap_best[:, 0], X_umap_best[:, 1], 
+           c=y_digits, cmap='tab10', edgecolor='k', alpha=0.7, s=50)
+plt.title('UMAP', fontsize=14)
+plt.xlabel('UMAP 1')
+plt.ylabel('UMAP 2')
+plt.grid(True, linestyle='--', alpha=0.5)
+# 标注部分数字
+for i, (x, y) in enumerate(X_umap_best):
+    if i % 200 == 0:
+        plt.text(x, y, str(y_digits[i]), fontsize=12)
 
+plt.colorbar(scatter, ax=plt.gcf().get_axes(), label='数字标签')
+plt.suptitle('MNIST数据集降维方法比较', fontsize=16)
 plt.tight_layout()
+plt.subplots_adjust(top=0.88)
 plt.show()
+
+# 定量比较：计算降维后同类数据点的聚集程度
+from sklearn.metrics import silhouette_score
+
+# 计算轮廓系数 (值越高表示聚类效果越好)
+silhouette_pca = silhouette_score(X_digits_pca_2d, y_digits)
+silhouette_tsne = silhouette_score(X_tsne_best, y_digits)
+silhouette_umap = silhouette_score(X_umap_best, y_digits)
+
+print(f"各降维方法的轮廓系数比较:")
+print(f"PCA: {silhouette_pca:.4f}")
+print(f"t-SNE: {silhouette_tsne:.4f}")
+print(f"UMAP: {silhouette_umap:.4f}")
+
+# 计算每种方法的运行时间比较
+import time
+
+# PCA时间
+t0 = time.time()
+pca = PCA(n_components=2, random_state=42)
+pca.fit_transform(X_digits_scaled)
+pca_time = time.time() - t0
+
+# t-SNE时间
+t0 = time.time()
+tsne = TSNE(n_components=2, perplexity=30, random_state=42)
+tsne.fit_transform(X_digits_scaled)
+tsne_time = time.time() - t0
+
+# UMAP时间
+t0 = time.time()
+reducer = umap.UMAP(n_components=2, random_state=42)
+reducer.fit_transform(X_digits_scaled)
+umap_time = time.time() - t0
+
+print(f"\n各降维方法的计算时间比较:")
+print(f"PCA: {pca_time:.4f}秒")
+print(f"t-SNE: {tsne_time:.4f}秒")
+print(f"UMAP: {umap_time:.4f}秒")
 ```
 
 #### 如何选择合适的降维方法？

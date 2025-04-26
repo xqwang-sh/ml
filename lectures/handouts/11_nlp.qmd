@@ -1,0 +1,969 @@
+---
+title: "文本分析(一)：词频法与向量空间"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# 文本数据与NLP初步
+
+## 文本数据的特点
+
+文本数据是一种非常常见但又极其复杂的数据类型，具有以下特点：
+
+1. **高维稀疏性**：文本可以表示为向量空间中的点，但这个空间往往有数万维（对应词汇量），而每个文档只使用其中很少的词
+2. **顺序性**：词的顺序对语义至关重要（"狗咬人"和"人咬狗"含义完全不同）
+3. **语义性**：文本承载复杂的语义信息，存在歧义、隐喻、引用等多种语言现象
+
+## 应用案例：政府工作报告分析
+
+我们将以历年政府工作报告为例，展示文本分析的整个流程和应用。政府工作报告是研究国家政策和经济发展的重要文本数据，通过分析可以：
+
+- **政策趋势分析**：追踪国家各时期政策重点的变化
+- **经济指标预测**：从定性描述中提取经济发展预期
+- **社会关注点识别**：发现不同时期的社会热点问题
+- **政策效果评估**：将政策目标与实际结果进行对比
+
+```{python}
+#| eval: false
+# 导入基础库
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import jieba
+import re
+```
+
+## 文本处理流程概览
+
+文本分析通常遵循以下步骤：
+
+1. **采集**：网络爬虫、API接口、数据库、PDF解析等
+2. **清洗**：去除HTML标签、特殊字符、错别字纠正等
+3. **表示**：将文本转换为机器可理解的形式（向量化）
+4. **建模**：应用机器学习算法执行分类、聚类、主题提取等任务
+
+在我们的政府工作报告案例中，将完整展示这个流程。
+
+# 文本预处理
+
+## 数据准备
+
+首先，我们加载政府工作报告数据集：
+
+```{python}
+#| eval: false
+# 加载政府工作报告数据
+# 在实际教学中，可以从本地文件加载
+# govreport = pd.read_csv('govreport.csv') 
+
+# 这里用一个模拟数据集进行演示
+govreport = pd.DataFrame({
+    'Year': [2019, 2020, 2021, 2022, 2023],
+    'texts': [
+        '今年发展主要预期目标是：国内生产总值增长6%－6.5%；城镇新增就业1100万人以上，城镇调查失业率5.5%左右，城镇登记失业率4.5%以内；居民消费价格涨幅3%左右；国际收支基本平衡，进出口稳中提质；宏观杠杆率基本稳定，金融财政风险有效防控；农村贫困人口减少1000万以上，居民收入增长与经济增长基本同步；生态环境进一步改善，单位国内生产总值能耗下降3%左右，主要污染物排放量继续下降。',
+        '今年我国发展面临的环境更加严峻复杂，特别是新冠肺炎疫情影响广泛深远，经济社会发展困难挑战前所未有，必须做好较长时间应对外部环境变化的思想准备和工作准备。',
+        '今年发展主要预期目标是：国内生产总值增长6%以上；城镇新增就业1100万人以上，城镇调查失业率5.5%左右；居民消费价格涨幅3%左右；进出口量稳质升，国际收支基本平衡；居民收入稳步增长；生态环境质量进一步改善，单位国内生产总值能耗降低3%左右，主要污染物排放量继续下降；粮食产量保持在1.3万亿斤以上。',
+        '综合研判国内外形势，今年我国发展面临的风险挑战明显增多，要继续统筹好疫情防控和经济社会发展，迎难而上，砥砺前行。',
+        '今年发展主要预期目标是：国内生产总值增长5%左右；城镇新增就业1200万人左右，城镇调查失业率5.5%左右；居民消费价格涨幅3%左右；居民收入增长与经济增长基本同步；进出口促稳提质，国际收支基本平衡；粮食产量保持在1.3万亿斤以上；生态环境质量持续改善，主要污染物排放量继续下降；能耗强度目标在"十四五"规划期内统筹考核，并留有适当弹性。'
+    ]
+})
+
+# 查看数据集
+print(govreport.head())
+```
+
+## 中文分词
+
+与英文不同，中文没有明显的词语分隔符，需要专门的分词工具。在我们的案例中，使用jieba进行中文分词：
+
+```{python}
+#| eval: false
+import jieba
+
+# 示例
+text = govreport.loc[0, 'texts']
+words = jieba.cut(text)
+print("分词结果示例:")
+print(" ".join(words))
+```
+
+**jieba**是目前最流行的中文分词工具之一，具有以下特点：
+- 支持精确模式、全模式和搜索引擎模式
+- 允许添加自定义词典
+- 具有词性标注功能
+
+**常见问题**：
+- 专业术语、新词识别困难（需添加自定义词典）
+- 歧义分词（例如"结合成分子"可能被分为"结合/成/分子"或"结合/成分/子"）
+- 中英文混合文本处理
+
+## 文本清洗与去停用词
+
+文本清洗是将原始文本转换为标准格式的过程：
+
+```{python}
+#| eval: false
+# 加载停用词表
+# 在实际教学中，可以从本地文件加载
+# with open('stopwords.txt', 'r', encoding='utf-8') as f:
+#     stop_words = [line.strip() for line in f]
+
+# 简化版停用词表
+stop_words = {'的', '了', '和', '是', '在', '我们', '要', '把', '与', '以', '为', '等', '对', '这', '从'}
+
+# 文本清洗函数
+def clean_text(text):
+    # 去除标点符号和数字
+    text = re.sub(r'[^\u4e00-\u9fa5]', ' ', text)
+    return text
+
+# 分词并去除停用词
+def preprocess_text(text):
+    # 清洗文本
+    cleaned_text = clean_text(text)
+    # 分词
+    words = jieba.cut(cleaned_text)
+    # 去除停用词和空白
+    return [word for word in words if word.strip() and word not in stop_words]
+
+# 对政府工作报告进行预处理
+processed_reports = {}
+for _, row in govreport.iterrows():
+    year = row['Year']
+    text = row['texts']
+    processed_reports[year] = preprocess_text(text)
+
+# 查看处理后的结果
+print(f"2023年报告处理前：{govreport.loc[4, 'texts'][:50]}...")
+print(f"2023年报告处理后：{' '.join(processed_reports[2023][:20])}...")
+```
+
+## 词袋模型详解
+
+**词袋模型(Bag of Words)**是自然语言处理中最基础的文本表示方法。该模型将文本视为一组无序的词语集合，完全忽略语法和词序，仅关注词语在文档中是否出现或出现次数。
+
+### 词袋模型的理论基础
+
+词袋模型基于一个简化假设：文档的含义可以由其包含的词语而非词语顺序决定。尽管这个假设在许多情况下显然是错误的（例如"狗咬人"和"人咬狗"含义截然不同），但在文本分类、主题识别等任务上仍然取得了不错的效果。
+
+词袋模型的数学表示如下：
+
+对于文档集合 $D = \{d_1, d_2, ..., d_n\}$，我们首先构建一个词汇表 $V = \{w_1, w_2, ..., w_m\}$，其中包含所有文档中出现的唯一词语。
+
+对于文档 $d_i$，词袋表示为向量 $X_i = [x_{i1}, x_{i2}, ..., x_{im}]$，其中：
+
+$$x_{ij} = \text{词语 } w_j \text{ 在文档 } d_i \text{ 中的出现次数}$$
+
+整个文档集合可以表示为文档-词项矩阵（Document-Term Matrix, DTM）：
+
+$$X = \begin{bmatrix} 
+x_{11} & x_{12} & \cdots & x_{1m} \\
+x_{21} & x_{22} & \cdots & x_{2m} \\
+\vdots & \vdots & \ddots & \vdots \\
+x_{n1} & x_{n2} & \cdots & x_{nm}
+\end{bmatrix}$$
+
+### 词袋模型的变体
+
+词袋模型有几种常见的变体，根据计数方式的不同，具有不同的特性：
+
+1. **二值化词袋模型（Binary Bag of Words）**：只关心词语是否出现，不关心出现次数
+   $$x_{ij} = \begin{cases} 
+   1 & \text{如果词语 } w_j \text{ 在文档 } d_i \text{ 中出现} \\
+   0 & \text{否则}
+   \end{cases}$$
+
+2. **词频统计（Term Frequency）**：计算词语出现的次数
+   $$x_{ij} = \text{词语 } w_j \text{ 在文档 } d_i \text{ 中的出现次数}$$
+
+3. **词频归一化（Normalized Term Frequency）**：将词频除以文档长度，以消除文档长度不同带来的影响
+   $$x_{ij} = \frac{\text{词语 } w_j \text{ 在文档 } d_i \text{ 中的出现次数}}{\text{文档 } d_i \text{ 的总词数}}$$
+
+4. **N元语法模型（N-gram Model）**：不仅考虑单个词，还考虑连续的N个词组合，可以部分保留词序信息
+   - 一元语法（Unigram）：单个词，如 "发展"、"经济"
+   - 二元语法（Bigram）：两个相邻词，如 "经济 发展"、"促进 增长"
+   - 三元语法（Trigram）：三个相邻词，如 "促进 经济 发展"
+
+### 词袋模型的向量化过程
+
+实现词袋模型通常包括以下步骤：
+
+1. **构建词汇表**：从所有文档中收集唯一的词语，建立完整的词汇表
+   - 可以进行筛选，如去除停用词、低频词
+   - 可能限制词汇表大小，只保留最频繁的 K 个词
+
+2. **统计词频**：计算每个文档中每个词语出现的次数
+
+3. **创建文档向量**：每个文档表示为一个向量，向量的长度等于词汇表大小，向量的元素为对应词语在文档中的出现次数或其他统计量
+
+```{python}
+#| eval: false
+# 词袋模型的Python实现示例
+from sklearn.feature_extraction.text import CountVectorizer
+import pandas as pd
+import numpy as np
+
+# 示例文档集合
+corpus = [
+    "自然语言处理是人工智能的重要分支",
+    "机器学习算法可以处理自然语言",
+    "深度学习在自然语言处理中表现优异"
+]
+
+# 创建词袋模型
+vectorizer = CountVectorizer()
+X = vectorizer.fit_transform(corpus)
+
+# 获取词汇表
+vocabulary = vectorizer.get_feature_names_out()
+print("词汇表:", vocabulary)
+
+# 获取词频矩阵
+word_counts = X.toarray()
+print("\n词频矩阵:")
+print(pd.DataFrame(word_counts, columns=vocabulary))
+```
+
+### 词袋模型的特点
+
+1. **优点**：
+   - 简单直观，易于理解和实现
+   - 计算高效，适用于大规模文本数据
+   - 维度确定，便于应用各种机器学习算法
+   - 捕捉文档的主题关键词
+
+2. **缺点**：
+   - 完全忽略词序和语法，无法捕捉上下文信息
+   - 无法处理词语的多义性和同义词关系
+   - 高维稀疏表示，导致"维度灾难"
+   - 新词问题：测试文档中可能出现训练集中未见过的词
+
+### 政府工作报告应用实例
+
+现在我们将词袋模型应用到政府工作报告分析中，展示如何实际操作：
+
+```{python}
+#| eval: false
+# 将处理好的文本转换为CountVectorizer可接受的格式
+corpus = []
+years = []
+for year, words in processed_reports.items():
+    corpus.append(' '.join(words))
+    years.append(year)
+
+# 使用CountVectorizer构建词汇表并统计词频
+vectorizer = CountVectorizer()
+X = vectorizer.fit_transform(corpus)
+
+# 获取词汇表
+vocabulary = vectorizer.get_feature_names_out()
+print(f"词汇表大小: {len(vocabulary)}")
+print(f"词汇表前20个词: {vocabulary[:20]}")
+
+# 获取词频矩阵
+word_counts = X.toarray()
+print("\n词频矩阵大小:", word_counts.shape)
+
+# 创建词频DataFrame便于查看
+count_df = pd.DataFrame(word_counts, index=years, columns=vocabulary)
+print("\n词频矩阵示例(部分词汇):")
+# 选择一些有代表性的词查看在各年份报告中的出现频率
+selected_words = ['生产总值', '就业', '收入', '增长', '发展', '疫情', '风险']
+print(count_df[selected_words])
+
+# 可视化部分词频矩阵
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+plt.figure(figsize=(12, 6))
+sns.heatmap(count_df[selected_words], annot=True, fmt='d', cmap='Blues')
+plt.title('政府工作报告词频矩阵(部分词汇)')
+plt.tight_layout()
+```
+
+通过政府工作报告的词袋模型分析，我们可以观察到：
+
+1. 不同年份报告中关键词的使用频率变化反映了政策重点的转变
+2. 例如"疫情"一词在2020年后的报告中频繁出现，反映了新冠疫情的影响
+3. "发展"和"增长"等词在各年报告中均保持高频，体现了经济发展的核心地位
+
+## 特征稀疏性分析
+
+文本向量的稀疏性是文本分析中的重要特性。在词袋模型表示下，文本向量具有高度稀疏性，即绝大多数元素为零。这一特性有着深远的理论和实践意义。
+
+### 稀疏性的理论解释
+
+稀疏性源于以下事实：
+
+1. **词汇量巨大**：自然语言的词汇量通常非常大（中文常用词汇约有几万个）
+2. **单个文档用词有限**：任何一篇文档通常只使用全部词汇的很小一部分
+3. **齐普夫定律(Zipf's Law)**：自然语言中，词频与词频排名成反比，即大多数词出现次数很少，少数词出现次数很多
+
+齐普夫定律可表示为：
+$$f(k) \propto \frac{1}{k^s}$$
+其中 $f(k)$ 是排名第 $k$ 的词的频率，$s$ 是接近于1的常数。
+
+### 稀疏性的数学度量
+
+文本向量的稀疏性可以用密度(density)的倒数来表示，其计算公式为：
+
+$$\text{稀疏度} = 1 - \frac{\text{非零元素数量}}{\text{总元素数量}}$$
+
+例如，如果一个10000维的向量中只有100个非零元素，则其稀疏度为:
+$$1 - \frac{100}{10000} = 0.99 = 99\%$$
+
+### 稀疏表示的优势和挑战
+
+**优势**：
+- 存储效率高：只需存储非零元素及其位置
+- 计算效率高：只需处理非零元素
+- 降低过拟合风险：稀疏性可视为一种正则化
+
+**挑战**：
+- 信息密度低：需要更多样本学习有效特征
+- 难以直接应用某些算法，如神经网络
+- "维度灾难"问题：高维空间中数据点趋于疏远
+
+### 稀疏矩阵的高效存储
+
+针对稀疏矩阵的特点，常用的存储格式包括：
+
+1. **坐标列表(COO格式)**：存储(行索引,列索引,值)三元组
+2. **压缩稀疏行(CSR格式)**：存储非零值、列索引和行指针
+3. **压缩稀疏列(CSC格式)**：存储非零值、行索引和列指针
+
+以CSR格式为例，其空间复杂度从O(m×n)降低到O(2nnz+m+1)，其中nnz为非零元素数量。
+
+```{python}
+#| eval: false
+# 分析政府工作报告词频矩阵的稀疏度
+total_elements = word_counts.size
+non_zero_elements = np.count_nonzero(word_counts)
+sparsity = 1.0 - (non_zero_elements / total_elements)
+
+print(f"矩阵总元素数: {total_elements}")
+print(f"非零元素数: {non_zero_elements}")
+print(f"稀疏度: {sparsity:.2%} (即{sparsity:.2%}的元素为0)")
+
+# 使用稀疏矩阵表示
+from scipy.sparse import csr_matrix
+sparse_counts = csr_matrix(word_counts)
+print("\n稀疏矩阵表示:")
+print(sparse_counts)
+print("\nCSR格式内存占用:", sparse_counts.data.nbytes + sparse_counts.indptr.nbytes + sparse_counts.indices.nbytes, "字节")
+print("密集矩阵内存占用:", word_counts.nbytes, "字节")
+print(f"内存节省: {(1 - (sparse_counts.data.nbytes + sparse_counts.indptr.nbytes + sparse_counts.indices.nbytes) / word_counts.nbytes):.2%}")
+```
+
+# TF-IDF与相似度分析
+
+## TF-IDF理论基础
+
+**TF-IDF**（Term Frequency-Inverse Document Frequency）是对词袋模型的重要改进，它不仅考虑词频(TF)，还考虑词语的区分度(IDF)。TF-IDF的核心思想是：**如果一个词在某篇文档中出现次数多，但在整个文档集合中出现次数少，那么这个词很可能对该文档的主题具有较高的区分度**。
+
+### 数学定义
+
+TF-IDF由两部分组成：
+
+1. **词频(Term Frequency, TF)**：衡量词语在文档中的重要性
+   
+   常见的TF计算方式有：
+   
+   - **原始频率**：
+     $$TF(t,d) = f_{t,d}$$
+     其中 $f_{t,d}$ 是词语 $t$ 在文档 $d$ 中的出现次数
+   
+   - **归一化频率**：
+     $$TF(t,d) = \frac{f_{t,d}}{\sum_{t' \in d}f_{t',d}}$$
+     即词语出现的次数除以文档中的总词数
+   
+   - **对数归一化**：
+     $$TF(t,d) = \log(1 + f_{t,d})$$
+     通过取对数压缩词频的范围
+
+2. **逆文档频率(Inverse Document Frequency, IDF)**：衡量词语提供信息的程度
+
+   $$IDF(t) = \log\frac{N}{DF(t)}$$
+   
+   其中 $N$ 是文档总数，$DF(t)$ 是包含词语 $t$ 的文档数量。为避免分母为零，通常加上平滑项：
+   
+   $$IDF(t) = \log\frac{N}{DF(t) + 1} + 1$$
+
+3. **TF-IDF权重**：将TF和IDF相乘
+   
+   $$TF\text{-}IDF(t,d) = TF(t,d) \times IDF(t)$$
+
+### TF-IDF的理论性质
+
+1. **词频越高，TF值越大**：反映了词在文档中的重要性
+2. **文档频率越高，IDF值越小**：惩罚了常见词
+3. **独特性**：对于罕见但在特定文档中高频的词，给予最高权重
+4. **向量长度归一化**：通常结合余弦相似度使用，此时需要对TF-IDF向量进行L2归一化
+
+### TF-IDF的数学基础
+
+从信息论角度，IDF可以被理解为词语 $t$ 出现的信息量：
+
+$$IDF(t) \propto -\log P(t)$$
+
+其中 $P(t)$ 是从随机选择的文档中抽取到词语 $t$ 的概率。词语越罕见，其信息量越大。
+
+TF-IDF权重也可以从概率模型推导：它与词语 $t$ 对文档 $d$ 的主题分类贡献度成正比。
+
+### 政府工作报告的TF-IDF分析
+
+我们应用TF-IDF算法分析政府工作报告，识别每年报告中最具特色的关键词：
+
+```{python}
+#| eval: false
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# 使用TfidfVectorizer计算TF-IDF
+tfidf_vectorizer = TfidfVectorizer()
+tfidf_matrix = tfidf_vectorizer.fit_transform(corpus)
+
+# 获取词汇表
+tfidf_vocabulary = tfidf_vectorizer.get_feature_names_out()
+
+# 获取TF-IDF矩阵
+tfidf_values = tfidf_matrix.toarray()
+
+# 创建TF-IDF DataFrame便于查看
+tfidf_df = pd.DataFrame(tfidf_values, index=years, columns=tfidf_vocabulary)
+print("\nTF-IDF矩阵示例(部分词汇):")
+print(tfidf_df[selected_words])
+
+# 找出每年报告中TF-IDF值最高的10个词
+top_terms = {}
+for i, year in enumerate(years):
+    top_indices = np.argsort(tfidf_values[i])[-10:]
+    top_terms[year] = [(tfidf_vocabulary[idx], tfidf_values[i, idx]) for idx in top_indices]
+    print(f"\n{year}年报告中TF-IDF最高的词:")
+    for term, score in sorted(top_terms[year], key=lambda x: x[1], reverse=True):
+        print(f"{term}: {score:.4f}")
+
+# 可视化不同年份报告的TF-IDF高值词
+plt.figure(figsize=(15, 10))
+for i, year in enumerate(years):
+    plt.subplot(3, 2, i+1)
+    terms = [term for term, _ in top_terms[year]]
+    scores = [score for _, score in top_terms[year]]
+    
+    # 翻转数据以便按得分降序显示
+    plt.barh(range(len(terms)), scores[::-1])
+    plt.yticks(range(len(terms)), terms[::-1])
+    plt.title(f'{year}年报告TF-IDF最高的词')
+    plt.xlim(0, max(scores) * 1.1)
+
+plt.tight_layout()
+```
+
+## 文本相似度的理论基础
+
+文本相似度是衡量两篇文档内容相似程度的度量，广泛应用于信息检索、文档聚类和分类、推荐系统等领域。
+
+### 主要相似度度量
+
+1. **欧氏距离(Euclidean Distance)**：向量空间中两点之间的直线距离
+
+   $$d(X,Y) = \sqrt{\sum_{i=1}^{n}(x_i - y_i)^2}$$
+
+   - 优点：直观、易理解
+   - 缺点：对向量长度敏感，不适合长短不一的文档比较
+
+2. **曼哈顿距离(Manhattan Distance)**：向量各维度差的绝对值之和
+
+   $$d(X,Y) = \sum_{i=1}^{n}|x_i - y_i|$$
+
+   - 优点：计算简单，对异常值不敏感
+   - 缺点：同样对向量长度敏感
+
+3. **余弦相似度(Cosine Similarity)**：向量夹角的余弦值
+
+   $$similarity(X,Y) = \cos(\theta) = \frac{X \cdot Y}{||X|| \times ||Y||} = \frac{\sum_{i=1}^{n}x_i y_i}{\sqrt{\sum_{i=1}^{n}x_i^2} \sqrt{\sum_{i=1}^{n}y_i^2}}$$
+
+   - 优点：不受向量长度影响，适合文本相似度计算
+   - 缺点：不考虑向量幅值，只关注方向
+
+4. **杰卡德相似系数(Jaccard Similarity)**：集合交集与并集的比值
+
+   $$J(A,B) = \frac{|A \cap B|}{|A \cup B|}$$
+
+   - 优点：适用于二元特征或集合比较
+   - 缺点：不考虑词频信息
+
+### 为什么余弦相似度适合文本分析？
+
+余弦相似度在文本分析中特别常用，原因在于：
+
+1. **文档长度不敏感**：长文档和短文档可以直接比较
+2. **方向敏感**：关注的是词汇分布的模式而非绝对频率
+3. **高效计算**：特别适合稀疏向量计算
+4. **范围明确**：值域为[-1,1]，便于理解和比较
+
+在TF-IDF向量空间中，两个文档的相似度可以通过计算它们的TF-IDF向量之间的余弦相似度得到，这样既考虑了共同词汇，又关注了词语的区分度。
+
+### 政府工作报告的相似度分析
+
+分析不同年份政府工作报告之间的相似度，揭示政策连续性和变化：
+
+```{python}
+#| eval: false
+from sklearn.metrics.pairwise import cosine_similarity
+
+# 计算不同年份报告之间的余弦相似度
+similarity = cosine_similarity(tfidf_matrix)
+similarity_df = pd.DataFrame(similarity, index=years, columns=years)
+print("各年份政府工作报告相似度矩阵:")
+print(similarity_df)
+
+# 可视化相似度矩阵
+plt.figure(figsize=(10, 8))
+sns.heatmap(similarity_df, annot=True, fmt='.2f', cmap='YlGnBu')
+plt.title('政府工作报告相似度矩阵')
+
+# 分析最相似和最不相似的年份报告
+np.fill_diagonal(similarity, -1)  # 忽略自身相似度
+most_similar_idx = np.unravel_index(similarity.argmax(), similarity.shape)
+least_similar_idx = np.unravel_index(similarity.argmin(), similarity.shape)
+
+print(f"\n最相似的报告: {years[most_similar_idx[0]]}年和{years[most_similar_idx[1]]}年 (相似度: {similarity[most_similar_idx]:.2f})")
+print(f"最不相似的报告: {years[least_similar_idx[0]]}年和{years[least_similar_idx[1]]}年 (相似度: {similarity[least_similar_idx]:.2f})")
+
+# 分析结果解释
+print("\n分析解释:")
+print(f"1. {years[most_similar_idx[0]]}年和{years[most_similar_idx[1]]}年报告相似度高，可能反映这两年政策方向一致")
+print(f"2. {years[least_similar_idx[0]]}年和{years[least_similar_idx[1]]}年报告差异大，可能是政策重点发生了转变")
+print("3. 疫情前后的报告相似度变化显著，反映了疫情对政策重点的影响")
+```
+
+# 词云图与可视化分析
+
+## 词云图的理论基础
+
+词云图(Word Cloud)是文本数据可视化的常用方法，通过调整词语的大小和颜色来表示其在文本中的重要性。词云图基于以下理论基础：
+
+### 词重要性的数学表示
+
+词云图中词语大小的确定通常基于以下指标：
+
+1. **词频(Term Frequency, TF)**：词语在文档中出现的次数
+   $$TF(t,d) = f_{t,d}$$
+
+2. **TF-IDF权重**：结合词频和逆文档频率
+   $$TF\text{-}IDF(t,d) = TF(t,d) \times IDF(t)$$
+
+3. **其他自定义权重**：如情感分析中的极性强度等
+
+### 布局算法
+
+词云图的布局是一个复杂的问题，主要算法包括：
+
+1. **贪婪算法**：从最重要的词开始，按重要性递减顺序放置单词
+2. **力导向布局**：将词语视为带电粒子，通过模拟物理力实现分布
+3. **螺旋放置**：从中心点开始，沿螺旋线放置词语
+4. **碰撞检测**：确保词语之间不重叠
+
+### 视觉编码原则
+
+词云图的设计遵循以下视觉编码原则：
+
+1. **大小编码(Size Encoding)**：词语的大小与其重要性成正比
+2. **颜色编码(Color Encoding)**：可用来表示词语的类别、情感极性等
+3. **方向编码(Orientation Encoding)**：词语的方向可以增加视觉多样性
+4. **位置编码(Position Encoding)**：中心位置通常放置最重要的词
+
+### 政府工作报告的词云图分析
+
+我们使用词云图直观展示政府工作报告的关键词分布：
+
+```{python}
+#| eval: false
+from wordcloud import WordCloud
+from matplotlib.font_manager import FontProperties
+
+# 设置中文字体，请确保系统中有相应的字体文件
+font_path = '/System/Library/Fonts/PingFang.ttc'  # macOS路径，根据您的系统修改
+
+# 统计词频函数
+def get_word_freq(words):
+    word_freq = {}
+    for word in words:
+        if word in word_freq:
+            word_freq[word] += 1
+        else:
+            word_freq[word] = 1
+    return word_freq
+
+# 生成2023年的词云图
+plt.figure(figsize=(12, 6))
+words = processed_reports[2023]
+word_freq = get_word_freq(words)
+
+wordcloud = WordCloud(
+    font_path=font_path,
+    width=800,
+    height=400,
+    background_color='white',
+    max_words=100
+).generate_from_frequencies(word_freq)
+
+plt.imshow(wordcloud, interpolation='bilinear')
+plt.axis('off')
+plt.title('2023年政府工作报告词云')
+plt.tight_layout()
+
+# 比较各年份的词云图
+plt.figure(figsize=(20, 15))
+for i, year in enumerate(sorted(processed_reports.keys())):
+    plt.subplot(3, 2, i+1)
+    
+    words = processed_reports[year]
+    word_freq = get_word_freq(words)
+    
+    wordcloud = WordCloud(
+        font_path=font_path,
+        width=800,
+        height=400,
+        background_color='white',
+        max_words=100
+    ).generate_from_frequencies(word_freq)
+    
+    plt.imshow(wordcloud, interpolation='bilinear')
+    plt.axis('off')
+    plt.title(f'{year}年政府工作报告词云')
+
+plt.tight_layout()
+```
+
+# 情感分析
+
+## 情感分析的理论基础
+
+情感分析(Sentiment Analysis)，也称为意见挖掘(Opinion Mining)，是指通过自然语言处理、文本分析和计算语言学等方法来识别、提取和量化文本中主观信息的过程。情感分析试图回答的核心问题是：**文本作者对特定主题或实体的态度是什么？**
+
+### 情感分析的主要任务
+
+情感分析主要包括以下几个层次的任务：
+
+1. **文档级情感分析**：确定整个文档的情感倾向（积极、消极或中性）
+2. **句子级情感分析**：确定单个句子的情感倾向
+3. **方面级情感分析**：识别文本中提到的特定方面/属性及其相关情感
+4. **比较情感分析**：比较不同实体之间的情感差异
+
+### 情感分析的主要方法
+
+情感分析的方法大致可分为三类：
+
+1. **基于词典的方法**：
+   - 依赖预定义的情感词典，如知网HowNet情感词典、大连理工情感词典等
+   - 通过计算情感词的出现频率和强度来评估整体情感
+   - 数学表示：$$Score(d) = \frac{\sum_{t \in d} s_t \times w_t}{\sum_{t \in d} w_t}$$
+     其中$s_t$是词$t$的情感得分，$w_t$是权重（可以是TF-IDF值）
+
+2. **基于机器学习的方法**：
+   - 监督学习：使用标注数据训练分类器（如SVM、朴素贝叶斯、决策树等）
+   - 半监督学习：结合少量标注数据和大量未标注数据
+   - 深度学习：使用CNN、RNN/LSTM、Transformer等神经网络模型
+
+3. **混合方法**：
+   - 结合词典和机器学习方法的优点
+   - 使用词典特征增强机器学习模型
+   - 使用规则修正机器学习结果
+
+### 情感词典的构建原理
+
+情感词典是情感分析的重要资源，其构建原理包括：
+
+1. **人工标注**：语言学专家手动标注词语的情感极性和强度
+2. **基于种子词的扩展**：从少量种子情感词出发，利用同义词、反义词关系扩展
+3. **基于共现的统计方法**：分析情感词与已知极性词的共现统计
+4. **基于深度学习的词嵌入**：使用词向量的相似性发现新的情感词
+
+### 政府工作报告的情感分析
+
+我们使用基于词典的方法分析政府工作报告的情感倾向，探索政策语言的情感特征：
+
+```{python}
+#| eval: false
+# 加载情感词典
+# 简化版的情感词典，实际使用时可加载完整词典
+pos_words = {'发展', '增长', '提高', '改善', '促进', '创新', '稳定', '优化', '提升', '保障',
+             '保持', '强化', '扩大', '提质', '安全', '推动', '积极', '坚持', '实现', '支持'}
+neg_words = {'下降', '减少', '风险', '问题', '困难', '挑战', '严峻', '复杂', '低迷', '压力',
+             '下滑', '减缓', '防控', '责任', '防范', '应对', '治理', '整治', '控制', '防止'}
+
+# 情感分析函数
+def sentiment_analysis(text_list):
+    pos_count = 0
+    neg_count = 0
+    
+    for word in text_list:
+        if word in pos_words:
+            pos_count += 1
+        elif word in neg_words:
+            neg_count += 1
+    
+    total = pos_count + neg_count
+    if total == 0:
+        return 0
+    
+    # 计算情感得分 (-1 to 1)
+    sentiment_score = (pos_count - neg_count) / total
+    
+    return {
+        'positive': pos_count,
+        'negative': neg_count,
+        'total': total,
+        'score': sentiment_score
+    }
+
+# 对每年的报告进行情感分析
+sentiment_results = {}
+for year, words in processed_reports.items():
+    sentiment_results[year] = sentiment_analysis(words)
+
+# 创建结果DataFrame
+sentiment_df = pd.DataFrame({
+    'Year': years,
+    'Positive': [sentiment_results[year]['positive'] for year in years],
+    'Negative': [sentiment_results[year]['negative'] for year in years],
+    'Score': [sentiment_results[year]['score'] for year in years]
+})
+print("情感分析结果:")
+print(sentiment_df)
+
+# 绘制情感得分变化趋势
+plt.figure(figsize=(12, 6))
+plt.subplot(2, 1, 1)
+plt.bar(sentiment_df['Year'], sentiment_df['Score'], color=['green' if s > 0 else 'red' for s in sentiment_df['Score']])
+plt.axhline(y=0, color='k', linestyle='-', alpha=0.3)
+plt.ylabel('情感得分')
+plt.title('政府工作报告情感得分变化趋势')
+
+# 为每个柱添加具体数值
+for i, score in enumerate(sentiment_df['Score']):
+    plt.text(years[i], score + (0.05 if score >= 0 else -0.1), 
+             f'{score:.2f}', ha='center')
+
+# 绘制正面词和负面词数量对比
+plt.subplot(2, 1, 2)
+plt.bar(sentiment_df['Year'], sentiment_df['Positive'], label='正面词', color='green', alpha=0.7)
+plt.bar(sentiment_df['Year'], sentiment_df['Negative'], label='负面词', color='red', alpha=0.7, bottom=sentiment_df['Positive'])
+plt.ylabel('词数')
+plt.legend()
+plt.title('政府工作报告情感词汇分布')
+
+plt.tight_layout()
+
+# 分析结果解释
+print("\n情感分析结论:")
+most_positive_year = sentiment_df.loc[sentiment_df['Score'].idxmax(), 'Year']
+most_negative_year = sentiment_df.loc[sentiment_df['Score'].idxmin(), 'Year']
+print(f"1. {most_positive_year}年报告情感倾向最积极，得分为{sentiment_df.loc[sentiment_df['Score'].idxmax(), 'Score']:.2f}")
+print(f"2. {most_negative_year}年报告情感倾向最消极，得分为{sentiment_df.loc[sentiment_df['Score'].idxmin(), 'Score']:.2f}")
+print("3. 情感变化趋势与当年经济形势和政策环境密切相关")
+```
+
+# LDA主题建模
+
+## 主题建模理论
+
+主题建模(Topic Modeling)是一类无监督机器学习技术，旨在从文档集合中发现抽象"主题"。其核心思想是：**每篇文档可以看作是多个主题的混合，而每个主题又是词语上的概率分布**。
+
+### 潜在语义分析(LSA)
+
+**潜在语义分析(Latent Semantic Analysis, LSA)**是早期的主题建模方法，基于奇异值分解(SVD)。
+
+1. **数学表示**：
+   - 将文档-词项矩阵 $X$ 分解为 $X \approx U\Sigma V^T$
+   - $U$ 是文档-主题矩阵，$V$ 是词-主题矩阵，$\Sigma$ 是表示主题重要性的对角矩阵
+
+2. **优缺点**：
+   - 优点：计算简单，容易理解
+   - 缺点：缺乏明确的统计语义解释，可能出现负值
+
+### 概率潜在语义分析(PLSA)
+
+**概率潜在语义分析(Probabilistic Latent Semantic Analysis, PLSA)**引入了概率框架，将文档和词语的关系建模为混合模型。
+
+1. **数学表示**：
+   - 文档 $d$ 中词 $w$ 的生成概率：$P(w|d) = \sum_{z} P(w|z)P(z|d)$
+   - 其中 $z$ 表示潜在主题，$P(w|z)$ 是主题 $z$ 生成词 $w$ 的概率，$P(z|d)$ 是文档 $d$ 中主题 $z$ 的比例
+
+2. **优缺点**：
+   - 优点：有明确的概率解释，结果更加合理
+   - 缺点：容易过拟合，不是完全贝叶斯模型
+
+### 潜在狄利克雷分配(LDA)
+
+**潜在狄利克雷分配(Latent Dirichlet Allocation, LDA)**是目前最流行的主题建模方法，它是PLSA的贝叶斯版本，引入了主题分布和词分布的先验。
+
+#### LDA的生成过程
+
+LDA假设文档的生成过程如下：
+
+1. 对于每个文档 $d$：
+   - 从狄利克雷分布 $Dir(\alpha)$ 中抽取主题比例向量 $\theta_d$
+   
+2. 对于每个主题 $k$：
+   - 从狄利克雷分布 $Dir(\beta)$ 中抽取词语分布 $\phi_k$
+   
+3. 对于文档 $d$ 中的每个词位置 $i$：
+   - 从多项式分布 $Mult(\theta_d)$ 中抽取主题 $z_{di}$
+   - 从多项式分布 $Mult(\phi_{z_{di}})$ 中抽取词语 $w_{di}$
+
+#### LDA的数学表示
+
+1. **联合概率分布**：
+   $$P(\mathbf{w}, \mathbf{z}, \mathbf{\theta}, \mathbf{\phi}|\alpha, \beta) = \prod_{k=1}^{K} P(\phi_k|\beta) \prod_{d=1}^{D} P(\theta_d|\alpha) \prod_{i=1}^{N_d} P(z_{di}|\theta_d) P(w_{di}|z_{di}, \phi)$$
+
+2. **推断任务**：
+   - 给定观察到的词 $\mathbf{w}$，推断隐变量 $\mathbf{z}$, $\mathbf{\theta}$, $\mathbf{\phi}$
+   - 使用近似推断算法，如变分推断、吉布斯采样等
+
+3. **模型参数**：
+   - $\alpha$：主题分布的先验参数，控制文档主题的稀疏性
+   - $\beta$：词分布的先验参数，控制主题中词的稀疏性
+   - $K$：主题数量，需要事先指定
+
+#### LDA的优缺点
+
+**优点**：
+- 完整的生成概率模型，理论基础扎实
+- 解释性强，主题和词语分布有明确的语义
+- 可扩展性好，适用于大规模文档集合
+- 有效避免过拟合
+
+**缺点**：
+- 需要预先指定主题数量
+- 不考虑词序和语法，丢失部分语义信息
+- 对短文本效果较差
+- 复杂度较高，训练较慢
+
+### 主题一致性评估
+
+评估主题模型质量的主要指标包括：
+
+1. **困惑度(Perplexity)**：衡量模型对未见文档的预测能力
+   $$Perplexity(D_{test}) = \exp \left(-\frac{\sum_{d=1}^{M} \log p(\mathbf{w}_d)}{\sum_{d=1}^{M} N_d}\right)$$
+
+2. **主题一致性(Topic Coherence)**：衡量主题内部词语的语义相关性
+   - **PMI(Pointwise Mutual Information)**：基于词对在同一文档中共现的概率
+   - **NPMI(Normalized PMI)**：归一化的PMI
+   - **UCI coherence**：基于PMI的一致性度量
+   - **UMass coherence**：基于条件概率的一致性度量
+
+### 政府工作报告的LDA主题建模
+
+应用LDA模型分析政府工作报告，发现潜在的政策主题：
+
+```{python}
+#| eval: false
+from sklearn.decomposition import LatentDirichletAllocation
+
+# 定义LDA模型
+n_topics = 3  # 主题数量
+lda = LatentDirichletAllocation(n_components=n_topics, random_state=42)
+
+# 使用词频矩阵训练LDA模型
+lda.fit(X)
+
+# 输出每个主题的关键词
+def print_top_words(model, feature_names, n_top_words):
+    topics = []
+    for topic_idx, topic in enumerate(model.components_):
+        top_words = [feature_names[i] for i in topic.argsort()[:-n_top_words - 1:-1]]
+        topics.append(top_words)
+        print(f"主题 #{topic_idx+1}:")
+        print(" ".join(top_words))
+    print()
+    return topics
+
+# 打印每个主题的前15个关键词
+topics = print_top_words(lda, vocabulary, 15)
+
+# 为主题命名
+topic_names = ["经济发展", "民生保障", "风险应对"]
+for i, name in enumerate(topic_names):
+    print(f"主题{i+1} ({name}): {' '.join(topics[i][:10])}")
+
+# 计算每年报告的主题分布
+doc_topic_dist = lda.transform(X)
+
+# 创建主题分布DataFrame
+topic_dist_df = pd.DataFrame(doc_topic_dist, 
+                           index=years, 
+                           columns=[f'主题{i+1} ({name})' for i, name in enumerate(topic_names)])
+print("\n各年份主题分布:")
+print(topic_dist_df)
+
+# 可视化主题分布
+plt.figure(figsize=(12, 8))
+sns.heatmap(topic_dist_df, annot=True, fmt='.2f', cmap='YlGnBu')
+plt.title('各年份政府工作报告的主题分布')
+plt.tight_layout()
+
+# 主题演变趋势
+plt.figure(figsize=(12, 6))
+for i, name in enumerate(topic_names):
+    plt.plot(years, doc_topic_dist[:, i], marker='o', label=f'主题{i+1} ({name})')
+
+plt.xlabel('年份')
+plt.ylabel('主题比重')
+plt.title('政府工作报告主题演变趋势')
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.7)
+plt.tight_layout()
+
+# 分析结果解释
+print("\nLDA主题分析结论:")
+print("1. 经济发展主题在各年报告中都占有重要位置，反映其作为政府工作核心")
+print("2. 疫情期间报告中风险应对主题比重明显上升")
+print("3. 近年来民生保障主题比重增长，表明政府对民生问题的关注增强")
+```
+
+# 小练习：政府工作报告深度分析
+
+**背景**：政府工作报告是研究国家政策导向的重要文本资料，通过文本分析技术可以揭示政策走向的变化和连续性。
+
+**目标**：通过应用所学的文本分析方法，对历年政府工作报告进行系统分析，挖掘其中的政策主题、情感倾向和关键词变化。
+
+**数据集**：2015-2023年的政府工作报告全文（可从政府官网获取）
+
+**练习要求**：
+
+1. **文本预处理**：
+   - 使用jieba进行中文分词
+   - 构建并应用停用词表
+   - 实现基础的文本清洗（去除标点、数字等）
+
+2. **词频与TF-IDF分析**：
+   - 构建词袋模型，分析各年份报告的高频词
+   - 应用TF-IDF算法提取每年报告的关键词
+   - 比较不同年份关键词的变化
+
+3. **文本相似度比较**：
+   - 计算相邻年份报告的余弦相似度
+   - 找出相似度最高和最低的年份对
+   - 分析政策连续性的变化规律
+
+4. **主题建模**：
+   - 应用LDA模型发现潜在主题（尝试不同的主题数量）
+   - 为识别出的主题命名并解释
+   - 分析主题比例随时间的变化趋势
+
+5. **可视化与结论**：
+   - 使用词云图展示每年的关键词
+   - 绘制主题演变趋势图
+   - 总结分析结果，提出政策走向的见解
+
+**探究问题**：
+
+- 政府工作报告的关键词随时间如何变化？这反映了哪些社会经济政策的转变？
+- 相邻年份报告的相似度是否有规律性变化？是什么因素导致某些年份报告差异较大？
+- 如何通过改进文本预处理和模型参数来提高主题模型的解释性？
+- 结合当年经济社会环境，如何解读报告的语言风格和情感倾向变化？
+

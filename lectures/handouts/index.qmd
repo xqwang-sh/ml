@@ -14,10 +14,14 @@ title: "前言"
 2.  [监督学习理论(上)](03_supervised.qmd)
 3.  [监督学习理论(下)](04_supervised.qmd)
 4.  [模型评估与优化](05_model_assess.qmd)
-5.  [信用评分](06_credit.qmd)
-6.  [无监督学习](07_unsupervised.qmd)
-7.  [聚类](07_cluster.qmd)
-8.  [降维](09_dimension.qmd)
+5.  [时间序列监督学习](09_ts.qmd)
+6.  [信用评分](06_credit.qmd)
+7.  [无监督学习](07_unsupervised.qmd)
+8.  [聚类](07_cluster.qmd)
+9.  [降维](09_dimension.qmd)
+10. [文本分析(一):词频法与向量空间](11_nlp.qmd)
+11. [文本分析(二):词向量与深度学习基础](12_embedding.qmd)
+12. [文本分析(三):大语言模型及其应用](13_llm.qmd)
 
 **课程内容（实践）:**
 

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>11&nbsp; 非监督学习：降维 (Dimensionality Reduction) – 数据挖掘与机器学习课程讲义</title>
+<title>12&nbsp; 非监督学习：降维 (Dimensionality Reduction) – 数据挖掘与机器学习课程讲义</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./project1_LC.html" rel="next">
+<link href="./11_nlp.html" rel="next">
 <link href="./07_cluster.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -144,7 +144,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./09_dimension.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">非监督学习：降维 (Dimensionality Reduction)</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./09_dimension.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">非监督学习：降维 (Dimensionality Reduction)</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="搜索" onclick="window.quartoOpenSearch();">
@@ -207,50 +207,74 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./09_ts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">时间序列监督学习</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./lab03_titanic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">泰坦尼克号生存预测实践</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">泰坦尼克号生存预测实践</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06_credit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">信用评分理论基础</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">信用评分理论基础</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07_unsupervised.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">非监督学习技术概览及其金融应用</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">非监督学习技术概览及其金融应用</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07_cluster.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">非监督学习：聚类 (Clustering)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">非监督学习：聚类 (Clustering)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09_dimension.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">非监督学习：降维 (Dimensionality Reduction)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">非监督学习：降维 (Dimensionality Reduction)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_nlp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本分析(一)：词频法与向量空间</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_embedding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析(二)：词向量与深度学习基础</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13_llm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">文本分析(三)：大语言模型及其应用</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project1_LC.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2a_tspred.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2b_text.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
   </div>
 </li>
     </ul>
@@ -263,14 +287,14 @@ window.Quarto = {
     <h2 id="toc-title">目录</h2>
    
   <ul>
-  <li><a href="#降维技术" id="toc-降维技术" class="nav-link active" data-scroll-target="#降维技术"><span class="header-section-number">11.1</span> 降维技术</a>
+  <li><a href="#降维技术" id="toc-降维技术" class="nav-link active" data-scroll-target="#降维技术"><span class="header-section-number">12.1</span> 降维技术</a>
   <ul class="collapse">
-  <li><a href="#为什么需要降维" id="toc-为什么需要降维" class="nav-link" data-scroll-target="#为什么需要降维"><span class="header-section-number">11.1.1</span> 为什么需要降维？</a></li>
-  <li><a href="#降维的分类" id="toc-降维的分类" class="nav-link" data-scroll-target="#降维的分类"><span class="header-section-number">11.1.2</span> 降维的分类</a></li>
-  <li><a href="#主成分分析-pca---principal-component-analysis-深入" id="toc-主成分分析-pca---principal-component-analysis-深入" class="nav-link" data-scroll-target="#主成分分析-pca---principal-component-analysis-深入"><span class="header-section-number">11.1.3</span> 主成分分析 (PCA - Principal Component Analysis) 深入</a></li>
-  <li><a href="#其他线性降维方法" id="toc-其他线性降维方法" class="nav-link" data-scroll-target="#其他线性降维方法"><span class="header-section-number">11.1.4</span> 其他线性降维方法</a></li>
-  <li><a href="#非线性降维方法" id="toc-非线性降维方法" class="nav-link" data-scroll-target="#非线性降维方法"><span class="header-section-number">11.1.5</span> 非线性降维方法</a></li>
-  <li><a href="#实践与讨论" id="toc-实践与讨论" class="nav-link" data-scroll-target="#实践与讨论"><span class="header-section-number">11.1.6</span> 实践与讨论</a></li>
+  <li><a href="#为什么需要降维" id="toc-为什么需要降维" class="nav-link" data-scroll-target="#为什么需要降维"><span class="header-section-number">12.1.1</span> 为什么需要降维？</a></li>
+  <li><a href="#降维的分类" id="toc-降维的分类" class="nav-link" data-scroll-target="#降维的分类"><span class="header-section-number">12.1.2</span> 降维的分类</a></li>
+  <li><a href="#主成分分析-pca---principal-component-analysis-深入" id="toc-主成分分析-pca---principal-component-analysis-深入" class="nav-link" data-scroll-target="#主成分分析-pca---principal-component-analysis-深入"><span class="header-section-number">12.1.3</span> 主成分分析 (PCA - Principal Component Analysis) 深入</a></li>
+  <li><a href="#非线性降维方法" id="toc-非线性降维方法" class="nav-link" data-scroll-target="#非线性降维方法"><span class="header-section-number">12.1.4</span> 非线性降维方法</a></li>
+  <li><a href="#三种降维方法的理论比较" id="toc-三种降维方法的理论比较" class="nav-link" data-scroll-target="#三种降维方法的理论比较"><span class="header-section-number">12.1.5</span> 三种降维方法的理论比较</a></li>
+  <li><a href="#实践与讨论" id="toc-实践与讨论" class="nav-link" data-scroll-target="#实践与讨论"><span class="header-section-number">12.1.6</span> 实践与讨论</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -280,7 +304,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">非监督学习：降维 (Dimensionality Reduction)</span></h1>
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">非监督学习：降维 (Dimensionality Reduction)</span></h1>
 </div>
 
 
@@ -297,11 +321,11 @@ window.Quarto = {
 </header>
 
 
-<section id="降维技术" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="降维技术"><span class="header-section-number">11.1</span> 降维技术</h2>
+<section id="降维技术" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="降维技术"><span class="header-section-number">12.1</span> 降维技术</h2>
 <p>在处理现实世界的数据时，我们经常会遇到特征维度非常高的情况（即有很多列）。高维度数据不仅会增加模型的计算复杂度、延长训练时间，还可能引入噪声、导致<strong>维度灾难 (Curse of Dimensionality)</strong>，使得模型难以学习有效的模式，甚至降低性能。本讲我们将专注于<strong>降维 (Dimensionality Reduction)</strong>技术，尤其是<strong>主成分分析 (PCA)</strong>为代表的线性降维方法，同时也会简要介绍一些非线性降维方法。这些技术能帮助我们简化数据、去除冗余、提高模型效率和性能。</p>
-<section id="为什么需要降维" class="level3" data-number="11.1.1">
-<h3 data-number="11.1.1" class="anchored" data-anchor-id="为什么需要降维"><span class="header-section-number">11.1.1</span> 为什么需要降维？</h3>
+<section id="为什么需要降维" class="level3" data-number="12.1.1">
+<h3 data-number="12.1.1" class="anchored" data-anchor-id="为什么需要降维"><span class="header-section-number">12.1.1</span> 为什么需要降维？</h3>
 <ul>
 <li><strong>降低计算复杂度:</strong> 特征越少，模型训练和预测所需的时间和内存就越少。</li>
 <li><strong>缓解维度灾难:</strong> 在高维空间中，数据点变得稀疏，距离度量失去意义，模型更难找到有效的模式。</li>
@@ -310,31 +334,27 @@ window.Quarto = {
 <li><strong>数据可视化:</strong> 将高维数据降到 2 维或 3 维，方便我们进行可视化探索。</li>
 </ul>
 </section>
-<section id="降维的分类" class="level3" data-number="11.1.2">
-<h3 data-number="11.1.2" class="anchored" data-anchor-id="降维的分类"><span class="header-section-number">11.1.2</span> 降维的分类</h3>
+<section id="降维的分类" class="level3" data-number="12.1.2">
+<h3 data-number="12.1.2" class="anchored" data-anchor-id="降维的分类"><span class="header-section-number">12.1.2</span> 降维的分类</h3>
 <p>降维技术主要可以分为两大类：</p>
 <ol type="1">
 <li><strong>线性降维方法</strong>：假设数据位于线性子空间中
 <ul>
 <li>主成分分析 (PCA)</li>
-<li>线性判别分析 (LDA)</li>
-<li>因子分析 (FA)</li>
 </ul></li>
 <li><strong>非线性降维方法</strong>：处理位于非线性流形上的数据
 <ul>
 <li>t-分布随机邻域嵌入 (t-SNE)</li>
-<li>局部线性嵌入 (LLE)</li>
-<li>ISOMAP</li>
 <li>UMAP (Uniform Manifold Approximation and Projection)</li>
 </ul></li>
 </ol>
 <p>本讲我们将重点讨论最常用的线性降维方法——主成分分析(PCA)。</p>
 </section>
-<section id="主成分分析-pca---principal-component-analysis-深入" class="level3" data-number="11.1.3">
-<h3 data-number="11.1.3" class="anchored" data-anchor-id="主成分分析-pca---principal-component-analysis-深入"><span class="header-section-number">11.1.3</span> 主成分分析 (PCA - Principal Component Analysis) 深入</h3>
+<section id="主成分分析-pca---principal-component-analysis-深入" class="level3" data-number="12.1.3">
+<h3 data-number="12.1.3" class="anchored" data-anchor-id="主成分分析-pca---principal-component-analysis-深入"><span class="header-section-number">12.1.3</span> 主成分分析 (PCA - Principal Component Analysis) 深入</h3>
 <p>PCA 是一种非常流行的<strong>无监督线性降维</strong>技术，属于<strong>特征提取 (Feature Extraction)</strong> 的范畴。它不是简单地选择一部分原始特征，而是将原始特征<strong>线性组合</strong>成一组新的、不相关的<strong>主成分 (Principal Components)</strong>，这些主成分能最大程度地保留原始数据的<strong>方差 (Variance)</strong>。</p>
-<section id="原理回顾与深入" class="level4" data-number="11.1.3.1">
-<h4 data-number="11.1.3.1" class="anchored" data-anchor-id="原理回顾与深入"><span class="header-section-number">11.1.3.1</span> 原理回顾与深入</h4>
+<section id="原理回顾与深入" class="level4" data-number="12.1.3.1">
+<h4 data-number="12.1.3.1" class="anchored" data-anchor-id="原理回顾与深入"><span class="header-section-number">12.1.3.1</span> 原理回顾与深入</h4>
 <ul>
 <li><strong>目标:</strong> 找到一组新的正交（相互垂直）坐标轴（即主成分），使得数据在这些轴上的投影方差最大化。</li>
 <li><strong>第一主成分:</strong> 数据投影后方差最大的那个方向。</li>
@@ -343,8 +363,8 @@ window.Quarto = {
 <li><strong>降维:</strong> 选择方差最大的前 k 个主成分来代表原始数据，从而达到降维的目的。这 k 个主成分是原始特征的线性组合。</li>
 </ul>
 </section>
-<section id="pca的数学原理" class="level4" data-number="11.1.3.2">
-<h4 data-number="11.1.3.2" class="anchored" data-anchor-id="pca的数学原理"><span class="header-section-number">11.1.3.2</span> PCA的数学原理</h4>
+<section id="pca的数学原理" class="level4" data-number="12.1.3.2">
+<h4 data-number="12.1.3.2" class="anchored" data-anchor-id="pca的数学原理"><span class="header-section-number">12.1.3.2</span> PCA的数学原理</h4>
 <p>从线性代数角度，PCA可以通过以下步骤实现：</p>
 <ol type="1">
 <li><strong>数据中心化</strong>：将每个特征减去其均值，使得每个特征的均值为0</li>
@@ -355,8 +375,22 @@ window.Quarto = {
 <li><strong>数据投影</strong>：<span class="math inline">\(Z = XW\)</span>，得到降维后的数据</li>
 </ol>
 </section>
-<section id="方差解释率-explained-variance-ratio" class="level4" data-number="11.1.3.3">
-<h4 data-number="11.1.3.3" class="anchored" data-anchor-id="方差解释率-explained-variance-ratio"><span class="header-section-number">11.1.3.3</span> 方差解释率 (Explained Variance Ratio)</h4>
+<section id="pca的几何解释" class="level4" data-number="12.1.3.3">
+<h4 data-number="12.1.3.3" class="anchored" data-anchor-id="pca的几何解释"><span class="header-section-number">12.1.3.3</span> PCA的几何解释</h4>
+<p>从几何角度看，PCA寻找的是数据中的主要变化方向。想象一个三维空间中的扁平椭球体数据云：</p>
+<ul>
+<li>第一主成分是椭球体最长的轴</li>
+<li>第二主成分是次长的轴</li>
+<li>第三主成分是最短的轴</li>
+</ul>
+<p>通过保留变化最大的方向，PCA能够用较少的维度捕捉数据的主要结构。</p>
+</section>
+<section id="pca的统计理解" class="level4" data-number="12.1.3.4">
+<h4 data-number="12.1.3.4" class="anchored" data-anchor-id="pca的统计理解"><span class="header-section-number">12.1.3.4</span> PCA的统计理解</h4>
+<p>从统计角度看，PCA是一种最大化数据方差的特征转换方法。这背后的假设是，数据的方差越大，包含的信息量就越多。主成分既相互正交（不相关），又能按重要性排序（由特征值大小决定）。</p>
+</section>
+<section id="方差解释率-explained-variance-ratio" class="level4" data-number="12.1.3.5">
+<h4 data-number="12.1.3.5" class="anchored" data-anchor-id="方差解释率-explained-variance-ratio"><span class="header-section-number">12.1.3.5</span> 方差解释率 (Explained Variance Ratio)</h4>
 <p>PCA 的一个重要输出是每个主成分能够解释原始数据<strong>方差的比例</strong> (<code>explained_variance_ratio_</code>)。</p>
 <ul>
 <li>第一个主成分解释的方差比例最高，第二个次之，以此类推。</li>
@@ -364,8 +398,8 @@ window.Quarto = {
 <li>通过计算<strong>累积方差解释率</strong>，我们可以决定需要保留多少个主成分才能保留足够的信息（例如，保留能够解释 95% 或 99% 方差的主成分）。</li>
 </ul>
 </section>
-<section id="如何选择主成分数量-n_components" class="level4" data-number="11.1.3.4">
-<h4 data-number="11.1.3.4" class="anchored" data-anchor-id="如何选择主成分数量-n_components"><span class="header-section-number">11.1.3.4</span> 如何选择主成分数量 (<code>n_components</code>)</h4>
+<section id="如何选择主成分数量-n_components" class="level4" data-number="12.1.3.6">
+<h4 data-number="12.1.3.6" class="anchored" data-anchor-id="如何选择主成分数量-n_components"><span class="header-section-number">12.1.3.6</span> 如何选择主成分数量 (<code>n_components</code>)</h4>
 <ul>
 <li><strong>根据累积方差解释率:</strong> 绘制累积方差解释率随主成分数量变化的曲线，选择能够达到目标方差解释率（如 95%）的最小主成分数量。</li>
 <li><strong>根据业务需求或可视化需求:</strong> 如果是为了可视化，通常选择 2 或 3 个主成分。</li>
@@ -373,8 +407,8 @@ window.Quarto = {
 <li><strong>肘部法则(Elbow Method):</strong> 绘制主成分数量与累积方差解释率的关系图，找到曲线拐点。</li>
 </ul>
 </section>
-<section id="使用-scikit-learn-实现" class="level4" data-number="11.1.3.5">
-<h4 data-number="11.1.3.5" class="anchored" data-anchor-id="使用-scikit-learn-实现"><span class="header-section-number">11.1.3.5</span> 使用 Scikit-learn 实现</h4>
+<section id="使用-scikit-learn-实现" class="level4" data-number="12.1.3.7">
+<h4 data-number="12.1.3.7" class="anchored" data-anchor-id="使用-scikit-learn-实现"><span class="header-section-number">12.1.3.7</span> 使用 Scikit-learn 实现</h4>
 <div class="callout callout-style-default callout-warning callout-titled" title="特征缩放">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -396,95 +430,167 @@ window.Quarto = {
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 加载数据示例 (手写数字) ---</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>digits <span class="op">=</span> load_digits()</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>X_digits <span class="op">=</span> digits.data <span class="co"># (1797, 64) - 1797个样本，每个是8x8图像展平后的64个特征</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>y_digits <span class="op">=</span> digits.target</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"原始数据形状:"</span>, X_digits.shape)</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 特征缩放 ---</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>X_digits_scaled <span class="op">=</span> scaler.fit_transform(X_digits)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 应用 PCA ---</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 先不指定 n_components，计算所有主成分的方差解释率</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>pca_full <span class="op">=</span> PCA(random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>pca_full.fit(X_digits_scaled)</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算累积方差解释率</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>explained_variance_ratio_cumsum <span class="op">=</span> np.cumsum(pca_full.explained_variance_ratio_)</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制累积方差解释率曲线</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(explained_variance_ratio_cumsum) <span class="op">+</span> <span class="dv">1</span>), explained_variance_ratio_cumsum, marker<span class="op">=</span><span class="st">'.'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Number of Components'</span>)</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Cumulative Explained Variance Ratio'</span>)</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Explained Variance by Number of Components'</span>)</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 添加阈值线 (例如 95%)</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>plt.axhline(y<span class="op">=</span><span class="fl">0.95</span>, color<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, label<span class="op">=</span><span class="st">'95</span><span class="sc">% E</span><span class="st">xplained Variance'</span>)</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">'best'</span>)</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 根据目标方差解释率选择 n_components</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co"># 例如，我们希望保留 95% 的方差</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>pca_95 <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="fl">0.95</span>, random_state<span class="op">=</span><span class="dv">42</span>) <span class="co"># 直接传入比例</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>X_digits_pca_95 <span class="op">=</span> pca_95.fit_transform(X_digits_scaled)</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">保留 95% 方差所需的主成分数量: </span><span class="sc">{</span>pca_95<span class="sc">.</span>n_components_<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"降维后数据形状 (95%方差):"</span>, X_digits_pca_95.shape)</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 或者直接指定主成分数量 (例如用于可视化)</span></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>pca_2d <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>X_digits_pca_2d <span class="op">=</span> pca_2d.fit_transform(X_digits_scaled)</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">降维到 2D 后的数据形状:"</span>, X_digits_pca_2d.shape)</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 可视化降维结果 (2D) ---</span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_digits_pca_2d[:, <span class="dv">0</span>], X_digits_pca_2d[:, <span class="dv">1</span>], c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'viridis'</span>, edgecolor<span class="op">=</span><span class="st">'none'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, s<span class="op">=</span><span class="dv">40</span>)</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>plt.colorbar(label<span class="op">=</span><span class="st">'Digit Label'</span>)</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'PCA of Digits Dataset (2 Components)'</span>)</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Principal Component 1'</span>)</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Principal Component 2'</span>)</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># MNIST数据集的简化版本 - Digits数据集</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>digits <span class="op">=</span> load_digits()</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>X_digits <span class="op">=</span> digits.data <span class="co"># (1797, 64) - 1797个样本，每个是8x8图像展平后的64个特征</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>y_digits <span class="op">=</span> digits.target</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"原始数据形状:"</span>, X_digits.shape)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"类别分布:"</span>, np.bincount(y_digits))</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 可视化原始数据 ---</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 展示几个样本示例</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">10</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">4</span>), </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>                         subplot_kw<span class="op">=</span>{<span class="st">'xticks'</span>:[], <span class="st">'yticks'</span>:[]})</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, ax <span class="kw">in</span> <span class="bu">enumerate</span>(axes.flat):</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    ax.imshow(digits.images[i], cmap<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f'</span><span class="sc">{</span>y_digits[i]<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'MNIST Digits数据集示例'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>plt.subplots_adjust(top<span class="op">=</span><span class="fl">0.88</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 特征缩放 ---</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>X_digits_scaled <span class="op">=</span> scaler.fit_transform(X_digits)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 应用 PCA ---</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 先不指定 n_components，计算所有主成分的方差解释率</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>pca_full <span class="op">=</span> PCA(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>pca_full.fit(X_digits_scaled)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算累积方差解释率</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>explained_variance_ratio_cumsum <span class="op">=</span> np.cumsum(pca_full.explained_variance_ratio_)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制累积方差解释率曲线</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(explained_variance_ratio_cumsum) <span class="op">+</span> <span class="dv">1</span>), explained_variance_ratio_cumsum, marker<span class="op">=</span><span class="st">'.'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'主成分数量'</span>)</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'累积方差解释率'</span>)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'主成分数量与方差解释率关系'</span>)</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co"># 添加阈值线 (例如 95%)</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>plt.axhline(y<span class="op">=</span><span class="fl">0.95</span>, color<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, label<span class="op">=</span><span class="st">'95% 方差解释率'</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">'best'</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制各个主成分的方差解释率</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>plt.bar(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">21</span>), pca_full.explained_variance_ratio_[:<span class="dv">20</span>] <span class="op">*</span> <span class="dv">100</span>)</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'主成分'</span>)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'方差解释率 (%)'</span>)</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'前20个主成分的方差解释率'</span>)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>plt.xticks(<span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">21</span>))</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">'y'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 根据目标方差解释率选择 n_components</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="co"># 例如，我们希望保留 95% 的方差</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>pca_95 <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="fl">0.95</span>, random_state<span class="op">=</span><span class="dv">42</span>) <span class="co"># 直接传入比例</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>X_digits_pca_95 <span class="op">=</span> pca_95.fit_transform(X_digits_scaled)</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">保留 95% 方差所需的主成分数量: </span><span class="sc">{</span>pca_95<span class="sc">.</span>n_components_<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"降维后数据形状 (95%方差):"</span>, X_digits_pca_95.shape)</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 或者直接指定主成分数量 (例如用于可视化)</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>pca_2d <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>X_digits_pca_2d <span class="op">=</span> pca_2d.fit_transform(X_digits_scaled)</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">降维到 2D 后的数据形状:"</span>, X_digits_pca_2d.shape)</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"前两个主成分解释的方差比例: </span><span class="sc">{:.2f}</span><span class="st">%"</span>.<span class="bu">format</span>(</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>    pca_full.explained_variance_ratio_[:<span class="dv">2</span>].<span class="bu">sum</span>() <span class="op">*</span> <span class="dv">100</span>))</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="co"># --- 可视化降维结果 (2D) 并标注数字标签 ---</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">10</span>))</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">=</span> plt.scatter(X_digits_pca_2d[:, <span class="dv">0</span>], X_digits_pca_2d[:, <span class="dv">1</span>], </span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>                     c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'tab10'</span>, </span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>                     edgecolor<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>, s<span class="op">=</span><span class="dv">60</span>)</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>plt.colorbar(scatter, label<span class="op">=</span><span class="st">'数字标签'</span>)</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'MNIST Digits数据的PCA降维结果 (2个主成分)'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'主成分 1'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'主成分 2'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="co"># 添加数字标签</span></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (x, y) <span class="kw">in</span> <span class="bu">enumerate</span>(X_digits_pca_2d):</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 只标记部分点以避免过度拥挤</span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">%</span> <span class="dv">50</span> <span class="op">==</span> <span class="dv">0</span>:  </span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>        plt.text(x, y, <span class="bu">str</span>(y_digits[i]), </span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>                 fontsize<span class="op">=</span><span class="dv">12</span>, color<span class="op">=</span><span class="st">'black'</span>,</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>                 bbox<span class="op">=</span><span class="bu">dict</span>(facecolor<span class="op">=</span><span class="st">'white'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>))</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="co"># 三维可视化 (使用3个主成分)</span></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>pca_3d <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>X_digits_pca_3d <span class="op">=</span> pca_3d.fit_transform(X_digits_scaled)</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mpl_toolkits.mplot3d <span class="im">import</span> Axes3D</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">10</span>))</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">'3d'</span>)</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">=</span> ax.scatter(X_digits_pca_3d[:, <span class="dv">0</span>], X_digits_pca_3d[:, <span class="dv">1</span>], X_digits_pca_3d[:, <span class="dv">2</span>],</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>                     c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'tab10'</span>, </span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>                     edgecolor<span class="op">=</span><span class="st">'k'</span>, s<span class="op">=</span><span class="dv">60</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'MNIST Digits数据的PCA降维结果 (3个主成分)'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'主成分 1'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'主成分 2'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>ax.set_zlabel(<span class="st">'主成分 3'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>plt.colorbar(scatter, ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">'数字标签'</span>)</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="主成分的解释与可视化" class="level4" data-number="11.1.3.6">
-<h4 data-number="11.1.3.6" class="anchored" data-anchor-id="主成分的解释与可视化"><span class="header-section-number">11.1.3.6</span> 主成分的解释与可视化</h4>
+<section id="主成分的解释与可视化" class="level4" data-number="12.1.3.8">
+<h4 data-number="12.1.3.8" class="anchored" data-anchor-id="主成分的解释与可视化"><span class="header-section-number">12.1.3.8</span> 主成分的解释与可视化</h4>
 <p>了解主成分的物理意义，对理解数据结构非常重要：</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 对于图像数据，我们可以可视化主成分的"外观"</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 假设我们有手写数字数据</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">16</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>pca.fit(X_digits_scaled)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化前几个主成分</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">5</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">12</span>),</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                         subplot_kw<span class="op">=</span>{<span class="st">'xticks'</span>:[], <span class="st">'yticks'</span>:[]})</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (component, ax) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(pca.components_, axes.ravel())):</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    ax.imshow(component.reshape(<span class="dv">8</span>, <span class="dv">8</span>), cmap<span class="op">=</span><span class="st">'viridis'</span>)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"PC </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化原始图像及其重构</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>n_components <span class="op">=</span> <span class="dv">30</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span>n_components).fit(X_digits_scaled)</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>X_reduced <span class="op">=</span> pca.transform(X_digits_scaled)</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>X_restored <span class="op">=</span> pca.inverse_transform(X_reduced)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 选择几个样本展示</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">5</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, n_samples, figsize<span class="op">=</span>(n_samples <span class="op">*</span> <span class="dv">2</span>, <span class="dv">4</span>),</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>                        subplot_kw<span class="op">=</span>{<span class="st">'xticks'</span>:[], <span class="st">'yticks'</span>:[]})</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_samples):</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 原始图像</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, i].imshow(X_digits[i].reshape(<span class="dv">8</span>, <span class="dv">8</span>), cmap<span class="op">=</span><span class="st">'gray'</span>)</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, i].set_title(<span class="st">'Original'</span>)</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 重构图像</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>, i].imshow(X_restored[i].reshape(<span class="dv">8</span>, <span class="dv">8</span>), cmap<span class="op">=</span><span class="st">'gray'</span>)</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>, i].set_title(<span class="ss">f'Restored (</span><span class="sc">{</span>n_components<span class="sc">}</span><span class="ss"> PCs)'</span>)</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"PC </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ch">\n</span><span class="ss">(</span><span class="sc">{</span>pca<span class="sc">.</span>explained_variance_ratio_[i]<span class="sc">:.2%}</span><span class="ss">)"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'MNIST数据的前16个主成分'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>plt.subplots_adjust(top<span class="op">=</span><span class="fl">0.95</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化原始图像及其重构</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用不同数量的主成分进行重构，观察信息保留情况</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>n_components_list <span class="op">=</span> [<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">64</span>]</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="bu">len</span>(n_components_list) <span class="op">+</span> <span class="dv">1</span>, n_samples, </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>                         figsize<span class="op">=</span>(n_samples <span class="op">*</span> <span class="dv">2</span>, (<span class="bu">len</span>(n_components_list) <span class="op">+</span> <span class="dv">1</span>) <span class="op">*</span> <span class="dv">2</span>),</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>                         subplot_kw<span class="op">=</span>{<span class="st">'xticks'</span>:[], <span class="st">'yticks'</span>:[]})</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 选择几个样本进行展示</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>sample_indices <span class="op">=</span> [<span class="dv">42</span>, <span class="dv">100</span>, <span class="dv">500</span>, <span class="dv">800</span>]  <span class="co"># 选择不同数字的样本</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 显示原始图像</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, idx <span class="kw">in</span> <span class="bu">enumerate</span>(sample_indices):</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, i].imshow(X_digits[idx].reshape(<span class="dv">8</span>, <span class="dv">8</span>), cmap<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>, i].set_title(<span class="ss">f'原始图像</span><span class="ch">\n</span><span class="ss">(数字: </span><span class="sc">{</span>y_digits[idx]<span class="sc">}</span><span class="ss">)'</span>)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用不同数量的主成分重构</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row, n_comp <span class="kw">in</span> <span class="bu">enumerate</span>(n_components_list, <span class="dv">1</span>):</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    pca_recon <span class="op">=</span> PCA(n_components<span class="op">=</span>n_comp).fit(X_digits_scaled)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    X_reduced <span class="op">=</span> pca_recon.transform(X_digits_scaled)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    X_restored <span class="op">=</span> pca_recon.inverse_transform(X_reduced)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    var_explained <span class="op">=</span> <span class="bu">sum</span>(pca_recon.explained_variance_ratio_) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, idx <span class="kw">in</span> <span class="bu">enumerate</span>(sample_indices):</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        axes[row, i].imshow(X_restored[idx].reshape(<span class="dv">8</span>, <span class="dv">8</span>), cmap<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>        axes[row, i].set_title(<span class="ss">f'</span><span class="sc">{</span>n_comp<span class="sc">}</span><span class="ss">个主成分</span><span class="ch">\n</span><span class="ss">(</span><span class="sc">{</span>var_explained<span class="sc">:.1f}</span><span class="ss">%方差)'</span>)</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>plt.subplots_adjust(top<span class="op">=</span><span class="fl">0.95</span>)</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'使用不同数量主成分重构MNIST图像'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="pca-应用与局限性" class="level4" data-number="11.1.3.7">
-<h4 data-number="11.1.3.7" class="anchored" data-anchor-id="pca-应用与局限性"><span class="header-section-number">11.1.3.7</span> PCA 应用与局限性</h4>
+<section id="pca-应用与局限性" class="level4" data-number="12.1.3.9">
+<h4 data-number="12.1.3.9" class="anchored" data-anchor-id="pca-应用与局限性"><span class="header-section-number">12.1.3.9</span> PCA 应用与局限性</h4>
 <ul>
 <li><strong>应用:</strong>
 <ul>
@@ -502,112 +608,409 @@ window.Quarto = {
 </ul>
 </section>
 </section>
-<section id="其他线性降维方法" class="level3" data-number="11.1.4">
-<h3 data-number="11.1.4" class="anchored" data-anchor-id="其他线性降维方法"><span class="header-section-number">11.1.4</span> 其他线性降维方法</h3>
-<section id="线性判别分析-lda---linear-discriminant-analysis" class="level4" data-number="11.1.4.1">
-<h4 data-number="11.1.4.1" class="anchored" data-anchor-id="线性判别分析-lda---linear-discriminant-analysis"><span class="header-section-number">11.1.4.1</span> 线性判别分析 (LDA - Linear Discriminant Analysis)</h4>
-<p>LDA 是一种<strong>有监督的</strong>线性降维方法，它不仅考虑数据的方差，还考虑类别信息，尝试找到能够最大化类间方差和最小化类内方差的投影方向。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.discriminant_analysis <span class="im">import</span> LinearDiscriminantAnalysis</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 假设我们有分类数据 X_train, y_train</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>lda <span class="op">=</span> LinearDiscriminantAnalysis(n_components<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>X_train_lda <span class="op">=</span> lda.fit_transform(X_train, y_train)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"LDA 降维后的形状:"</span>, X_train_lda.shape)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"每个类别的均值:"</span>, lda.means_)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"LDA 的解释方差比:"</span>, lda.explained_variance_ratio_)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>与PCA相比，LDA的主要特点： - <strong>有监督学习</strong>：利用标签信息进行降维 - <strong>目标</strong>：最大化类间方差，最小化类内方差 - <strong>维度限制</strong>：最多可降至C-1维（C为类别数量） - <strong>应用</strong>：更适合分类问题的降维</p>
-</section>
-<section id="因子分析-factor-analysis" class="level4" data-number="11.1.4.2">
-<h4 data-number="11.1.4.2" class="anchored" data-anchor-id="因子分析-factor-analysis"><span class="header-section-number">11.1.4.2</span> 因子分析 (Factor Analysis)</h4>
-<p>因子分析是一种统计方法，用于描述观察到的相关变量之间的变异性，试图将其归因于较少数量的未观察到的变量（称为因子）。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> FactorAnalysis</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># n_components 是潜在因子的数量</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>fa <span class="op">=</span> FactorAnalysis(n_components<span class="op">=</span><span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>X_fa <span class="op">=</span> fa.fit_transform(X_scaled)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"因子分析后的形状:"</span>, X_fa.shape)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"因子载荷矩阵:"</span>, fa.components_)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-</section>
-<section id="非线性降维方法" class="level3" data-number="11.1.5">
-<h3 data-number="11.1.5" class="anchored" data-anchor-id="非线性降维方法"><span class="header-section-number">11.1.5</span> 非线性降维方法</h3>
+<section id="非线性降维方法" class="level3" data-number="12.1.4">
+<h3 data-number="12.1.4" class="anchored" data-anchor-id="非线性降维方法"><span class="header-section-number">12.1.4</span> 非线性降维方法</h3>
 <p>当数据分布在非线性流形上时，线性降维方法可能效果不佳。这时我们需要考虑非线性降维方法。</p>
-<section id="t-sne-t-distributed-stochastic-neighbor-embedding" class="level4" data-number="11.1.5.1">
-<h4 data-number="11.1.5.1" class="anchored" data-anchor-id="t-sne-t-distributed-stochastic-neighbor-embedding"><span class="header-section-number">11.1.5.1</span> t-SNE (t-Distributed Stochastic Neighbor Embedding)</h4>
+<section id="t-sne-t-distributed-stochastic-neighbor-embedding" class="level4" data-number="12.1.4.1">
+<h4 data-number="12.1.4.1" class="anchored" data-anchor-id="t-sne-t-distributed-stochastic-neighbor-embedding"><span class="header-section-number">12.1.4.1</span> t-SNE (t-Distributed Stochastic Neighbor Embedding)</h4>
 <p>t-SNE 是一种非常流行的非线性降维方法，特别适合数据可视化。它尝试在低维空间中保留高维空间中点的局部结构（即相似的点在降维后仍然靠近）。</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.manifold <span class="im">import</span> TSNE</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># n_components 通常是2或3 (用于可视化)</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># perplexity 是一个重要参数，通常在5-50之间，影响局部结构的保留</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>tsne <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, perplexity<span class="op">=</span><span class="dv">30</span>, random_state<span class="op">=</span><span class="dv">42</span>, n_iter<span class="op">=</span><span class="dv">1000</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>X_tsne <span class="op">=</span> tsne.fit_transform(X_digits)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"t-SNE 降维后的形状:"</span>, X_tsne.shape)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化 t-SNE 结果</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_tsne[:, <span class="dv">0</span>], X_tsne[:, <span class="dv">1</span>], c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'viridis'</span>, edgecolor<span class="op">=</span><span class="st">'none'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, s<span class="op">=</span><span class="dv">40</span>)</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>plt.colorbar(label<span class="op">=</span><span class="st">'Digit Label'</span>)</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'t-SNE of Digits Dataset (2 Components)'</span>)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'t-SNE 1'</span>)</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'t-SNE 2'</span>)</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>t-SNE的特点： - <strong>优点</strong>：能够保留局部结构，非常适合数据可视化 - <strong>缺点</strong>： - 计算复杂度高，不适合大数据集 - 参数敏感（特别是perplexity） - 不支持transform新数据（需要重新拟合） - 随机性高，不同运行可能产生不同结果</p>
+<section id="t-sne的核心原理" class="level5" data-number="12.1.4.1.1">
+<h5 data-number="12.1.4.1.1" class="anchored" data-anchor-id="t-sne的核心原理"><span class="header-section-number">12.1.4.1.1</span> t-SNE的核心原理</h5>
+<p>t-SNE与PCA的根本区别在于其目标函数：PCA最大化投影方差，而t-SNE尝试保留数据点之间的相似度关系。其工作原理包括：</p>
+<ol type="1">
+<li><p><strong>高维相似度计算</strong>：在原始高维空间中，使用高斯分布计算点对之间的条件概率，作为相似度度量：</p>
+<p><span class="math display">\[p_{j|i} = \frac{\exp(-||x_i - x_j||^2/2\sigma_i^2)}{\sum_{k \neq i}\exp(-||x_i - x_k||^2/2\sigma_i^2)}\]</span></p>
+<p>这里<span class="math inline">\(\sigma_i\)</span>是根据困惑度(perplexity)参数调整的局部高斯分布的宽度</p></li>
+<li><p><strong>低维映射</strong>：在低维空间中，使用t分布（而非高斯分布）计算点对之间的相似度：</p>
+<p><span class="math display">\[q_{ij} = \frac{(1 + ||y_i - y_j||^2)^{-1}}{\sum_{k \neq l}(1 + ||y_k - y_l||^2)^{-1}}\]</span></p></li>
+<li><p><strong>优化目标</strong>：最小化高维空间和低维空间中相似度分布的KL散度：</p>
+<p><span class="math display">\[KL(P||Q) = \sum_i \sum_j p_{ij} \log \frac{p_{ij}}{q_{ij}}\]</span></p></li>
+</ol>
 </section>
-<section id="umap-uniform-manifold-approximation-and-projection" class="level4" data-number="11.1.5.2">
-<h4 data-number="11.1.5.2" class="anchored" data-anchor-id="umap-uniform-manifold-approximation-and-projection"><span class="header-section-number">11.1.5.2</span> UMAP (Uniform Manifold Approximation and Projection)</h4>
+<section id="t-sne的特点与理解" class="level5" data-number="12.1.4.1.2">
+<h5 data-number="12.1.4.1.2" class="anchored" data-anchor-id="t-sne的特点与理解"><span class="header-section-number">12.1.4.1.2</span> t-SNE的特点与理解</h5>
+<ul>
+<li><strong>使用t分布的原因</strong>：在低维空间使用t分布（重尾分布）而非高斯分布，可以缓解”拥挤问题”（高维空间中适度远距离的点在低维投影中过于靠近）</li>
+<li><strong>perplexity参数</strong>：困惑度控制考虑每个点的局部邻域大小，可理解为”有效邻居数量”</li>
+<li><strong>随机初始化</strong>：结果依赖于随机初始化，每次运行可能得到不同结果</li>
+<li><strong>注重局部结构</strong>：t-SNE特别擅长保留局部结构，但可能扭曲全局关系</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.manifold <span class="im">import</span> TSNE</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 展示不同perplexity参数对t-SNE结果的影响</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>perplexities <span class="op">=</span> [<span class="dv">5</span>, <span class="dv">30</span>, <span class="dv">50</span>, <span class="dv">100</span>]</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">12</span>))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> axes.flatten()</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, perplexity <span class="kw">in</span> <span class="bu">enumerate</span>(perplexities):</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    t0 <span class="op">=</span> time.time()</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    tsne <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, perplexity<span class="op">=</span>perplexity, random_state<span class="op">=</span><span class="dv">42</span>, </span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                n_iter<span class="op">=</span><span class="dv">1000</span>, learning_rate<span class="op">=</span><span class="st">'auto'</span>, init<span class="op">=</span><span class="st">'pca'</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    X_tsne <span class="op">=</span> tsne.fit_transform(X_digits)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    t1 <span class="op">=</span> time.time()</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 可视化结果</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    scatter <span class="op">=</span> axes[i].scatter(X_tsne[:, <span class="dv">0</span>], X_tsne[:, <span class="dv">1</span>], </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>                             c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'tab10'</span>, edgecolor<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>, s<span class="op">=</span><span class="dv">60</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    axes[i].set_title(<span class="ss">f'perplexity=</span><span class="sc">{</span>perplexity<span class="sc">}</span><span class="ss"> (计算时间: </span><span class="sc">{</span>t1<span class="op">-</span>t0<span class="sc">:.2f}</span><span class="ss">秒)'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    axes[i].set_xlabel(<span class="st">'t-SNE 1'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    axes[i].set_ylabel(<span class="st">'t-SNE 2'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 添加数字标签</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j, (x, y) <span class="kw">in</span> <span class="bu">enumerate</span>(X_tsne):</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> j <span class="op">%</span> <span class="dv">70</span> <span class="op">==</span> <span class="dv">0</span>:  <span class="co"># 标记部分点</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>            axes[i].text(x, y, <span class="bu">str</span>(y_digits[j]), </span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>                         fontsize<span class="op">=</span><span class="dv">12</span>, color<span class="op">=</span><span class="st">'black'</span>,</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>                         bbox<span class="op">=</span><span class="bu">dict</span>(facecolor<span class="op">=</span><span class="st">'white'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>))</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>plt.colorbar(scatter, ax<span class="op">=</span>axes, label<span class="op">=</span><span class="st">'数字标签'</span>)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'t-SNE降维结果 - 不同perplexity参数对比'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>plt.subplots_adjust(top<span class="op">=</span><span class="fl">0.94</span>)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="co"># 深入分析最优t-SNE结果</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>best_perplexity <span class="op">=</span> <span class="dv">30</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>tsne_best <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, perplexity<span class="op">=</span>best_perplexity, random_state<span class="op">=</span><span class="dv">42</span>, </span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>               n_iter<span class="op">=</span><span class="dv">1000</span>, learning_rate<span class="op">=</span><span class="st">'auto'</span>, init<span class="op">=</span><span class="st">'pca'</span>)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>X_tsne_best <span class="op">=</span> tsne_best.fit_transform(X_digits)</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="co"># 详细可视化最佳t-SNE结果</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">10</span>))</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">=</span> plt.scatter(X_tsne_best[:, <span class="dv">0</span>], X_tsne_best[:, <span class="dv">1</span>], </span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>                     c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'tab10'</span>, edgecolor<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>, s<span class="op">=</span><span class="dv">70</span>)</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f't-SNE降维结果 (perplexity=</span><span class="sc">{</span>best_perplexity<span class="sc">}</span><span class="ss">)'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'t-SNE 1'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'t-SNE 2'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="co"># 添加数字标签和聚类边界</span></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (x, y) <span class="kw">in</span> <span class="bu">enumerate</span>(X_tsne_best):</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">%</span> <span class="dv">50</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>        plt.text(x, y, <span class="bu">str</span>(y_digits[i]), </span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>                fontsize<span class="op">=</span><span class="dv">12</span>, color<span class="op">=</span><span class="st">'black'</span>,</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>                bbox<span class="op">=</span><span class="bu">dict</span>(facecolor<span class="op">=</span><span class="st">'white'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>))</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="co"># 添加图例和网格</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>plt.colorbar(scatter, label<span class="op">=</span><span class="st">'数字标签'</span>)</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="umap-uniform-manifold-approximation-and-projection" class="level4" data-number="12.1.4.2">
+<h4 data-number="12.1.4.2" class="anchored" data-anchor-id="umap-uniform-manifold-approximation-and-projection"><span class="header-section-number">12.1.4.2</span> UMAP (Uniform Manifold Approximation and Projection)</h4>
 <p>UMAP 是一种较新的非线性降维技术，它基于黎曼几何和代数拓扑，在保持数据全局结构的同时，维持局部结构。比t-SNE更快，且能更好地保留全局结构。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 需要安装: pip install umap-learn</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> umap</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># n_neighbors 控制局部结构的保留程度</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># min_dist 控制嵌入中点的紧密程度</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>reducer <span class="op">=</span> umap.UMAP(n_components<span class="op">=</span><span class="dv">2</span>, n_neighbors<span class="op">=</span><span class="dv">15</span>, min_dist<span class="op">=</span><span class="fl">0.1</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>X_umap <span class="op">=</span> reducer.fit_transform(X_digits)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"UMAP 降维后的形状:"</span>, X_umap.shape)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化 UMAP 结果</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_umap[:, <span class="dv">0</span>], X_umap[:, <span class="dv">1</span>], c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'viridis'</span>, edgecolor<span class="op">=</span><span class="st">'none'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, s<span class="op">=</span><span class="dv">40</span>)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>plt.colorbar(label<span class="op">=</span><span class="st">'Digit Label'</span>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'UMAP of Digits Dataset (2 Components)'</span>)</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'UMAP 1'</span>)</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'UMAP 2'</span>)</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>UMAP的优势： - 比t-SNE更快 - 更好地保留全局结构 - 能够transform新数据 - 理论基础更坚实</p>
+<section id="umap的理论基础" class="level5" data-number="12.1.4.2.1">
+<h5 data-number="12.1.4.2.1" class="anchored" data-anchor-id="umap的理论基础"><span class="header-section-number">12.1.4.2.1</span> UMAP的理论基础</h5>
+<p>UMAP建立在更坚实的数学基础上，主要基于：</p>
+<ol type="1">
+<li><strong>黎曼几何和流形理论</strong>：假设高维数据位于低维流形上</li>
+<li><strong>代数拓扑</strong>：使用简化拓扑表示数据</li>
+</ol>
+</section>
+<section id="umap的工作原理" class="level5" data-number="12.1.4.2.2">
+<h5 data-number="12.1.4.2.2" class="anchored" data-anchor-id="umap的工作原理"><span class="header-section-number">12.1.4.2.2</span> UMAP的工作原理</h5>
+<p>UMAP的算法步骤包括：</p>
+<ol type="1">
+<li><p><strong>构建局部流形近似</strong>：为每个数据点构建局部流形的模糊拓扑表示</p>
+<p><span class="math display">\[\rho_i = \min\{d(x_i, x_j) | 1 \leq j \leq k, j \neq i\}\]</span></p>
+<p><span class="math display">\[\sigma_i\]</span>通过二分搜索求解，使得：</p>
+<p><span class="math display">\[\sum_{j=1}^n \exp(-\max(0, d(x_i, x_j) - \rho_i)/\sigma_i) = \log_2(k)\]</span></p></li>
+<li><p><strong>构建高维模糊图</strong>：基于局部距离创建模糊图表示</p>
+<p><span class="math display">\[v_{ij} = \exp(-\max(0, d(x_i, x_j) - \rho_i)/\sigma_i)\]</span></p></li>
+<li><p><strong>低维嵌入优化</strong>：通过力导向图布局算法，优化低维表示以匹配高维拓扑结构</p>
+<p><span class="math display">\[v_{ij} \log\left(\frac{v_{ij}}{w_{ij}}\right) + (1-v_{ij})\log\left(\frac{1-v_{ij}}{1-w_{ij}}\right)\]</span></p></li>
+</ol>
+</section>
+<section id="umap与t-sne的关键区别" class="level5" data-number="12.1.4.2.3">
+<h5 data-number="12.1.4.2.3" class="anchored" data-anchor-id="umap与t-sne的关键区别"><span class="header-section-number">12.1.4.2.3</span> UMAP与t-SNE的关键区别</h5>
+<ul>
+<li><strong>理论基础</strong>：UMAP基于拓扑学和流形理论，t-SNE基于概率论</li>
+<li><strong>全局结构</strong>：UMAP通常更好地保留全局结构</li>
+<li><strong>计算效率</strong>：UMAP比t-SNE更快，尤其是对大型数据集</li>
+<li><strong>超参数</strong>：UMAP的主要参数是n_neighbors（类似于t-SNE的perplexity）和min_dist（控制点的紧密程度）</li>
+<li><strong>可扩展性</strong>：UMAP支持新数据点的transform，t-SNE不支持</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 需要安装: pip install umap-learn</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> umap</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 探索不同参数对UMAP结果的影响</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>n_neighbors_list <span class="op">=</span> [<span class="dv">5</span>, <span class="dv">15</span>, <span class="dv">30</span>, <span class="dv">50</span>]  <span class="co"># 邻居数量影响局部结构保留程度</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>min_dist_list <span class="op">=</span> [<span class="fl">0.0</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.8</span>]  <span class="co"># 最小距离影响数据点分布紧密度</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="bu">len</span>(n_neighbors_list), <span class="bu">len</span>(min_dist_list), </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                         figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">20</span>))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, n_neighbors <span class="kw">in</span> <span class="bu">enumerate</span>(n_neighbors_list):</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j, min_dist <span class="kw">in</span> <span class="bu">enumerate</span>(min_dist_list):</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        t0 <span class="op">=</span> time.time()</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        reducer <span class="op">=</span> umap.UMAP(n_components<span class="op">=</span><span class="dv">2</span>, </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>                           n_neighbors<span class="op">=</span>n_neighbors, </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>                           min_dist<span class="op">=</span>min_dist, </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>                           random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        X_umap <span class="op">=</span> reducer.fit_transform(X_digits)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        t1 <span class="op">=</span> time.time()</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 可视化结果</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        scatter <span class="op">=</span> axes[i, j].scatter(X_umap[:, <span class="dv">0</span>], X_umap[:, <span class="dv">1</span>], </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                                    c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'tab10'</span>, </span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                                    edgecolor<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>, s<span class="op">=</span><span class="dv">40</span>)</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>        axes[i, j].set_title(<span class="ss">f'n_neighbors=</span><span class="sc">{</span>n_neighbors<span class="sc">}</span><span class="ss">, min_dist=</span><span class="sc">{</span>min_dist<span class="sc">}</span><span class="ch">\n</span><span class="ss">计算时间: </span><span class="sc">{</span>t1<span class="op">-</span>t0<span class="sc">:.2f}</span><span class="ss">秒'</span>, </span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>                            fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 仅在最左侧添加y标签，最底部添加x标签</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> j <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>            axes[i, j].set_ylabel(<span class="st">'UMAP 2'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">==</span> <span class="bu">len</span>(n_neighbors_list) <span class="op">-</span> <span class="dv">1</span>:</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>            axes[i, j].set_xlabel(<span class="st">'UMAP 1'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>plt.colorbar(scatter, ax<span class="op">=</span>axes.ravel().tolist(), label<span class="op">=</span><span class="st">'数字标签'</span>)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'UMAP降维结果 - 不同参数组合对比'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>plt.subplots_adjust(top<span class="op">=</span><span class="fl">0.95</span>)</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="co"># 深入分析最优UMAP结果</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>best_n_neighbors <span class="op">=</span> <span class="dv">15</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>best_min_dist <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>umap_best <span class="op">=</span> umap.UMAP(n_components<span class="op">=</span><span class="dv">2</span>, </span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>                     n_neighbors<span class="op">=</span>best_n_neighbors, </span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>                     min_dist<span class="op">=</span>best_min_dist, </span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>                     random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>X_umap_best <span class="op">=</span> umap_best.fit_transform(X_digits)</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="co"># 详细可视化最佳UMAP结果</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">10</span>))</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">=</span> plt.scatter(X_umap_best[:, <span class="dv">0</span>], X_umap_best[:, <span class="dv">1</span>], </span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>                     c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'tab10'</span>, </span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>                     edgecolor<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.8</span>, s<span class="op">=</span><span class="dv">70</span>)</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="ss">f'UMAP降维结果 (n_neighbors=</span><span class="sc">{</span>best_n_neighbors<span class="sc">}</span><span class="ss">, min_dist=</span><span class="sc">{</span>best_min_dist<span class="sc">}</span><span class="ss">)'</span>, </span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>         fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'UMAP 1'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'UMAP 2'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a><span class="co"># 添加数字标签</span></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (x, y) <span class="kw">in</span> <span class="bu">enumerate</span>(X_umap_best):</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">%</span> <span class="dv">50</span> <span class="op">==</span> <span class="dv">0</span>:  <span class="co"># 只标记部分点</span></span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>        plt.text(x, y, <span class="bu">str</span>(y_digits[i]), </span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>                fontsize<span class="op">=</span><span class="dv">12</span>, color<span class="op">=</span><span class="st">'black'</span>,</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>                bbox<span class="op">=</span><span class="bu">dict</span>(facecolor<span class="op">=</span><span class="st">'white'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>))</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>plt.colorbar(scatter, label<span class="op">=</span><span class="st">'数字标签'</span>)</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a><span class="co"># 3D可视化</span></span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>umap_3d <span class="op">=</span> umap.UMAP(n_components<span class="op">=</span><span class="dv">3</span>, </span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>                   n_neighbors<span class="op">=</span>best_n_neighbors, </span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>                   min_dist<span class="op">=</span>best_min_dist, </span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a>                   random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>X_umap_3d <span class="op">=</span> umap_3d.fit_transform(X_digits)</span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">10</span>))</span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">'3d'</span>)</span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>scatter <span class="op">=</span> ax.scatter(X_umap_3d[:, <span class="dv">0</span>], X_umap_3d[:, <span class="dv">1</span>], X_umap_3d[:, <span class="dv">2</span>],</span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>                    c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'tab10'</span>, </span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>                    edgecolor<span class="op">=</span><span class="st">'k'</span>, s<span class="op">=</span><span class="dv">40</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'MNIST Digits数据的UMAP 3D降维结果'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'UMAP 1'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'UMAP 2'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>ax.set_zlabel(<span class="st">'UMAP 3'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>plt.colorbar(scatter, ax<span class="op">=</span>ax, label<span class="op">=</span><span class="st">'数字标签'</span>)</span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>UMAP的优势： - 比t-SNE更快，特别是对大型数据集 - 更好地保留全局和局部结构 - 能够transform新数据 - 理论基础更坚实 - 参数对结果的影响相对更可预测</p>
 </section>
 </section>
-<section id="实践与讨论" class="level3" data-number="11.1.6">
-<h3 data-number="11.1.6" class="anchored" data-anchor-id="实践与讨论"><span class="header-section-number">11.1.6</span> 实践与讨论</h3>
-<section id="各种降维方法的比较" class="level4" data-number="11.1.6.1">
-<h4 data-number="11.1.6.1" class="anchored" data-anchor-id="各种降维方法的比较"><span class="header-section-number">11.1.6.1</span> 各种降维方法的比较</h4>
+</section>
+<section id="三种降维方法的理论比较" class="level3" data-number="12.1.5">
+<h3 data-number="12.1.5" class="anchored" data-anchor-id="三种降维方法的理论比较"><span class="header-section-number">12.1.5</span> 三种降维方法的理论比较</h3>
+<p>为了更清晰地理解PCA、t-SNE和UMAP的区别，我们可以从多个角度进行比较：</p>
+<section id="数学理论基础" class="level4" data-number="12.1.5.1">
+<h4 data-number="12.1.5.1" class="anchored" data-anchor-id="数学理论基础"><span class="header-section-number">12.1.5.1</span> 数学理论基础</h4>
+<ul>
+<li><strong>PCA</strong>：线性代数和方差最大化，基于特征值分解或奇异值分解</li>
+<li><strong>t-SNE</strong>：概率论和信息论，基于高维和低维概率分布的KL散度最小化</li>
+<li><strong>UMAP</strong>：代数拓扑和流形理论，基于拓扑结构保持</li>
+</ul>
+</section>
+<section id="优化目标" class="level4" data-number="12.1.5.2">
+<h4 data-number="12.1.5.2" class="anchored" data-anchor-id="优化目标"><span class="header-section-number">12.1.5.2</span> 优化目标</h4>
+<ul>
+<li><strong>PCA</strong>：最大化投影方差，保留全局结构</li>
+<li><strong>t-SNE</strong>：最小化高维和低维概率分布的KL散度，保留局部结构</li>
+<li><strong>UMAP</strong>：优化模糊拓扑表示，平衡局部和全局结构</li>
+</ul>
+</section>
+<section id="数据假设" class="level4" data-number="12.1.5.3">
+<h4 data-number="12.1.5.3" class="anchored" data-anchor-id="数据假设"><span class="header-section-number">12.1.5.3</span> 数据假设</h4>
+<ul>
+<li><strong>PCA</strong>：假设数据位于线性子空间</li>
+<li><strong>t-SNE</strong>：无明确的数据分布假设，但注重局部相似性保持</li>
+<li><strong>UMAP</strong>：假设数据位于均匀分布的黎曼流形上</li>
+</ul>
+</section>
+<section id="计算复杂度" class="level4" data-number="12.1.5.4">
+<h4 data-number="12.1.5.4" class="anchored" data-anchor-id="计算复杂度"><span class="header-section-number">12.1.5.4</span> 计算复杂度</h4>
+<ul>
+<li><strong>PCA</strong>：<span class="math inline">\(O(min(nd^2, n^2d))\)</span>，其中n是样本数，d是特征数</li>
+<li><strong>t-SNE</strong>：<span class="math inline">\(O(n^2)\)</span>，优化版本可达到<span class="math inline">\(O(n\log n)\)</span></li>
+<li><strong>UMAP</strong>：<span class="math inline">\(O(n^{1.14})\)</span>，实际应用中通常快于t-SNE</li>
+</ul>
+</section>
+<section id="各自的适用场景" class="level4" data-number="12.1.5.5">
+<h4 data-number="12.1.5.5" class="anchored" data-anchor-id="各自的适用场景"><span class="header-section-number">12.1.5.5</span> 各自的适用场景</h4>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 14%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>方法</th>
+<th>数据规模</th>
+<th>局部结构保持</th>
+<th>全局结构保持</th>
+<th>计算速度</th>
+<th>可视化效果</th>
+<th>新数据处理</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>PCA</td>
+<td>任何规模</td>
+<td>一般</td>
+<td>好</td>
+<td>非常快</td>
+<td>一般</td>
+<td>支持</td>
+</tr>
+<tr class="even">
+<td>t-SNE</td>
+<td>中小规模</td>
+<td>非常好</td>
+<td>一般</td>
+<td>慢</td>
+<td>优秀</td>
+<td>不支持</td>
+</tr>
+<tr class="odd">
+<td>UMAP</td>
+<td>各种规模</td>
+<td>非常好</td>
+<td>好</td>
+<td>快</td>
+<td>优秀</td>
+<td>支持</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="实践与讨论" class="level3" data-number="12.1.6">
+<h3 data-number="12.1.6" class="anchored" data-anchor-id="实践与讨论"><span class="header-section-number">12.1.6</span> 实践与讨论</h3>
+<section id="各种降维方法的比较" class="level4" data-number="12.1.6.1">
+<h4 data-number="12.1.6.1" class="anchored" data-anchor-id="各种降维方法的比较"><span class="header-section-number">12.1.6.1</span> 各种降维方法的比较</h4>
 <p>让我们比较PCA、t-SNE和UMAP在同一数据集上的表现：</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 设置图形大小</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">6</span>))</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_digits_pca_2d[:, <span class="dv">0</span>], X_digits_pca_2d[:, <span class="dv">1</span>], c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'viridis'</span>, edgecolor<span class="op">=</span><span class="st">'none'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, s<span class="op">=</span><span class="dv">40</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'PCA'</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># t-SNE</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_tsne[:, <span class="dv">0</span>], X_tsne[:, <span class="dv">1</span>], c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'viridis'</span>, edgecolor<span class="op">=</span><span class="st">'none'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, s<span class="op">=</span><span class="dv">40</span>)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'t-SNE'</span>)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># UMAP</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_umap[:, <span class="dv">0</span>], X_umap[:, <span class="dv">1</span>], c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'viridis'</span>, edgecolor<span class="op">=</span><span class="st">'none'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, s<span class="op">=</span><span class="dv">40</span>)</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'UMAP'</span>)</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>plt.colorbar()</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 设置图形大小</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">18</span>, <span class="dv">6</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_digits_pca_2d[:, <span class="dv">0</span>], X_digits_pca_2d[:, <span class="dv">1</span>], </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>           c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'tab10'</span>, edgecolor<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, s<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'PCA'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'主成分 1'</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'主成分 2'</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 标注部分数字</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (x, y) <span class="kw">in</span> <span class="bu">enumerate</span>(X_digits_pca_2d):</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">%</span> <span class="dv">200</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        plt.text(x, y, <span class="bu">str</span>(y_digits[i]), fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># t-SNE</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_tsne_best[:, <span class="dv">0</span>], X_tsne_best[:, <span class="dv">1</span>], </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>           c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'tab10'</span>, edgecolor<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, s<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'t-SNE'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'t-SNE 1'</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'t-SNE 2'</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 标注部分数字</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (x, y) <span class="kw">in</span> <span class="bu">enumerate</span>(X_tsne_best):</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">%</span> <span class="dv">200</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>        plt.text(x, y, <span class="bu">str</span>(y_digits[i]), fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co"># UMAP</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_umap_best[:, <span class="dv">0</span>], X_umap_best[:, <span class="dv">1</span>], </span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>           c<span class="op">=</span>y_digits, cmap<span class="op">=</span><span class="st">'tab10'</span>, edgecolor<span class="op">=</span><span class="st">'k'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, s<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'UMAP'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'UMAP 1'</span>)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'UMAP 2'</span>)</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="co"># 标注部分数字</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (x, y) <span class="kw">in</span> <span class="bu">enumerate</span>(X_umap_best):</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">%</span> <span class="dv">200</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>        plt.text(x, y, <span class="bu">str</span>(y_digits[i]), fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>plt.colorbar(scatter, ax<span class="op">=</span>plt.gcf().get_axes(), label<span class="op">=</span><span class="st">'数字标签'</span>)</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'MNIST数据集降维方法比较'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>plt.subplots_adjust(top<span class="op">=</span><span class="fl">0.88</span>)</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="co"># 定量比较：计算降维后同类数据点的聚集程度</span></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> silhouette_score</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算轮廓系数 (值越高表示聚类效果越好)</span></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>silhouette_pca <span class="op">=</span> silhouette_score(X_digits_pca_2d, y_digits)</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>silhouette_tsne <span class="op">=</span> silhouette_score(X_tsne_best, y_digits)</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>silhouette_umap <span class="op">=</span> silhouette_score(X_umap_best, y_digits)</span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"各降维方法的轮廓系数比较:"</span>)</span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"PCA: </span><span class="sc">{</span>silhouette_pca<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"t-SNE: </span><span class="sc">{</span>silhouette_tsne<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"UMAP: </span><span class="sc">{</span>silhouette_umap<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算每种方法的运行时间比较</span></span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a><span class="co"># PCA时间</span></span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.time()</span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>pca.fit_transform(X_digits_scaled)</span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>pca_time <span class="op">=</span> time.time() <span class="op">-</span> t0</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a><span class="co"># t-SNE时间</span></span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.time()</span>
+<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>tsne <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, perplexity<span class="op">=</span><span class="dv">30</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>tsne.fit_transform(X_digits_scaled)</span>
+<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>tsne_time <span class="op">=</span> time.time() <span class="op">-</span> t0</span>
+<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a><span class="co"># UMAP时间</span></span>
+<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> time.time()</span>
+<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>reducer <span class="op">=</span> umap.UMAP(n_components<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>reducer.fit_transform(X_digits_scaled)</span>
+<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a>umap_time <span class="op">=</span> time.time() <span class="op">-</span> t0</span>
+<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">各降维方法的计算时间比较:"</span>)</span>
+<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"PCA: </span><span class="sc">{</span>pca_time<span class="sc">:.4f}</span><span class="ss">秒"</span>)</span>
+<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"t-SNE: </span><span class="sc">{</span>tsne_time<span class="sc">:.4f}</span><span class="ss">秒"</span>)</span>
+<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"UMAP: </span><span class="sc">{</span>umap_time<span class="sc">:.4f}</span><span class="ss">秒"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="如何选择合适的降维方法" class="level4" data-number="11.1.6.2">
-<h4 data-number="11.1.6.2" class="anchored" data-anchor-id="如何选择合适的降维方法"><span class="header-section-number">11.1.6.2</span> 如何选择合适的降维方法？</h4>
+<section id="如何选择合适的降维方法" class="level4" data-number="12.1.6.2">
+<h4 data-number="12.1.6.2" class="anchored" data-anchor-id="如何选择合适的降维方法"><span class="header-section-number">12.1.6.2</span> 如何选择合适的降维方法？</h4>
 <p>选择降维方法时应考虑以下因素：</p>
 <ol type="1">
 <li><strong>数据规模</strong>：大数据集可能更适合PCA或UMAP，而不是计算密集的t-SNE</li>
@@ -626,8 +1029,8 @@ window.Quarto = {
 <li><strong>计算资源</strong>：PCA快速且高效，非线性方法计算密集</li>
 </ol>
 </section>
-<section id="实践建议" class="level4" data-number="11.1.6.3">
-<h4 data-number="11.1.6.3" class="anchored" data-anchor-id="实践建议"><span class="header-section-number">11.1.6.3</span> 实践建议</h4>
+<section id="实践建议" class="level4" data-number="12.1.6.3">
+<h4 data-number="12.1.6.3" class="anchored" data-anchor-id="实践建议"><span class="header-section-number">12.1.6.3</span> 实践建议</h4>
 <ul>
 <li><strong>总是从PCA开始</strong>：先尝试简单的线性方法，再逐步尝试复杂的非线性方法</li>
 <li><strong>特征缩放非常重要</strong>：大多数降维方法对特征尺度敏感</li>
@@ -636,8 +1039,8 @@ window.Quarto = {
 <li><strong>结合领域知识</strong>：利用对数据的领域理解来评估降维结果</li>
 </ul>
 </section>
-<section id="本讲总结" class="level4" data-number="11.1.6.4">
-<h4 data-number="11.1.6.4" class="anchored" data-anchor-id="本讲总结"><span class="header-section-number">11.1.6.4</span> 本讲总结</h4>
+<section id="本讲总结" class="level4" data-number="12.1.6.4">
+<h4 data-number="12.1.6.4" class="anchored" data-anchor-id="本讲总结"><span class="header-section-number">12.1.6.4</span> 本讲总结</h4>
 <p>本讲我们学习了降维的重要性和各种降维技术，从线性方法（如PCA、LDA）到非线性方法（如t-SNE、UMAP）。我们重点讨论了PCA的原理、实现和应用，并简要介绍了其他降维方法的特点和适用场景。</p>
 <p>降维技术在机器学习中扮演着重要角色，它不仅能够减少计算复杂度，还能够帮助我们发现数据中的隐藏结构，提高模型性能，并实现数据可视化。掌握这些技术将使你能够更有效地处理高维数据。</p>
 
@@ -1070,12 +1473,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./07_cluster.html" class="pagination-link" aria-label="非监督学习：聚类 (Clustering)">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">非监督学习：聚类 (Clustering)</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">非监督学习：聚类 (Clustering)</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./project1_LC.html" class="pagination-link" aria-label="项目1：借贷违约风险评估">
-        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./11_nlp.html" class="pagination-link" aria-label="文本分析(一)：词频法与向量空间">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本分析(一)：词频法与向量空间</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

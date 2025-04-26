@@ -1,0 +1,2192 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>14&nbsp; 文本分析(二)：词向量与深度学习基础 – 数据挖掘与机器学习课程讲义</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./13_llm.html" rel="next">
+<link href="./11_nlp.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2486e1f0a3ee9ee1fc393803a1361cdb.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-ed6da6eef3892af8a4b5ed59bfb951f5.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "没有结果",
+    "search-matching-documents-text": "匹配的文档",
+    "search-copy-link-title": "复制搜索链接",
+    "search-hide-matches-text": "隐藏其它匹配结果",
+    "search-more-match-text": "更多匹配结果",
+    "search-more-matches-text": "更多匹配结果",
+    "search-clear-button-title": "清除",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "提交",
+    "search-label": "搜索"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./12_embedding.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析(二)：词向量与深度学习基础</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="搜索" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">数据挖掘与机器学习课程讲义</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="搜索"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">前言</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_ml_basic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">机器学习基础</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lab02_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">金融数据获取与数据分析基础</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_supervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">监督学习（上）</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_supervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">监督学习（下）</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_model_assess.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">模型评估与优化</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_ts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">时间序列监督学习</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lab03_titanic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">泰坦尼克号生存预测实践</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_credit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">信用评分理论基础</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_unsupervised.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">非监督学习技术概览及其金融应用</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_cluster.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">非监督学习：聚类 (Clustering)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_dimension.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">非监督学习：降维 (Dimensionality Reduction)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_nlp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本分析(一)：词频法与向量空间</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_embedding.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析(二)：词向量与深度学习基础</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13_llm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">文本分析(三)：大语言模型及其应用</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./project1_LC.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./project2a_tspred.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./project2b_text.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">目录</h2>
+   
+  <ul>
+  <li><a href="#从稀疏到密集表示" id="toc-从稀疏到密集表示" class="nav-link active" data-scroll-target="#从稀疏到密集表示"><span class="header-section-number">15</span> 从稀疏到密集表示</a>
+  <ul class="collapse">
+  <li><a href="#bag-of-words模型的局限性" id="toc-bag-of-words模型的局限性" class="nav-link" data-scroll-target="#bag-of-words模型的局限性"><span class="header-section-number">15.1</span> Bag of Words模型的局限性</a></li>
+  <li><a href="#词向量的直觉理解" id="toc-词向量的直觉理解" class="nav-link" data-scroll-target="#词向量的直觉理解"><span class="header-section-number">15.2</span> 词向量的直觉理解</a></li>
+  <li><a href="#分布式假设词向量的理论基础" id="toc-分布式假设词向量的理论基础" class="nav-link" data-scroll-target="#分布式假设词向量的理论基础"><span class="header-section-number">15.3</span> 分布式假设：词向量的理论基础</a></li>
+  <li><a href="#密集表示的数学性质" id="toc-密集表示的数学性质" class="nav-link" data-scroll-target="#密集表示的数学性质"><span class="header-section-number">15.4</span> 密集表示的数学性质</a></li>
+  </ul></li>
+  <li><a href="#word2vec原理讲解" id="toc-word2vec原理讲解" class="nav-link" data-scroll-target="#word2vec原理讲解"><span class="header-section-number">16</span> Word2Vec原理讲解</a>
+  <ul class="collapse">
+  <li><a href="#word2vec简介" id="toc-word2vec简介" class="nav-link" data-scroll-target="#word2vec简介"><span class="header-section-number">16.1</span> Word2Vec简介</a></li>
+  <li><a href="#skip-gram模型详解" id="toc-skip-gram模型详解" class="nav-link" data-scroll-target="#skip-gram模型详解"><span class="header-section-number">16.2</span> Skip-gram模型详解</a>
+  <ul class="collapse">
+  <li><a href="#模型结构" id="toc-模型结构" class="nav-link" data-scroll-target="#模型结构"><span class="header-section-number">16.2.1</span> 模型结构</a></li>
+  <li><a href="#训练过程" id="toc-训练过程" class="nav-link" data-scroll-target="#训练过程"><span class="header-section-number">16.2.2</span> 训练过程</a></li>
+  </ul></li>
+  <li><a href="#cbow模型详解" id="toc-cbow模型详解" class="nav-link" data-scroll-target="#cbow模型详解"><span class="header-section-number">16.3</span> CBOW模型详解</a>
+  <ul class="collapse">
+  <li><a href="#模型结构-1" id="toc-模型结构-1" class="nav-link" data-scroll-target="#模型结构-1"><span class="header-section-number">16.3.1</span> 模型结构</a></li>
+  <li><a href="#skip-gram与cbow对比" id="toc-skip-gram与cbow对比" class="nav-link" data-scroll-target="#skip-gram与cbow对比"><span class="header-section-number">16.3.2</span> Skip-gram与CBOW对比</a></li>
+  </ul></li>
+  <li><a href="#负采样negative-sampling技术" id="toc-负采样negative-sampling技术" class="nav-link" data-scroll-target="#负采样negative-sampling技术"><span class="header-section-number">16.4</span> 负采样（Negative Sampling）技术</a>
+  <ul class="collapse">
+  <li><a href="#负采样原理" id="toc-负采样原理" class="nav-link" data-scroll-target="#负采样原理"><span class="header-section-number">16.4.1</span> 负采样原理</a></li>
+  <li><a href="#负采样的优势" id="toc-负采样的优势" class="nav-link" data-scroll-target="#负采样的优势"><span class="header-section-number">16.4.2</span> 负采样的优势</a></li>
+  </ul></li>
+  <li><a href="#词向量空间的语义特性" id="toc-词向量空间的语义特性" class="nav-link" data-scroll-target="#词向量空间的语义特性"><span class="header-section-number">16.5</span> 词向量空间的语义特性</a>
+  <ul class="collapse">
+  <li><a href="#语义相关性" id="toc-语义相关性" class="nav-link" data-scroll-target="#语义相关性"><span class="header-section-number">16.5.1</span> 语义相关性</a></li>
+  <li><a href="#语义计算" id="toc-语义计算" class="nav-link" data-scroll-target="#语义计算"><span class="header-section-number">16.5.2</span> 语义计算</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#金融文本中应用word2vec" id="toc-金融文本中应用word2vec" class="nav-link" data-scroll-target="#金融文本中应用word2vec"><span class="header-section-number">17</span> 金融文本中应用Word2Vec</a>
+  <ul class="collapse">
+  <li><a href="#金融领域的词向量应用" id="toc-金融领域的词向量应用" class="nav-link" data-scroll-target="#金融领域的词向量应用"><span class="header-section-number">17.1</span> 金融领域的词向量应用</a></li>
+  <li><a href="#训练金融领域词向量" id="toc-训练金融领域词向量" class="nav-link" data-scroll-target="#训练金融领域词向量"><span class="header-section-number">17.2</span> 训练金融领域词向量</a>
+  <ul class="collapse">
+  <li><a href="#训练word2vec模型" id="toc-训练word2vec模型" class="nav-link" data-scroll-target="#训练word2vec模型"><span class="header-section-number">17.2.1</span> 训练Word2Vec模型</a></li>
+  <li><a href="#探索词向量空间" id="toc-探索词向量空间" class="nav-link" data-scroll-target="#探索词向量空间"><span class="header-section-number">17.2.2</span> 探索词向量空间</a></li>
+  <li><a href="#词向量的语义运算" id="toc-词向量的语义运算" class="nav-link" data-scroll-target="#词向量的语义运算"><span class="header-section-number">17.2.3</span> 词向量的语义运算</a></li>
+  </ul></li>
+  <li><a href="#可视化词向量空间" id="toc-可视化词向量空间" class="nav-link" data-scroll-target="#可视化词向量空间"><span class="header-section-number">17.3</span> 可视化词向量空间</a></li>
+  <li><a href="#实战案例政策热点分析" id="toc-实战案例政策热点分析" class="nav-link" data-scroll-target="#实战案例政策热点分析"><span class="header-section-number">17.4</span> 实战案例：政策热点分析</a></li>
+  <li><a href="#与其他nlp模型的集成" id="toc-与其他nlp模型的集成" class="nav-link" data-scroll-target="#与其他nlp模型的集成"><span class="header-section-number">17.5</span> 与其他NLP模型的集成</a></li>
+  </ul></li>
+  <li><a href="#预训练词向量模型比较与应用" id="toc-预训练词向量模型比较与应用" class="nav-link" data-scroll-target="#预训练词向量模型比较与应用"><span class="header-section-number">18</span> 预训练词向量模型比较与应用</a>
+  <ul class="collapse">
+  <li><a href="#中文预训练词向量模型" id="toc-中文预训练词向量模型" class="nav-link" data-scroll-target="#中文预训练词向量模型"><span class="header-section-number">18.1</span> 中文预训练词向量模型</a>
+  <ul class="collapse">
+  <li><a href="#腾讯ai-lab词向量chinese-word-vectors" id="toc-腾讯ai-lab词向量chinese-word-vectors" class="nav-link" data-scroll-target="#腾讯ai-lab词向量chinese-word-vectors"><span class="header-section-number">18.1.1</span> 1. 腾讯AI Lab词向量（Chinese Word Vectors）</a></li>
+  <li><a href="#哈工大讯飞联合实验室词向量hit-scir-chinese-word-vectors" id="toc-哈工大讯飞联合实验室词向量hit-scir-chinese-word-vectors" class="nav-link" data-scroll-target="#哈工大讯飞联合实验室词向量hit-scir-chinese-word-vectors"><span class="header-section-number">18.1.2</span> 2. 哈工大/讯飞联合实验室词向量（HIT-SCIR Chinese Word Vectors）</a></li>
+  <li><a href="#百度百科词向量baidu-encyclopedia-word-vectors" id="toc-百度百科词向量baidu-encyclopedia-word-vectors" class="nav-link" data-scroll-target="#百度百科词向量baidu-encyclopedia-word-vectors"><span class="header-section-number">18.1.3</span> 3. 百度百科词向量（Baidu Encyclopedia Word Vectors）</a></li>
+  </ul></li>
+  <li><a href="#英文预训练词向量模型" id="toc-英文预训练词向量模型" class="nav-link" data-scroll-target="#英文预训练词向量模型"><span class="header-section-number">18.2</span> 英文预训练词向量模型</a>
+  <ul class="collapse">
+  <li><a href="#google-news词向量" id="toc-google-news词向量" class="nav-link" data-scroll-target="#google-news词向量"><span class="header-section-number">18.2.1</span> 1. Google News词向量</a></li>
+  <li><a href="#gloveglobal-vectors-for-word-representation" id="toc-gloveglobal-vectors-for-word-representation" class="nav-link" data-scroll-target="#gloveglobal-vectors-for-word-representation"><span class="header-section-number">18.2.2</span> 2. GloVe（Global Vectors for Word Representation）</a></li>
+  <li><a href="#fasttext" id="toc-fasttext" class="nav-link" data-scroll-target="#fasttext"><span class="header-section-number">18.2.3</span> 3. FastText</a></li>
+  </ul></li>
+  <li><a href="#预训练模型的表现比较" id="toc-预训练模型的表现比较" class="nav-link" data-scroll-target="#预训练模型的表现比较"><span class="header-section-number">18.3</span> 预训练模型的表现比较</a>
+  <ul class="collapse">
+  <li><a href="#语义捕捉能力" id="toc-语义捕捉能力" class="nav-link" data-scroll-target="#语义捕捉能力"><span class="header-section-number">18.3.1</span> 1. 语义捕捉能力</a></li>
+  <li><a href="#领域适应性" id="toc-领域适应性" class="nav-link" data-scroll-target="#领域适应性"><span class="header-section-number">18.3.2</span> 2. 领域适应性</a></li>
+  <li><a href="#处理未登录词能力" id="toc-处理未登录词能力" class="nav-link" data-scroll-target="#处理未登录词能力"><span class="header-section-number">18.3.3</span> 3. 处理未登录词能力</a></li>
+  <li><a href="#多语言词向量对齐" id="toc-多语言词向量对齐" class="nav-link" data-scroll-target="#多语言词向量对齐"><span class="header-section-number">18.3.4</span> 4. 多语言词向量对齐</a></li>
+  </ul></li>
+  <li><a href="#预训练模型在不同任务中的选择指南" id="toc-预训练模型在不同任务中的选择指南" class="nav-link" data-scroll-target="#预训练模型在不同任务中的选择指南"><span class="header-section-number">18.4</span> 预训练模型在不同任务中的选择指南</a></li>
+  <li><a href="#选择或训练自己的词向量模型" id="toc-选择或训练自己的词向量模型" class="nav-link" data-scroll-target="#选择或训练自己的词向量模型"><span class="header-section-number">18.5</span> 选择或训练自己的词向量模型</a></li>
+  <li><a href="#结论" id="toc-结论" class="nav-link" data-scroll-target="#结论"><span class="header-section-number">18.6</span> 结论</a></li>
+  </ul></li>
+  <li><a href="#案例比较词频法与词向量在政府工作报告分析中的差异" id="toc-案例比较词频法与词向量在政府工作报告分析中的差异" class="nav-link" data-scroll-target="#案例比较词频法与词向量在政府工作报告分析中的差异"><span class="header-section-number">19</span> 案例比较：词频法与词向量在政府工作报告分析中的差异</a>
+  <ul class="collapse">
+  <li><a href="#相同文本的两种表示方法" id="toc-相同文本的两种表示方法" class="nav-link" data-scroll-target="#相同文本的两种表示方法"><span class="header-section-number">19.1</span> 相同文本的两种表示方法</a></li>
+  <li><a href="#文本相似度计算比较" id="toc-文本相似度计算比较" class="nav-link" data-scroll-target="#文本相似度计算比较"><span class="header-section-number">19.2</span> 文本相似度计算比较</a></li>
+  <li><a href="#关键词提取比较" id="toc-关键词提取比较" class="nav-link" data-scroll-target="#关键词提取比较"><span class="header-section-number">19.3</span> 关键词提取比较</a></li>
+  <li><a href="#语义关联发现比较" id="toc-语义关联发现比较" class="nav-link" data-scroll-target="#语义关联发现比较"><span class="header-section-number">19.4</span> 语义关联发现比较</a></li>
+  <li><a href="#主题和情感分析的差异" id="toc-主题和情感分析的差异" class="nav-link" data-scroll-target="#主题和情感分析的差异"><span class="header-section-number">19.5</span> 主题和情感分析的差异</a></li>
+  <li><a href="#综合比较与应用建议" id="toc-综合比较与应用建议" class="nav-link" data-scroll-target="#综合比较与应用建议"><span class="header-section-number">19.6</span> 综合比较与应用建议</a>
+  <ul class="collapse">
+  <li><a href="#应用建议" id="toc-应用建议" class="nav-link" data-scroll-target="#应用建议"><span class="header-section-number">19.6.1</span> 应用建议</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#小结与进阶方向" id="toc-小结与进阶方向" class="nav-link" data-scroll-target="#小结与进阶方向"><span class="header-section-number">20</span> 小结与进阶方向</a>
+  <ul class="collapse">
+  <li><a href="#词向量的优缺点" id="toc-词向量的优缺点" class="nav-link" data-scroll-target="#词向量的优缺点"><span class="header-section-number">20.1</span> 词向量的优缺点</a>
+  <ul class="collapse">
+  <li><a href="#优点" id="toc-优点" class="nav-link" data-scroll-target="#优点"><span class="header-section-number">20.1.1</span> 优点</a></li>
+  <li><a href="#局限性" id="toc-局限性" class="nav-link" data-scroll-target="#局限性"><span class="header-section-number">20.1.2</span> 局限性</a></li>
+  </ul></li>
+  <li><a href="#进阶方向" id="toc-进阶方向" class="nav-link" data-scroll-target="#进阶方向"><span class="header-section-number">20.2</span> 进阶方向</a></li>
+  <li><a href="#本讲小结" id="toc-本讲小结" class="nav-link" data-scroll-target="#本讲小结"><span class="header-section-number">20.3</span> 本讲小结</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析(二)：词向量与深度学习基础</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="从稀疏到密集表示" class="level1" data-number="15">
+<h1 data-number="15"><span class="header-section-number">15</span> 从稀疏到密集表示</h1>
+<section id="bag-of-words模型的局限性" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="bag-of-words模型的局限性"><span class="header-section-number">15.1</span> Bag of Words模型的局限性</h2>
+<p>上一讲中，我们学习了词袋模型（Bag of Words）和TF-IDF，这些是文本分析的基础方法。然而，这些方法存在明显局限性：</p>
+<ol type="1">
+<li><p><strong>丢失词序信息</strong>：词袋模型完全忽略词语出现的顺序。例如”政府调控房价”和”房价调控政府”在词袋表示中是完全相同的</p></li>
+<li><p><strong>语义鸿沟问题</strong>：无法捕捉词与词之间的语义关系，如同义词、上下位词等</p></li>
+<li><p><strong>维度灾难</strong>：高维稀疏向量（维度等于词汇量大小）导致计算效率低下</p></li>
+<li><p><strong>未登录词问题</strong>：无法处理训练集中未出现过的词语</p></li>
+</ol>
+<p>词袋模型的这些局限性促使研究者寻找更先进的文本表示方法，词向量（Word Embedding）正是这一探索的重要成果。</p>
+</section>
+<section id="词向量的直觉理解" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="词向量的直觉理解"><span class="header-section-number">15.2</span> 词向量的直觉理解</h2>
+<p><strong>词向量</strong>（Word Embedding）是将词语映射到一个低维稠密实数向量空间的技术，通常维度在50-300之间。与词袋模型不同，词向量具有以下特点：</p>
+<ol type="1">
+<li><strong>稠密表示</strong>：向量中的每个维度都有非零值</li>
+<li><strong>语义编码</strong>：向量的不同维度隐含地编码了词语的语义特征</li>
+<li><strong>相似性可计算</strong>：语义相近的词在向量空间中距离较近</li>
+</ol>
+<p>例如，“银行”和”金融”在向量空间中距离较近，而”银行”和”蔬菜”则距离较远。</p>
+</section>
+<section id="分布式假设词向量的理论基础" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="分布式假设词向量的理论基础"><span class="header-section-number">15.3</span> 分布式假设：词向量的理论基础</h2>
+<p>词向量背后的核心理论是<strong>分布式假设</strong>（Distributional Hypothesis），这一理论由语言学家J.R. Firth在1957年提出：</p>
+<blockquote class="blockquote">
+<p>“You shall know a word by the company it keeps.”（一个词的含义取决于它的伙伴词）</p>
+</blockquote>
+<p>这一假设认为：<strong>上下文相似的词，其语义也相似</strong>。例如，“银行”和”金融机构”经常出现在相似的上下文中，因此它们可能具有相似的语义。</p>
+<p>基于分布式假设，词向量学习的核心任务可以归纳为：学习一个映射函数，使得在语料库中上下文相似的词在向量空间中的位置也相近。</p>
+</section>
+<section id="密集表示的数学性质" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="密集表示的数学性质"><span class="header-section-number">15.4</span> 密集表示的数学性质</h2>
+<p>从数学角度看，密集表示的优势在于：</p>
+<ol type="1">
+<li><strong>降维性</strong>：从稀疏高维空间（词汇量大小，如5万维）降至低维空间（如300维）</li>
+<li><strong>连续性</strong>：连续向量空间允许进行向量代数运算，如类比推理</li>
+<li><strong>泛化能力</strong>：能够更好地泛化到未见过的例子</li>
+</ol>
+<p>数学上，稀疏向量与密集向量的对比如下：</p>
+<ul>
+<li><strong>稀疏向量</strong>（Sparse Vector）：<span class="math inline">\(\mathbf{v} = [0, 0, 1, 0, ..., 0, 2, 0]\)</span>，大多数元素为0</li>
+<li><strong>密集向量</strong>（Dense Vector）：<span class="math inline">\(\mathbf{v} = [0.2, -0.6, 0.5, 0.9, ..., -0.1, 0.3]\)</span>，大多数元素非0</li>
+</ul>
+<p>稠密向量表示的直观优势可以通过一个简单的类比来理解：假设我们要描述一个人，可以使用二元特征（是/否问题，对应稀疏表示）如”是否戴眼镜”、“是否有胡子”等，也可以使用连续特征（对应稠密表示）如身高、体重、年龄等。连续特征通常能更精确、更紧凑地描述对象。</p>
+</section>
+</section>
+<section id="word2vec原理讲解" class="level1" data-number="16">
+<h1 data-number="16"><span class="header-section-number">16</span> Word2Vec原理讲解</h1>
+<section id="word2vec简介" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="word2vec简介"><span class="header-section-number">16.1</span> Word2Vec简介</h2>
+<p><strong>Word2Vec</strong>是Mikolov等人于2013年提出的一种高效学习词向量的方法，它通过浅层神经网络从大规模语料库中学习词语的分布式表示。Word2Vec迅速成为NLP领域的里程碑技术，为后续深度学习在NLP中的应用奠定了基础。</p>
+<p>Word2Vec的核心思想是：<strong>通过预测上下文中的词来学习词语的向量表示</strong>。基于这一思想，Word2Vec提出了两种模型：</p>
+<ol type="1">
+<li><strong>Skip-gram模型</strong>：预测上下文词</li>
+<li><strong>CBOW（Continuous Bag of Words）模型</strong>：预测目标词</li>
+</ol>
+</section>
+<section id="skip-gram模型详解" class="level2" data-number="16.2">
+<h2 data-number="16.2" class="anchored" data-anchor-id="skip-gram模型详解"><span class="header-section-number">16.2</span> Skip-gram模型详解</h2>
+<p>Skip-gram模型的目标是：<strong>给定中心词，预测其上下文词</strong>。</p>
+<section id="模型结构" class="level3" data-number="16.2.1">
+<h3 data-number="16.2.1" class="anchored" data-anchor-id="模型结构"><span class="header-section-number">16.2.1</span> 模型结构</h3>
+<p>Skip-gram模型的网络结构如下：</p>
+<ol type="1">
+<li><strong>输入层</strong>：中心词的one-hot编码，维度为词汇量大小<span class="math inline">\(|V|\)</span></li>
+<li><strong>隐藏层</strong>：不含激活函数的全连接层，维度为词向量维度<span class="math inline">\(d\)</span></li>
+<li><strong>输出层</strong>：预测上下文词概率的softmax层，维度为词汇量大小<span class="math inline">\(|V|\)</span></li>
+</ol>
+<p>其数学表示为：</p>
+<p><span class="math display">\[p(w_o|w_i) = \frac{\exp(v_{w_o}^{\prime T} \cdot v_{w_i})}{\sum_{w=1}^{|V|} \exp(v_w^{\prime T} \cdot v_{w_i})}\]</span></p>
+<p>其中： - <span class="math inline">\(w_i\)</span>是中心词 - <span class="math inline">\(w_o\)</span>是上下文词 - <span class="math inline">\(v_{w_i}\)</span>是中心词的词向量（输入向量） - <span class="math inline">\(v_{w_o}^{\prime}\)</span>是上下文词的词向量（输出向量） - <span class="math inline">\(|V|\)</span>是词汇表大小</p>
+</section>
+<section id="训练过程" class="level3" data-number="16.2.2">
+<h3 data-number="16.2.2" class="anchored" data-anchor-id="训练过程"><span class="header-section-number">16.2.2</span> 训练过程</h3>
+<p>Skip-gram模型的训练过程如下：</p>
+<ol type="1">
+<li>从语料库中抽取中心词<span class="math inline">\(w_i\)</span>及其上下文窗口内的词<span class="math inline">\(w_o\)</span></li>
+<li>最大化预测上下文词的条件概率<span class="math inline">\(p(w_o|w_i)\)</span></li>
+<li>对所有词对<span class="math inline">\((w_i, w_o)\)</span>，优化目标函数：</li>
+</ol>
+<p><span class="math display">\[J(\theta) = \frac{1}{T}\sum_{t=1}^{T} \sum_{-c \leq j \leq c, j \neq 0} \log p(w_{t+j}|w_t)\]</span></p>
+<p>其中： - <span class="math inline">\(T\)</span>是语料库中的词数 - <span class="math inline">\(c\)</span>是上下文窗口大小 - <span class="math inline">\(\theta\)</span>是模型参数</p>
+</section>
+</section>
+<section id="cbow模型详解" class="level2" data-number="16.3">
+<h2 data-number="16.3" class="anchored" data-anchor-id="cbow模型详解"><span class="header-section-number">16.3</span> CBOW模型详解</h2>
+<p>CBOW（Continuous Bag of Words）模型与Skip-gram相反，其目标是：<strong>给定上下文词，预测中心词</strong>。</p>
+<section id="模型结构-1" class="level3" data-number="16.3.1">
+<h3 data-number="16.3.1" class="anchored" data-anchor-id="模型结构-1"><span class="header-section-number">16.3.1</span> 模型结构</h3>
+<p>CBOW模型的网络结构如下：</p>
+<ol type="1">
+<li><strong>输入层</strong>：多个上下文词的one-hot编码，每个维度为词汇量大小<span class="math inline">\(|V|\)</span></li>
+<li><strong>隐藏层</strong>：不含激活函数的全连接层，维度为词向量维度<span class="math inline">\(d\)</span></li>
+<li><strong>输出层</strong>：预测中心词概率的softmax层，维度为词汇量大小<span class="math inline">\(|V|\)</span></li>
+</ol>
+<p>CBOW模型首先对上下文词的向量取平均：</p>
+<p><span class="math display">\[\hat{v} = \frac{1}{2c} \sum_{-c \leq j \leq c, j \neq 0} v_{w_{t+j}}\]</span></p>
+<p>然后预测中心词的概率：</p>
+<p><span class="math display">\[p(w_t|\hat{v}) = \frac{\exp(v_{w_t}^{\prime T} \cdot \hat{v})}{\sum_{w=1}^{|V|} \exp(v_w^{\prime T} \cdot \hat{v})}\]</span></p>
+</section>
+<section id="skip-gram与cbow对比" class="level3" data-number="16.3.2">
+<h3 data-number="16.3.2" class="anchored" data-anchor-id="skip-gram与cbow对比"><span class="header-section-number">16.3.2</span> Skip-gram与CBOW对比</h3>
+<p>两种模型各有优缺点：</p>
+<ol type="1">
+<li><strong>Skip-gram</strong>:
+<ul>
+<li>更适合小型语料库</li>
+<li>对低频词表现更好</li>
+<li>计算复杂度较高</li>
+</ul></li>
+<li><strong>CBOW</strong>:
+<ul>
+<li>训练速度更快</li>
+<li>对高频词表现更好</li>
+<li>在大型语料库上更稳定</li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="负采样negative-sampling技术" class="level2" data-number="16.4">
+<h2 data-number="16.4" class="anchored" data-anchor-id="负采样negative-sampling技术"><span class="header-section-number">16.4</span> 负采样（Negative Sampling）技术</h2>
+<p>Word2Vec的一个主要计算瓶颈是softmax函数，其计算复杂度与词汇量成正比。为解决这一问题，Mikolov等人提出了<strong>负采样</strong>（Negative Sampling）技术。</p>
+<section id="负采样原理" class="level3" data-number="16.4.1">
+<h3 data-number="16.4.1" class="anchored" data-anchor-id="负采样原理"><span class="header-section-number">16.4.1</span> 负采样原理</h3>
+<p>负采样将多分类问题转化为二分类问题：</p>
+<ol type="1">
+<li>对于真实的词对<span class="math inline">\((w_i, w_o)\)</span>，将其标记为正样本（标签为1）</li>
+<li>对于每个正样本，随机采样<span class="math inline">\(k\)</span>个负样本<span class="math inline">\((w_i, w_n)\)</span>，其中<span class="math inline">\(w_n\)</span>是随机词（标签为0）</li>
+<li>使用逻辑回归来判断词对是否真实共现</li>
+</ol>
+<p>优化目标变为：</p>
+<p><span class="math display">\[J(\theta) = \log \sigma(v_{w_o}^{\prime T} \cdot v_{w_i}) + \sum_{j=1}^{k} \mathbb{E}_{w_j \sim P_n(w)} [\log \sigma(-v_{w_j}^{\prime T} \cdot v_{w_i})]\]</span></p>
+<p>其中： - <span class="math inline">\(\sigma\)</span>是sigmoid函数 - <span class="math inline">\(P_n(w)\)</span>是负样本的噪声分布，通常为词频的3/4次方</p>
+</section>
+<section id="负采样的优势" class="level3" data-number="16.4.2">
+<h3 data-number="16.4.2" class="anchored" data-anchor-id="负采样的优势"><span class="header-section-number">16.4.2</span> 负采样的优势</h3>
+<p>负采样技术带来的主要优势包括：</p>
+<ol type="1">
+<li><strong>计算效率</strong>：将复杂度从<span class="math inline">\(O(|V|)\)</span>降至<span class="math inline">\(O(k)\)</span>，其中<span class="math inline">\(k \ll |V|\)</span>（通常<span class="math inline">\(k=5-20\)</span>）</li>
+<li><strong>稀疏更新</strong>：每次只更新少量词向量，加速收敛</li>
+<li><strong>控制学习难度</strong>：通过调整负样本数量控制任务难度</li>
+</ol>
+<p>负采样是Word2Vec能够在大规模语料库上高效训练的关键技术之一。</p>
+</section>
+</section>
+<section id="词向量空间的语义特性" class="level2" data-number="16.5">
+<h2 data-number="16.5" class="anchored" data-anchor-id="词向量空间的语义特性"><span class="header-section-number">16.5</span> 词向量空间的语义特性</h2>
+<p>Word2Vec训练得到的词向量空间具有丰富的语义特性，这些特性使得词向量成为各种NLP任务的强大特征。</p>
+<section id="语义相关性" class="level3" data-number="16.5.1">
+<h3 data-number="16.5.1" class="anchored" data-anchor-id="语义相关性"><span class="header-section-number">16.5.1</span> 语义相关性</h3>
+<p>相似概念在向量空间中距离较近。例如：</p>
+<ul>
+<li>“银行”和”金融”距离近</li>
+<li>“苹果”(水果)和”橙子”距离近</li>
+<li>“苹果”(公司)和”微软”距离近</li>
+</ul>
+<p>这种相似性可以通过余弦相似度定量衡量：</p>
+<p><span class="math display">\[similarity(w_1, w_2) = \cos(\theta) = \frac{v_{w_1} \cdot v_{w_2}}{||v_{w_1}|| \cdot ||v_{w_2}||}\]</span></p>
+</section>
+<section id="语义计算" class="level3" data-number="16.5.2">
+<h3 data-number="16.5.2" class="anchored" data-anchor-id="语义计算"><span class="header-section-number">16.5.2</span> 语义计算</h3>
+<p>词向量空间中最令人惊讶的特性是支持向量代数运算，可以进行”语义计算”：</p>
+<p><span class="math display">\[v(\text{"king"}) - v(\text{"man"}) + v(\text{"woman"}) \approx v(\text{"queen"})\]</span></p>
+<p>这意味着我们可以通过向量运算回答类比问题：“man之于woman，相当于king之于什么？”</p>
+<p>其他例子包括： - <span class="math inline">\(v(\text{"中国"}) - v(\text{"北京"}) + v(\text{"法国"}) \approx v(\text{"巴黎"})\)</span> - <span class="math inline">\(v(\text{"比特币"}) - v(\text{"数字"}) + v(\text{"实物"}) \approx v(\text{"黄金"})\)</span></p>
+<p>这些语义运算的存在表明词向量确实捕获了复杂的语义关系，而非简单的共现统计。</p>
+</section>
+</section>
+</section>
+<section id="金融文本中应用word2vec" class="level1" data-number="17">
+<h1 data-number="17"><span class="header-section-number">17</span> 金融文本中应用Word2Vec</h1>
+<section id="金融领域的词向量应用" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="金融领域的词向量应用"><span class="header-section-number">17.1</span> 金融领域的词向量应用</h2>
+<p>在金融领域，词向量技术已被广泛应用于多种任务：</p>
+<ol type="1">
+<li><strong>情感分析</strong>：分析金融新闻、社交媒体对市场情绪的影响</li>
+<li><strong>风险评估</strong>：从文本数据中提取风险信号</li>
+<li><strong>主题发现</strong>：自动识别财经报道中的热点话题</li>
+<li><strong>市场预测</strong>：结合文本特征进行市场走势预测</li>
+</ol>
+<p>金融文本的特殊性（专业术语多、实体关系复杂）使得通用词向量模型可能表现不佳，因此针对金融领域训练的词向量至关重要。</p>
+</section>
+<section id="训练金融领域词向量" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="训练金融领域词向量"><span class="header-section-number">17.2</span> 训练金融领域词向量</h2>
+<p>以下我们将使用政府工作报告和其他财经语料训练Word2Vec模型，展示其在金融领域的应用。</p>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jieba</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gensim.models <span class="im">import</span> Word2Vec</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载政府工作报告数据</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>govreport <span class="op">=</span> pd.read_csv(<span class="st">"labs/NLP/data/govreport.csv"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 设置中文显示</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'font.sans-serif'</span>] <span class="op">=</span> [<span class="st">'Songti SC'</span>]  <span class="co"># 用来正常显示中文标签</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'axes.unicode_minus'</span>] <span class="op">=</span> <span class="va">False</span>  <span class="co"># 用来正常显示负号</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载停用词</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"labs/NLP/data/ChineseStopWords.txt"</span>, <span class="st">'r'</span>, encoding<span class="op">=</span><span class="st">'utf-8'</span>) <span class="im">as</span> f:</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    stop_words <span class="op">=</span> {line.strip() <span class="cf">for</span> line <span class="kw">in</span> f}</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 文本清洗并分词</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess_text(text):</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 去除标点符号和数字</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r'[^\u4e00-\u9fa5]'</span>, <span class="st">' '</span>, text)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 分词</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> jieba.cut(text)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 去除停用词和空白</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [word <span class="cf">for</span> word <span class="kw">in</span> words <span class="cf">if</span> word.strip() <span class="kw">and</span> word <span class="kw">not</span> <span class="kw">in</span> stop_words]</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 处理所有文档</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>corpus <span class="op">=</span> []</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> govreport.iterrows():</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> preprocess_text(row[<span class="st">'texts'</span>])</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    corpus.append(words)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"语料库包含</span><span class="sc">{</span><span class="bu">len</span>(corpus)<span class="sc">}</span><span class="ss">篇文档"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="训练word2vec模型" class="level3" data-number="17.2.1">
+<h3 data-number="17.2.1" class="anchored" data-anchor-id="训练word2vec模型"><span class="header-section-number">17.2.1</span> 训练Word2Vec模型</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 训练Word2Vec模型</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Word2Vec(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    sentences<span class="op">=</span>corpus,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    vector_size<span class="op">=</span><span class="dv">100</span>,  <span class="co"># 词向量维度</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    window<span class="op">=</span><span class="dv">5</span>,         <span class="co"># 上下文窗口大小</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    min_count<span class="op">=</span><span class="dv">5</span>,      <span class="co"># 忽略低频词的阈值</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    sg<span class="op">=</span><span class="dv">1</span>,             <span class="co"># 使用Skip-gram模型</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    negative<span class="op">=</span><span class="dv">5</span>,       <span class="co"># 负采样数量</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    epochs<span class="op">=</span><span class="dv">10</span>,        <span class="co"># 训练轮数</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    seed<span class="op">=</span><span class="dv">42</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 保存模型</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>model.save(<span class="st">"gov_report_word2vec.model"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看词汇量</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"模型包含</span><span class="sc">{</span><span class="bu">len</span>(model.wv)<span class="sc">}</span><span class="ss">个词语"</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看一些词向量示例</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"'经济'的词向量:"</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model.wv[<span class="st">'经济'</span>])</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="探索词向量空间" class="level3" data-number="17.2.2">
+<h3 data-number="17.2.2" class="anchored" data-anchor-id="探索词向量空间"><span class="header-section-number">17.2.2</span> 探索词向量空间</h3>
+<p>通过查找最相似的词，我们可以验证词向量空间是否捕捉到了金融语义：</p>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 查找与"经济"最相似的词</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>similar_words <span class="op">=</span> model.wv.most_similar(<span class="st">'经济'</span>, topn<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"与'经济'最相似的词:"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word, similarity <span class="kw">in</span> similar_words:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>similarity<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 查找更多词的相似词</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> query <span class="kw">in</span> [<span class="st">'金融'</span>, <span class="st">'创新'</span>, <span class="st">'改革'</span>, <span class="st">'发展'</span>]:</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">与'</span><span class="sc">{</span>query<span class="sc">}</span><span class="ss">'最相似的词:"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word, similarity <span class="kw">in</span> model.wv.most_similar(query, topn<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>similarity<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="词向量的语义运算" class="level3" data-number="17.2.3">
+<h3 data-number="17.2.3" class="anchored" data-anchor-id="词向量的语义运算"><span class="header-section-number">17.2.3</span> 词向量的语义运算</h3>
+<p>我们可以尝试在金融词向量空间中进行语义运算：</p>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 词向量运算示例</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> model.wv.most_similar(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        positive<span class="op">=</span>[<span class="st">'改革'</span>, <span class="st">'创新'</span>],</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        negative<span class="op">=</span>[<span class="st">'传统'</span>],</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        topn<span class="op">=</span><span class="dv">5</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">'改革'+'创新'-'传统'的结果:"</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word, similarity <span class="kw">in</span> result:</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>similarity<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">KeyError</span> <span class="im">as</span> e:</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"词汇不在模型中: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="可视化词向量空间" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="可视化词向量空间"><span class="header-section-number">17.3</span> 可视化词向量空间</h2>
+<p>由于词向量通常是高维的（如100维），无法直接可视化。我们需要使用降维技术将其映射到2D空间：</p>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.manifold <span class="im">import</span> TSNE</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 选择一些重要的金融和经济词汇</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>key_words <span class="op">=</span> []</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word <span class="kw">in</span> [<span class="st">'经济'</span>, <span class="st">'金融'</span>, <span class="st">'改革'</span>, <span class="st">'创新'</span>, <span class="st">'发展'</span>, <span class="st">'企业'</span>, <span class="st">'市场'</span>, <span class="st">'投资'</span>, </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">'消费'</span>, <span class="st">'增长'</span>, <span class="st">'就业'</span>, <span class="st">'收入'</span>, <span class="st">'债务'</span>, <span class="st">'减税'</span>, <span class="st">'风险'</span>, <span class="st">'数字'</span>, </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>             <span class="st">'科技'</span>, <span class="st">'产业'</span>, <span class="st">'结构'</span>, <span class="st">'调控'</span>, <span class="st">'开放'</span>, <span class="st">'政策'</span>, <span class="st">'监管'</span>, <span class="st">'服务'</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>             <span class="st">'银行'</span>, <span class="st">'证券'</span>, <span class="st">'保险'</span>, <span class="st">'互联网'</span>, <span class="st">'环保'</span>, <span class="st">'低碳'</span>]:</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> word <span class="kw">in</span> model.wv:</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        key_words.append(word)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取这些词的向量</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>word_vectors <span class="op">=</span> [model.wv[word] <span class="cf">for</span> word <span class="kw">in</span> key_words]</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用t-SNE降维到2D</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>tsne <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">42</span>, perplexity<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>embeddings_2d <span class="op">=</span> tsne.fit_transform(word_vectors)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">10</span>))</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>plt.scatter(embeddings_2d[:, <span class="dv">0</span>], embeddings_2d[:, <span class="dv">1</span>], alpha<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 添加词语标签</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, word <span class="kw">in</span> <span class="bu">enumerate</span>(key_words):</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    plt.annotate(word, xy<span class="op">=</span>(embeddings_2d[i, <span class="dv">0</span>], embeddings_2d[i, <span class="dv">1</span>]), </span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>                 fontsize<span class="op">=</span><span class="dv">12</span>, alpha<span class="op">=</span><span class="fl">0.8</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'金融经济词汇的词向量空间可视化'</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="实战案例政策热点分析" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="实战案例政策热点分析"><span class="header-section-number">17.4</span> 实战案例：政策热点分析</h2>
+<p>我们可以结合词向量技术分析政府工作报告中的政策热点演变：</p>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 以几个关键政策词为中心，分析其在不同年份报告中的语义环境</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>focus_words <span class="op">=</span> [<span class="st">'创新'</span>, <span class="st">'改革'</span>, <span class="st">'开放'</span>, <span class="st">'就业'</span>, <span class="st">'风险'</span>]</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 为每个年份创建一个语义环境分析</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>years <span class="op">=</span> <span class="bu">sorted</span>(govreport[<span class="st">'Year'</span>].unique())</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>semantic_evolution <span class="op">=</span> {}</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 对每个焦点词，分析其在各年份报告中的最相似词</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> focus <span class="kw">in</span> focus_words:</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> focus <span class="kw">not</span> <span class="kw">in</span> model.wv:</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">'</span><span class="sc">{</span>focus<span class="sc">}</span><span class="ss">'的语义演变:"</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 获取最相似的10个词</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    similar_words <span class="op">=</span> [word <span class="cf">for</span> word, _ <span class="kw">in</span> model.wv.most_similar(focus, topn<span class="op">=</span><span class="dv">10</span>)]</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 查看这些词在各年份报告中的频率</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> year <span class="kw">in</span> years:</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>        year_text <span class="op">=</span> govreport[govreport[<span class="st">'Year'</span>] <span class="op">==</span> year][<span class="st">'texts'</span>].iloc[<span class="dv">0</span>]</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>        year_words <span class="op">=</span> preprocess_text(year_text)</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 计算焦点词及相似词在该年报告中的出现次数</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        focus_count <span class="op">=</span> year_words.count(focus)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        similar_counts <span class="op">=</span> {word: year_words.count(word) <span class="cf">for</span> word <span class="kw">in</span> similar_words}</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 排序并展示前5个高频相似词</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        top_similar <span class="op">=</span> <span class="bu">sorted</span>(similar_counts.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:<span class="dv">5</span>]</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> focus_count <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>year<span class="sc">}</span><span class="ss">年 - '</span><span class="sc">{</span>focus<span class="sc">}</span><span class="ss">'出现</span><span class="sc">{</span>focus_count<span class="sc">}</span><span class="ss">次，相关词:"</span>)</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> word, count <span class="kw">in</span> top_similar:</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> count <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>                    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>count<span class="sc">}</span><span class="ss">次"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="与其他nlp模型的集成" class="level2" data-number="17.5">
+<h2 data-number="17.5" class="anchored" data-anchor-id="与其他nlp模型的集成"><span class="header-section-number">17.5</span> 与其他NLP模型的集成</h2>
+<p>词向量作为特征可以与各种机器学习模型集成，用于更复杂的NLP任务：</p>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> metrics</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 示例：使用词向量增强TF-IDF特征进行分类任务</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># (本例为概念演示，实际应用需要真实标签)</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 为演示目的，我们假设2015-2019年为一类，2020-2023年为另一类</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>govreport[<span class="st">'label'</span>] <span class="op">=</span> govreport[<span class="st">'Year'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: <span class="dv">1</span> <span class="cf">if</span> x <span class="op">&gt;=</span> <span class="dv">2020</span> <span class="cf">else</span> <span class="dv">0</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 构建文档向量（简单方法：词向量的平均）</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> document_vector(doc):</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 分词并过滤</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> preprocess_text(doc)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 只考虑模型中有的词</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> [word <span class="cf">for</span> word <span class="kw">in</span> words <span class="cf">if</span> word <span class="kw">in</span> model.wv]</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(words) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.zeros(model.vector_size)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 计算词向量的平均</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.mean([model.wv[word] <span class="cf">for</span> word <span class="kw">in</span> words], axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co"># 为每个文档创建向量表示</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array([document_vector(text) <span class="cf">for</span> text <span class="kw">in</span> govreport[<span class="st">'texts'</span>]])</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> govreport[<span class="st">'label'</span>].values</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 简单训练分类器（实际应用中应使用交叉验证）</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>clf.fit(X, y)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看特征重要性</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>feature_importances <span class="op">=</span> clf.feature_importances_</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">词向量特征的重要性分布:"</span>)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>plt.hist(feature_importances, bins<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'词向量特征重要性分布'</span>)</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'特征重要性'</span>)</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'特征数量'</span>)</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co"># 预测（为演示使用训练集，实际应用需要独立测试集）</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> clf.predict(X)</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">分类性能："</span>)</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"准确率: </span><span class="sc">{</span>metrics<span class="sc">.</span>accuracy_score(y, y_pred)<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"F1得分: </span><span class="sc">{</span>metrics<span class="sc">.</span>f1_score(y, y_pred)<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="预训练词向量模型比较与应用" class="level1" data-number="18">
+<h1 data-number="18"><span class="header-section-number">18</span> 预训练词向量模型比较与应用</h1>
+<p>在实际应用中，我们通常可以选择使用已有的预训练词向量模型，而不必从头开始训练。这些模型由大型组织或研究机构在海量文本上训练得到，具有更好的通用性和语义表示能力。下面我们将介绍几种常用的预训练词向量模型，并比较它们在不同应用场景下的表现。</p>
+<section id="中文预训练词向量模型" class="level2" data-number="18.1">
+<h2 data-number="18.1" class="anchored" data-anchor-id="中文预训练词向量模型"><span class="header-section-number">18.1</span> 中文预训练词向量模型</h2>
+<section id="腾讯ai-lab词向量chinese-word-vectors" class="level3" data-number="18.1.1">
+<h3 data-number="18.1.1" class="anchored" data-anchor-id="腾讯ai-lab词向量chinese-word-vectors"><span class="header-section-number">18.1.1</span> 1. 腾讯AI Lab词向量（Chinese Word Vectors）</h3>
+<p>腾讯AI Lab发布的中文词向量是目前应用最广泛的中文预训练词向量之一。</p>
+<ul>
+<li><strong>训练语料</strong>：由8亿多条句子、超过200亿词汇组成</li>
+<li><strong>词汇量</strong>：约800万个词、词组和实体</li>
+<li><strong>向量维度</strong>：200维</li>
+<li><strong>特点</strong>：覆盖面广，质量高，适用于多领域任务</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 示例：加载腾讯词向量</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gensim</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 下载地址：https://ai.tencent.com/ailab/nlp/en/embedding.html</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 假设已下载并解压到./data/Tencent_AILab_ChineseEmbedding.txt</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>tencent_model <span class="op">=</span> gensim.models.KeyedVectors.load_word2vec_format(</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'./data/Tencent_AILab_ChineseEmbedding.txt'</span>, </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    binary<span class="op">=</span><span class="va">False</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 查找相似词</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"与'金融'最相似的词:"</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word, similarity <span class="kw">in</span> tencent_model.most_similar(<span class="st">'金融'</span>, topn<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>similarity<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="哈工大讯飞联合实验室词向量hit-scir-chinese-word-vectors" class="level3" data-number="18.1.2">
+<h3 data-number="18.1.2" class="anchored" data-anchor-id="哈工大讯飞联合实验室词向量hit-scir-chinese-word-vectors"><span class="header-section-number">18.1.2</span> 2. 哈工大/讯飞联合实验室词向量（HIT-SCIR Chinese Word Vectors）</h3>
+<ul>
+<li><strong>训练语料</strong>：人民日报语料库和其他新闻语料</li>
+<li><strong>词汇量</strong>：约100万个词</li>
+<li><strong>向量维度</strong>：300维</li>
+<li><strong>特点</strong>：对专业术语和实体识别有较好的表现</li>
+</ul>
+</section>
+<section id="百度百科词向量baidu-encyclopedia-word-vectors" class="level3" data-number="18.1.3">
+<h3 data-number="18.1.3" class="anchored" data-anchor-id="百度百科词向量baidu-encyclopedia-word-vectors"><span class="header-section-number">18.1.3</span> 3. 百度百科词向量（Baidu Encyclopedia Word Vectors）</h3>
+<ul>
+<li><strong>训练语料</strong>：基于百度百科的语料</li>
+<li><strong>词汇量</strong>：约200万个词</li>
+<li><strong>向量维度</strong>：300维</li>
+<li><strong>特点</strong>：对百科类内容和常识性知识表示较好</li>
+</ul>
+</section>
+</section>
+<section id="英文预训练词向量模型" class="level2" data-number="18.2">
+<h2 data-number="18.2" class="anchored" data-anchor-id="英文预训练词向量模型"><span class="header-section-number">18.2</span> 英文预训练词向量模型</h2>
+<section id="google-news词向量" class="level3" data-number="18.2.1">
+<h3 data-number="18.2.1" class="anchored" data-anchor-id="google-news词向量"><span class="header-section-number">18.2.1</span> 1. Google News词向量</h3>
+<p>由Google在约1000亿单词的Google News数据集上训练的Word2Vec模型。</p>
+<ul>
+<li><strong>词汇量</strong>：约300万个词和短语</li>
+<li><strong>向量维度</strong>：300维</li>
+<li><strong>特点</strong>：通用性强，被广泛应用于英文NLP研究和应用</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 示例：加载Google News词向量</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gensim.models <span class="im">import</span> KeyedVectors</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 下载地址：https://code.google.com/archive/p/word2vec/</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 假设已下载并解压到./data/GoogleNews-vectors-negative300.bin</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>google_model <span class="op">=</span> KeyedVectors.load_word2vec_format(</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'./data/GoogleNews-vectors-negative300.bin'</span>, </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    binary<span class="op">=</span><span class="va">True</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 查找相似词</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"与'finance'最相似的词:"</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word, similarity <span class="kw">in</span> google_model.most_similar(<span class="st">'finance'</span>, topn<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>similarity<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="gloveglobal-vectors-for-word-representation" class="level3" data-number="18.2.2">
+<h3 data-number="18.2.2" class="anchored" data-anchor-id="gloveglobal-vectors-for-word-representation"><span class="header-section-number">18.2.2</span> 2. GloVe（Global Vectors for Word Representation）</h3>
+<p>由斯坦福NLP小组开发的词向量模型，训练自维基百科和网络文本。</p>
+<ul>
+<li><strong>训练语料</strong>：CommonCrawl（840B tokens）、Wikipedia（6B tokens）等</li>
+<li><strong>词汇量</strong>：根据语料大小从40万到200万不等</li>
+<li><strong>向量维度</strong>：50到300维不等</li>
+<li><strong>特点</strong>：结合了全局矩阵分解和局部上下文窗口方法的优点</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 示例：加载GloVe词向量</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 下载地址：https://nlp.stanford.edu/projects/glove/</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 假设已下载并解压到./data/glove.6B.300d.txt</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_glove_vectors(file_path):</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    word_vectors <span class="op">=</span> {}</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(file_path, <span class="st">'r'</span>, encoding<span class="op">=</span><span class="st">'utf-8'</span>) <span class="im">as</span> f:</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> line <span class="kw">in</span> f:</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>            values <span class="op">=</span> line.strip().split()</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>            word <span class="op">=</span> values[<span class="dv">0</span>]</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>            vector <span class="op">=</span> np.array(values[<span class="dv">1</span>:], dtype<span class="op">=</span><span class="st">'float32'</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>            word_vectors[word] <span class="op">=</span> vector</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> word_vectors</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>glove_vectors <span class="op">=</span> load_glove_vectors(<span class="st">'./data/glove.6B.300d.txt'</span>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算词相似度（简化版）</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cosine_similarity(vec1, vec2):</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    dot <span class="op">=</span> np.dot(vec1, vec2)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    norm1 <span class="op">=</span> np.linalg.norm(vec1)</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    norm2 <span class="op">=</span> np.linalg.norm(vec2)</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dot <span class="op">/</span> (norm1 <span class="op">*</span> norm2)</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 查找相似词（简化版，实际应用中需要更高效的实现）</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_similar_words(word, vectors, topn<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> word <span class="kw">not</span> <span class="kw">in</span> vectors:</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> []</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    target_vector <span class="op">=</span> vectors[word]</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    similarities <span class="op">=</span> []</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w, vec <span class="kw">in</span> vectors.items():</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> w <span class="op">!=</span> word:</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>            sim <span class="op">=</span> cosine_similarity(target_vector, vec)</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>            similarities.append((w, sim))</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sorted</span>(similarities, key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:topn]</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 输出与'finance'最相似的词</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>similar_to_finance <span class="op">=</span> find_similar_words(<span class="st">'finance'</span>, glove_vectors, <span class="dv">5</span>)</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"与'finance'最相似的词 (GloVe):"</span>)</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word, similarity <span class="kw">in</span> similar_to_finance:</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>similarity<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="fasttext" class="level3" data-number="18.2.3">
+<h3 data-number="18.2.3" class="anchored" data-anchor-id="fasttext"><span class="header-section-number">18.2.3</span> 3. FastText</h3>
+<p>由Facebook AI Research开发，在维基百科语料上训练。</p>
+<ul>
+<li><strong>词汇量</strong>：约200万个词</li>
+<li><strong>向量维度</strong>：300维</li>
+<li><strong>特点</strong>：利用词的子词信息，能更好地处理罕见词和未登录词</li>
+</ul>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 示例：加载FastText词向量</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gensim.models.fasttext <span class="im">import</span> FastText</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 下载地址：https://fasttext.cc/docs/en/english-vectors.html</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 假设已下载并解压到./data/wiki-news-300d-1M.vec</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>fasttext_model <span class="op">=</span> KeyedVectors.load_word2vec_format(</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'./data/wiki-news-300d-1M.vec'</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 查找相似词</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"与'finance'最相似的词 (FastText):"</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word, similarity <span class="kw">in</span> fasttext_model.most_similar(<span class="st">'finance'</span>, topn<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>similarity<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="预训练模型的表现比较" class="level2" data-number="18.3">
+<h2 data-number="18.3" class="anchored" data-anchor-id="预训练模型的表现比较"><span class="header-section-number">18.3</span> 预训练模型的表现比较</h2>
+<p>不同预训练词向量模型在各种任务上的表现各有优劣。下面我们将从多个维度对它们进行比较：</p>
+<section id="语义捕捉能力" class="level3" data-number="18.3.1">
+<h3 data-number="18.3.1" class="anchored" data-anchor-id="语义捕捉能力"><span class="header-section-number">18.3.1</span> 1. 语义捕捉能力</h3>
+<p>通过测试几组典型的语义关系来比较不同模型：</p>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 语义关系测试：国家-首都</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_capital_country_relation(model, language<span class="op">=</span><span class="st">'en'</span>):</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> language <span class="op">==</span> <span class="st">'en'</span>:</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 英文测试对</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        test_pairs <span class="op">=</span> [</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>            (<span class="st">'france'</span>, <span class="st">'paris'</span>),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>            (<span class="st">'germany'</span>, <span class="st">'berlin'</span>),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>            (<span class="st">'japan'</span>, <span class="st">'tokyo'</span>),</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>            (<span class="st">'china'</span>, <span class="st">'beijing'</span>),</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>            (<span class="st">'italy'</span>, <span class="st">'rome'</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 中文测试对</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>        test_pairs <span class="op">=</span> [</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>            (<span class="st">'法国'</span>, <span class="st">'巴黎'</span>),</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>            (<span class="st">'德国'</span>, <span class="st">'柏林'</span>),</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>            (<span class="st">'日本'</span>, <span class="st">'东京'</span>),</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>            (<span class="st">'中国'</span>, <span class="st">'北京'</span>),</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>            (<span class="st">'意大利'</span>, <span class="st">'罗马'</span>)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 测试向量关系</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> country, capital <span class="kw">in</span> test_pairs:</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>            result <span class="op">=</span> model.most_similar(</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>                positive<span class="op">=</span>[capital, <span class="st">'country'</span> <span class="cf">if</span> language <span class="op">==</span> <span class="st">'en'</span> <span class="cf">else</span> <span class="st">'国家'</span>],</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>                negative<span class="op">=</span>[<span class="st">'capital'</span> <span class="cf">if</span> language <span class="op">==</span> <span class="st">'en'</span> <span class="cf">else</span> <span class="st">'首都'</span>],</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>                topn<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>capital<span class="sc">}</span><span class="ss"> : </span><span class="sc">{</span>country<span class="sc">}</span><span class="ss"> = </span><span class="sc">{</span>result[<span class="dv">0</span>][<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> : </span><span class="sc">{</span>result[<span class="dv">0</span>][<span class="dv">1</span>]<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span>:</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"无法测试 </span><span class="sc">{</span>country<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>capital<span class="sc">}</span><span class="ss"> 关系"</span>)</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="co"># 测试Google模型（英文）</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Google News 词向量的国家-首都关系测试："</span>)</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>test_capital_country_relation(google_model)</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="co"># 测试腾讯模型（中文）</span></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">腾讯AI Lab 词向量的国家-首都关系测试："</span>)</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>test_capital_country_relation(tencent_model, language<span class="op">=</span><span class="st">'zh'</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="领域适应性" class="level3" data-number="18.3.2">
+<h3 data-number="18.3.2" class="anchored" data-anchor-id="领域适应性"><span class="header-section-number">18.3.2</span> 2. 领域适应性</h3>
+<p>不同模型在特定领域（如金融、医疗、法律等）的表现评估：</p>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 金融领域词汇测试</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>financial_terms_en <span class="op">=</span> [<span class="st">'stock'</span>, <span class="st">'bond'</span>, <span class="st">'market'</span>, <span class="st">'investment'</span>, <span class="st">'risk'</span>]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>financial_terms_zh <span class="op">=</span> [<span class="st">'股票'</span>, <span class="st">'债券'</span>, <span class="st">'市场'</span>, <span class="st">'投资'</span>, <span class="st">'风险'</span>]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 测试英文模型</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Google模型在金融领域词汇相似性："</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> term <span class="kw">in</span> financial_terms_en:</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>        similar_words <span class="op">=</span> google_model.most_similar(term, topn<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>term<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join([<span class="ss">f'</span><span class="sc">{</span>w<span class="sc">}</span><span class="ss">(</span><span class="sc">{</span>s<span class="sc">:.2f}</span><span class="ss">)'</span> <span class="cf">for</span> w, s <span class="kw">in</span> similar_words])<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>term<span class="sc">}</span><span class="ss">: 不在词汇表中"</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 测试中文模型</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">腾讯模型在金融领域词汇相似性："</span>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> term <span class="kw">in</span> financial_terms_zh:</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>        similar_words <span class="op">=</span> tencent_model.most_similar(term, topn<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>term<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join([<span class="ss">f'</span><span class="sc">{</span>w<span class="sc">}</span><span class="ss">(</span><span class="sc">{</span>s<span class="sc">:.2f}</span><span class="ss">)'</span> <span class="cf">for</span> w, s <span class="kw">in</span> similar_words])<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>term<span class="sc">}</span><span class="ss">: 不在词汇表中"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="处理未登录词能力" class="level3" data-number="18.3.3">
+<h3 data-number="18.3.3" class="anchored" data-anchor-id="处理未登录词能力"><span class="header-section-number">18.3.3</span> 3. 处理未登录词能力</h3>
+<p>FastText由于使用子词信息，对未登录词有独特优势：</p>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 测试处理未登录词的能力</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>oov_words_en <span class="op">=</span> [<span class="st">'cryptocurrencies'</span>, <span class="st">'fintech'</span>, <span class="st">'blockchain'</span>]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>oov_words_zh <span class="op">=</span> [<span class="st">'区块链'</span>, <span class="st">'数字货币'</span>, <span class="st">'智能投顾'</span>]</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 对于FastText模型，即使词不在训练集中，也能生成向量</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_oov_words(model, words):</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word <span class="kw">in</span> words:</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>            vector <span class="op">=</span> model[word]</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>            similar_words <span class="op">=</span> model.most_similar(word, topn<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: 在词表中，相似词: </span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join([w <span class="cf">for</span> w, _ <span class="kw">in</span> similar_words])<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span>:</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: 不在词表中"</span>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"FastText对未登录词的处理能力："</span>)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>test_oov_words(fasttext_model, oov_words_en)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="多语言词向量对齐" class="level3" data-number="18.3.4">
+<h3 data-number="18.3.4" class="anchored" data-anchor-id="多语言词向量对齐"><span class="header-section-number">18.3.4</span> 4. 多语言词向量对齐</h3>
+<p>为了支持跨语言应用，可以将不同语言的词向量空间对齐：</p>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 跨语言词向量对齐示例（概念演示）</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simple_translate(word, en_model, zh_model, en_to_zh_dictionary):</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""简化的跨语言词查找"""</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> word <span class="kw">in</span> en_to_zh_dictionary:</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> en_to_zh_dictionary[word]</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 获取英文词向量</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> word <span class="kw">not</span> <span class="kw">in</span> en_model:</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"未找到英文词"</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    en_vector <span class="op">=</span> en_model[word]</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 在中文词空间中寻找最近的词</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    max_sim <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    best_word <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 实际应用中需要更高效的实现，这里仅为演示</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> zh_word <span class="kw">in</span> <span class="bu">list</span>(zh_model.key_to_index.keys())[:<span class="dv">1000</span>]:  <span class="co"># 限制搜索范围</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>        zh_vector <span class="op">=</span> zh_model[zh_word]</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>        sim <span class="op">=</span> cosine_similarity(en_vector, zh_vector)</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> sim <span class="op">&gt;</span> max_sim:</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>            max_sim <span class="op">=</span> sim</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>            best_word <span class="op">=</span> zh_word</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> best_word <span class="cf">if</span> max_sim <span class="op">&gt;</span> <span class="fl">0.5</span> <span class="cf">else</span> <span class="st">"未找到匹配的中文词"</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="预训练模型在不同任务中的选择指南" class="level2" data-number="18.4">
+<h2 data-number="18.4" class="anchored" data-anchor-id="预训练模型在不同任务中的选择指南"><span class="header-section-number">18.4</span> 预训练模型在不同任务中的选择指南</h2>
+<p>根据不同应用场景，我们推荐选择的预训练词向量模型：</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 30%">
+<col style="width: 30%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>应用场景</th>
+<th>推荐中文模型</th>
+<th>推荐英文模型</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>通用文本分类</td>
+<td>腾讯AI Lab</td>
+<td>GloVe 300d</td>
+<td>覆盖面广，向量维度适中</td>
+</tr>
+<tr class="even">
+<td>命名实体识别</td>
+<td>哈工大词向量</td>
+<td>FastText</td>
+<td>对实体名称和罕见词有更好表现</td>
+</tr>
+<tr class="odd">
+<td>情感分析</td>
+<td>腾讯AI Lab</td>
+<td>Google News</td>
+<td>对语义细微差别表现更好</td>
+</tr>
+<tr class="even">
+<td>专业领域(如金融)</td>
+<td>领域特定模型</td>
+<td>领域特定模型</td>
+<td>通用模型对专业术语表示不足</td>
+</tr>
+<tr class="odd">
+<td>处理网络文本</td>
+<td>搜狗新闻词向量</td>
+<td>FastText</td>
+<td>对网络流行语和新词表现更好</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="选择或训练自己的词向量模型" class="level2" data-number="18.5">
+<h2 data-number="18.5" class="anchored" data-anchor-id="选择或训练自己的词向量模型"><span class="header-section-number">18.5</span> 选择或训练自己的词向量模型</h2>
+<p>在实际应用中，我们需要根据具体任务和数据特点选择合适的预训练模型或决定是否需要训练自己的模型：</p>
+<ol type="1">
+<li><strong>使用预训练模型的情况</strong>：
+<ul>
+<li>数据量有限，无法支持有效训练</li>
+<li>任务是通用领域，预训练模型已足够好</li>
+<li>计算资源有限</li>
+<li>需要快速开发原型系统</li>
+</ul></li>
+<li><strong>训练自己的模型的情况</strong>：
+<ul>
+<li>有大量特定领域的文本数据</li>
+<li>应用领域有特殊术语或表达方式</li>
+<li>现有预训练模型表现不佳</li>
+<li>有足够的计算资源</li>
+</ul></li>
+<li><strong>微调预训练模型的折中方案</strong>：
+<ul>
+<li>从预训练模型开始，用领域数据继续训练</li>
+<li>保留通用语言知识，同时学习领域特定表示</li>
+<li>资源需求适中，效果通常不错</li>
+</ul></li>
+</ol>
+</section>
+<section id="结论" class="level2" data-number="18.6">
+<h2 data-number="18.6" class="anchored" data-anchor-id="结论"><span class="header-section-number">18.6</span> 结论</h2>
+<p>预训练词向量模型为NLP任务提供了便捷的起点，无需从头训练就能获得高质量的词语表示。根据我们的测试，腾讯AI Lab词向量和GloVe模型在通用任务中表现最佳，而FastText在处理未登录词方面具有明显优势。</p>
+<p>对于金融文本分析，我们建议：如果数据量充足，可以在通用预训练模型基础上，使用金融领域文本进行进一步训练，以获得更符合领域特性的词向量表示；如果资源有限，可以选择腾讯AI Lab等高质量预训练模型作为基础，然后结合任务特点设计适当的特征工程。</p>
+</section>
+</section>
+<section id="案例比较词频法与词向量在政府工作报告分析中的差异" class="level1" data-number="19">
+<h1 data-number="19"><span class="header-section-number">19</span> 案例比较：词频法与词向量在政府工作报告分析中的差异</h1>
+<p>基于上一讲中的政府工作报告分析案例，我们可以直观地比较词频法(Bag of Words/TF-IDF)和词向量(Word2Vec)在相同任务上的表现差异。以下我们在三个具体任务上进行比较分析：文本相似度计算、关键词提取和语义关联发现。</p>
+<section id="相同文本的两种表示方法" class="level2" data-number="19.1">
+<h2 data-number="19.1" class="anchored" data-anchor-id="相同文本的两种表示方法"><span class="header-section-number">19.1</span> 相同文本的两种表示方法</h2>
+<p>首先，让我们回顾两种方法对同一文档的不同表示方式：</p>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jieba</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gensim.models <span class="im">import</span> Word2Vec</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载政府工作报告数据</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>govreport <span class="op">=</span> pd.read_csv(<span class="st">"labs/NLP/data/govreport.csv"</span>)</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载停用词</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"labs/NLP/data/ChineseStopWords.txt"</span>, <span class="st">'r'</span>, encoding<span class="op">=</span><span class="st">'utf-8'</span>) <span class="im">as</span> f:</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    stop_words <span class="op">=</span> {line.strip() <span class="cf">for</span> line <span class="kw">in</span> f}</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 文本清洗与分词函数</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess_text(text):</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 去除标点符号和数字</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r'[^\u4e00-\u9fa5]'</span>, <span class="st">' '</span>, text)</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 分词</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> jieba.cut(text)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 去除停用词和空白</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [word <span class="cf">for</span> word <span class="kw">in</span> words <span class="cf">if</span> word.strip() <span class="kw">and</span> word <span class="kw">not</span> <span class="kw">in</span> stop_words]</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 处理所有文档</span></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>corpus <span class="op">=</span> []</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>corpus_raw <span class="op">=</span> []  <span class="co"># 用于TF-IDF</span></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>years <span class="op">=</span> []</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> govreport.iterrows():</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    year <span class="op">=</span> row[<span class="st">'Year'</span>]</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> row[<span class="st">'texts'</span>]</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> preprocess_text(text)</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>    corpus.append(words)</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>    corpus_raw.append(<span class="st">' '</span>.join(words))</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>    years.append(year)</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. TF-IDF表示</span></span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>tfidf_vectorizer <span class="op">=</span> TfidfVectorizer()</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>tfidf_matrix <span class="op">=</span> tfidf_vectorizer.fit_transform(corpus_raw)</span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>tfidf_feature_names <span class="op">=</span> tfidf_vectorizer.get_feature_names_out()</span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Word2Vec表示</span></span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>w2v_model <span class="op">=</span> Word2Vec(</span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>    corpus, </span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>    vector_size<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>    window<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>    min_count<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>    sg<span class="op">=</span><span class="dv">1</span>,  <span class="co"># 使用Skip-gram</span></span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>    epochs<span class="op">=</span><span class="dv">10</span></span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a><span class="co"># 文档向量化（取平均）</span></span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_doc_vector(doc_words, model):</span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 过滤不在模型中的词</span></span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a>    doc_words <span class="op">=</span> [word <span class="cf">for</span> word <span class="kw">in</span> doc_words <span class="cf">if</span> word <span class="kw">in</span> model.wv]</span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(doc_words) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.zeros(model.vector_size)</span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 计算词向量的平均</span></span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.mean([model.wv[word] <span class="cf">for</span> word <span class="kw">in</span> doc_words], axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算每个文档的词向量表示</span></span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>doc_vectors_w2v <span class="op">=</span> [get_doc_vector(doc, w2v_model) <span class="cf">for</span> doc <span class="kw">in</span> corpus]</span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a><span class="co"># 打印示例</span></span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a>report_idx <span class="op">=</span> <span class="dv">2</span>  <span class="co"># 2021年报告</span></span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>years[report_idx]<span class="sc">}</span><span class="ss">年政府工作报告的不同表示方法:"</span>)</span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">TF-IDF表示（稀疏向量，只显示前10个非零元素）:"</span>)</span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>tfidf_vec <span class="op">=</span> tfidf_matrix[report_idx].toarray()[<span class="dv">0</span>]</span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a>nonzero_idxs <span class="op">=</span> np.nonzero(tfidf_vec)[<span class="dv">0</span>][:<span class="dv">10</span>]</span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx <span class="kw">in</span> nonzero_idxs:</span>
+<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>tfidf_feature_names[idx]<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>tfidf_vec[idx]<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Word2Vec表示（密集向量，显示前10个维度）:"</span>)</span>
+<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a>w2v_vec <span class="op">=</span> doc_vectors_w2v[report_idx]</span>
+<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"维度</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>w2v_vec[i]<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="文本相似度计算比较" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="文本相似度计算比较"><span class="header-section-number">19.2</span> 文本相似度计算比较</h2>
+<p>词频法和词向量在计算文档相似度时有明显差异：</p>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics.pairwise <span class="im">import</span> cosine_similarity</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 基于TF-IDF的相似度</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>tfidf_similarity <span class="op">=</span> cosine_similarity(tfidf_matrix)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 基于Word2Vec的相似度</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>w2v_similarity <span class="op">=</span> cosine_similarity(doc_vectors_w2v)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建相似度对比DataFrame</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>similarity_comparison <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Years'</span>: years,</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'TF-IDF Similarity with 2021'</span>: tfidf_similarity[<span class="dv">2</span>],  <span class="co"># 以2021年为参考</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Word2Vec Similarity with 2021'</span>: w2v_similarity[<span class="dv">2</span>]   <span class="co"># 以2021年为参考</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 打印相似度比较</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"不同年份与2021年报告的相似度比较:"</span>)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(similarity_comparison)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化比较</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>plt.bar(similarity_comparison[<span class="st">'Years'</span>], similarity_comparison[<span class="st">'TF-IDF Similarity with 2021'</span>], </span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span><span class="st">'TF-IDF相似度'</span>)</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>plt.bar(similarity_comparison[<span class="st">'Years'</span>], similarity_comparison[<span class="st">'Word2Vec Similarity with 2021'</span>], </span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>        alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span><span class="st">'Word2Vec相似度'</span>, color<span class="op">=</span><span class="st">'orange'</span>)</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>plt.axhline(y<span class="op">=</span><span class="dv">1</span>, color<span class="op">=</span><span class="st">'r'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)  <span class="co"># 2021年与自身对比线</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'年份'</span>)</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'与2021年报告的相似度'</span>)</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'词频法与词向量的文本相似度比较'</span>)</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>相似度计算结果分析</strong>:</p>
+<ol type="1">
+<li><strong>TF-IDF相似度</strong>：
+<ul>
+<li>基于词汇重叠度，相同词汇出现越多，相似度越高</li>
+<li>对关键词敏感，但没有语义理解</li>
+<li>相似度变化跨度较大，更容易区分文档</li>
+</ul></li>
+<li><strong>Word2Vec相似度</strong>：
+<ul>
+<li>基于语义空间的接近程度，能捕捉同义词和相关概念</li>
+<li>所有文档相似度普遍较高，因为它们都处于相似的语义空间</li>
+<li>变化更平滑，体现语义连续性</li>
+</ul></li>
+</ol>
+<p>例如，即使2020年疫情报告的词汇与其他年份有明显不同，但在Word2Vec中相似度依然较高，因为整体语义主题（政府工作）是相似的。</p>
+</section>
+<section id="关键词提取比较" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="关键词提取比较"><span class="header-section-number">19.3</span> 关键词提取比较</h2>
+<p>两种方法在关键词提取上也有明显不同：</p>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. TF-IDF关键词提取</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_tfidf_top_words(tfidf_matrix, feature_names, doc_idx, top_n<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    tfidf_vec <span class="op">=</span> tfidf_matrix[doc_idx].toarray()[<span class="dv">0</span>]</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    top_idxs <span class="op">=</span> tfidf_vec.argsort()[<span class="op">-</span>top_n:][::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [(feature_names[idx], tfidf_vec[idx]) <span class="cf">for</span> idx <span class="kw">in</span> top_idxs]</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Word2Vec关键词提取 (基于词向量中心性)</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_w2v_central_words(doc_words, model, top_n<span class="op">=</span><span class="dv">10</span>):</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 只考虑模型中有的词</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    doc_words <span class="op">=</span> [w <span class="cf">for</span> w <span class="kw">in</span> doc_words <span class="cf">if</span> w <span class="kw">in</span> model.wv]</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(doc_words) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> []</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 计算每个词与文档其他词的平均相似度 (中心性)</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    word_centrality <span class="op">=</span> {}</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word <span class="kw">in</span> doc_words:</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 与其他词的相似度之和</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>        total_sim <span class="op">=</span> <span class="bu">sum</span>(model.wv.similarity(word, other_word) </span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>                        <span class="cf">for</span> other_word <span class="kw">in</span> doc_words <span class="cf">if</span> other_word <span class="op">!=</span> word)</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 平均相似度</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>        word_centrality[word] <span class="op">=</span> total_sim <span class="op">/</span> (<span class="bu">len</span>(doc_words) <span class="op">-</span> <span class="dv">1</span>) <span class="cf">if</span> <span class="bu">len</span>(doc_words) <span class="op">&gt;</span> <span class="dv">1</span> <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 返回中心性最高的词</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sorted</span>(word_centrality.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:top_n]</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 比较2023年报告的关键词提取结果</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>report_idx <span class="op">=</span> <span class="dv">4</span>  <span class="co"># 2023年</span></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>years[report_idx]<span class="sc">}</span><span class="ss">年政府工作报告关键词提取比较:"</span>)</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>tfidf_top_words <span class="op">=</span> get_tfidf_top_words(tfidf_matrix, tfidf_feature_names, report_idx)</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">TF-IDF提取的关键词:"</span>)</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word, score <span class="kw">in</span> tfidf_top_words:</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>score<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>w2v_top_words <span class="op">=</span> get_w2v_central_words(corpus[report_idx], w2v_model)</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Word2Vec提取的关键词 (基于中心性):"</span>)</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word, score <span class="kw">in</span> w2v_top_words:</span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>score<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>关键词提取结果分析</strong>:</p>
+<ol type="1">
+<li><strong>TF-IDF关键词</strong>：
+<ul>
+<li>提取文档中特有的、区分度高的词</li>
+<li>往往是该文档特有的专有名词或低频词</li>
+<li>关注”独特性”而非”重要性”</li>
+</ul></li>
+<li><strong>Word2Vec关键词</strong>：
+<ul>
+<li>提取文档的语义中心词，与其他词语义联系最紧密的词</li>
+<li>往往是文档主题的核心词，且在语义网络中起枢纽作用</li>
+<li>关注”中心性”而非”频率”或”独特性”</li>
+</ul></li>
+</ol>
+<p>例如，TF-IDF可能会提取”十四五”这样的特定术语，而Word2Vec可能会提取”发展”这样的核心概念词。</p>
+</section>
+<section id="语义关联发现比较" class="level2" data-number="19.4">
+<h2 data-number="19.4" class="anchored" data-anchor-id="语义关联发现比较"><span class="header-section-number">19.4</span> 语义关联发现比较</h2>
+<p>词频法和词向量在发现词语关联关系上有本质区别：</p>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 词频法的共现分析</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> networkx <span class="im">as</span> nx</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_cooccurrence_network(corpus, target_words, window_size<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""构建目标词的共现网络"""</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    cooccur <span class="op">=</span> Counter()</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> doc <span class="kw">in</span> corpus:</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, word <span class="kw">in</span> <span class="bu">enumerate</span>(doc):</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> word <span class="kw">in</span> target_words:</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>                <span class="co"># 获取窗口内的词</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>                context <span class="op">=</span> doc[<span class="bu">max</span>(<span class="dv">0</span>, i<span class="op">-</span>window_size):i] <span class="op">+</span> doc[i<span class="op">+</span><span class="dv">1</span>:<span class="bu">min</span>(<span class="bu">len</span>(doc), i<span class="op">+</span>window_size<span class="op">+</span><span class="dv">1</span>)]</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> context_word <span class="kw">in</span> context:</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">if</span> context_word <span class="kw">in</span> target_words <span class="kw">and</span> context_word <span class="op">!=</span> word:</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>                        <span class="co"># 记录共现次数</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>                        pair <span class="op">=</span> <span class="bu">tuple</span>(<span class="bu">sorted</span>([word, context_word]))</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>                        cooccur[pair] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 创建网络</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    G <span class="op">=</span> nx.Graph()</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word <span class="kw">in</span> target_words:</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>        G.add_node(word)</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 添加边和权重</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (word1, word2), weight <span class="kw">in</span> cooccur.items():</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> weight <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>            G.add_edge(word1, word2, weight<span class="op">=</span>weight)</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> G, cooccur</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Word2Vec的语义相似性网络</span></span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_semantic_network(model, target_words, threshold<span class="op">=</span><span class="fl">0.3</span>):</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""构建基于词向量相似度的语义网络"""</span></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>    G <span class="op">=</span> nx.Graph()</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 过滤不在模型中的词</span></span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>    valid_words <span class="op">=</span> [w <span class="cf">for</span> w <span class="kw">in</span> target_words <span class="cf">if</span> w <span class="kw">in</span> model.wv]</span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word <span class="kw">in</span> valid_words:</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>        G.add_node(word)</span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 添加边和权重</span></span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, word1 <span class="kw">in</span> <span class="bu">enumerate</span>(valid_words):</span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> word2 <span class="kw">in</span> valid_words[i<span class="op">+</span><span class="dv">1</span>:]:</span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a>            similarity <span class="op">=</span> model.wv.similarity(word1, word2)</span>
+<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> similarity <span class="op">&gt;</span> threshold:</span>
+<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a>                G.add_edge(word1, word2, weight<span class="op">=</span>similarity)</span>
+<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> G</span>
+<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a><span class="co"># 分析目标词之间的关系</span></span>
+<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a>target_words <span class="op">=</span> [<span class="st">'发展'</span>, <span class="st">'经济'</span>, <span class="st">'创新'</span>, <span class="st">'改革'</span>, <span class="st">'开放'</span>, <span class="st">'就业'</span>, <span class="st">'民生'</span>, <span class="st">'环保'</span>, <span class="st">'科技'</span>, <span class="st">'数字'</span>]</span>
+<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-55"><a href="#cb19-55" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 创建共现网络</span></span>
+<span id="cb19-56"><a href="#cb19-56" aria-hidden="true" tabindex="-1"></a>cooccur_net, cooccur_counter <span class="op">=</span> build_cooccurrence_network(corpus, target_words)</span>
+<span id="cb19-57"><a href="#cb19-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 创建语义网络</span></span>
+<span id="cb19-59"><a href="#cb19-59" aria-hidden="true" tabindex="-1"></a>semantic_net <span class="op">=</span> build_semantic_network(w2v_model, target_words)</span>
+<span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a><span class="co"># 共现矩阵可视化</span></span>
+<span id="cb19-62"><a href="#cb19-62" aria-hidden="true" tabindex="-1"></a>cooccur_matrix <span class="op">=</span> np.zeros((<span class="bu">len</span>(target_words), <span class="bu">len</span>(target_words)))</span>
+<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, word1 <span class="kw">in</span> <span class="bu">enumerate</span>(target_words):</span>
+<span id="cb19-64"><a href="#cb19-64" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j, word2 <span class="kw">in</span> <span class="bu">enumerate</span>(target_words):</span>
+<span id="cb19-65"><a href="#cb19-65" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">!=</span> j:</span>
+<span id="cb19-66"><a href="#cb19-66" aria-hidden="true" tabindex="-1"></a>            pair <span class="op">=</span> <span class="bu">tuple</span>(<span class="bu">sorted</span>([word1, word2]))</span>
+<span id="cb19-67"><a href="#cb19-67" aria-hidden="true" tabindex="-1"></a>            cooccur_matrix[i, j] <span class="op">=</span> cooccur_counter[pair]</span>
+<span id="cb19-68"><a href="#cb19-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-69"><a href="#cb19-69" aria-hidden="true" tabindex="-1"></a><span class="co"># 语义相似度矩阵</span></span>
+<span id="cb19-70"><a href="#cb19-70" aria-hidden="true" tabindex="-1"></a>semantic_matrix <span class="op">=</span> np.zeros((<span class="bu">len</span>(target_words), <span class="bu">len</span>(target_words)))</span>
+<span id="cb19-71"><a href="#cb19-71" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, word1 <span class="kw">in</span> <span class="bu">enumerate</span>(target_words):</span>
+<span id="cb19-72"><a href="#cb19-72" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> j, word2 <span class="kw">in</span> <span class="bu">enumerate</span>(target_words[i<span class="op">+</span><span class="dv">1</span>:], i<span class="op">+</span><span class="dv">1</span>):</span>
+<span id="cb19-73"><a href="#cb19-73" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> word1 <span class="kw">in</span> w2v_model.wv <span class="kw">and</span> word2 <span class="kw">in</span> w2v_model.wv:</span>
+<span id="cb19-74"><a href="#cb19-74" aria-hidden="true" tabindex="-1"></a>            similarity <span class="op">=</span> w2v_model.wv.similarity(word1, word2)</span>
+<span id="cb19-75"><a href="#cb19-75" aria-hidden="true" tabindex="-1"></a>            semantic_matrix[i, j] <span class="op">=</span> semantic_matrix[j, i] <span class="op">=</span> similarity</span>
+<span id="cb19-76"><a href="#cb19-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-77"><a href="#cb19-77" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化比较</span></span>
+<span id="cb19-78"><a href="#cb19-78" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">6</span>))</span>
+<span id="cb19-79"><a href="#cb19-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-80"><a href="#cb19-80" aria-hidden="true" tabindex="-1"></a><span class="co"># 共现网络热图</span></span>
+<span id="cb19-81"><a href="#cb19-81" aria-hidden="true" tabindex="-1"></a>im1 <span class="op">=</span> axes[<span class="dv">0</span>].imshow(cooccur_matrix, cmap<span class="op">=</span><span class="st">'Blues'</span>)</span>
+<span id="cb19-82"><a href="#cb19-82" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'词频法：共现关系'</span>)</span>
+<span id="cb19-83"><a href="#cb19-83" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(target_words)))</span>
+<span id="cb19-84"><a href="#cb19-84" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_yticks(<span class="bu">range</span>(<span class="bu">len</span>(target_words)))</span>
+<span id="cb19-85"><a href="#cb19-85" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xticklabels(target_words)</span>
+<span id="cb19-86"><a href="#cb19-86" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_yticklabels(target_words)</span>
+<span id="cb19-87"><a href="#cb19-87" aria-hidden="true" tabindex="-1"></a>plt.colorbar(im1, ax<span class="op">=</span>axes[<span class="dv">0</span>], label<span class="op">=</span><span class="st">'共现次数'</span>)</span>
+<span id="cb19-88"><a href="#cb19-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-89"><a href="#cb19-89" aria-hidden="true" tabindex="-1"></a><span class="co"># 语义网络热图</span></span>
+<span id="cb19-90"><a href="#cb19-90" aria-hidden="true" tabindex="-1"></a>im2 <span class="op">=</span> axes[<span class="dv">1</span>].imshow(semantic_matrix, cmap<span class="op">=</span><span class="st">'Reds'</span>)</span>
+<span id="cb19-91"><a href="#cb19-91" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'Word2Vec：语义相似度'</span>)</span>
+<span id="cb19-92"><a href="#cb19-92" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(target_words)))</span>
+<span id="cb19-93"><a href="#cb19-93" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_yticks(<span class="bu">range</span>(<span class="bu">len</span>(target_words)))</span>
+<span id="cb19-94"><a href="#cb19-94" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xticklabels(target_words)</span>
+<span id="cb19-95"><a href="#cb19-95" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_yticklabels(target_words)</span>
+<span id="cb19-96"><a href="#cb19-96" aria-hidden="true" tabindex="-1"></a>plt.colorbar(im2, ax<span class="op">=</span>axes[<span class="dv">1</span>], label<span class="op">=</span><span class="st">'余弦相似度'</span>)</span>
+<span id="cb19-97"><a href="#cb19-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-98"><a href="#cb19-98" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb19-99"><a href="#cb19-99" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>语义关联分析结果比较</strong>:</p>
+<ol type="1">
+<li><strong>词频法（共现分析）</strong>：
+<ul>
+<li>基于词语在文本中出现的物理距离</li>
+<li>只能发现直接共现的关系，不能泛化</li>
+<li>需要大量文本才能得到可靠的统计结果</li>
+<li>无法发现从未共现但语义相关的词</li>
+</ul></li>
+<li><strong>Word2Vec（语义网络）</strong>：
+<ul>
+<li>基于分布式表示学习的语义空间距离</li>
+<li>能发现间接关联，即使两个词从未共现</li>
+<li>能发现语义层次和类比关系</li>
+<li>受预训练语料的影响大</li>
+</ul></li>
+</ol>
+<p>例如，在政府工作报告中，“环保”和”低碳”可能很少直接共现，但在Word2Vec的语义空间中会很接近。</p>
+</section>
+<section id="主题和情感分析的差异" class="level2" data-number="19.5">
+<h2 data-number="19.5" class="anchored" data-anchor-id="主题和情感分析的差异"><span class="header-section-number">19.5</span> 主题和情感分析的差异</h2>
+<p>两种方法在主题建模和情感分析上也有明显区别：</p>
+<div class="cell">
+<details class="code-fold">
+<summary>代码</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> LatentDirichletAllocation</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> CountVectorizer</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 基于词频的主题建模 (LDA)</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用词频矩阵</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> CountVectorizer()</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>bow_matrix <span class="op">=</span> cv.fit_transform(corpus_raw)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>feature_names <span class="op">=</span> cv.get_feature_names_out()</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co"># LDA模型</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>lda <span class="op">=</span> LatentDirichletAllocation(n_components<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>lda.fit(bow_matrix)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 基于Word2Vec的主题聚类</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 对文档向量进行聚类</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>clusters <span class="op">=</span> kmeans.fit_predict(doc_vectors_w2v)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 输出LDA主题词</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"基于词频的LDA主题词:"</span>)</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> topic_idx, topic <span class="kw">in</span> <span class="bu">enumerate</span>(lda.components_):</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"主题 #</span><span class="sc">{</span>topic_idx<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">:"</span>)</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    top_words <span class="op">=</span> [feature_names[i] <span class="cf">for</span> i <span class="kw">in</span> topic.argsort()[:<span class="op">-</span><span class="dv">11</span>:<span class="op">-</span><span class="dv">1</span>]]</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">", "</span>.join(top_words))</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 输出Word2Vec聚类中心最近的词</span></span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Word2Vec聚类中心最近的词:"</span>)</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 获取聚类中心</span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>    center <span class="op">=</span> kmeans.cluster_centers_[i]</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 找出与中心最接近的词</span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>    word_dists <span class="op">=</span> []</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word <span class="kw">in</span> w2v_model.wv.index_to_key:</span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>        dist <span class="op">=</span> np.linalg.norm(w2v_model.wv[word] <span class="op">-</span> center)</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>        word_dists.append((word, dist))</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>    top_words <span class="op">=</span> <span class="bu">sorted</span>(word_dists, key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>])[:<span class="dv">10</span>]</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"聚类 #</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">:"</span>)</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">", "</span>.join(word <span class="cf">for</span> word, _ <span class="kw">in</span> top_words))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>主题分析结果比较</strong>:</p>
+<ol type="1">
+<li><strong>基于词频的LDA</strong>：
+<ul>
+<li>基于词语在文档中的共现统计构建主题</li>
+<li>主题是词语的概率分布，每个词有明确的主题概率</li>
+<li>结果可解释性强，但受制于表面统计</li>
+</ul></li>
+<li><strong>基于Word2Vec的聚类</strong>：
+<ul>
+<li>基于文档在语义空间中的分布进行聚类</li>
+<li>主题体现为语义空间中的区域，边界更加模糊</li>
+<li>能发现更抽象的语义关联，但解释性较弱</li>
+</ul></li>
+</ol>
+</section>
+<section id="综合比较与应用建议" class="level2" data-number="19.6">
+<h2 data-number="19.6" class="anchored" data-anchor-id="综合比较与应用建议"><span class="header-section-number">19.6</span> 综合比较与应用建议</h2>
+<p>通过以上案例比较，我们总结词频法和词向量在政府工作报告分析中的优缺点：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>比较维度</th>
+<th>词频法 (Bag of Words/TF-IDF)</th>
+<th>词向量 (Word2Vec)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>数据表示</td>
+<td>高维稀疏向量(~万维)</td>
+<td>低维稠密向量(~百维)</td>
+</tr>
+<tr class="even">
+<td>语义捕捉</td>
+<td>基于表面词频统计，无语义</td>
+<td>基于分布式假设，有语义</td>
+</tr>
+<tr class="odd">
+<td>计算复杂度</td>
+<td>低，适合大规模文档</td>
+<td>中等，训练需要时间</td>
+</tr>
+<tr class="even">
+<td>内存占用</td>
+<td>大（稀疏矩阵）</td>
+<td>小（稠密向量）</td>
+</tr>
+<tr class="odd">
+<td>新词处理</td>
+<td>无法处理未见词</td>
+<td>也无法直接处理(FastText可以)</td>
+</tr>
+<tr class="even">
+<td>相似度计算</td>
+<td>仅基于词重叠</td>
+<td>基于语义相似</td>
+</tr>
+<tr class="odd">
+<td>关键词提取</td>
+<td>偏向特有词</td>
+<td>偏向中心词</td>
+</tr>
+<tr class="even">
+<td>语义关联</td>
+<td>仅能发现共现关系</td>
+<td>能发现间接语义关联</td>
+</tr>
+<tr class="odd">
+<td>应用场景</td>
+<td>文档分类、信息检索</td>
+<td>语义搜索、推荐系统</td>
+</tr>
+</tbody>
+</table>
+<section id="应用建议" class="level3" data-number="19.6.1">
+<h3 data-number="19.6.1" class="anchored" data-anchor-id="应用建议"><span class="header-section-number">19.6.1</span> 应用建议</h3>
+<p>基于我们对政府工作报告的分析经验，针对不同任务推荐的方法：</p>
+<ol type="1">
+<li><strong>文档去重或精确匹配</strong>：使用词频表示</li>
+<li><strong>文档语义检索或推荐</strong>：使用词向量表示</li>
+<li><strong>特有术语或政策提取</strong>：使用TF-IDF方法</li>
+<li><strong>政策主题语义聚类</strong>：使用Word2Vec</li>
+<li><strong>综合分析</strong>：可以同时使用两种方法并结合结果</li>
+</ol>
+<p>在实际应用中，选择合适的文本表示方法往往取决于具体任务需求、可用资源和期望的结果特性。词频法和词向量并非互斥，而是互补的分析视角。</p>
+</section>
+</section>
+</section>
+<section id="小结与进阶方向" class="level1" data-number="20">
+<h1 data-number="20"><span class="header-section-number">20</span> 小结与进阶方向</h1>
+<section id="词向量的优缺点" class="level2" data-number="20.1">
+<h2 data-number="20.1" class="anchored" data-anchor-id="词向量的优缺点"><span class="header-section-number">20.1</span> 词向量的优缺点</h2>
+<section id="优点" class="level3" data-number="20.1.1">
+<h3 data-number="20.1.1" class="anchored" data-anchor-id="优点"><span class="header-section-number">20.1.1</span> 优点</h3>
+<ol type="1">
+<li><strong>语义丰富</strong>：捕获了词语间的语义关系</li>
+<li><strong>维度可控</strong>：典型地为50-300维，远低于词汇量大小</li>
+<li><strong>泛化能力</strong>：能处理未见过的词组合</li>
+<li><strong>通用性</strong>：可用于各种NLP任务的特征提取</li>
+</ol>
+</section>
+<section id="局限性" class="level3" data-number="20.1.2">
+<h3 data-number="20.1.2" class="anchored" data-anchor-id="局限性"><span class="header-section-number">20.1.2</span> 局限性</h3>
+<ol type="1">
+<li><strong>多义词问题</strong>：无法区分同一个词的不同含义（如”苹果”可以是水果或公司）</li>
+<li><strong>上下文依赖</strong>：固定的词向量无法根据上下文调整</li>
+<li><strong>预训练依赖</strong>：需要大量语料预训练</li>
+<li><strong>领域专一性</strong>：通用领域训练的词向量在专业领域效果可能不佳</li>
+</ol>
+</section>
+</section>
+<section id="进阶方向" class="level2" data-number="20.2">
+<h2 data-number="20.2" class="anchored" data-anchor-id="进阶方向"><span class="header-section-number">20.2</span> 进阶方向</h2>
+<ol type="1">
+<li><strong>上下文相关的词表示</strong>：如ELMo、BERT等模型能根据上下文动态生成词表示</li>
+<li><strong>多语言词向量</strong>：跨语言的词向量对齐，支持多语言应用</li>
+<li><strong>领域适应</strong>：将通用词向量迁移到特定领域</li>
+<li><strong>可解释性研究</strong>：理解词向量空间的维度含义</li>
+</ol>
+</section>
+<section id="本讲小结" class="level2" data-number="20.3">
+<h2 data-number="20.3" class="anchored" data-anchor-id="本讲小结"><span class="header-section-number">20.3</span> 本讲小结</h2>
+<p>本讲我们从Bag of Words模型的局限性出发，介绍了词向量的概念、原理和应用：</p>
+<ol type="1">
+<li>词向量通过低维稠密向量表示词语，克服了传统方法的局限</li>
+<li>Word2Vec通过Skip-gram和CBOW两种模型高效学习词向量</li>
+<li>负采样等技术大幅提高了训练效率</li>
+<li>词向量空间具有丰富的语义特性，支持相似性计算和向量代数运算</li>
+<li>在金融文本分析中，词向量可以发现政策热点、分析语义变化等</li>
+</ol>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "已复制");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "已复制");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./11_nlp.html" class="pagination-link" aria-label="文本分析(一)：词频法与向量空间">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本分析(一)：词频法与向量空间</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./13_llm.html" class="pagination-link" aria-label="文本分析(三)：大语言模型及其应用">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">文本分析(三)：大语言模型及其应用</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

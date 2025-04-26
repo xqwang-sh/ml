@@ -1,0 +1,1591 @@
+---
+title: "文本分析(三)：大语言模型及其应用"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# 从静态向量到动态表示
+
+## Word2Vec的局限性
+
+上一讲中，我们学习了Word2Vec等词向量技术，它通过分布式表示极大提升了NLP的表示能力。然而，静态词向量仍然存在明显局限性：
+
+1. **一词一向量问题**：每个词只对应一个固定的向量，无法处理一词多义。例如"苹果"在"我吃了一个苹果"和"苹果公司发布新产品"中的含义完全不同。
+   
+2. **上下文无关**：词向量无法捕捉词语在特定上下文中的含义变化。例如"银行存款"和"河流的银行"中，"银行"的含义有很大差异。
+   
+3. **长距离依赖问题**：无法捕捉句子中相距较远的词之间的依赖关系。例如"他说中文，因为他在中国生活了很多年"中，第二个"他"与第一个"他"指代相同。
+   
+4. **表达能力有限**：固定维度的向量难以编码复杂的语言知识和语法结构。
+
+这些局限性促使研究者探索更先进的表示方法，能够根据上下文动态调整词语的表示。这一探索最终导致了BERT等基于Transformer的语言模型的诞生。
+
+## 上下文感知的词表示
+
+**上下文感知的词表示**（Contextualized Word Representations）是指词语的向量表示会根据其所处的上下文动态变化。与静态词向量不同，它具有以下特点：
+
+1. **动态表示**：同一个词在不同上下文中具有不同的向量表示
+2. **语义消歧**：能够根据上下文区分多义词的不同含义
+3. **句法感知**：能够捕捉词语在句子中的句法功能
+4. **长距离依赖**：能够建模句子中远距离词语之间的关系
+
+这种表示方法的核心思想是：**一个词的含义不仅取决于它自身，更取决于它的上下文环境**。
+
+## 语言模型：理解上下文的基础
+
+上下文感知表示的关键在于**语言模型**（Language Model）。语言模型是一种能够计算文本序列概率的模型，其基本任务是预测序列中的下一个词：
+
+$$P(w_t | w_1, w_2, ..., w_{t-1})$$
+
+不同类型的语言模型处理上下文的方式不同：
+
+1. **传统n-gram语言模型**：只考虑有限历史，如$P(w_t | w_{t-2}, w_{t-1})$
+   
+2. **循环神经网络(RNN)语言模型**：通过隐藏状态递归编码全部历史
+   
+3. **双向语言模型**：同时考虑左侧和右侧上下文
+   
+4. **Transformer语言模型**：通过注意力机制直接建模所有位置间的依赖关系
+
+预训练语言模型的出现为NLP带来了革命性变化，它通过在大规模语料上无监督预训练，学习通用的语言表示，然后再针对下游任务进行微调。
+
+## 从ELMo到BERT的演进
+
+上下文感知的词表示技术的发展经历了几个里程碑：
+
+### ELMo (2018)
+
+ELMo (Embeddings from Language Models) 是上下文词表示的早期尝试，由Peters等人在2018年提出。其特点包括：
+
+- 使用双层双向LSTM结构
+- 将前向和后向语言模型结合
+- 使用不同层的表示的加权组合作为最终表示
+- 有效解决了一词多义问题
+
+ELMo的表示公式为：
+
+$$ELMo_k^{task} = E(R_k; \Theta^{task}) = \gamma^{task} \sum_{j=0}^{L} s_j^{task} \mathbf{h}_{k,j}^{LM}$$
+
+其中，$\mathbf{h}_{k,j}^{LM}$是第k个词在第j层的表示。
+
+### GPT (2018)
+
+OpenAI的GPT (Generative Pre-Training) 模型采用了单向Transformer结构：
+
+- 仅使用前向语言模型（只看左侧上下文）
+- 基于Transformer解码器架构
+- 首次展示了大规模预训练+微调的范式
+
+GPT采用的预训练目标是预测下一个词：
+
+$$L(\mathcal{U}) = \sum_i \log P(u_i | u_{i-k}, ..., u_{i-1}; \Theta)$$
+
+### BERT (2018)
+
+BERT (Bidirectional Encoder Representations from Transformers) 由Google在2018年提出，成为上下文词表示的里程碑工作：
+
+- 使用双向Transformer编码器
+- 采用掩码语言模型(Masked LM)预训练
+- 同时使用下一句预测(NSP)任务
+- 极大提升了NLP任务的性能上限
+
+BERT的预训练目标是预测被掩码的词：
+
+$$L(\mathcal{D}) = \sum_{i \in \mathcal{M}} \log P(w_i | w_{\neg \mathcal{M}}; \Theta)$$
+
+其中，$\mathcal{M}$是被掩码的词的位置集合。
+
+这一演进体现了以下趋势：
+- 从浅层网络到深层Transformer架构
+- 从单向上下文到双向上下文
+- 从特征提取器到通用语言模型
+- 从任务相关到预训练-微调范式
+
+接下来，我们将深入理解BERT模型的内部工作原理。
+
+# BERT原理深度解析
+
+## Transformer架构：BERT的基础
+
+BERT建立在Transformer架构之上，这是由Vaswani等人在2017年提出的一种完全基于注意力机制的神经网络结构。在深入BERT之前，我们需要先理解Transformer的基本组件。
+
+### 自注意力机制
+
+**自注意力**（Self-Attention）是Transformer的核心组件，它允许模型在处理某个位置时，考虑序列中所有位置的信息。其计算过程如下：
+
+1. 将输入向量$X$分别转换为查询(Query)、键(Key)和值(Value)三个矩阵：
+   $$Q = XW^Q, K = XW^K, V = XW^V$$
+
+2. 计算注意力得分并归一化：
+   $$Attention(Q, K, V) = softmax(\frac{QK^T}{\sqrt{d_k}})V$$
+
+3. 其中，$\sqrt{d_k}$是缩放因子，用于防止梯度消失。
+
+自注意力机制的优势在于：
+- 可以捕捉任意距离的依赖关系
+- 计算复杂度相对RNN低
+- 允许并行计算
+
+### 多头注意力
+
+为了增强模型的表示能力，Transformer使用了**多头注意力**（Multi-Head Attention）：
+
+$$MultiHead(Q, K, V) = Concat(head_1, ..., head_h)W^O$$
+
+其中，$head_i = Attention(QW_i^Q, KW_i^K, VW_i^V)$
+
+多头注意力允许模型:
+- 在不同子空间中学习不同的关注模式
+- 同时关注位置和语义信息
+- 提供更丰富的特征表示
+
+### 位置编码
+
+由于自注意力机制本身不包含位置信息，Transformer引入了**位置编码**（Positional Encoding）来将序列顺序信息注入模型：
+
+$$PE_{(pos, 2i)} = sin(pos/10000^{2i/d_{model}})$$
+$$PE_{(pos, 2i+1)} = cos(pos/10000^{2i/d_{model}})$$
+
+其中，$pos$是位置，$i$是维度。
+
+### 前馈神经网络
+
+Transformer中每个子层还包含一个**前馈神经网络**（Feed-Forward Network），由两个线性变换组成：
+
+$$FFN(x) = max(0, xW_1 + b_1)W_2 + b_2$$
+
+### Transformer编码器结构
+
+一个完整的Transformer编码器层包含：
+1. 多头自注意力机制
+2. 层归一化（Layer Normalization）
+3. 前馈神经网络
+4. 残差连接（Residual Connection）
+
+这些组件按以下方式组合：
+$$\hat{h} = LayerNorm(x + MultiHeadAttention(x))$$
+$$h = LayerNorm(\hat{h} + FFN(\hat{h}))$$
+
+BERT使用了Transformer的编码器部分，通常包含12层（BERT-Base）或24层（BERT-Large）。
+
+## BERT模型详解
+
+BERT（Bidirectional Encoder Representations from Transformers）是一种预训练语言模型，旨在学习深层的双向语言表示。
+
+### BERT的输入表示
+
+BERT的输入由三种嵌入的总和组成：
+
+1. **词嵌入**（Token Embeddings）：WordPiece词表中的词元对应的嵌入
+2. **段嵌入**（Segment Embeddings）：区分句子对中的第一句和第二句
+3. **位置嵌入**（Position Embeddings）：表示词元在序列中的位置
+
+每个输入序列以特殊标记`[CLS]`开始，以`[SEP]`分隔不同句子。
+
+![BERT输入表示](https://d2l.ai/_images/bert-input.svg)
+
+### BERT的预训练任务
+
+BERT通过两个无监督任务进行预训练：
+
+1. **掩码语言模型（Masked Language Model，MLM）**：
+   - 随机掩盖输入中15%的词元
+   - 其中80%用`[MASK]`替换，10%用随机词替换，10%保持不变
+   - 训练模型预测被掩盖的原始词元
+   - 这使得BERT能够学习双向上下文表示
+
+2. **下一句预测（Next Sentence Prediction，NSP）**：
+   - 给定两个句子，预测第二句是否是第一句的真实后续
+   - 训练数据中50%是真实的连续句子，50%是随机句子对
+   - 这使得BERT能够理解句子间的关系
+
+### BERT的模型变体
+
+BERT有两个主要变体：
+
+1. **BERT-Base**：
+   - 12层Transformer编码器
+   - 12个注意力头
+   - 768维隐藏层
+   - 1.1亿参数
+
+2. **BERT-Large**：
+   - 24层Transformer编码器
+   - 16个注意力头
+   - 1024维隐藏层
+   - 3.4亿参数
+
+### BERT的微调方式
+
+预训练后的BERT可以通过简单的任务特定层进行微调，适用于多种下游任务：
+
+1. **序列级任务**（如分类）：使用`[CLS]`标记的最终隐藏状态
+2. **词元级任务**（如NER）：使用每个词元的最终隐藏状态
+3. **句子对任务**（如问答）：同时输入问题和段落，识别答案跨度
+
+微调过程通常只需要少量标注数据和训练轮次，极大地降低了NLP任务的门槛。
+
+## BERT的内部工作机制
+
+通过深入分析BERT的内部表示，研究者发现BERT的不同层捕捉了不同类型的语言知识：
+
+### 层次化语言知识
+
+1. **底层**（1-4层）：捕捉表面语法特征、词性、局部依赖等
+2. **中层**（5-8层）：编码短语级语义和共指关系
+3. **高层**（9-12层）：处理长距离依赖和更抽象的语义关系
+
+### 注意力头的专业化
+
+BERT的不同注意力头专注于不同类型的语言信息：
+
+1. **语法头**：关注句法依赖关系
+2. **语义头**：关注语义相关的词
+3. **共指头**：关注指代同一实体的表达
+
+### BERT的表示空间
+
+BERT的表示空间表现出interessting的性质：
+
+1. **各向异性**：嵌入向量集中在狭窄的锥体中，而非均匀分布
+2. **语义区分**：相似概念在表示空间中形成聚类
+3. **线性结构**：某些语义关系可以通过向量差来表示
+
+这些特性使得BERT能够有效地编码复杂的语言知识，并为下游任务提供丰富的特征表示。
+
+## BERT的后续演进
+
+BERT发布后，研究者提出了许多改进版本，主要集中在以下几个方向：
+
+### 预训练任务优化
+
+1. **RoBERTa**：移除NSP任务，使用更大批量和更多数据训练
+2. **ALBERT**：参数共享和分解嵌入，降低模型大小
+3. **ELECTRA**：用判别式替换检测训练，提高效率
+
+### 知识增强
+
+1. **KnowBERT**：集成知识库信息
+2. **ERNIE**：加入实体和短语级掩码
+3. **FinBERT**：针对金融领域的专业知识训练
+
+### 模型架构改进
+
+1. **SpanBERT**：掩盖连续的文本片段而非单个词
+2. **XLNet**：使用排列语言模型，解决掩码带来的预训练-微调不一致
+3. **DeBERTa**：解耦注意力机制，增强位置编码
+
+这些改进进一步推动了预训练语言模型的发展，为下一代更强大的模型如GPT系列奠定了基础。
+
+# 从BERT到大语言模型
+
+## Transformer架构的扩展
+
+虽然BERT在NLP领域带来了巨大进步，但它仍然存在一些局限性，如无法进行生成任务和处理长文本。为了克服这些限制，研究者们对Transformer架构进行了多方面扩展。
+
+### 编码器-解码器结构
+
+**编码器-解码器**（Encoder-Decoder）结构是机器翻译等序列到序列任务的标准架构：
+
+1. **编码器**：处理输入序列，生成上下文表示
+2. **解码器**：基于编码器输出生成目标序列
+3. **交叉注意力**：解码器通过注意力机制访问编码器的输出
+
+代表模型：
+- **T5**：将所有NLP任务统一为文本到文本的转换
+- **BART**：通过降噪自编码器预训练
+
+### 仅解码器架构
+
+**仅解码器**（Decoder-only）架构专注于生成任务，通过自回归方式预测下一个词：
+
+1. **单向自注意力**：每个位置只能看到其前面的位置
+2. **自回归生成**：逐词生成输出序列
+3. **缩放规模**：通过扩大模型规模提升能力
+
+代表模型：
+- **GPT系列**：从GPT-1到GPT-4，规模和能力不断增长
+- **LLaMA**：开源的大型语言模型，有效降低了资源需求
+
+### 长距离建模
+
+处理长文本的能力是大语言模型的关键挑战之一，研究者提出了多种解决方案：
+
+1. **稀疏注意力**：如Longformer，只关注局部窗口和全局标记
+2. **循环机制**：如Transformer-XL，跨段传递隐藏状态
+3. **线性复杂度**：如Linformer，通过低秩近似降低计算量
+4. **扩展上下文窗口**：如DeepSeek，将上下文窗口扩展到128K
+
+## 大型语言模型的关键创新
+
+大型语言模型（LLMs）相比传统BERT模型有几个关键创新：
+
+### 规模扩展
+
+深度学习研究表明，模型规模与性能呈现"幂律"关系，增加参数量能带来显著性能提升：
+
+1. **从亿到千亿参数**：BERT-Large有3.4亿参数，而GPT-4估计有超过1万亿参数
+2. **计算资源增长**：训练大模型需要数千GPU/TPU，消耗数百万美元
+3. **预训练数据扩展**：从GB级语料到TB级语料
+
+### 涌现能力
+
+大语言模型最惊人的特性是**涌现能力**（Emergent Abilities）——在达到一定规模后突然出现的能力：
+
+1. **指令跟随**：理解并执行自然语言指令
+2. **思维链推理**：通过分步骤推理解决复杂问题
+3. **上下文学习**：从少量示例中学习新任务
+4. **多模态理解**：结合文本与图像等多种模态信息
+
+### 提示工程与思维链推理
+
+大语言模型的使用方式也发生了革命性变化：
+
+1. **提示工程**（Prompt Engineering）：
+   - 通过精心设计的提示引导模型行为
+   - 不同于传统的微调范式
+   - 允许灵活调整模型输出
+
+2. **思维链推理**（Chain-of-Thought）：
+   - 让模型先生成推理过程，再给出结论
+   - 显著提高模型解决复杂问题的能力
+   - 公式：$\text{Prompt} + \text{思考过程} \to \text{更准确的结果}$
+
+3. **上下文学习**（In-context Learning）：
+   - 在提示中包含示例，引导模型学习模式
+   - 无需参数更新，即可适应新任务
+   - 示例：给出几个情感分类示例，模型可泛化到新文本
+
+## 代表性大型语言模型
+
+### GPT系列
+
+由OpenAI开发的GPT（Generative Pre-trained Transformer）系列是大型语言模型的代表：
+
+1. **GPT-1**（2018）：
+   - 1.17亿参数
+   - 首次展示预训练+微调范式
+   - 在多个NLP任务上获得突破
+
+2. **GPT-2**（2019）：
+   - 15亿参数
+   - 展示了零样本学习能力
+   - 文本生成质量有显著提升
+
+3. **GPT-3**（2020）：
+   - 1750亿参数
+   - 展示了惊人的少样本学习能力
+   - 可以执行之前未见过的任务
+
+4. **GPT-4**（2023）：
+   - 参数规模未公开，估计超过1万亿
+   - 多模态能力，支持图像输入
+   - 接近人类专家水平的表现
+
+### 开源大型语言模型
+
+除了GPT系列，开源社区也开发了多种高性能大语言模型：
+
+1. **LLaMA系列**：
+   - 由Meta AI开发
+   - 参数规模从7B到65B不等
+   - 性能接近闭源商业模型
+   - 衍生了许多优秀模型如Vicuna和Alpaca
+
+2. **国产大模型**：
+   - **ChatGLM**：清华大学与智谱AI合作开发的双语模型
+   - **DeepSeek**：深度求索开发，专注长序列处理
+   - **Qwen**：阿里云开发，性能优异的开源模型
+
+3. **多模态模型**：
+   - **CLIP**：连接图像和文本的表示学习
+   - **GPT-4V**：具有视觉理解能力的GPT-4变体
+   - **Gemini**：Google的多模态大语言模型
+
+## 大语言模型的金融应用
+
+大语言模型在金融领域有广泛的应用潜力：
+
+### 信息提取与分析
+
+1. **报告解析**：
+   - 自动提取财报中的关键财务指标
+   - 总结长篇研报要点
+   - 识别风险披露声明
+
+2. **市场情感分析**：
+   - 分析新闻报道的市场情绪
+   - 提取投资者情绪信号
+   - 预测市场波动
+
+3. **事件提取**：
+   - 从财经新闻中识别重大事件
+   - 构建事件知识图谱
+   - 分析事件之间的因果关系
+
+### 金融文本生成
+
+1. **研究报告生成**：
+   - 基于数据自动生成财务分析
+   - 创建行业趋势报告
+   - 生成个股评论
+
+2. **监管合规**：
+   - 生成合规声明和披露
+   - 检查文档是否符合监管要求
+   - 自动更新合规文件
+
+3. **客户交互**：
+   - 智能金融顾问
+   - 个性化投资建议
+   - 金融知识普及
+
+### 无监督学习辅助
+
+1. **文本聚类**：
+   - 通过嵌入向量聚类发现主题
+   - 识别相似公告和报告
+   - 发现市场关注热点
+
+2. **异常检测**：
+   - 识别异常金融叙述
+   - 发现财报中的可疑部分
+   - 预警潜在风险信号
+
+3. **主题提取**：
+   - 无监督发现文档主题
+   - 总结长文本的核心观点
+   - 追踪主题随时间的演变
+
+# 基于BERT的政府工作报告分析
+
+## BERT与Word2Vec的实验对比
+
+在本节中，我们将使用政府工作报告数据，对比BERT与Word2Vec在文本表示上的差异。这一对比将帮助我们理解上下文感知表示相对于静态词向量的优势。
+
+### 数据准备与预处理
+
+与上一讲类似，我们首先加载和预处理政府工作报告数据：
+
+```{python}
+#| eval: false
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import jieba
+import re
+from sklearn.metrics.pairwise import cosine_similarity
+import torch
+from transformers import BertModel, BertTokenizer
+
+# 加载政府工作报告数据
+govreport = pd.read_csv("labs/NLP/data/govreport.csv")
+
+# 设置中文显示
+plt.rcParams['font.sans-serif'] = ['Songti SC']  # 用来正常显示中文标签
+plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
+
+# 加载停用词
+with open("labs/NLP/data/ChineseStopWords.txt", 'r', encoding='utf-8') as f:
+    stop_words = {line.strip() for line in f}
+
+# 文本清洗并分词
+def preprocess_text(text):
+    # 去除标点符号和数字
+    text = re.sub(r'[^\u4e00-\u9fa5]', ' ', text)
+    # 分词
+    words = jieba.cut(text)
+    # 去除停用词和空白
+    return [word for word in words if word.strip() and word not in stop_words]
+
+# 处理所有文档
+corpus = []
+years = []
+for _, row in govreport.iterrows():
+    words = preprocess_text(row['texts'])
+    corpus.append(words)
+    years.append(row['Year'])
+
+print(f"语料库包含{len(corpus)}篇文档")
+
+# 加载预训练的Word2Vec模型（假设我们已经训练好了，这里直接加载）
+from gensim.models import Word2Vec
+w2v_model = Word2Vec.load("gov_report_word2vec.model")
+```
+
+### 加载BERT模型
+
+我们将使用中文预训练BERT模型：
+
+```{python}
+#| eval: false
+# 加载预训练的中文BERT模型
+tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
+model = BertModel.from_pretrained('bert-base-chinese')
+model.eval()  # 设置为评估模式
+
+# 定义函数获取BERT词向量
+def get_bert_embeddings(text, tokenizer, model, max_length=512):
+    # 对文本进行分词和转换
+    inputs = tokenizer(text, return_tensors='pt', truncation=True, max_length=max_length, padding='max_length')
+    
+    # 获取BERT输出
+    with torch.no_grad():
+        outputs = model(**inputs)
+    
+    # 提取最后一层的隐藏状态（词向量）
+    last_hidden_states = outputs.last_hidden_state
+    
+    # 提取[CLS]标记的向量作为句子表示
+    cls_embedding = last_hidden_states[:, 0, :].numpy()
+    
+    # 提取所有词元的向量
+    token_embeddings = last_hidden_states.numpy()
+    
+    return {
+        'cls_embedding': cls_embedding,  # 句子表示
+        'token_embeddings': token_embeddings,  # 词元表示
+        'tokens': tokenizer.convert_ids_to_tokens(inputs['input_ids'][0])  # 对应的词元
+    }
+```
+
+### 多义词表示对比
+
+我们将对比BERT和Word2Vec在处理多义词上的能力差异：
+
+```{python}
+#| eval: false
+# 选择一个多义词进行分析，如"发展"
+ambiguous_word = "发展"
+
+# 从报告中找出含有该词的不同上下文
+contexts = []
+for i, doc in enumerate(corpus):
+    # 将分词列表转换为文本
+    text = "".join(doc)
+    # 在原文中寻找该词
+    if ambiguous_word in text:
+        # 寻找包含目标词的短句
+        sentences = re.split(r'[，。！？；]', text)
+        for sentence in sentences:
+            if ambiguous_word in sentence and 10 < len(sentence) < 50:
+                contexts.append((years[i], sentence))
+                if len(contexts) >= 5:  # 只取5个上下文示例
+                    break
+    if len(contexts) >= 5:
+        break
+
+# 1. Word2Vec的表示（静态）
+w2v_vector = w2v_model.wv[ambiguous_word]
+
+# 2. BERT的表示（动态，依赖上下文）
+bert_vectors = []
+for year, context in contexts:
+    # 获取BERT表示
+    bert_result = get_bert_embeddings(context, tokenizer, model)
+    # 找到目标词的位置
+    target_positions = [i for i, token in enumerate(bert_result['tokens']) 
+                        if ambiguous_word in token and '##' not in token]
+    
+    if target_positions:
+        # 提取目标词在该上下文中的表示
+        target_idx = target_positions[0]
+        bert_vector = bert_result['token_embeddings'][0, target_idx, :]
+        bert_vectors.append((year, context, bert_vector))
+
+# 计算BERT表示之间的相似度
+if bert_vectors:
+    bert_similarities = np.zeros((len(bert_vectors), len(bert_vectors)))
+    for i in range(len(bert_vectors)):
+        for j in range(len(bert_vectors)):
+            bert_similarities[i, j] = cosine_similarity(
+                bert_vectors[i][2].reshape(1, -1), 
+                bert_vectors[j][2].reshape(1, -1)
+            )[0, 0]
+    
+    # 可视化BERT表示的相似度矩阵
+    plt.figure(figsize=(10, 8))
+    plt.imshow(bert_similarities, cmap='YlOrRd')
+    plt.colorbar(label='余弦相似度')
+    plt.title(f'"{ambiguous_word}"在不同上下文中的BERT表示相似度')
+    
+    # 设置坐标轴标签
+    context_labels = [f"{year}: {context[:10]}..." for year, context, _ in bert_vectors]
+    plt.xticks(range(len(context_labels)), context_labels, rotation=45, ha='right')
+    plt.yticks(range(len(context_labels)), context_labels)
+    
+    plt.tight_layout()
+    plt.show()
+    
+    print(f"\nWord2Vec中'{ambiguous_word}'的静态表示是固定的，无法区分不同上下文")
+    print(f"而BERT可以为'{ambiguous_word}'在不同上下文中生成不同的表示")
+    print("相似度矩阵展示了这些表示之间的差异，相似度较低的对应不同语义用法")
+```
+
+### 生成句子向量比较
+
+我们将对比Word2Vec和BERT生成的句子向量在文本相似度任务上的表现：
+
+```{python}
+#| eval: false
+# 为每个报告生成句子向量
+# 1. 基于Word2Vec (简单平均)
+def get_w2v_sentence_vector(tokens, model):
+    valid_tokens = [t for t in tokens if t in model.wv]
+    if not valid_tokens:
+        return np.zeros(model.vector_size)
+    return np.mean([model.wv[t] for t in valid_tokens], axis=0)
+
+# 2. 基于BERT的[CLS]标记
+def get_bert_sentence_vector(text, tokenizer, model):
+    result = get_bert_embeddings(text, tokenizer, model)
+    return result['cls_embedding'][0]
+
+# 生成向量
+w2v_doc_vectors = [get_w2v_sentence_vector(doc, w2v_model) for doc in corpus]
+bert_doc_vectors = []
+
+for i, _ in govreport.iterrows():
+    # 取报告的前512个字符（BERT输入长度限制）
+    text_sample = govreport.iloc[i]['texts'][:512]
+    bert_vec = get_bert_sentence_vector(text_sample, tokenizer, model)
+    bert_doc_vectors.append(bert_vec)
+
+# 计算报告之间的相似度
+w2v_similarities = cosine_similarity(w2v_doc_vectors)
+bert_similarities = cosine_similarity(bert_doc_vectors)
+
+# 可视化报告相似度矩阵比较
+fig, axes = plt.subplots(1, 2, figsize=(16, 7))
+
+# Word2Vec相似度矩阵
+im1 = axes[0].imshow(w2v_similarities, cmap='Blues')
+axes[0].set_title('Word2Vec: 报告相似度矩阵')
+axes[0].set_xticks(range(len(years)))
+axes[0].set_yticks(range(len(years)))
+axes[0].set_xticklabels(years)
+axes[0].set_yticklabels(years)
+plt.colorbar(im1, ax=axes[0])
+
+# BERT相似度矩阵
+im2 = axes[1].imshow(bert_similarities, cmap='Reds')
+axes[1].set_title('BERT: 报告相似度矩阵')
+axes[1].set_xticks(range(len(years)))
+axes[1].set_yticks(range(len(years)))
+axes[1].set_xticklabels(years)
+axes[1].set_yticklabels(years)
+plt.colorbar(im2, ax=axes[1])
+
+plt.tight_layout()
+plt.show()
+```
+
+### 关键词提取对比
+
+比较BERT和Word2Vec在关键词提取任务上的差异：
+
+```{python}
+#| eval: false
+# 基于BERT的关键词提取
+def extract_bert_keywords(text, tokenizer, model, top_n=10):
+    # 将文本分成短句
+    sentences = re.split(r'[，。！？；]', text)
+    sentences = [s for s in sentences if len(s) > 5]
+    
+    if not sentences:
+        return []
+    
+    # 对每个句子获取词元表示
+    all_tokens = []
+    all_embeddings = []
+    
+    for sentence in sentences[:20]:  # 限制句子数量
+        result = get_bert_embeddings(sentence, tokenizer, model)
+        tokens = result['tokens']
+        embeddings = result['token_embeddings'][0]
+        
+        # 过滤掉特殊标记和重复词
+        valid_indices = []
+        valid_tokens = []
+        for i, token in enumerate(tokens):
+            if token not in ['[CLS]', '[SEP]', '[PAD]'] and '##' not in token:
+                if token not in valid_tokens:
+                    valid_indices.append(i)
+                    valid_tokens.append(token)
+        
+        all_tokens.extend([tokens[i] for i in valid_indices])
+        all_embeddings.extend([embeddings[i] for i in valid_indices])
+    
+    if not all_tokens:
+        return []
+    
+    # 计算每个词与文档中心的余弦相似度
+    doc_center = np.mean(all_embeddings, axis=0)
+    token_scores = []
+    
+    for i, token in enumerate(all_tokens):
+        if token in stop_words or len(token) < 2:
+            continue
+        score = cosine_similarity([all_embeddings[i]], [doc_center])[0][0]
+        token_scores.append((token, score))
+    
+    # 按分数排序并返回前N个关键词
+    unique_tokens = {}
+    for token, score in token_scores:
+        if token not in unique_tokens or score > unique_tokens[token]:
+            unique_tokens[token] = score
+    
+    sorted_tokens = sorted(unique_tokens.items(), key=lambda x: x[1], reverse=True)
+    return sorted_tokens[:top_n]
+
+# 选择2023年报告进行分析
+report_idx = govreport[govreport['Year'] == 2023].index[0]
+report_text = govreport.loc[report_idx, 'texts']
+report_tokens = corpus[report_idx]
+
+# Word2Vec关键词（使用上一讲的中心性方法）
+def get_w2v_central_words(tokens, model, top_n=10):
+    # 过滤不在模型中的词
+    valid_tokens = [t for t in tokens if t in model.wv]
+    
+    if not valid_tokens:
+        return []
+    
+    # 计算中心性
+    word_centrality = {}
+    for word in set(valid_tokens):
+        if len(word) < 2:  # 跳过单字词
+            continue
+        similarities = [model.wv.similarity(word, t) for t in valid_tokens if t != word]
+        if similarities:
+            word_centrality[word] = sum(similarities) / len(similarities)
+    
+    # 返回中心性最高的词
+    return sorted(word_centrality.items(), key=lambda x: x[1], reverse=True)[:top_n]
+
+# 提取关键词
+w2v_keywords = get_w2v_central_words(report_tokens, w2v_model)
+bert_keywords = extract_bert_keywords(report_text[:2000], tokenizer, model)  # 限制文本长度
+
+# 打印结果比较
+print("Word2Vec提取的关键词:")
+for word, score in w2v_keywords:
+    print(f"{word}: {score:.4f}")
+
+print("\nBERT提取的关键词:")
+for word, score in bert_keywords:
+    print(f"{word}: {score:.4f}")
+```
+
+## 使用预训练模型进行主题分析
+
+接下来，我们探索如何使用BERT进行政府工作报告的主题分析。
+
+### 基于BERT表示的文本聚类
+
+```{python}
+#| eval: false
+from sklearn.cluster import KMeans
+from sklearn.decomposition import PCA
+
+# 对BERT文档向量进行聚类
+n_clusters = 3
+kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+cluster_labels = kmeans.fit_predict(bert_doc_vectors)
+
+# 将聚类结果与年份对应
+cluster_df = pd.DataFrame({
+    'Year': years,
+    'Cluster': cluster_labels
+})
+
+# 对结果进行可视化（使用PCA降维）
+pca = PCA(n_components=2)
+bert_2d = pca.fit_transform(bert_doc_vectors)
+
+plt.figure(figsize=(12, 8))
+for cluster in range(n_clusters):
+    # 找出属于当前簇的点
+    cluster_points = bert_2d[cluster_labels == cluster]
+    cluster_years = [years[i] for i in range(len(years)) if cluster_labels[i] == cluster]
+    
+    # 绘制点
+    plt.scatter(cluster_points[:, 0], cluster_points[:, 1], label=f'Cluster {cluster}', alpha=0.7)
+    
+    # 添加年份标签
+    for i, point in enumerate(cluster_points):
+        plt.annotate(cluster_years[i], xy=point, fontsize=10)
+
+plt.title('基于BERT表示的政府工作报告聚类')
+plt.xlabel('PCA维度1')
+plt.ylabel('PCA维度2')
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.5)
+plt.tight_layout()
+plt.show()
+
+# 分析每个簇的主题特征
+for cluster in range(n_clusters):
+    cluster_indices = [i for i, label in enumerate(cluster_labels) if label == cluster]
+    cluster_years = [years[i] for i in cluster_indices]
+    
+    print(f"\n簇 {cluster} 包含年份: {', '.join(map(str, cluster_years))}")
+    
+    # 合并该簇的所有文档
+    cluster_text = " ".join([govreport.iloc[i]['texts'][:500] for i in cluster_indices])
+    
+    # 提取该簇的主题词
+    cluster_keywords = extract_bert_keywords(cluster_text, tokenizer, model, top_n=15)
+    print("主题词:")
+    for word, score in cluster_keywords:
+        print(f"  {word}: {score:.4f}")
+```
+
+### 文本主题随时间的演变分析
+
+```{python}
+#| eval: false
+# 对每年报告提取主题词，分析主题随时间的演变
+years_list = sorted(set(years))
+yearly_topics = {}
+
+for year in years_list:
+    idx = govreport[govreport['Year'] == year].index[0]
+    text = govreport.loc[idx, 'texts'][:2000]  # 限制长度
+    
+    # 提取主题词
+    topics = extract_bert_keywords(text, tokenizer, model, top_n=10)
+    yearly_topics[year] = topics
+
+# 跟踪某些关键词随时间的变化
+focus_words = ['创新', '发展', '改革', '民生', '科技', '数字', '经济']
+word_trends = {word: [] for word in focus_words}
+
+for year in years_list:
+    # 创建当年主题词的字典
+    year_word_scores = {word: score for word, score in yearly_topics[year]}
+    
+    # 记录焦点词的出现情况
+    for word in focus_words:
+        if word in year_word_scores:
+            word_trends[word].append((year, year_word_scores[word]))
+        else:
+            word_trends[word].append((year, 0))
+
+# 可视化关键词趋势
+plt.figure(figsize=(14, 8))
+for word, trend in word_trends.items():
+    years_data = [t[0] for t in trend]
+    scores = [t[1] for t in trend]
+    plt.plot(years_data, scores, marker='o', linewidth=2, label=word)
+
+plt.title('政府工作报告中关键概念的重要性变化')
+plt.xlabel('年份')
+plt.ylabel('主题重要性得分')
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.5)
+plt.xticks(years_list)
+plt.tight_layout()
+plt.show()
+```
+
+### 语义相似度异常点检测
+
+```{python}
+#| eval: false
+from sklearn.neighbors import LocalOutlierFactor
+
+# 使用局部异常因子(LOF)算法检测异常点
+lof = LocalOutlierFactor(n_neighbors=2, contamination=0.1)
+outliers = lof.fit_predict(bert_doc_vectors)
+
+# 异常点是-1，正常点是1
+anomaly_indices = [i for i, label in enumerate(outliers) if label == -1]
+anomaly_years = [years[i] for i in anomaly_indices]
+
+print(f"检测到的异常报告: {', '.join(map(str, anomaly_years))}")
+
+# 可视化异常点
+plt.figure(figsize=(12, 8))
+plt.scatter(bert_2d[:, 0], bert_2d[:, 1], c=['red' if x == -1 else 'blue' for x in outliers], 
+            alpha=0.7, label=['Anomaly' if x == -1 else 'Normal' for x in outliers])
+
+# 添加年份标签
+for i, point in enumerate(bert_2d):
+    plt.annotate(years[i], xy=point, fontsize=10)
+
+plt.title('政府工作报告语义异常检测')
+plt.xlabel('PCA维度1')
+plt.ylabel('PCA维度2')
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.5)
+plt.tight_layout()
+plt.show()
+
+# 分析异常报告的特点
+if anomaly_indices:
+    for idx in anomaly_indices:
+        year = years[idx]
+        print(f"\n{year}年报告被检测为异常，分析其特点:")
+        
+        # 提取该报告的特有词汇
+        text = govreport.iloc[idx]['texts'][:2000]
+        keywords = extract_bert_keywords(text, tokenizer, model, top_n=10)
+        
+        print("特征词:")
+        for word, score in keywords:
+            print(f"  {word}: {score:.4f}")
+        
+        # 计算与其他报告的平均相似度
+        similarities = []
+        for i in range(len(bert_doc_vectors)):
+            if i != idx:
+                sim = cosine_similarity([bert_doc_vectors[idx]], [bert_doc_vectors[i]])[0][0]
+                similarities.append((years[i], sim))
+        
+        avg_similarity = sum(sim for _, sim in similarities) / len(similarities)
+        print(f"与其他报告的平均相似度: {avg_similarity:.4f}")
+        
+        # 找出最不相似的报告
+        least_similar = min(similarities, key=lambda x: x[1])
+        print(f"最不相似的报告是{least_similar[0]}年，相似度为{least_similar[1]:.4f}")
+```
+
+# 使用大语言模型进行金融文本分析
+
+在本节中，我们将探索如何利用强大的大语言模型（LLMs）进行金融文本分析。我们将介绍如何使用预训练的金融专业模型FinBERT以及通用大模型如DeepSeek等，实现无监督的文本理解任务。
+
+## 使用FinBERT进行金融文本分类
+
+FinBERT是一种针对金融领域进行微调的BERT变体，专门为金融文本分析而设计。
+
+### 安装与加载FinBERT
+
+```{python}
+#| eval: false
+# 安装所需库
+# !pip install transformers sentencepiece matplotlib
+# !pip install finbert
+
+import torch
+from transformers import AutoModelForSequenceClassification, AutoTokenizer
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 加载FinBERT模型
+tokenizer = AutoTokenizer.from_pretrained("ProsusAI/finbert")
+model = AutoModelForSequenceClassification.from_pretrained("ProsusAI/finbert")
+model.eval()  # 设置为评估模式
+```
+
+### 金融情感分析
+
+FinBERT的一个主要用途是金融文本的情感分析，可以将文本分类为正面、负面或中性：
+
+```{python}
+#| eval: false
+def analyze_sentiment(text, model, tokenizer):
+    inputs = tokenizer(text, return_tensors="pt", padding=True, truncation=True, max_length=512)
+    
+    with torch.no_grad():
+        outputs = model(**inputs)
+        predictions = torch.nn.functional.softmax(outputs.logits, dim=-1)
+    
+    # FinBERT情感标签: 0=negative, 1=neutral, 2=positive
+    sentiment_labels = ["负面", "中性", "正面"]
+    scores = predictions[0].numpy()
+    
+    results = []
+    for i in range(len(sentiment_labels)):
+        results.append((sentiment_labels[i], float(scores[i])))
+    
+    return sorted(results, key=lambda x: x[1], reverse=True)
+
+# 测试几个金融相关的文本片段
+test_texts = [
+    "今年以来，我国经济稳中向好，经济增长好于预期，通胀水平保持稳定。",
+    "受外部需求减弱影响，出口增长放缓，企业经营压力加大，就业形势更加严峻。",
+    "科技创新成为经济高质量发展的强大动力，数字经济蓬勃发展。",
+    "金融风险明显增加，部分企业债务违约，需要加强风险防控。",
+    "资本市场改革持续推进，投资者信心有所恢复，市场预期逐步改善。"
+]
+
+# 分析情感
+sentiments = []
+for text in test_texts:
+    sentiment = analyze_sentiment(text, model, tokenizer)
+    sentiments.append(sentiment)
+    print(f"文本: {text}")
+    for label, score in sentiment:
+        print(f"  {label}: {score:.4f}")
+    print()
+
+# 可视化情感分析结果
+fig, ax = plt.subplots(figsize=(12, 8))
+x = np.arange(len(test_texts))
+width = 0.25
+
+# 提取各情感得分
+negative_scores = [sentiment[2][1] for sentiment in sentiments]
+neutral_scores = [sentiment[1][1] for sentiment in sentiments]
+positive_scores = [sentiment[0][1] for sentiment in sentiments]
+
+# 绘制条形图
+ax.bar(x - width, positive_scores, width, label='正面')
+ax.bar(x, neutral_scores, width, label='中性')
+ax.bar(x + width, negative_scores, width, label='负面')
+
+ax.set_ylabel('情感得分')
+ax.set_title('FinBERT金融文本情感分析')
+ax.set_xticks(x)
+ax.set_xticklabels([f'文本{i+1}' for i in range(len(test_texts))])
+ax.legend()
+
+plt.tight_layout()
+plt.show()
+```
+
+### 对政府工作报告进行金融情感分析
+
+接下来，我们使用FinBERT分析政府工作报告中的金融相关段落：
+
+```{python}
+#| eval: false
+# 从政府工作报告中提取金融相关段落
+def extract_finance_paragraphs(text, keywords=None):
+    if keywords is None:
+        keywords = ['经济', '金融', '财政', '税收', '货币', '银行', '债务', '投资', 
+                  '证券', '股市', '外汇', '通胀', '增长', '风险', '改革']
+    
+    # 将文本分成段落
+    paragraphs = text.split('\n')
+    
+    # 过滤出含有金融关键词的段落
+    finance_paragraphs = []
+    for para in paragraphs:
+        if len(para) < 10:  # 跳过短段落
+            continue
+        if any(keyword in para for keyword in keywords):
+            finance_paragraphs.append(para)
+    
+    return finance_paragraphs
+
+# 按年份分析政府工作报告的金融情感
+yearly_sentiments = {}
+
+for year in years_list:
+    idx = govreport[govreport['Year'] == year].index[0]
+    text = govreport.loc[idx, 'texts']
+    
+    # 提取金融段落
+    finance_paras = extract_finance_paragraphs(text)
+    
+    # 不分析段落过少的年份
+    if len(finance_paras) < 3:
+        continue
+    
+    # 分析每个段落的情感
+    para_sentiments = []
+    for para in finance_paras[:10]:  # 限制段落数量
+        sentiment = analyze_sentiment(para, model, tokenizer)
+        para_sentiments.append(sentiment)
+    
+    # 计算平均情感分数
+    avg_positive = np.mean([s[0][1] for s in para_sentiments])
+    avg_neutral = np.mean([s[1][1] for s in para_sentiments])
+    avg_negative = np.mean([s[2][1] for s in para_sentiments])
+    
+    yearly_sentiments[year] = {
+        "正面": avg_positive,
+        "中性": avg_neutral,
+        "负面": avg_negative
+    }
+
+# 可视化情感随时间的变化
+plt.figure(figsize=(14, 8))
+years = sorted(yearly_sentiments.keys())
+positive_scores = [yearly_sentiments[year]["正面"] for year in years]
+neutral_scores = [yearly_sentiments[year]["中性"] for year in years]
+negative_scores = [yearly_sentiments[year]["负面"] for year in years]
+
+plt.plot(years, positive_scores, 'g-', marker='o', linewidth=2, label='正面')
+plt.plot(years, neutral_scores, 'b-', marker='s', linewidth=2, label='中性')
+plt.plot(years, negative_scores, 'r-', marker='^', linewidth=2, label='负面')
+
+plt.title('政府工作报告金融段落情感变化趋势')
+plt.xlabel('年份')
+plt.ylabel('情感强度')
+plt.legend()
+plt.grid(True, linestyle='--', alpha=0.5)
+plt.xticks(years)
+plt.tight_layout()
+plt.show()
+```
+
+## 使用通用大语言模型的零样本分类
+
+除了专业领域模型，我们还可以利用通用大语言模型的强大能力进行零样本分类，无需额外训练。
+
+### 安装与设置大语言模型
+
+```{python}
+#| eval: false
+# 安装所需库
+# !pip install openai
+# !pip install deepseek
+
+# 导入必要的库
+import openai
+import os
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from deepseek import DeepSeekAPI
+
+# 设置API密钥（请使用自己的API密钥）
+# openai.api_key = "your-api-key-here"  # GPT-4/3.5
+# deepseek_api = DeepSeekAPI("your-deepseek-api-key")  # DeepSeek
+```
+
+### 零样本文本分类
+
+我们可以使用大语言模型进行零样本分类，无需提供训练数据：
+
+```{python}
+#| eval: false
+def classify_text_with_gpt(text, categories, model="gpt-3.5-turbo"):
+    """使用GPT模型进行零样本文本分类"""
+    prompt = f"""请将以下文本分类到这些类别之一: {', '.join(categories)}。
+    只需回复类别名称，不要添加任何解释或标点符号。
+    
+    文本: {text}
+    """
+    
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "你是一个精确的文本分类助手。"},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0,
+    )
+    
+    return response.choices[0].message.content.strip()
+
+def classify_text_with_deepseek(text, categories, model="deepseek-chat"):
+    """使用DeepSeek模型进行零样本文本分类"""
+    prompt = f"""请将以下文本分类到这些类别之一: {', '.join(categories)}。
+    只需回复类别名称，不要添加任何解释或标点符号。
+    
+    文本: {text}
+    """
+    
+    response = deepseek_api.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "你是一个精确的文本分类助手。"},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0,
+    )
+    
+    return response.choices[0].message.content.strip()
+
+# 示例：将政府工作报告段落分类为不同政策领域
+policy_categories = ["经济发展", "科技创新", "民生改善", "环境保护", "改革开放", "风险防控"]
+
+# 从多个年份的报告中选取段落
+sample_paragraphs = []
+sample_years = [2019, 2020, 2021, 2022, 2023]
+
+for year in sample_years:
+    idx = govreport[govreport['Year'] == year].index[0]
+    text = govreport.loc[idx, 'texts']
+    
+    # 提取段落
+    paragraphs = [p for p in text.split('\n') if len(p) > 50 and len(p) < 200]
+    if paragraphs:
+        # 随机选择一个段落
+        import random
+        selected_para = random.choice(paragraphs)
+        sample_paragraphs.append((year, selected_para))
+
+# 使用大语言模型进行分类
+# 注意：实际运行时取消注释以下代码，但需要API密钥
+"""
+classification_results = []
+for year, para in sample_paragraphs:
+    # category = classify_text_with_gpt(para, policy_categories)
+    category = classify_text_with_deepseek(para, policy_categories)
+    classification_results.append((year, para[:50] + "...", category))
+
+# 打印分类结果
+print("大语言模型零样本分类结果:")
+for year, para_preview, category in classification_results:
+    print(f"{year}年段落: {para_preview}")
+    print(f"分类: {category}\n")
+"""
+```
+
+### 使用大模型生成金融文本摘要
+
+大语言模型在摘要生成方面表现出色，可以用于提取政府工作报告中的金融政策要点：
+
+```{python}
+#| eval: false
+def generate_summary_with_gpt(text, model="gpt-3.5-turbo"):
+    """使用GPT模型生成摘要"""
+    prompt = f"""请总结以下政府工作报告中的金融政策要点，以简洁的要点形式列出，最多5条:
+
+    {text}
+    """
+    
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "你是一个专业的金融政策分析师。"},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.3,
+        max_tokens=300
+    )
+    
+    return response.choices[0].message.content.strip()
+
+def generate_summary_with_deepseek(text, model="deepseek-chat"):
+    """使用DeepSeek模型生成摘要"""
+    prompt = f"""请总结以下政府工作报告中的金融政策要点，以简洁的要点形式列出，最多5条:
+
+    {text}
+    """
+    
+    response = deepseek_api.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "你是一个专业的金融政策分析师。"},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.3,
+        max_tokens=300
+    )
+    
+    return response.choices[0].message.content.strip()
+
+# 为近几年的报告生成金融政策摘要
+# 注意：实际运行时取消注释以下代码，但需要API密钥
+"""
+policy_summaries = {}
+for year in [2021, 2022, 2023]:
+    idx = govreport[govreport['Year'] == year].index[0]
+    text = govreport.loc[idx, 'texts']
+    
+    # 提取金融段落
+    finance_paras = extract_finance_paragraphs(text)
+    finance_text = "\n".join(finance_paras[:10])  # 限制输入长度
+    
+    # 生成摘要
+    # summary = generate_summary_with_gpt(finance_text)
+    summary = generate_summary_with_deepseek(finance_text)
+    policy_summaries[year] = summary
+
+# 打印摘要结果
+for year, summary in policy_summaries.items():
+    print(f"{year}年政府工作报告金融政策要点:")
+    print(summary)
+    print("\n" + "-"*50 + "\n")
+"""
+```
+
+## 使用大语言模型进行高级文本分析
+
+大语言模型还可以用于更复杂的无监督文本分析任务。
+
+### 提示式主题建模
+
+使用提示工程（Prompt Engineering）引导大语言模型进行主题发现：
+
+```{python}
+#| eval: false
+def extract_topics_with_gpt(texts, n_topics=5, model="gpt-3.5-turbo"):
+    """使用GPT模型进行提示式主题建模"""
+    # 合并文本，但限制长度以适应API限制
+    combined_text = "\n\n".join(texts)
+    if len(combined_text) > 4000:
+        combined_text = combined_text[:4000] + "..."
+    
+    prompt = f"""作为一个文本挖掘专家，请分析以下多个文本片段，识别其中的{n_topics}个主要主题。
+    每个主题请提供一个简短标题和3-5个关键词。
+    请仅输出主题和关键词，不要有其他解释。
+    
+    文本片段:
+    {combined_text}
+    """
+    
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "你是一个专业的文本挖掘专家。"},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.2,
+        max_tokens=500
+    )
+    
+    return response.choices[0].message.content.strip()
+
+# 从多个年份的报告中提取金融段落
+all_finance_paras = []
+for year in years_list[-5:]:  # 只取最近5年
+    idx = govreport[govreport['Year'] == year].index[0]
+    text = govreport.loc[idx, 'texts']
+    finance_paras = extract_finance_paragraphs(text)
+    all_finance_paras.extend(finance_paras[:5])  # 每年取5个段落
+
+# 使用大语言模型进行主题建模
+# 注意：实际运行时取消注释以下代码，但需要API密钥
+"""
+topics = extract_topics_with_gpt(all_finance_paras)
+print("大语言模型识别的主题:")
+print(topics)
+"""
+```
+
+### 思维链分析
+
+使用思维链（Chain-of-Thought）技术引导大语言模型进行深度分析：
+
+```{python}
+#| eval: false
+def analyze_with_cot(text, question, model="gpt-3.5-turbo"):
+    """使用思维链技术进行深度分析"""
+    prompt = f"""请分析以下政府工作报告文本，回答问题。
+    请先逐步思考，然后给出最终答案。
+    
+    文本:
+    {text}
+    
+    问题: {question}
+    
+    逐步思考:
+    """
+    
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "你是一个专业的政策分析师。"},
+            {"role": "user", "content": prompt}
+        ],
+        temperature=0.3,
+        max_tokens=800
+    )
+    
+    return response.choices[0].message.content.strip()
+
+# 示例：分析最新报告中的政策转变
+# 注意：实际运行时取消注释以下代码，但需要API密钥
+"""
+# 获取2023年报告
+latest_idx = govreport[govreport['Year'] == 2023].index[0]
+latest_text = govreport.loc[latest_idx, 'texts']
+
+# 限制文本长度
+analysis_text = latest_text[:3000]
+
+# 定义分析问题
+analysis_question = "这份政府工作报告对金融风险防控政策有哪些新的调整？这些调整与前几年相比有何变化？"
+
+# 进行思维链分析
+analysis_result = analyze_with_cot(analysis_text, analysis_question)
+print("思维链分析结果:")
+print(analysis_result)
+"""
+```
+
+### 嵌入空间与向量检索
+
+大语言模型的嵌入向量可用于高级语义检索：
+
+```{python}
+#| eval: false
+def get_embedding_with_openai(text, model="text-embedding-ada-002"):
+    """获取OpenAI的文本嵌入向量"""
+    if not text.strip():
+        return np.zeros(1536)  # OpenAI embeddings are 1536-dimensional
+    
+    # 限制文本长度
+    if len(text) > 8000:
+        text = text[:8000]
+    
+    response = openai.Embedding.create(
+        input=text,
+        model=model
+    )
+    
+    embedding = response['data'][0]['embedding']
+    return np.array(embedding)
+
+# 为政府工作报告段落生成嵌入向量
+# 注意：实际运行时取消注释以下代码，但需要API密钥
+"""
+# 准备段落
+all_paragraphs = []
+for year in years_list:
+    idx = govreport[govreport['Year'] == year].index[0]
+    text = govreport.loc[idx, 'texts']
+    
+    # 分段
+    paragraphs = [p for p in text.split('\n') if len(p) > 50]
+    for para in paragraphs[:10]:  # 每年最多10个段落
+        all_paragraphs.append({
+            'year': year,
+            'content': para
+        })
+
+# 生成嵌入向量
+for i, para in enumerate(all_paragraphs):
+    embedding = get_embedding_with_openai(para['content'])
+    all_paragraphs[i]['embedding'] = embedding
+    
+# 计算相似度矩阵
+n_paras = len(all_paragraphs)
+similarity_matrix = np.zeros((n_paras, n_paras))
+
+for i in range(n_paras):
+    for j in range(n_paras):
+        if i == j:
+            similarity_matrix[i, j] = 1.0
+        else:
+            similarity_matrix[i, j] = cosine_similarity(
+                [all_paragraphs[i]['embedding']], 
+                [all_paragraphs[j]['embedding']]
+            )[0, 0]
+
+# 找出每个段落最相似的其他段落
+for i, para in enumerate(all_paragraphs):
+    similar_indices = np.argsort(similarity_matrix[i])[-3:-1][::-1]  # 排除自身，取前2个
+    
+    print(f"{para['year']}年段落:")
+    print(para['content'][:100] + "...\n")
+    
+    print("最相似的段落:")
+    for idx in similar_indices:
+        sim_para = all_paragraphs[idx]
+        sim_score = similarity_matrix[i, idx]
+        print(f"- {sim_para['year']}年 (相似度: {sim_score:.4f}):")
+        print(sim_para['content'][:100] + "...\n")
+    
+    print("-"*80 + "\n")
+"""
+```
+
+## 应用大语言模型的最佳实践
+
+在金融文本分析中应用大语言模型时，应注意以下几点：
+
+### 提示设计技巧
+
+1. **明确任务界定**：
+   - 清晰指定分析目标和期望输出格式
+   - 使用领域专业术语增强精确性
+
+2. **思维链设计**：
+   - 引导模型分步思考复杂问题
+   - 要求模型先分析再总结
+
+3. **角色设定**：
+   - 指定模型扮演"金融分析师"等专业角色
+   - 增强输出的专业性和针对性
+
+### 金融特定优化
+
+1. **上下文补充**：
+   - 提供行业背景信息增强理解
+   - 明确时间线帮助模型理解经济周期
+
+2. **多模型比较**：
+   - 使用通用模型和金融专业模型对比结果
+   - 综合优势获得更全面分析
+
+3. **人机协作**：
+   - 将模型输出作为专业分析的起点
+   - 关键决策仍需人类专家判断
+
+### 局限性与注意事项
+
+1. **事实准确性**：
+   - 大语言模型可能产生"幻觉"，输出虚构内容
+   - 关键数据和结论需要人工验证
+
+2. **偏见风险**：
+   - 模型可能继承训练数据中的偏见
+   - 金融分析需要客观中立
+
+3. **时效性限制**：
+   - 模型知识截止日期后的事件需要通过提示补充
+   - 定期更新分析以反映最新情况
+
+# 小结与进阶方向
+
+## 从静态向量到大语言模型的演进
+
+本讲我们从Word2Vec的局限性出发，介绍了BERT等Transformer模型的原理，以及大语言模型的应用：
+
+1. **表示方法演进**：从静态词向量到上下文感知的动态表示
+2. **架构演进**：从浅层神经网络到深层Transformer架构
+3. **规模演进**：从百万参数到千亿参数
+4. **应用演进**：从特征提取到端到端文本理解与生成
+
+## 无监督学习的新范式
+
+大语言模型为无监督学习带来了新的范式：
+
+1. **零样本学习**：无需额外标注数据，直接分类新数据
+2. **上下文学习**：通过提示中的示例引导模型学习模式
+3. **涌现能力**：模型规模增长带来质的飞跃
+4. **提示工程**：通过设计提示引导模型行为
+
+## 金融文本分析的未来方向
+
+大语言模型在金融文本分析中的未来方向包括：
+
+1. **多模态融合**：结合文本、数值、图表等多种数据
+2. **实时适应**：持续学习最新市场信息和政策变化
+3. **可解释性增强**：提高模型决策的透明度
+4. **领域知识增强**：融入更多金融专业知识
+
+## 进阶学习资源
+
+1. **理论深入**：
+   - 《Attention Is All You Need》 - Transformer原始论文
+   - 《BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding》
+
+2. **实践教程**：
+   - Hugging Face Transformers 库文档
+   - OpenAI GPT API 文档
+
+3. **金融NLP资源**：
+   - FinBERT 和 FinGPT 项目
+   - 金融领域预训练模型集合
+
+## 本讲小结
+
+本讲我们从Word2Vec的局限性出发，介绍了BERT和Transformer架构的原理，以及大语言模型在金融文本分析中的应用：
+
+1. 从静态词向量到动态上下文表示的演进
+2. Transformer架构与自注意力机制的工作原理
+3. BERT等预训练模型的内部结构和应用方法
+4. 大语言模型的关键创新与涌现能力
+5. 实践案例：使用BERT和大语言模型分析政府工作报告
+
+通过这些内容，我们理解了现代NLP技术在金融文本分析中的强大能力，以及如何将这些技术应用于实际金融分析任务。
+
+# 参考资料
+
+1. Devlin, J., Chang, M. W., Lee, K., & Toutanova, K. (2018). BERT: Pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805.
+2. Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., ... & Polosukhin, I. (2017). Attention is all you need. Advances in neural information processing systems, 30.
+3. Brown, T. B., Mann, B., Ryder, N., Subbiah, M., Kaplan, J., Dhariwal, P., ... & Amodei, D. (2020). Language models are few-shot learners. arXiv preprint arXiv:2005.14165.
+4. Touvron, H., Lavril, T., Izacard, G., Martinet, X., Lachaux, M. A., Lacroix, T., ... & Lample, G. (2023). Llama: Open and efficient foundation language models. arXiv preprint arXiv:2302.13971.
+5. Yang, Y., Uy, M. C. S., & Huang, A. (2020). FinBERT: A pretrained language model for financial communications. arXiv preprint arXiv:2006.08097.
+6. Wei, J., Wang, X., Schuurmans, D., Bosma, M., Ichter, B., Xia, F., ... & Zhou, D. (2022). Chain-of-thought prompting elicits reasoning in large language models. arXiv preprint arXiv:2201.11903.

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>7&nbsp; 泰坦尼克号生存预测实践 – 数据挖掘与机器学习课程讲义</title>
+<title>8&nbsp; 泰坦尼克号生存预测实践 – 数据挖掘与机器学习课程讲义</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./06_credit.html" rel="next">
-<link href="./05_model_assess.html" rel="prev">
+<link href="./09_ts.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -118,7 +118,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lab03_titanic.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">泰坦尼克号生存预测实践</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./lab03_titanic.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">泰坦尼克号生存预测实践</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="搜索" onclick="window.quartoOpenSearch();">
@@ -181,50 +181,74 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./09_ts.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">时间序列监督学习</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./lab03_titanic.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">泰坦尼克号生存预测实践</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">泰坦尼克号生存预测实践</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06_credit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">信用评分理论基础</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">信用评分理论基础</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07_unsupervised.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">非监督学习技术概览及其金融应用</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">非监督学习技术概览及其金融应用</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07_cluster.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">非监督学习：聚类 (Clustering)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">非监督学习：聚类 (Clustering)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09_dimension.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">非监督学习：降维 (Dimensionality Reduction)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">非监督学习：降维 (Dimensionality Reduction)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_nlp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本分析(一)：词频法与向量空间</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12_embedding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析(二)：词向量与深度学习基础</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13_llm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">文本分析(三)：大语言模型及其应用</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project1_LC.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">项目1：借贷违约风险评估</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2a_tspred.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">项目2A：上证综指收益率时间序列预测</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2b_text.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
   </div>
 </li>
     </ul>
@@ -237,60 +261,60 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">目录</h2>
    
   <ul>
-  <li><a href="#导言" id="toc-导言" class="nav-link active" data-scroll-target="#导言"><span class="header-section-number">8</span> 导言</a>
+  <li><a href="#导言" id="toc-导言" class="nav-link active" data-scroll-target="#导言"><span class="header-section-number">9</span> 导言</a>
   <ul class="collapse">
-  <li><a href="#泰坦尼克号乘客数据" id="toc-泰坦尼克号乘客数据" class="nav-link" data-scroll-target="#泰坦尼克号乘客数据"><span class="header-section-number">8.1</span> 泰坦尼克号乘客数据</a></li>
-  <li><a href="#机器学习的一般步骤" id="toc-机器学习的一般步骤" class="nav-link" data-scroll-target="#机器学习的一般步骤"><span class="header-section-number">8.2</span> 机器学习的一般步骤</a>
+  <li><a href="#泰坦尼克号乘客数据" id="toc-泰坦尼克号乘客数据" class="nav-link" data-scroll-target="#泰坦尼克号乘客数据"><span class="header-section-number">9.1</span> 泰坦尼克号乘客数据</a></li>
+  <li><a href="#机器学习的一般步骤" id="toc-机器学习的一般步骤" class="nav-link" data-scroll-target="#机器学习的一般步骤"><span class="header-section-number">9.2</span> 机器学习的一般步骤</a>
   <ul class="collapse">
-  <li><a href="#探索性分析" id="toc-探索性分析" class="nav-link" data-scroll-target="#探索性分析"><span class="header-section-number">8.2.1</span> 探索性分析</a></li>
-  <li><a href="#数据清理与特征工程" id="toc-数据清理与特征工程" class="nav-link" data-scroll-target="#数据清理与特征工程"><span class="header-section-number">8.2.2</span> 数据清理与特征工程</a></li>
-  <li><a href="#数据建模与模型选择" id="toc-数据建模与模型选择" class="nav-link" data-scroll-target="#数据建模与模型选择"><span class="header-section-number">8.2.3</span> 数据建模与模型选择</a></li>
+  <li><a href="#探索性分析" id="toc-探索性分析" class="nav-link" data-scroll-target="#探索性分析"><span class="header-section-number">9.2.1</span> 探索性分析</a></li>
+  <li><a href="#数据清理与特征工程" id="toc-数据清理与特征工程" class="nav-link" data-scroll-target="#数据清理与特征工程"><span class="header-section-number">9.2.2</span> 数据清理与特征工程</a></li>
+  <li><a href="#数据建模与模型选择" id="toc-数据建模与模型选择" class="nav-link" data-scroll-target="#数据建模与模型选择"><span class="header-section-number">9.2.3</span> 数据建模与模型选择</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#探索性数据分析" id="toc-探索性数据分析" class="nav-link" data-scroll-target="#探索性数据分析"><span class="header-section-number">9</span> 探索性数据分析</a>
+  <li><a href="#探索性数据分析" id="toc-探索性数据分析" class="nav-link" data-scroll-target="#探索性数据分析"><span class="header-section-number">10</span> 探索性数据分析</a>
   <ul class="collapse">
-  <li><a href="#数据基本信息与统计描述" id="toc-数据基本信息与统计描述" class="nav-link" data-scroll-target="#数据基本信息与统计描述"><span class="header-section-number">9.1</span> 数据基本信息与统计描述</a></li>
-  <li><a href="#生存情况分析" id="toc-生存情况分析" class="nav-link" data-scroll-target="#生存情况分析"><span class="header-section-number">9.2</span> 生存情况分析</a></li>
-  <li><a href="#数据可视化分析" id="toc-数据可视化分析" class="nav-link" data-scroll-target="#数据可视化分析"><span class="header-section-number">9.3</span> 数据可视化分析</a></li>
+  <li><a href="#数据基本信息与统计描述" id="toc-数据基本信息与统计描述" class="nav-link" data-scroll-target="#数据基本信息与统计描述"><span class="header-section-number">10.1</span> 数据基本信息与统计描述</a></li>
+  <li><a href="#生存情况分析" id="toc-生存情况分析" class="nav-link" data-scroll-target="#生存情况分析"><span class="header-section-number">10.2</span> 生存情况分析</a></li>
+  <li><a href="#数据可视化分析" id="toc-数据可视化分析" class="nav-link" data-scroll-target="#数据可视化分析"><span class="header-section-number">10.3</span> 数据可视化分析</a></li>
   </ul></li>
-  <li><a href="#数据清理与特征工程-1" id="toc-数据清理与特征工程-1" class="nav-link" data-scroll-target="#数据清理与特征工程-1"><span class="header-section-number">10</span> 数据清理与特征工程</a>
+  <li><a href="#数据清理与特征工程-1" id="toc-数据清理与特征工程-1" class="nav-link" data-scroll-target="#数据清理与特征工程-1"><span class="header-section-number">11</span> 数据清理与特征工程</a>
   <ul class="collapse">
-  <li><a href="#特征工程" id="toc-特征工程" class="nav-link" data-scroll-target="#特征工程"><span class="header-section-number">10.1</span> 特征工程</a>
+  <li><a href="#特征工程" id="toc-特征工程" class="nav-link" data-scroll-target="#特征工程"><span class="header-section-number">11.1</span> 特征工程</a>
   <ul class="collapse">
-  <li><a href="#提取姓名中的头衔信息" id="toc-提取姓名中的头衔信息" class="nav-link" data-scroll-target="#提取姓名中的头衔信息"><span class="header-section-number">10.1.1</span> 提取姓名中的头衔信息</a></li>
-  <li><a href="#创建家庭规模特征" id="toc-创建家庭规模特征" class="nav-link" data-scroll-target="#创建家庭规模特征"><span class="header-section-number">10.1.2</span> 创建家庭规模特征</a></li>
-  <li><a href="#从cabin提取信息" id="toc-从cabin提取信息" class="nav-link" data-scroll-target="#从cabin提取信息"><span class="header-section-number">10.1.3</span> 从Cabin提取信息</a></li>
+  <li><a href="#提取姓名中的头衔信息" id="toc-提取姓名中的头衔信息" class="nav-link" data-scroll-target="#提取姓名中的头衔信息"><span class="header-section-number">11.1.1</span> 提取姓名中的头衔信息</a></li>
+  <li><a href="#创建家庭规模特征" id="toc-创建家庭规模特征" class="nav-link" data-scroll-target="#创建家庭规模特征"><span class="header-section-number">11.1.2</span> 创建家庭规模特征</a></li>
+  <li><a href="#从cabin提取信息" id="toc-从cabin提取信息" class="nav-link" data-scroll-target="#从cabin提取信息"><span class="header-section-number">11.1.3</span> 从Cabin提取信息</a></li>
   </ul></li>
-  <li><a href="#缺失值处理" id="toc-缺失值处理" class="nav-link" data-scroll-target="#缺失值处理"><span class="header-section-number">10.2</span> 缺失值处理</a>
+  <li><a href="#缺失值处理" id="toc-缺失值处理" class="nav-link" data-scroll-target="#缺失值处理"><span class="header-section-number">11.2</span> 缺失值处理</a>
   <ul class="collapse">
-  <li><a href="#处理age缺失值" id="toc-处理age缺失值" class="nav-link" data-scroll-target="#处理age缺失值"><span class="header-section-number">10.2.1</span> 处理Age缺失值</a></li>
-  <li><a href="#处理embarked缺失值" id="toc-处理embarked缺失值" class="nav-link" data-scroll-target="#处理embarked缺失值"><span class="header-section-number">10.2.2</span> 处理Embarked缺失值</a></li>
-  <li><a href="#处理fare缺失值" id="toc-处理fare缺失值" class="nav-link" data-scroll-target="#处理fare缺失值"><span class="header-section-number">10.2.3</span> 处理Fare缺失值</a></li>
+  <li><a href="#处理age缺失值" id="toc-处理age缺失值" class="nav-link" data-scroll-target="#处理age缺失值"><span class="header-section-number">11.2.1</span> 处理Age缺失值</a></li>
+  <li><a href="#处理embarked缺失值" id="toc-处理embarked缺失值" class="nav-link" data-scroll-target="#处理embarked缺失值"><span class="header-section-number">11.2.2</span> 处理Embarked缺失值</a></li>
+  <li><a href="#处理fare缺失值" id="toc-处理fare缺失值" class="nav-link" data-scroll-target="#处理fare缺失值"><span class="header-section-number">11.2.3</span> 处理Fare缺失值</a></li>
   </ul></li>
-  <li><a href="#数据转换" id="toc-数据转换" class="nav-link" data-scroll-target="#数据转换"><span class="header-section-number">10.3</span> 数据转换</a></li>
+  <li><a href="#数据转换" id="toc-数据转换" class="nav-link" data-scroll-target="#数据转换"><span class="header-section-number">11.3</span> 数据转换</a></li>
   </ul></li>
-  <li><a href="#数据建模与模型选择-1" id="toc-数据建模与模型选择-1" class="nav-link" data-scroll-target="#数据建模与模型选择-1"><span class="header-section-number">11</span> 数据建模与模型选择</a>
+  <li><a href="#数据建模与模型选择-1" id="toc-数据建模与模型选择-1" class="nav-link" data-scroll-target="#数据建模与模型选择-1"><span class="header-section-number">12</span> 数据建模与模型选择</a>
   <ul class="collapse">
-  <li><a href="#准备训练和测试数据" id="toc-准备训练和测试数据" class="nav-link" data-scroll-target="#准备训练和测试数据"><span class="header-section-number">11.1</span> 准备训练和测试数据</a></li>
-  <li><a href="#模型训练与评估函数" id="toc-模型训练与评估函数" class="nav-link" data-scroll-target="#模型训练与评估函数"><span class="header-section-number">11.2</span> 模型训练与评估函数</a></li>
-  <li><a href="#逻辑回归模型" id="toc-逻辑回归模型" class="nav-link" data-scroll-target="#逻辑回归模型"><span class="header-section-number">11.3</span> 逻辑回归模型</a></li>
-  <li><a href="#决策树模型" id="toc-决策树模型" class="nav-link" data-scroll-target="#决策树模型"><span class="header-section-number">11.4</span> 决策树模型</a></li>
-  <li><a href="#随机森林模型" id="toc-随机森林模型" class="nav-link" data-scroll-target="#随机森林模型"><span class="header-section-number">11.5</span> 随机森林模型</a></li>
-  <li><a href="#xgboost模型" id="toc-xgboost模型" class="nav-link" data-scroll-target="#xgboost模型"><span class="header-section-number">11.6</span> XGBoost模型</a></li>
-  <li><a href="#神经网络模型" id="toc-神经网络模型" class="nav-link" data-scroll-target="#神经网络模型"><span class="header-section-number">11.7</span> 神经网络模型</a>
+  <li><a href="#准备训练和测试数据" id="toc-准备训练和测试数据" class="nav-link" data-scroll-target="#准备训练和测试数据"><span class="header-section-number">12.1</span> 准备训练和测试数据</a></li>
+  <li><a href="#模型训练与评估函数" id="toc-模型训练与评估函数" class="nav-link" data-scroll-target="#模型训练与评估函数"><span class="header-section-number">12.2</span> 模型训练与评估函数</a></li>
+  <li><a href="#逻辑回归模型" id="toc-逻辑回归模型" class="nav-link" data-scroll-target="#逻辑回归模型"><span class="header-section-number">12.3</span> 逻辑回归模型</a></li>
+  <li><a href="#决策树模型" id="toc-决策树模型" class="nav-link" data-scroll-target="#决策树模型"><span class="header-section-number">12.4</span> 决策树模型</a></li>
+  <li><a href="#随机森林模型" id="toc-随机森林模型" class="nav-link" data-scroll-target="#随机森林模型"><span class="header-section-number">12.5</span> 随机森林模型</a></li>
+  <li><a href="#xgboost模型" id="toc-xgboost模型" class="nav-link" data-scroll-target="#xgboost模型"><span class="header-section-number">12.6</span> XGBoost模型</a></li>
+  <li><a href="#神经网络模型" id="toc-神经网络模型" class="nav-link" data-scroll-target="#神经网络模型"><span class="header-section-number">12.7</span> 神经网络模型</a>
   <ul class="collapse">
-  <li><a href="#简单全连接网络---可能欠拟合" id="toc-简单全连接网络---可能欠拟合" class="nav-link" data-scroll-target="#简单全连接网络---可能欠拟合"><span class="header-section-number">11.7.1</span> 简单全连接网络 - 可能欠拟合</a></li>
-  <li><a href="#中等复杂度网络---适度拟合" id="toc-中等复杂度网络---适度拟合" class="nav-link" data-scroll-target="#中等复杂度网络---适度拟合"><span class="header-section-number">11.7.2</span> 中等复杂度网络 - 适度拟合</a></li>
-  <li><a href="#复杂网络---可能过拟合" id="toc-复杂网络---可能过拟合" class="nav-link" data-scroll-target="#复杂网络---可能过拟合"><span class="header-section-number">11.7.3</span> 复杂网络 - 可能过拟合</a></li>
-  <li><a href="#正则化网络---解决过拟合" id="toc-正则化网络---解决过拟合" class="nav-link" data-scroll-target="#正则化网络---解决过拟合"><span class="header-section-number">11.7.4</span> 正则化网络 - 解决过拟合</a></li>
-  <li><a href="#模型比较" id="toc-模型比较" class="nav-link" data-scroll-target="#模型比较"><span class="header-section-number">11.7.5</span> 模型比较</a></li>
-  <li><a href="#最终神经网络模型" id="toc-最终神经网络模型" class="nav-link" data-scroll-target="#最终神经网络模型"><span class="header-section-number">11.7.6</span> 最终神经网络模型</a></li>
-  <li><a href="#神经网络模型小结" id="toc-神经网络模型小结" class="nav-link" data-scroll-target="#神经网络模型小结"><span class="header-section-number">11.7.7</span> 神经网络模型小结</a></li>
+  <li><a href="#简单全连接网络---可能欠拟合" id="toc-简单全连接网络---可能欠拟合" class="nav-link" data-scroll-target="#简单全连接网络---可能欠拟合"><span class="header-section-number">12.7.1</span> 简单全连接网络 - 可能欠拟合</a></li>
+  <li><a href="#中等复杂度网络---适度拟合" id="toc-中等复杂度网络---适度拟合" class="nav-link" data-scroll-target="#中等复杂度网络---适度拟合"><span class="header-section-number">12.7.2</span> 中等复杂度网络 - 适度拟合</a></li>
+  <li><a href="#复杂网络---可能过拟合" id="toc-复杂网络---可能过拟合" class="nav-link" data-scroll-target="#复杂网络---可能过拟合"><span class="header-section-number">12.7.3</span> 复杂网络 - 可能过拟合</a></li>
+  <li><a href="#正则化网络---解决过拟合" id="toc-正则化网络---解决过拟合" class="nav-link" data-scroll-target="#正则化网络---解决过拟合"><span class="header-section-number">12.7.4</span> 正则化网络 - 解决过拟合</a></li>
+  <li><a href="#模型比较" id="toc-模型比较" class="nav-link" data-scroll-target="#模型比较"><span class="header-section-number">12.7.5</span> 模型比较</a></li>
+  <li><a href="#最终神经网络模型" id="toc-最终神经网络模型" class="nav-link" data-scroll-target="#最终神经网络模型"><span class="header-section-number">12.7.6</span> 最终神经网络模型</a></li>
+  <li><a href="#神经网络模型小结" id="toc-神经网络模型小结" class="nav-link" data-scroll-target="#神经网络模型小结"><span class="header-section-number">12.7.7</span> 神经网络模型小结</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#模型评估与比较" id="toc-模型评估与比较" class="nav-link" data-scroll-target="#模型评估与比较"><span class="header-section-number">12</span> 模型评估与比较</a></li>
-  <li><a href="#测试集预测" id="toc-测试集预测" class="nav-link" data-scroll-target="#测试集预测"><span class="header-section-number">13</span> 测试集预测</a></li>
-  <li><a href="#总结" id="toc-总结" class="nav-link" data-scroll-target="#总结"><span class="header-section-number">14</span> 总结</a></li>
+  <li><a href="#模型评估与比较" id="toc-模型评估与比较" class="nav-link" data-scroll-target="#模型评估与比较"><span class="header-section-number">13</span> 模型评估与比较</a></li>
+  <li><a href="#测试集预测" id="toc-测试集预测" class="nav-link" data-scroll-target="#测试集预测"><span class="header-section-number">14</span> 测试集预测</a></li>
+  <li><a href="#总结" id="toc-总结" class="nav-link" data-scroll-target="#总结"><span class="header-section-number">15</span> 总结</a></li>
   </ul>
 </nav>
     </div>
@@ -299,7 +323,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">泰坦尼克号生存预测实践</span></h1>
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">泰坦尼克号生存预测实践</span></h1>
 </div>
 
 
@@ -316,10 +340,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="导言" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> 导言</h1>
-<section id="泰坦尼克号乘客数据" class="level2" data-number="8.1">
-<h2 data-number="8.1" class="anchored" data-anchor-id="泰坦尼克号乘客数据"><span class="header-section-number">8.1</span> 泰坦尼克号乘客数据</h2>
+<section id="导言" class="level1" data-number="9">
+<h1 data-number="9"><span class="header-section-number">9</span> 导言</h1>
+<section id="泰坦尼克号乘客数据" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="泰坦尼克号乘客数据"><span class="header-section-number">9.1</span> 泰坦尼克号乘客数据</h2>
 <p>泰坦尼克号是历史上著名的客轮，1912年首航时与冰山相撞沉没，造成了1500多人遇难。本实践课我们将使用泰坦尼克号乘客数据，尝试预测乘客在这场灾难中的生存情况。</p>
 <p>数据分为两个数据集： - 训练集 <code>train.csv</code>：有关键变量<code>Survived</code>显示是否生还 - 测试集 <code>test.csv</code>：没有<code>Survived</code>变量</p>
 <p>变量定义如下表所示：</p>
@@ -385,24 +409,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="机器学习的一般步骤" class="level2" data-number="8.2">
-<h2 data-number="8.2" class="anchored" data-anchor-id="机器学习的一般步骤"><span class="header-section-number">8.2</span> 机器学习的一般步骤</h2>
-<section id="探索性分析" class="level3" data-number="8.2.1">
-<h3 data-number="8.2.1" class="anchored" data-anchor-id="探索性分析"><span class="header-section-number">8.2.1</span> 探索性分析</h3>
+<section id="机器学习的一般步骤" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="机器学习的一般步骤"><span class="header-section-number">9.2</span> 机器学习的一般步骤</h2>
+<section id="探索性分析" class="level3" data-number="9.2.1">
+<h3 data-number="9.2.1" class="anchored" data-anchor-id="探索性分析"><span class="header-section-number">9.2.1</span> 探索性分析</h3>
 <ul>
 <li>对变量进行初步描述性统计分析，用以检测空值、不合法值、异常值等</li>
 <li>数据可视化展示，发现变量之间的关系</li>
 </ul>
 </section>
-<section id="数据清理与特征工程" class="level3" data-number="8.2.2">
-<h3 data-number="8.2.2" class="anchored" data-anchor-id="数据清理与特征工程"><span class="header-section-number">8.2.2</span> 数据清理与特征工程</h3>
+<section id="数据清理与特征工程" class="level3" data-number="9.2.2">
+<h3 data-number="9.2.2" class="anchored" data-anchor-id="数据清理与特征工程"><span class="header-section-number">9.2.2</span> 数据清理与特征工程</h3>
 <ul>
 <li>特征工程：从现有特征中提取更有价值的信息</li>
 <li>填补缺失值：对缺失数据进行合理的估计和填补</li>
 </ul>
 </section>
-<section id="数据建模与模型选择" class="level3" data-number="8.2.3">
-<h3 data-number="8.2.3" class="anchored" data-anchor-id="数据建模与模型选择"><span class="header-section-number">8.2.3</span> 数据建模与模型选择</h3>
+<section id="数据建模与模型选择" class="level3" data-number="9.2.3">
+<h3 data-number="9.2.3" class="anchored" data-anchor-id="数据建模与模型选择"><span class="header-section-number">9.2.3</span> 数据建模与模型选择</h3>
 <ul>
 <li>建立分类模型（sklearn包）
 <ul>
@@ -426,8 +450,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 </section>
 </section>
-<section id="探索性数据分析" class="level1" data-number="9">
-<h1 data-number="9"><span class="header-section-number">9</span> 探索性数据分析</h1>
+<section id="探索性数据分析" class="level1" data-number="10">
+<h1 data-number="10"><span class="header-section-number">10</span> 探索性数据分析</h1>
 <p>首先，我们需要读取数据，并对数据进行初步的探索分析。</p>
 <div id="load-data" class="cell" data-execution_count="2">
 <details class="code-fold">
@@ -571,8 +595,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<section id="数据基本信息与统计描述" class="level2" data-number="9.1">
-<h2 data-number="9.1" class="anchored" data-anchor-id="数据基本信息与统计描述"><span class="header-section-number">9.1</span> 数据基本信息与统计描述</h2>
+<section id="数据基本信息与统计描述" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="数据基本信息与统计描述"><span class="header-section-number">10.1</span> 数据基本信息与统计描述</h2>
 <p>我们需要了解数据的基本信息，包括各变量的数据类型和缺失情况：</p>
 <div id="info-data" class="cell" data-execution_count="4">
 <details class="code-fold">
@@ -753,8 +777,8 @@ dtype: int64</code></pre>
 </div>
 <p>从上面的分析可以看出： - Age（年龄）有一部分缺失 - Cabin（船舱）缺失严重 - Embarked（登船港口）有少量缺失</p>
 </section>
-<section id="生存情况分析" class="level2" data-number="9.2">
-<h2 data-number="9.2" class="anchored" data-anchor-id="生存情况分析"><span class="header-section-number">9.2</span> 生存情况分析</h2>
+<section id="生存情况分析" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="生存情况分析"><span class="header-section-number">10.2</span> 生存情况分析</h2>
 <p>首先我们看一下整体的生存率：</p>
 <div id="survival-rate" class="cell" data-execution_count="7">
 <details class="code-fold">
@@ -768,8 +792,8 @@ dtype: int64</code></pre>
 </div>
 </div>
 </section>
-<section id="数据可视化分析" class="level2" data-number="9.3">
-<h2 data-number="9.3" class="anchored" data-anchor-id="数据可视化分析"><span class="header-section-number">9.3</span> 数据可视化分析</h2>
+<section id="数据可视化分析" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="数据可视化分析"><span class="header-section-number">10.3</span> 数据可视化分析</h2>
 <p>通过可视化，我们可以更直观地了解不同特征与生存率之间的关系：</p>
 <div id="cell-visualization" class="cell" data-fig-height="10" data-fig-width="12" data-execution_count="8">
 <details class="code-fold">
@@ -825,13 +849,13 @@ dtype: int64</code></pre>
 </ol>
 </section>
 </section>
-<section id="数据清理与特征工程-1" class="level1" data-number="10">
-<h1 data-number="10"><span class="header-section-number">10</span> 数据清理与特征工程</h1>
+<section id="数据清理与特征工程-1" class="level1" data-number="11">
+<h1 data-number="11"><span class="header-section-number">11</span> 数据清理与特征工程</h1>
 <p>在这一部分，我们将对数据进行清理和特征工程，为建模做准备。</p>
-<section id="特征工程" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="特征工程"><span class="header-section-number">10.1</span> 特征工程</h2>
-<section id="提取姓名中的头衔信息" class="level3" data-number="10.1.1">
-<h3 data-number="10.1.1" class="anchored" data-anchor-id="提取姓名中的头衔信息"><span class="header-section-number">10.1.1</span> 提取姓名中的头衔信息</h3>
+<section id="特征工程" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="特征工程"><span class="header-section-number">11.1</span> 特征工程</h2>
+<section id="提取姓名中的头衔信息" class="level3" data-number="11.1.1">
+<h3 data-number="11.1.1" class="anchored" data-anchor-id="提取姓名中的头衔信息"><span class="header-section-number">11.1.1</span> 提取姓名中的头衔信息</h3>
 <p>乘客的姓名中包含头衔信息（如Mr., Mrs., Miss等），这可能与社会地位和性别相关，进而影响生存率：</p>
 <div id="cell-extract-title" class="cell" data-execution_count="9">
 <details class="code-fold">
@@ -897,8 +921,8 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 </section>
-<section id="创建家庭规模特征" class="level3" data-number="10.1.2">
-<h3 data-number="10.1.2" class="anchored" data-anchor-id="创建家庭规模特征"><span class="header-section-number">10.1.2</span> 创建家庭规模特征</h3>
+<section id="创建家庭规模特征" class="level3" data-number="11.1.2">
+<h3 data-number="11.1.2" class="anchored" data-anchor-id="创建家庭规模特征"><span class="header-section-number">11.1.2</span> 创建家庭规模特征</h3>
 <p>我们将SibSp（兄弟姐妹/配偶数量）和Parch（父母/子女数量）相加，再加1（乘客自己），创建家庭规模特征：</p>
 <div id="cell-family-size" class="cell" data-execution_count="11">
 <details class="code-fold">
@@ -924,8 +948,8 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 </section>
-<section id="从cabin提取信息" class="level3" data-number="10.1.3">
-<h3 data-number="10.1.3" class="anchored" data-anchor-id="从cabin提取信息"><span class="header-section-number">10.1.3</span> 从Cabin提取信息</h3>
+<section id="从cabin提取信息" class="level3" data-number="11.1.3">
+<h3 data-number="11.1.3" class="anchored" data-anchor-id="从cabin提取信息"><span class="header-section-number">11.1.3</span> 从Cabin提取信息</h3>
 <p>虽然Cabin变量缺失严重，但我们仍可以提取是否有记录Cabin信息作为一个特征：</p>
 <div id="cell-cabin-info" class="cell" data-execution_count="12">
 <details class="code-fold">
@@ -948,10 +972,10 @@ Name: count, dtype: int64</code></pre>
 </div>
 </section>
 </section>
-<section id="缺失值处理" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="缺失值处理"><span class="header-section-number">10.2</span> 缺失值处理</h2>
-<section id="处理age缺失值" class="level3" data-number="10.2.1">
-<h3 data-number="10.2.1" class="anchored" data-anchor-id="处理age缺失值"><span class="header-section-number">10.2.1</span> 处理Age缺失值</h3>
+<section id="缺失值处理" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="缺失值处理"><span class="header-section-number">11.2</span> 缺失值处理</h2>
+<section id="处理age缺失值" class="level3" data-number="11.2.1">
+<h3 data-number="11.2.1" class="anchored" data-anchor-id="处理age缺失值"><span class="header-section-number">11.2.1</span> 处理Age缺失值</h3>
 <p>对年龄的缺失值，我们使用按Pclass和Sex分组的中位数进行填充：</p>
 <div id="age-imputation" class="cell" data-execution_count="13">
 <details class="code-fold">
@@ -962,8 +986,8 @@ Name: count, dtype: int64</code></pre>
 </details>
 </div>
 </section>
-<section id="处理embarked缺失值" class="level3" data-number="10.2.2">
-<h3 data-number="10.2.2" class="anchored" data-anchor-id="处理embarked缺失值"><span class="header-section-number">10.2.2</span> 处理Embarked缺失值</h3>
+<section id="处理embarked缺失值" class="level3" data-number="11.2.2">
+<h3 data-number="11.2.2" class="anchored" data-anchor-id="处理embarked缺失值"><span class="header-section-number">11.2.2</span> 处理Embarked缺失值</h3>
 <p>对登船港口缺失值，使用众数填充：</p>
 <div id="embarked-imputation" class="cell" data-execution_count="14">
 <details class="code-fold">
@@ -974,8 +998,8 @@ Name: count, dtype: int64</code></pre>
 </details>
 </div>
 </section>
-<section id="处理fare缺失值" class="level3" data-number="10.2.3">
-<h3 data-number="10.2.3" class="anchored" data-anchor-id="处理fare缺失值"><span class="header-section-number">10.2.3</span> 处理Fare缺失值</h3>
+<section id="处理fare缺失值" class="level3" data-number="11.2.3">
+<h3 data-number="11.2.3" class="anchored" data-anchor-id="处理fare缺失值"><span class="header-section-number">11.2.3</span> 处理Fare缺失值</h3>
 <p>对票价缺失值，使用相同船票等级的中位数填充：</p>
 <div id="cell-fare-imputation" class="cell" data-execution_count="15">
 <details class="code-fold">
@@ -1000,8 +1024,8 @@ dtype: int64</code></pre>
 </div>
 </section>
 </section>
-<section id="数据转换" class="level2" data-number="10.3">
-<h2 data-number="10.3" class="anchored" data-anchor-id="数据转换"><span class="header-section-number">10.3</span> 数据转换</h2>
+<section id="数据转换" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="数据转换"><span class="header-section-number">11.3</span> 数据转换</h2>
 <p>将分类变量转换为数值型变量，便于模型处理：</p>
 <div id="categorical-to-numerical" class="cell" data-execution_count="16">
 <details class="code-fold">
@@ -1134,10 +1158,10 @@ dtype: int64</code></pre>
 </div>
 </section>
 </section>
-<section id="数据建模与模型选择-1" class="level1" data-number="11">
-<h1 data-number="11"><span class="header-section-number">11</span> 数据建模与模型选择</h1>
-<section id="准备训练和测试数据" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="准备训练和测试数据"><span class="header-section-number">11.1</span> 准备训练和测试数据</h2>
+<section id="数据建模与模型选择-1" class="level1" data-number="12">
+<h1 data-number="12"><span class="header-section-number">12</span> 数据建模与模型选择</h1>
+<section id="准备训练和测试数据" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="准备训练和测试数据"><span class="header-section-number">12.1</span> 准备训练和测试数据</h2>
 <div id="prepare-train-test" class="cell" data-execution_count="18">
 <details class="code-fold">
 <summary>代码</summary>
@@ -1159,8 +1183,8 @@ dtype: int64</code></pre>
 </div>
 </div>
 </section>
-<section id="模型训练与评估函数" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="模型训练与评估函数"><span class="header-section-number">11.2</span> 模型训练与评估函数</h2>
+<section id="模型训练与评估函数" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="模型训练与评估函数"><span class="header-section-number">12.2</span> 模型训练与评估函数</h2>
 <p>定义一个通用函数用于训练模型并评估性能：</p>
 <div id="train-evaluate-function" class="cell" data-execution_count="19">
 <details class="code-fold">
@@ -1189,8 +1213,8 @@ dtype: int64</code></pre>
 </details>
 </div>
 </section>
-<section id="逻辑回归模型" class="level2" data-number="11.3">
-<h2 data-number="11.3" class="anchored" data-anchor-id="逻辑回归模型"><span class="header-section-number">11.3</span> 逻辑回归模型</h2>
+<section id="逻辑回归模型" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="逻辑回归模型"><span class="header-section-number">12.3</span> 逻辑回归模型</h2>
 <div id="cell-logistic-regression" class="cell" data-execution_count="20">
 <details class="code-fold">
 <summary>代码</summary>
@@ -1281,8 +1305,8 @@ ROC AUC: 0.8613 (±0.0194)
 </div>
 </div>
 </section>
-<section id="决策树模型" class="level2" data-number="11.4">
-<h2 data-number="11.4" class="anchored" data-anchor-id="决策树模型"><span class="header-section-number">11.4</span> 决策树模型</h2>
+<section id="决策树模型" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="决策树模型"><span class="header-section-number">12.4</span> 决策树模型</h2>
 <div id="decision-tree" class="cell" data-execution_count="21">
 <details class="code-fold">
 <summary>代码</summary>
@@ -1415,8 +1439,8 @@ ROC AUC: 0.8510 (±0.0399)
 </div>
 </div>
 </section>
-<section id="随机森林模型" class="level2" data-number="11.5">
-<h2 data-number="11.5" class="anchored" data-anchor-id="随机森林模型"><span class="header-section-number">11.5</span> 随机森林模型</h2>
+<section id="随机森林模型" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="随机森林模型"><span class="header-section-number">12.5</span> 随机森林模型</h2>
 <div id="random-forest" class="cell" data-execution_count="22">
 <details class="code-fold">
 <summary>代码</summary>
@@ -1574,8 +1598,8 @@ ROC AUC: 0.8710 (±0.0378)
 </div>
 </div>
 </section>
-<section id="xgboost模型" class="level2" data-number="11.6">
-<h2 data-number="11.6" class="anchored" data-anchor-id="xgboost模型"><span class="header-section-number">11.6</span> XGBoost模型</h2>
+<section id="xgboost模型" class="level2" data-number="12.6">
+<h2 data-number="12.6" class="anchored" data-anchor-id="xgboost模型"><span class="header-section-number">12.6</span> XGBoost模型</h2>
 <div id="xgboost" class="cell" data-execution_count="23">
 <details class="code-fold">
 <summary>代码</summary>
@@ -1740,8 +1764,8 @@ XGBoost特征重要性:</code></pre>
 </div>
 </div>
 </section>
-<section id="神经网络模型" class="level2" data-number="11.7">
-<h2 data-number="11.7" class="anchored" data-anchor-id="神经网络模型"><span class="header-section-number">11.7</span> 神经网络模型</h2>
+<section id="神经网络模型" class="level2" data-number="12.7">
+<h2 data-number="12.7" class="anchored" data-anchor-id="神经网络模型"><span class="header-section-number">12.7</span> 神经网络模型</h2>
 <p>在本节中，我们将从简单的全连接神经网络开始，逐步增加网络复杂度，并展示模型从欠拟合到过拟合的演变过程，最后通过引入正则化技术来解决过拟合问题。</p>
 <p>首先，我们需要对特征进行标准化，这对神经网络的训练非常重要：</p>
 <div id="nn-standardization" class="cell" data-execution_count="24">
@@ -1765,8 +1789,8 @@ XGBoost特征重要性:</code></pre>
 神经网络验证集形状: (179, 11)</code></pre>
 </div>
 </div>
-<section id="简单全连接网络---可能欠拟合" class="level3" data-number="11.7.1">
-<h3 data-number="11.7.1" class="anchored" data-anchor-id="简单全连接网络---可能欠拟合"><span class="header-section-number">11.7.1</span> 简单全连接网络 - 可能欠拟合</h3>
+<section id="简单全连接网络---可能欠拟合" class="level3" data-number="12.7.1">
+<h3 data-number="12.7.1" class="anchored" data-anchor-id="简单全连接网络---可能欠拟合"><span class="header-section-number">12.7.1</span> 简单全连接网络 - 可能欠拟合</h3>
 <p>我们先从一个非常简单的全连接网络开始，看看其性能如何：</p>
 <div id="nn-simple" class="cell" data-execution_count="25">
 <details class="code-fold">
@@ -1857,8 +1881,8 @@ _________________________________________________________________
 </div>
 </div>
 </section>
-<section id="中等复杂度网络---适度拟合" class="level3" data-number="11.7.2">
-<h3 data-number="11.7.2" class="anchored" data-anchor-id="中等复杂度网络---适度拟合"><span class="header-section-number">11.7.2</span> 中等复杂度网络 - 适度拟合</h3>
+<section id="中等复杂度网络---适度拟合" class="level3" data-number="12.7.2">
+<h3 data-number="12.7.2" class="anchored" data-anchor-id="中等复杂度网络---适度拟合"><span class="header-section-number">12.7.2</span> 中等复杂度网络 - 适度拟合</h3>
 <p>现在，让我们增加网络的复杂度，添加更多层和更多神经元：</p>
 <div id="nn-medium" class="cell" data-execution_count="27">
 <details class="code-fold">
@@ -1952,8 +1976,8 @@ _________________________________________________________________
 </div>
 </div>
 </section>
-<section id="复杂网络---可能过拟合" class="level3" data-number="11.7.3">
-<h3 data-number="11.7.3" class="anchored" data-anchor-id="复杂网络---可能过拟合"><span class="header-section-number">11.7.3</span> 复杂网络 - 可能过拟合</h3>
+<section id="复杂网络---可能过拟合" class="level3" data-number="12.7.3">
+<h3 data-number="12.7.3" class="anchored" data-anchor-id="复杂网络---可能过拟合"><span class="header-section-number">12.7.3</span> 复杂网络 - 可能过拟合</h3>
 <p>现在，我们进一步增加网络复杂度，使其具有更多层和更多神经元，观察是否会出现过拟合：</p>
 <div id="nn-complex" class="cell" data-execution_count="29">
 <details class="code-fold">
@@ -2053,8 +2077,8 @@ _________________________________________________________________
 </div>
 </div>
 </section>
-<section id="正则化网络---解决过拟合" class="level3" data-number="11.7.4">
-<h3 data-number="11.7.4" class="anchored" data-anchor-id="正则化网络---解决过拟合"><span class="header-section-number">11.7.4</span> 正则化网络 - 解决过拟合</h3>
+<section id="正则化网络---解决过拟合" class="level3" data-number="12.7.4">
+<h3 data-number="12.7.4" class="anchored" data-anchor-id="正则化网络---解决过拟合"><span class="header-section-number">12.7.4</span> 正则化网络 - 解决过拟合</h3>
 <p>现在，我们将为复杂网络添加正则化技术，包括 Dropout 和 BatchNormalization，以解决过拟合问题：</p>
 <div id="nn-regularized" class="cell" data-execution_count="31">
 <details class="code-fold">
@@ -2190,8 +2214,8 @@ _________________________________________________________________
 </div>
 </div>
 </section>
-<section id="模型比较" class="level3" data-number="11.7.5">
-<h3 data-number="11.7.5" class="anchored" data-anchor-id="模型比较"><span class="header-section-number">11.7.5</span> 模型比较</h3>
+<section id="模型比较" class="level3" data-number="12.7.5">
+<h3 data-number="12.7.5" class="anchored" data-anchor-id="模型比较"><span class="header-section-number">12.7.5</span> 模型比较</h3>
 <p>我们来比较不同复杂度和正则化策略下神经网络的性能：</p>
 <div id="cell-nn-comparison" class="cell" data-fig-height="6" data-fig-width="12" data-execution_count="33">
 <details class="code-fold">
@@ -2229,8 +2253,8 @@ _________________________________________________________________
 </div>
 </div>
 </section>
-<section id="最终神经网络模型" class="level3" data-number="11.7.6">
-<h3 data-number="11.7.6" class="anchored" data-anchor-id="最终神经网络模型"><span class="header-section-number">11.7.6</span> 最终神经网络模型</h3>
+<section id="最终神经网络模型" class="level3" data-number="12.7.6">
+<h3 data-number="12.7.6" class="anchored" data-anchor-id="最终神经网络模型"><span class="header-section-number">12.7.6</span> 最终神经网络模型</h3>
 <p>基于上述实验，我们选择性能最好的正则化网络作为最终的神经网络模型：</p>
 <div id="final-nn-model" class="cell" data-execution_count="34">
 <details class="code-fold">
@@ -2257,8 +2281,8 @@ _________________________________________________________________
 </div>
 </div>
 </section>
-<section id="神经网络模型小结" class="level3" data-number="11.7.7">
-<h3 data-number="11.7.7" class="anchored" data-anchor-id="神经网络模型小结"><span class="header-section-number">11.7.7</span> 神经网络模型小结</h3>
+<section id="神经网络模型小结" class="level3" data-number="12.7.7">
+<h3 data-number="12.7.7" class="anchored" data-anchor-id="神经网络模型小结"><span class="header-section-number">12.7.7</span> 神经网络模型小结</h3>
 <p>通过这一系列实验，我们观察到：</p>
 <ol type="1">
 <li><strong>简单网络</strong>：容易欠拟合，训练集和验证集性能都不够理想</li>
@@ -2270,8 +2294,8 @@ _________________________________________________________________
 </section>
 </section>
 </section>
-<section id="模型评估与比较" class="level1" data-number="12">
-<h1 data-number="12"><span class="header-section-number">12</span> 模型评估与比较</h1>
+<section id="模型评估与比较" class="level1" data-number="13">
+<h1 data-number="13"><span class="header-section-number">13</span> 模型评估与比较</h1>
 <p>在这一部分，我们将对所有训练好的模型进行评估和比较，选出性能最好的模型。</p>
 <div id="cell-model-comparison" class="cell" data-execution_count="35">
 <details class="code-fold">
@@ -2398,8 +2422,8 @@ _________________________________________________________________
 </div>
 </div>
 </section>
-<section id="测试集预测" class="level1" data-number="13">
-<h1 data-number="13"><span class="header-section-number">13</span> 测试集预测</h1>
+<section id="测试集预测" class="level1" data-number="14">
+<h1 data-number="14"><span class="header-section-number">14</span> 测试集预测</h1>
 <p>最后，我们使用训练好的模型对测试集进行预测：</p>
 <div id="test-prediction" class="cell" data-execution_count="37">
 <details class="code-fold">
@@ -2576,8 +2600,8 @@ Name: count, dtype: int64
 </div>
 </div>
 </section>
-<section id="总结" class="level1" data-number="14">
-<h1 data-number="14"><span class="header-section-number">14</span> 总结</h1>
+<section id="总结" class="level1" data-number="15">
+<h1 data-number="15"><span class="header-section-number">15</span> 总结</h1>
 <p>在这个实践中，我们通过对泰坦尼克号乘客数据的分析，建立了多个机器学习模型来预测乘客在灾难中的生存情况。主要步骤包括：</p>
 <ol type="1">
 <li><p><strong>数据探索</strong>：通过统计分析和可视化，我们发现了一些关键特征，如性别、船票等级和年龄对生存率有显著影响。</p></li>
@@ -3014,13 +3038,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./05_model_assess.html" class="pagination-link" aria-label="模型评估与优化">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">模型评估与优化</span></span>
+      <a href="./09_ts.html" class="pagination-link" aria-label="时间序列监督学习">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">时间序列监督学习</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./06_credit.html" class="pagination-link" aria-label="信用评分理论基础">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">信用评分理论基础</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">信用评分理论基础</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
