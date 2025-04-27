@@ -429,6 +429,7 @@ window.Quarto = {
 训练集：2-4月数据
 测试集：5月(4个预测值)
 ...以此类推</code></pre>
+<p><img src="pics/Time Series CV.png" class="img-fluid"></p>
 </section>
 <section id="各方法的对比与选择" class="level4" data-number="7.2.2.4">
 <h4 data-number="7.2.2.4" class="anchored" data-anchor-id="各方法的对比与选择"><span class="header-section-number">7.2.2.4</span> 各方法的对比与选择</h4>
@@ -635,8 +636,23 @@ window.Quarto = {
 <li>年度更新: 61个, 季度更新: 13个, 月度更新: 20个。</li>
 </ul></li>
 <li>74 个行业虚拟变量 (基于 SIC 两位码)。</li>
-<li>8 个宏观经济预测变量 (来自 Welch &amp; Goyal, 2008)。</li>
+<li>8 个宏观经济预测变量 (来自 Welch &amp; Goyal, 2008)
+<ul>
+<li>dividend-price ratio (dpr)</li>
+<li>earnings-price ratio (epr)</li>
+<li>book-to-market ratio (bmr)</li>
+<li>net equity expansion (ntis)</li>
+<li>Treasury-bill rate (tbl)</li>
+<li>term spread (tms)</li>
+<li>default spread (dfy)</li>
+<li>stock variance (svar)</li>
 </ul></li>
+</ul></li>
+</ul>
+<p><img src="pics/EAP_ML_Char1.png" class="img-fluid"></p>
+<p><img src="pics/EAP_ML_Char2.png" class="img-fluid"></p>
+<p><img src="pics/EAP_ML_Char3.png" class="img-fluid"></p>
+<ul>
 <li><strong>特征工程:</strong>
 <ul>
 <li><strong>标准化:</strong> 每个时间点，对所有股票层面的特征（94个）进行横截面排序 (Cross-sectional rank)，然后将排序值线性映射到 <span class="math inline">\([-1, 1]\)</span> 区间。</li>
@@ -649,7 +665,7 @@ window.Quarto = {
 <section id="实证设定" class="level3" data-number="7.5.2">
 <h3 data-number="7.5.2" class="anchored" data-anchor-id="实证设定"><span class="header-section-number">7.5.2</span> 实证设定</h3>
 <p><strong>总体模型:</strong> 预测个股超额收益 <span class="math inline">\(r_{i,t+1}\)</span>： <span class="math display">\[r_{i,t+1} = E_t(r_{i,t+1}) + \epsilon_{i,t+1}\]</span> 其中条件期望（风险溢价）是预测变量 <span class="math inline">\(z_{i,t}\)</span> 的灵活函数 <span class="math inline">\(g^*(\cdot)\)</span>： <span class="math display">\[E_t(r_{i,t+1}) = g^*(z_{i,t})\]</span> * <span class="math inline">\(g^*(\cdot)\)</span> 函数形式对所有时间和股票保持不变。</p>
-<p><strong>预测变量构建 <span class="math inline">\(z_{i,t}\)</span>:</strong> * 见上一页“特征工程”部分的交互项构建。 * 此设定允许纯粹的股票层面信息 (通过 <span class="math inline">\(c_{i,t}\)</span> 类似风险暴露 <span class="math inline">\(\beta_{i,t}\)</span>) 和总体经济状况 (通过 <span class="math inline">\(x_t\)</span> 类似动态风险溢价 <span class="math inline">\(\lambda_t\)</span>) 进入预期收益模型。</p>
+<p><strong>预测变量构建 <span class="math inline">\(z_{i,t}\)</span>:</strong> * 见“特征工程”部分的交互项构建。 * 此设定允许纯粹的股票层面信息 (通过 <span class="math inline">\(c_{i,t}\)</span> 类似风险暴露 <span class="math inline">\(\beta_{i,t}\)</span>) 和总体经济状况 (通过 <span class="math inline">\(x_t\)</span> 类似动态风险溢价 <span class="math inline">\(\lambda_t\)</span>) 进入预期收益模型。</p>
 <p><strong>样本划分与评估:</strong> * <strong>训练集:</strong> 1957 - 1974 (18年)。 * <strong>验证集:</strong> 1975 - 1986 (12年, 用于超参数调优)。 * <strong>测试集:</strong> 1987 - 2016 (30年, 用于样本外评估)。 * <strong>更新:</strong> 每年重新训练模型，训练集递归增加，验证集滚动。 * <strong>主要评估指标:</strong> 样本外预测 <span class="math inline">\(R^2\)</span> (<span class="math inline">\(R^2_{oos}\)</span>)。 <span class="math display">\[R^2_{oos} = 1 - \frac{\sum_{(i,t)\in T_3} (r_{i,t+1} - \hat{r}_{i,t+1})^2}{\sum_{(i,t)\in T_3} r^2_{i,t+1}}\]</span> * <strong><span class="math inline">\(R^2_{oos}\)</span> 定义解释:</strong> * 分母使用的是<strong>平方超额收益之和</strong> <span class="math inline">\(\sum r^2_{i,t+1}\)</span>，而不是通常的平方中心化收益之和 (即 <span class="math inline">\(\sum (r_{i,t+1} - \bar{r})^2\)</span>)。 * <strong>原因:</strong> 传统的基于历史均值 (<span class="math inline">\(\bar{r}\)</span>) 的基准对于个股收益预测来说过于宽松。个股历史平均收益本身波动极大且预测能力很差，通常不如直接预测为零。若以历史均值为基准，会人为地抬高 <span class="math inline">\(R^2_{oos}\)</span>，使得评价标准过低。 * 因此，本文使用的 <span class="math inline">\(R^2_{oos}\)</span> 是将模型预测与<strong>零收益预测</strong>进行比较，这是一个更严格、更合理的基准。</p>
 </section>
 <section id="方法论概述" class="level3" data-number="7.5.3">
@@ -663,7 +679,6 @@ window.Quarto = {
 <li><strong>树模型 (Trees):</strong> 包括随机森林 (Random Forest, RF) 和梯度提升回归树 (Gradient Boosted Regression Trees, GBRT)。</li>
 <li><strong>神经网络 (Neural Networks, NN):</strong> 测试了从 1 层到 5 层隐藏层的不同深度网络 (NN1-NN5)。</li>
 </ol>
-<p><em>注：课堂不要求讲解具体方法的细节。</em></p>
 </section>
 <section id="主要实证结果个股层面预测" class="level3" data-number="7.5.4">
 <h3 data-number="7.5.4" class="anchored" data-anchor-id="主要实证结果个股层面预测"><span class="header-section-number">7.5.4</span> 主要实证结果：个股层面预测</h3>

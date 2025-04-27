@@ -176,6 +176,8 @@ title: "时间序列监督学习"
 ...以此类推
 ```
 
+![](pics/Time%20Series%20CV.png)
+
 #### 各方法的对比与选择
 
 | 分割方法 | 训练数据量 | 计算成本 | 适用场景 | 主要优势 |
@@ -280,7 +282,21 @@ Gu, Kelly, and Xiu, (2020). "Empirical Asset Pricing via Machine Learning", Revi
     * 94 个股票层面特征 (Characteristics)。
         * 年度更新: 61个, 季度更新: 13个, 月度更新: 20个。
     * 74 个行业虚拟变量 (基于 SIC 两位码)。
-    * 8 个宏观经济预测变量 (来自 Welch & Goyal, 2008)。
+    * 8 个宏观经济预测变量 (来自 Welch & Goyal, 2008)
+      - dividend-price ratio (dpr)
+      - earnings-price ratio (epr)
+      - book-to-market ratio (bmr)
+      - net equity expansion (ntis)
+      - Treasury-bill rate (tbl)
+      - term spread (tms)
+      - default spread (dfy)
+      - stock variance (svar)
+
+![](pics/EAP_ML_Char1.png)
+
+![](pics/EAP_ML_Char2.png)
+
+![](pics/EAP_ML_Char3.png)
 
 * **特征工程:**
     * **标准化:** 每个时间点，对所有股票层面的特征（94个）进行横截面排序 (Cross-sectional rank)，然后将排序值线性映射到 $[-1, 1]$ 区间。
@@ -298,7 +314,7 @@ $$E_t(r_{i,t+1}) = g^*(z_{i,t})$$
 * $g^*(\cdot)$ 函数形式对所有时间和股票保持不变。
 
 **预测变量构建 $z_{i,t}$:**
-* 见上一页“特征工程”部分的交互项构建。
+* 见“特征工程”部分的交互项构建。
 * 此设定允许纯粹的股票层面信息 (通过 $c_{i,t}$ 类似风险暴露 $\beta_{i,t}$) 和总体经济状况 (通过 $x_t$ 类似动态风险溢价 $\lambda_t$) 进入预期收益模型。
 
 **样本划分与评估:**
@@ -323,8 +339,6 @@ $$E_t(r_{i,t+1}) = g^*(z_{i,t})$$
 4.  **广义线性模型 (Generalized Linear Model, GLM):** 使用样条函数捕捉单变量非线性，但不含交互项。
 5.  **树模型 (Trees):** 包括随机森林 (Random Forest, RF) 和梯度提升回归树 (Gradient Boosted Regression Trees, GBRT)。
 6.  **神经网络 (Neural Networks, NN):** 测试了从 1 层到 5 层隐藏层的不同深度网络 (NN1-NN5)。
-
-*注：课堂不要求讲解具体方法的细节。*
 
 ### 主要实证结果：个股层面预测
 
