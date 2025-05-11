@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "数据挖掘与机器学习课程讲义",
     "section": "",
-    "text": "本讲义将系统地介绍机器学习的基本概念、主要模型以及实践应用。\n引言:\n机器学习是人工智能的一个重要分支，它是指从数据中自动学习规律和模式，并利用这些规律和模式进行预测和决策的过程。机器学习在量化投资、金融科技等领域有广泛应用。由于课程时间有限，本讲义将重点介绍机器学习中的监督学习与无监督学习，以及其在金融预测中的应用。\n课程内容（理论）:\n\n机器学习基础\n监督学习理论(上)\n监督学习理论(下)\n模型评估与优化\n时间序列监督学习\n信用评分\n无监督学习\n聚类\n降维\n文本分析(一):词频法与向量空间\n文本分析(二):词向量与深度学习基础\n文本分析(三):大语言模型及其应用\n\n课程内容（实践）:\n\n金融数据获取与数据分析基础\n泰坦尼克号生存预测实践\n\n课程项目:\n\n借贷违约风险评估\n\n下面两个项目二选一：\n2a. 股票价格预测 2b. 财务报表文本分析\n使用说明:\n\n本讲义使用 Quarto 创建，可以方便地生成 HTML, PDF, ePub 等多种格式。\n点击左侧导航栏可以浏览不同章节的内容。\n\n希望本讲义能帮助您更好地学习和理解机器学习！",
+    "text": "本讲义将系统地介绍机器学习的基本概念、主要模型以及实践应用。\n引言:\n机器学习是人工智能的一个重要分支，它是指从数据中自动学习规律和模式，并利用这些规律和模式进行预测和决策的过程。机器学习在量化投资、金融科技等领域有广泛应用。由于课程时间有限，本讲义将重点介绍机器学习中的监督学习与无监督学习，以及其在金融预测中的应用。\n课程内容（理论）:\n\n机器学习基础\n监督学习理论(上)\n监督学习理论(下)\n模型评估与优化\n时间序列监督学习\n信用评分\n无监督学习\n聚类\n降维\n文本分析1:词频法与向量空间\n文本分析2:词向量与深度学习基础\n文本分析3:大语言模型及其应用\n\n课程内容（实践）:\n\n金融数据获取与数据分析基础\n泰坦尼克号生存预测实践\n\n课程项目:\n\n借贷违约风险评估\n\n下面两个项目二选一：\n2a. 股票价格预测 2b. 财务报表文本分析\n期末考试:\n\n期末考试复习指南\n\n使用说明:\n\n本讲义使用 Quarto 创建，可以方便地生成 HTML, PDF, ePub 等多种格式。\n点击左侧导航栏可以浏览不同章节的内容。\n\n希望本讲义能帮助您更好地学习和理解机器学习！",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>前言</span>"
     ]
@@ -592,681 +592,661 @@
   {
     "objectID": "11_nlp.html",
     "href": "11_nlp.html",
-    "title": "13  文本分析(一)：词频法与向量空间",
+    "title": "13  文本分析1：词频法与向量空间",
     "section": "",
     "text": "14 文本数据与NLP初步",
     "crumbs": [
-      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析(一)：词频法与向量空间</span>"
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析1：词频法与向量空间</span>"
     ]
   },
   {
     "objectID": "11_nlp.html#文本数据的特点",
     "href": "11_nlp.html#文本数据的特点",
-    "title": "13  文本分析(一)：词频法与向量空间",
+    "title": "13  文本分析1：词频法与向量空间",
     "section": "14.1 文本数据的特点",
     "text": "14.1 文本数据的特点\n文本数据是一种非常常见但又极其复杂的数据类型，具有以下特点：\n\n高维稀疏性：文本可以表示为向量空间中的点，但这个空间往往有数万维（对应词汇量），而每个文档只使用其中很少的词\n顺序性：词的顺序对语义至关重要（“狗咬人”和”人咬狗”含义完全不同）\n语义性：文本承载复杂的语义信息，存在歧义、隐喻、引用等多种语言现象",
     "crumbs": [
-      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析(一)：词频法与向量空间</span>"
-    ]
-  },
-  {
-    "objectID": "11_nlp.html#应用案例政府工作报告分析",
-    "href": "11_nlp.html#应用案例政府工作报告分析",
-    "title": "13  文本分析(一)：词频法与向量空间",
-    "section": "14.2 应用案例：政府工作报告分析",
-    "text": "14.2 应用案例：政府工作报告分析\n我们将以历年政府工作报告为例，展示文本分析的整个流程和应用。政府工作报告是研究国家政策和经济发展的重要文本数据，通过分析可以：\n\n政策趋势分析：追踪国家各时期政策重点的变化\n经济指标预测：从定性描述中提取经济发展预期\n社会关注点识别：发现不同时期的社会热点问题\n政策效果评估：将政策目标与实际结果进行对比\n\n\n\n代码\n# 导入基础库\nimport pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport jieba\nimport re",
-    "crumbs": [
-      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析(一)：词频法与向量空间</span>"
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析1：词频法与向量空间</span>"
     ]
   },
   {
     "objectID": "11_nlp.html#文本处理流程概览",
     "href": "11_nlp.html#文本处理流程概览",
-    "title": "13  文本分析(一)：词频法与向量空间",
-    "section": "14.3 文本处理流程概览",
-    "text": "14.3 文本处理流程概览\n文本分析通常遵循以下步骤：\n\n采集：网络爬虫、API接口、数据库、PDF解析等\n清洗：去除HTML标签、特殊字符、错别字纠正等\n表示：将文本转换为机器可理解的形式（向量化）\n建模：应用机器学习算法执行分类、聚类、主题提取等任务\n\n在我们的政府工作报告案例中，将完整展示这个流程。",
+    "title": "13  文本分析1：词频法与向量空间",
+    "section": "14.2 文本处理流程概览",
+    "text": "14.2 文本处理流程概览\n文本分析通常遵循以下步骤：\n\n采集：网络爬虫、API接口、数据库、PDF解析等\n清洗：去除HTML标签、特殊字符、错别字纠正等\n表示：将文本转换为机器可理解的形式（向量化）\n建模：应用机器学习算法执行分类、聚类、主题提取等任务",
     "crumbs": [
-      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析(一)：词频法与向量空间</span>"
-    ]
-  },
-  {
-    "objectID": "11_nlp.html#数据准备",
-    "href": "11_nlp.html#数据准备",
-    "title": "13  文本分析(一)：词频法与向量空间",
-    "section": "15.1 数据准备",
-    "text": "15.1 数据准备\n首先，我们加载政府工作报告数据集：\n\n\n代码\n# 加载政府工作报告数据\n# 在实际教学中，可以从本地文件加载\n# govreport = pd.read_csv('govreport.csv') \n\n# 这里用一个模拟数据集进行演示\ngovreport = pd.DataFrame({\n    'Year': [2019, 2020, 2021, 2022, 2023],\n    'texts': [\n        '今年发展主要预期目标是：国内生产总值增长6%－6.5%；城镇新增就业1100万人以上，城镇调查失业率5.5%左右，城镇登记失业率4.5%以内；居民消费价格涨幅3%左右；国际收支基本平衡，进出口稳中提质；宏观杠杆率基本稳定，金融财政风险有效防控；农村贫困人口减少1000万以上，居民收入增长与经济增长基本同步；生态环境进一步改善，单位国内生产总值能耗下降3%左右，主要污染物排放量继续下降。',\n        '今年我国发展面临的环境更加严峻复杂，特别是新冠肺炎疫情影响广泛深远，经济社会发展困难挑战前所未有，必须做好较长时间应对外部环境变化的思想准备和工作准备。',\n        '今年发展主要预期目标是：国内生产总值增长6%以上；城镇新增就业1100万人以上，城镇调查失业率5.5%左右；居民消费价格涨幅3%左右；进出口量稳质升，国际收支基本平衡；居民收入稳步增长；生态环境质量进一步改善，单位国内生产总值能耗降低3%左右，主要污染物排放量继续下降；粮食产量保持在1.3万亿斤以上。',\n        '综合研判国内外形势，今年我国发展面临的风险挑战明显增多，要继续统筹好疫情防控和经济社会发展，迎难而上，砥砺前行。',\n        '今年发展主要预期目标是：国内生产总值增长5%左右；城镇新增就业1200万人左右，城镇调查失业率5.5%左右；居民消费价格涨幅3%左右；居民收入增长与经济增长基本同步；进出口促稳提质，国际收支基本平衡；粮食产量保持在1.3万亿斤以上；生态环境质量持续改善，主要污染物排放量继续下降；能耗强度目标在\"十四五\"规划期内统筹考核，并留有适当弹性。'\n    ]\n})\n\n# 查看数据集\nprint(govreport.head())",
-    "crumbs": [
-      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析(一)：词频法与向量空间</span>"
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析1：词频法与向量空间</span>"
     ]
   },
   {
     "objectID": "11_nlp.html#中文分词",
     "href": "11_nlp.html#中文分词",
-    "title": "13  文本分析(一)：词频法与向量空间",
-    "section": "15.2 中文分词",
-    "text": "15.2 中文分词\n与英文不同，中文没有明显的词语分隔符，需要专门的分词工具。在我们的案例中，使用jieba进行中文分词：\n\n\n代码\nimport jieba\n\n# 示例\ntext = govreport.loc[0, 'texts']\nwords = jieba.cut(text)\nprint(\"分词结果示例:\")\nprint(\" \".join(words))\n\n\njieba是目前最流行的中文分词工具之一，具有以下特点： - 支持精确模式、全模式和搜索引擎模式 - 允许添加自定义词典 - 具有词性标注功能\n常见问题： - 专业术语、新词识别困难（需添加自定义词典） - 歧义分词（例如”结合成分子”可能被分为”结合/成/分子”或”结合/成分/子”） - 中英文混合文本处理",
+    "title": "13  文本分析1：词频法与向量空间",
+    "section": "15.1 中文分词",
+    "text": "15.1 中文分词\n与英文不同，中文没有明显的词语分隔符，需要专门的分词工具。\njieba是目前最流行的中文分词工具之一，具有以下特点： - 支持精确模式、全模式和搜索引擎模式 - 允许添加自定义词典 - 具有词性标注功能\n常见问题： - 专业术语、新词识别困难（需添加自定义词典） - 歧义分词（例如”结合成分子”可能被分为”结合/成/分子”或”结合/成分/子”） - 中英文混合文本处理",
     "crumbs": [
-      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析(一)：词频法与向量空间</span>"
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析1：词频法与向量空间</span>"
     ]
   },
   {
     "objectID": "11_nlp.html#文本清洗与去停用词",
     "href": "11_nlp.html#文本清洗与去停用词",
-    "title": "13  文本分析(一)：词频法与向量空间",
-    "section": "15.3 文本清洗与去停用词",
-    "text": "15.3 文本清洗与去停用词\n文本清洗是将原始文本转换为标准格式的过程：\n\n\n代码\n# 加载停用词表\n# 在实际教学中，可以从本地文件加载\n# with open('stopwords.txt', 'r', encoding='utf-8') as f:\n#     stop_words = [line.strip() for line in f]\n\n# 简化版停用词表\nstop_words = {'的', '了', '和', '是', '在', '我们', '要', '把', '与', '以', '为', '等', '对', '这', '从'}\n\n# 文本清洗函数\ndef clean_text(text):\n    # 去除标点符号和数字\n    text = re.sub(r'[^\\u4e00-\\u9fa5]', ' ', text)\n    return text\n\n# 分词并去除停用词\ndef preprocess_text(text):\n    # 清洗文本\n    cleaned_text = clean_text(text)\n    # 分词\n    words = jieba.cut(cleaned_text)\n    # 去除停用词和空白\n    return [word for word in words if word.strip() and word not in stop_words]\n\n# 对政府工作报告进行预处理\nprocessed_reports = {}\nfor _, row in govreport.iterrows():\n    year = row['Year']\n    text = row['texts']\n    processed_reports[year] = preprocess_text(text)\n\n# 查看处理后的结果\nprint(f\"2023年报告处理前：{govreport.loc[4, 'texts'][:50]}...\")\nprint(f\"2023年报告处理后：{' '.join(processed_reports[2023][:20])}...\")",
+    "title": "13  文本分析1：词频法与向量空间",
+    "section": "15.2 文本清洗与去停用词",
+    "text": "15.2 文本清洗与去停用词\n文本清洗是将原始文本转换为标准格式的过程，主要包括： - 去除标点符号、特殊字符和数字 - 去除停用词（如”的”、“了”、“和”等对分析无实质帮助的词语） - 词形还原（如将”running”转为”run”） - 大小写统一（对英文文本）",
     "crumbs": [
-      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析(一)：词频法与向量空间</span>"
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析1：词频法与向量空间</span>"
     ]
   },
   {
     "objectID": "11_nlp.html#词袋模型详解",
     "href": "11_nlp.html#词袋模型详解",
-    "title": "13  文本分析(一)：词频法与向量空间",
-    "section": "15.4 词袋模型详解",
-    "text": "15.4 词袋模型详解\n词袋模型(Bag of Words)是自然语言处理中最基础的文本表示方法。该模型将文本视为一组无序的词语集合，完全忽略语法和词序，仅关注词语在文档中是否出现或出现次数。\n\n15.4.1 词袋模型的理论基础\n词袋模型基于一个简化假设：文档的含义可以由其包含的词语而非词语顺序决定。尽管这个假设在许多情况下显然是错误的（例如”狗咬人”和”人咬狗”含义截然不同），但在文本分类、主题识别等任务上仍然取得了不错的效果。\n词袋模型的数学表示如下：\n对于文档集合 \\(D = \\{d_1, d_2, ..., d_n\\}\\)，我们首先构建一个词汇表 \\(V = \\{w_1, w_2, ..., w_m\\}\\)，其中包含所有文档中出现的唯一词语。\n对于文档 \\(d_i\\)，词袋表示为向量 \\(X_i = [x_{i1}, x_{i2}, ..., x_{im}]\\)，其中：\n\\[x_{ij} = \\text{词语 } w_j \\text{ 在文档 } d_i \\text{ 中的出现次数}\\]\n整个文档集合可以表示为文档-词项矩阵（Document-Term Matrix, DTM）：\n\\[X = \\begin{bmatrix}\nx_{11} & x_{12} & \\cdots & x_{1m} \\\\\nx_{21} & x_{22} & \\cdots & x_{2m} \\\\\n\\vdots & \\vdots & \\ddots & \\vdots \\\\\nx_{n1} & x_{n2} & \\cdots & x_{nm}\n\\end{bmatrix}\\]\n\n\n15.4.2 词袋模型的变体\n词袋模型有几种常见的变体，根据计数方式的不同，具有不同的特性：\n\n二值化词袋模型（Binary Bag of Words）：只关心词语是否出现，不关心出现次数 \\[x_{ij} = \\begin{cases}\n1 & \\text{如果词语 } w_j \\text{ 在文档 } d_i \\text{ 中出现} \\\\\n0 & \\text{否则}\n\\end{cases}\\]\n词频统计（Term Frequency）：计算词语出现的次数 \\[x_{ij} = \\text{词语 } w_j \\text{ 在文档 } d_i \\text{ 中的出现次数}\\]\n词频归一化（Normalized Term Frequency）：将词频除以文档长度，以消除文档长度不同带来的影响 \\[x_{ij} = \\frac{\\text{词语 } w_j \\text{ 在文档 } d_i \\text{ 中的出现次数}}{\\text{文档 } d_i \\text{ 的总词数}}\\]\nN元语法模型（N-gram Model）：不仅考虑单个词，还考虑连续的N个词组合，可以部分保留词序信息\n\n一元语法（Unigram）：单个词，如 “发展”、“经济”\n二元语法（Bigram）：两个相邻词，如 “经济 发展”、“促进 增长”\n三元语法（Trigram）：三个相邻词，如 “促进 经济 发展”\n\n\n\n\n15.4.3 词袋模型的向量化过程\n实现词袋模型通常包括以下步骤：\n\n构建词汇表：从所有文档中收集唯一的词语，建立完整的词汇表\n\n可以进行筛选，如去除停用词、低频词\n可能限制词汇表大小，只保留最频繁的 K 个词\n\n统计词频：计算每个文档中每个词语出现的次数\n创建文档向量：每个文档表示为一个向量，向量的长度等于词汇表大小，向量的元素为对应词语在文档中的出现次数或其他统计量\n\n\n\n代码\n# 词袋模型的Python实现示例\nfrom sklearn.feature_extraction.text import CountVectorizer\nimport pandas as pd\nimport numpy as np\n\n# 示例文档集合\ncorpus = [\n    \"自然语言处理是人工智能的重要分支\",\n    \"机器学习算法可以处理自然语言\",\n    \"深度学习在自然语言处理中表现优异\"\n]\n\n# 创建词袋模型\nvectorizer = CountVectorizer()\nX = vectorizer.fit_transform(corpus)\n\n# 获取词汇表\nvocabulary = vectorizer.get_feature_names_out()\nprint(\"词汇表:\", vocabulary)\n\n# 获取词频矩阵\nword_counts = X.toarray()\nprint(\"\\n词频矩阵:\")\nprint(pd.DataFrame(word_counts, columns=vocabulary))\n\n\n\n\n15.4.4 词袋模型的特点\n\n优点：\n\n简单直观，易于理解和实现\n计算高效，适用于大规模文本数据\n维度确定，便于应用各种机器学习算法\n捕捉文档的主题关键词\n\n缺点：\n\n完全忽略词序和语法，无法捕捉上下文信息\n无法处理词语的多义性和同义词关系\n高维稀疏表示，导致”维度灾难”\n新词问题：测试文档中可能出现训练集中未见过的词\n\n\n\n\n15.4.5 政府工作报告应用实例\n现在我们将词袋模型应用到政府工作报告分析中，展示如何实际操作：\n\n\n代码\n# 将处理好的文本转换为CountVectorizer可接受的格式\ncorpus = []\nyears = []\nfor year, words in processed_reports.items():\n    corpus.append(' '.join(words))\n    years.append(year)\n\n# 使用CountVectorizer构建词汇表并统计词频\nvectorizer = CountVectorizer()\nX = vectorizer.fit_transform(corpus)\n\n# 获取词汇表\nvocabulary = vectorizer.get_feature_names_out()\nprint(f\"词汇表大小: {len(vocabulary)}\")\nprint(f\"词汇表前20个词: {vocabulary[:20]}\")\n\n# 获取词频矩阵\nword_counts = X.toarray()\nprint(\"\\n词频矩阵大小:\", word_counts.shape)\n\n# 创建词频DataFrame便于查看\ncount_df = pd.DataFrame(word_counts, index=years, columns=vocabulary)\nprint(\"\\n词频矩阵示例(部分词汇):\")\n# 选择一些有代表性的词查看在各年份报告中的出现频率\nselected_words = ['生产总值', '就业', '收入', '增长', '发展', '疫情', '风险']\nprint(count_df[selected_words])\n\n# 可视化部分词频矩阵\nimport matplotlib.pyplot as plt\nimport seaborn as sns\n\nplt.figure(figsize=(12, 6))\nsns.heatmap(count_df[selected_words], annot=True, fmt='d', cmap='Blues')\nplt.title('政府工作报告词频矩阵(部分词汇)')\nplt.tight_layout()\n\n\n通过政府工作报告的词袋模型分析，我们可以观察到：\n\n不同年份报告中关键词的使用频率变化反映了政策重点的转变\n例如”疫情”一词在2020年后的报告中频繁出现，反映了新冠疫情的影响\n“发展”和”增长”等词在各年报告中均保持高频，体现了经济发展的核心地位",
+    "title": "13  文本分析1：词频法与向量空间",
+    "section": "15.3 词袋模型详解",
+    "text": "15.3 词袋模型详解\n词袋模型(Bag of Words)是自然语言处理中最基础的文本表示方法。该模型将文本视为一组无序的词语集合，完全忽略语法和词序，仅关注词语在文档中是否出现或出现次数。\n\n15.3.1 词袋模型的理论基础\n词袋模型基于一个简化假设：文档的含义可以由其包含的词语而非词语顺序决定。尽管这个假设在许多情况下显然是错误的（例如”狗咬人”和”人咬狗”含义截然不同），但在文本分类、主题识别等任务上仍然取得了不错的效果。\n词袋模型的数学表示如下：\n对于文档集合 \\(D = \\{d_1, d_2, ..., d_n\\}\\)，我们首先构建一个词汇表 \\(V = \\{w_1, w_2, ..., w_m\\}\\)，其中包含所有文档中出现的唯一词语。\n对于文档 \\(d_i\\)，词袋表示为向量 \\(X_i = [x_{i1}, x_{i2}, ..., x_{im}]\\)，其中：\n\\[x_{ij} = \\text{词语 } w_j \\text{ 在文档 } d_i \\text{ 中的出现次数}\\]\n整个文档集合可以表示为文档-词项矩阵（Document-Term Matrix, DTM）：\n\\[X = \\begin{bmatrix}\nx_{11} & x_{12} & \\cdots & x_{1m} \\\\\nx_{21} & x_{22} & \\cdots & x_{2m} \\\\\n\\vdots & \\vdots & \\ddots & \\vdots \\\\\nx_{n1} & x_{n2} & \\cdots & x_{nm}\n\\end{bmatrix}\\]\n\n\n15.3.2 词袋模型的变体\n词袋模型有几种常见的变体，根据计数方式的不同，具有不同的特性：\n\n二值化词袋模型（Binary Bag of Words）：只关心词语是否出现，不关心出现次数 \\[x_{ij} = \\begin{cases}\n1 & \\text{如果词语 } w_j \\text{ 在文档 } d_i \\text{ 中出现} \\\\\n0 & \\text{否则}\n\\end{cases}\\]\n词频统计（Term Frequency）：计算词语出现的次数 \\[x_{ij} = \\text{词语 } w_j \\text{ 在文档 } d_i \\text{ 中的出现次数}\\]\n词频归一化（Normalized Term Frequency）：将词频除以文档长度，以消除文档长度不同带来的影响 \\[x_{ij} = \\frac{\\text{词语 } w_j \\text{ 在文档 } d_i \\text{ 中的出现次数}}{\\text{文档 } d_i \\text{ 的总词数}}\\]\nN元语法模型（N-gram Model）：不仅考虑单个词，还考虑连续的N个词组合，可以部分保留词序信息\n\n一元语法（Unigram）：单个词，如 “发展”、“经济”\n二元语法（Bigram）：两个相邻词，如 “经济 发展”、“促进 增长”\n三元语法（Trigram）：三个相邻词，如 “促进 经济 发展”\n\n\n\n\n15.3.3 词袋模型的向量化过程\n实现词袋模型通常包括以下步骤：\n\n构建词汇表：从所有文档中收集唯一的词语，建立完整的词汇表\n\n可以进行筛选，如去除停用词、低频词\n可能限制词汇表大小，只保留最频繁的 K 个词\n\n统计词频：计算每个文档中每个词语出现的次数\n创建文档向量：每个文档表示为一个向量，向量的长度等于词汇表大小，向量的元素为对应词语在文档中的出现次数或其他统计量\n\n\n\n15.3.4 词袋模型的特点\n\n优点：\n\n简单直观，易于理解和实现\n计算高效，适用于大规模文本数据\n维度确定，便于应用各种机器学习算法\n捕捉文档的主题关键词\n\n缺点：\n\n完全忽略词序和语法，无法捕捉上下文信息\n无法处理词语的多义性和同义词关系\n高维稀疏表示，导致”维度灾难”\n新词问题：测试文档中可能出现训练集中未见过的词",
     "crumbs": [
-      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析(一)：词频法与向量空间</span>"
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析1：词频法与向量空间</span>"
     ]
   },
   {
     "objectID": "11_nlp.html#特征稀疏性分析",
     "href": "11_nlp.html#特征稀疏性分析",
-    "title": "13  文本分析(一)：词频法与向量空间",
-    "section": "15.5 特征稀疏性分析",
-    "text": "15.5 特征稀疏性分析\n文本向量的稀疏性是文本分析中的重要特性。在词袋模型表示下，文本向量具有高度稀疏性，即绝大多数元素为零。这一特性有着深远的理论和实践意义。\n\n15.5.1 稀疏性的理论解释\n稀疏性源于以下事实：\n\n词汇量巨大：自然语言的词汇量通常非常大（中文常用词汇约有几万个）\n单个文档用词有限：任何一篇文档通常只使用全部词汇的很小一部分\n齐普夫定律(Zipf’s Law)：自然语言中，词频与词频排名成反比，即大多数词出现次数很少，少数词出现次数很多\n\n齐普夫定律可表示为： \\[f(k) \\propto \\frac{1}{k^s}\\] 其中 \\(f(k)\\) 是排名第 \\(k\\) 的词的频率，\\(s\\) 是接近于1的常数。\n\n\n15.5.2 稀疏性的数学度量\n文本向量的稀疏性可以用密度(density)的倒数来表示，其计算公式为：\n\\[\\text{稀疏度} = 1 - \\frac{\\text{非零元素数量}}{\\text{总元素数量}}\\]\n例如，如果一个10000维的向量中只有100个非零元素，则其稀疏度为: \\[1 - \\frac{100}{10000} = 0.99 = 99\\%\\]\n\n\n15.5.3 稀疏表示的优势和挑战\n优势： - 存储效率高：只需存储非零元素及其位置 - 计算效率高：只需处理非零元素 - 降低过拟合风险：稀疏性可视为一种正则化\n挑战： - 信息密度低：需要更多样本学习有效特征 - 难以直接应用某些算法，如神经网络 - “维度灾难”问题：高维空间中数据点趋于疏远\n\n\n15.5.4 稀疏矩阵的高效存储\n针对稀疏矩阵的特点，常用的存储格式包括：\n\n坐标列表(COO格式)：存储(行索引,列索引,值)三元组\n压缩稀疏行(CSR格式)：存储非零值、列索引和行指针\n压缩稀疏列(CSC格式)：存储非零值、行索引和列指针\n\n以CSR格式为例，其空间复杂度从O(m×n)降低到O(2nnz+m+1)，其中nnz为非零元素数量。\n\n\n代码\n# 分析政府工作报告词频矩阵的稀疏度\ntotal_elements = word_counts.size\nnon_zero_elements = np.count_nonzero(word_counts)\nsparsity = 1.0 - (non_zero_elements / total_elements)\n\nprint(f\"矩阵总元素数: {total_elements}\")\nprint(f\"非零元素数: {non_zero_elements}\")\nprint(f\"稀疏度: {sparsity:.2%} (即{sparsity:.2%}的元素为0)\")\n\n# 使用稀疏矩阵表示\nfrom scipy.sparse import csr_matrix\nsparse_counts = csr_matrix(word_counts)\nprint(\"\\n稀疏矩阵表示:\")\nprint(sparse_counts)\nprint(\"\\nCSR格式内存占用:\", sparse_counts.data.nbytes + sparse_counts.indptr.nbytes + sparse_counts.indices.nbytes, \"字节\")\nprint(\"密集矩阵内存占用:\", word_counts.nbytes, \"字节\")\nprint(f\"内存节省: {(1 - (sparse_counts.data.nbytes + sparse_counts.indptr.nbytes + sparse_counts.indices.nbytes) / word_counts.nbytes):.2%}\")",
+    "title": "13  文本分析1：词频法与向量空间",
+    "section": "15.4 特征稀疏性分析",
+    "text": "15.4 特征稀疏性分析\n文本向量的稀疏性是文本分析中的重要特性。在词袋模型表示下，文本向量具有高度稀疏性，即绝大多数元素为零。这一特性有着深远的理论和实践意义。\n\n15.4.1 稀疏性的理论解释\n稀疏性源于以下事实：\n\n词汇量巨大：自然语言的词汇量通常非常大（中文常用词汇约有几万个）\n单个文档用词有限：任何一篇文档通常只使用全部词汇的很小一部分\n齐普夫定律(Zipf’s Law)：自然语言中，词频与词频排名成反比，即大多数词出现次数很少，少数词出现次数很多\n\n齐普夫定律可表示为： \\[f(k) \\propto \\frac{1}{k^s}\\] 其中 \\(f(k)\\) 是排名第 \\(k\\) 的词的频率，\\(s\\) 是接近于1的常数。\n\n\n15.4.2 稀疏性的数学度量\n文本向量的稀疏性可以用密度(density)的倒数来表示，其计算公式为：\n\\[\\text{稀疏度} = 1 - \\frac{\\text{非零元素数量}}{\\text{总元素数量}}\\]\n例如，如果一个10000维的向量中只有100个非零元素，则其稀疏度为: \\[1 - \\frac{100}{10000} = 0.99 = 99\\%\\]\n\n\n15.4.3 稀疏表示的优势和挑战\n优势： - 存储效率高：只需存储非零元素及其位置 - 计算效率高：只需处理非零元素 - 降低过拟合风险：稀疏性可视为一种正则化\n挑战： - 信息密度低：需要更多样本学习有效特征 - 难以直接应用某些算法，如神经网络 - “维度灾难”问题：高维空间中数据点趋于疏远\n\n\n15.4.4 稀疏矩阵的高效存储\n针对稀疏矩阵的特点，常用的存储格式包括：\n\n坐标列表(COO格式)：存储(行索引,列索引,值)三元组\n压缩稀疏行(CSR格式)：存储非零值、列索引和行指针\n压缩稀疏列(CSC格式)：存储非零值、行索引和列指针\n\n以CSR格式为例，其空间复杂度从O(m×n)降低到O(2nnz+m+1)，其中nnz为非零元素数量。",
     "crumbs": [
-      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析(一)：词频法与向量空间</span>"
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析1：词频法与向量空间</span>"
     ]
   },
   {
     "objectID": "11_nlp.html#tf-idf理论基础",
     "href": "11_nlp.html#tf-idf理论基础",
-    "title": "13  文本分析(一)：词频法与向量空间",
+    "title": "13  文本分析1：词频法与向量空间",
     "section": "16.1 TF-IDF理论基础",
-    "text": "16.1 TF-IDF理论基础\nTF-IDF（Term Frequency-Inverse Document Frequency）是对词袋模型的重要改进，它不仅考虑词频(TF)，还考虑词语的区分度(IDF)。TF-IDF的核心思想是：如果一个词在某篇文档中出现次数多，但在整个文档集合中出现次数少，那么这个词很可能对该文档的主题具有较高的区分度。\n\n16.1.1 数学定义\nTF-IDF由两部分组成：\n\n词频(Term Frequency, TF)：衡量词语在文档中的重要性\n常见的TF计算方式有：\n\n原始频率： \\[TF(t,d) = f_{t,d}\\] 其中 \\(f_{t,d}\\) 是词语 \\(t\\) 在文档 \\(d\\) 中的出现次数\n归一化频率： \\[TF(t,d) = \\frac{f_{t,d}}{\\sum_{t' \\in d}f_{t',d}}\\] 即词语出现的次数除以文档中的总词数\n对数归一化： \\[TF(t,d) = \\log(1 + f_{t,d})\\] 通过取对数压缩词频的范围\n\n逆文档频率(Inverse Document Frequency, IDF)：衡量词语提供信息的程度\n\\[IDF(t) = \\log\\frac{N}{DF(t)}\\]\n其中 \\(N\\) 是文档总数，\\(DF(t)\\) 是包含词语 \\(t\\) 的文档数量。为避免分母为零，通常加上平滑项：\n\\[IDF(t) = \\log\\frac{N}{DF(t) + 1} + 1\\]\nTF-IDF权重：将TF和IDF相乘\n\\[TF\\text{-}IDF(t,d) = TF(t,d) \\times IDF(t)\\]\n\n\n\n16.1.2 TF-IDF的理论性质\n\n词频越高，TF值越大：反映了词在文档中的重要性\n文档频率越高，IDF值越小：惩罚了常见词\n独特性：对于罕见但在特定文档中高频的词，给予最高权重\n向量长度归一化：通常结合余弦相似度使用，此时需要对TF-IDF向量进行L2归一化\n\n\n\n16.1.3 TF-IDF的数学基础\n从信息论角度，IDF可以被理解为词语 \\(t\\) 出现的信息量：\n\\[IDF(t) \\propto -\\log P(t)\\]\n其中 \\(P(t)\\) 是从随机选择的文档中抽取到词语 \\(t\\) 的概率。词语越罕见，其信息量越大。\nTF-IDF权重也可以从概率模型推导：它与词语 \\(t\\) 对文档 \\(d\\) 的主题分类贡献度成正比。\n\n\n16.1.4 政府工作报告的TF-IDF分析\n我们应用TF-IDF算法分析政府工作报告，识别每年报告中最具特色的关键词：\n\n\n代码\nfrom sklearn.feature_extraction.text import TfidfVectorizer\n\n# 使用TfidfVectorizer计算TF-IDF\ntfidf_vectorizer = TfidfVectorizer()\ntfidf_matrix = tfidf_vectorizer.fit_transform(corpus)\n\n# 获取词汇表\ntfidf_vocabulary = tfidf_vectorizer.get_feature_names_out()\n\n# 获取TF-IDF矩阵\ntfidf_values = tfidf_matrix.toarray()\n\n# 创建TF-IDF DataFrame便于查看\ntfidf_df = pd.DataFrame(tfidf_values, index=years, columns=tfidf_vocabulary)\nprint(\"\\nTF-IDF矩阵示例(部分词汇):\")\nprint(tfidf_df[selected_words])\n\n# 找出每年报告中TF-IDF值最高的10个词\ntop_terms = {}\nfor i, year in enumerate(years):\n    top_indices = np.argsort(tfidf_values[i])[-10:]\n    top_terms[year] = [(tfidf_vocabulary[idx], tfidf_values[i, idx]) for idx in top_indices]\n    print(f\"\\n{year}年报告中TF-IDF最高的词:\")\n    for term, score in sorted(top_terms[year], key=lambda x: x[1], reverse=True):\n        print(f\"{term}: {score:.4f}\")\n\n# 可视化不同年份报告的TF-IDF高值词\nplt.figure(figsize=(15, 10))\nfor i, year in enumerate(years):\n    plt.subplot(3, 2, i+1)\n    terms = [term for term, _ in top_terms[year]]\n    scores = [score for _, score in top_terms[year]]\n    \n    # 翻转数据以便按得分降序显示\n    plt.barh(range(len(terms)), scores[::-1])\n    plt.yticks(range(len(terms)), terms[::-1])\n    plt.title(f'{year}年报告TF-IDF最高的词')\n    plt.xlim(0, max(scores) * 1.1)\n\nplt.tight_layout()",
+    "text": "16.1 TF-IDF理论基础\nTF-IDF（Term Frequency-Inverse Document Frequency）是对词袋模型的重要改进，它不仅考虑词频(TF)，还考虑词语的区分度(IDF)。TF-IDF的核心思想是：如果一个词在某篇文档中出现次数多，但在整个文档集合中出现次数少，那么这个词很可能对该文档的主题具有较高的区分度。\n\n16.1.1 数学定义\nTF-IDF由两部分组成：\n\n词频(Term Frequency, TF)：衡量词语在文档中的重要性\n常见的TF计算方式有：\n\n原始频率： \\[TF(t,d) = f_{t,d}\\] 其中 \\(f_{t,d}\\) 是词语 \\(t\\) 在文档 \\(d\\) 中的出现次数\n归一化频率： \\[TF(t,d) = \\frac{f_{t,d}}{\\sum_{t' \\in d}f_{t',d}}\\] 即词语出现的次数除以文档中的总词数\n对数归一化： \\[TF(t,d) = \\log(1 + f_{t,d})\\] 通过取对数压缩词频的范围\n\n逆文档频率(Inverse Document Frequency, IDF)：衡量词语提供信息的程度\n\\[IDF(t) = \\log\\frac{N}{DF(t)}\\]\n其中 \\(N\\) 是文档总数，\\(DF(t)\\) 是包含词语 \\(t\\) 的文档数量。为避免分母为零，通常加上平滑项：\n\\[IDF(t) = \\log\\frac{N}{DF(t) + 1} + 1\\]\nTF-IDF权重：将TF和IDF相乘\n\\[TF\\text{-}IDF(t,d) = TF(t,d) \\times IDF(t)\\]\n\n\n\n16.1.2 TF-IDF的理论性质\n\n词频越高，TF值越大：反映了词在文档中的重要性\n文档频率越高，IDF值越小：惩罚了常见词\n独特性：对于罕见但在特定文档中高频的词，给予最高权重\n向量长度归一化：通常结合余弦相似度使用，此时需要对TF-IDF向量进行L2归一化\n\n\n\n16.1.3 TF-IDF的数学基础\n从信息论角度，IDF可以被理解为词语 \\(t\\) 出现的信息量：\n\\[IDF(t) \\propto -\\log P(t)\\]\n其中 \\(P(t)\\) 是从随机选择的文档中抽取到词语 \\(t\\) 的概率。词语越罕见，其信息量越大。\nTF-IDF权重也可以从概率模型推导：它与词语 \\(t\\) 对文档 \\(d\\) 的主题分类贡献度成正比。",
     "crumbs": [
-      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析(一)：词频法与向量空间</span>"
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析1：词频法与向量空间</span>"
     ]
   },
   {
     "objectID": "11_nlp.html#文本相似度的理论基础",
     "href": "11_nlp.html#文本相似度的理论基础",
-    "title": "13  文本分析(一)：词频法与向量空间",
+    "title": "13  文本分析1：词频法与向量空间",
     "section": "16.2 文本相似度的理论基础",
-    "text": "16.2 文本相似度的理论基础\n文本相似度是衡量两篇文档内容相似程度的度量，广泛应用于信息检索、文档聚类和分类、推荐系统等领域。\n\n16.2.1 主要相似度度量\n\n欧氏距离(Euclidean Distance)：向量空间中两点之间的直线距离\n\\[d(X,Y) = \\sqrt{\\sum_{i=1}^{n}(x_i - y_i)^2}\\]\n\n优点：直观、易理解\n缺点：对向量长度敏感，不适合长短不一的文档比较\n\n曼哈顿距离(Manhattan Distance)：向量各维度差的绝对值之和\n\\[d(X,Y) = \\sum_{i=1}^{n}|x_i - y_i|\\]\n\n优点：计算简单，对异常值不敏感\n缺点：同样对向量长度敏感\n\n余弦相似度(Cosine Similarity)：向量夹角的余弦值\n\\[similarity(X,Y) = \\cos(\\theta) = \\frac{X \\cdot Y}{||X|| \\times ||Y||} = \\frac{\\sum_{i=1}^{n}x_i y_i}{\\sqrt{\\sum_{i=1}^{n}x_i^2} \\sqrt{\\sum_{i=1}^{n}y_i^2}}\\]\n\n优点：不受向量长度影响，适合文本相似度计算\n缺点：不考虑向量幅值，只关注方向\n\n杰卡德相似系数(Jaccard Similarity)：集合交集与并集的比值\n\\[J(A,B) = \\frac{|A \\cap B|}{|A \\cup B|}\\]\n\n优点：适用于二元特征或集合比较\n缺点：不考虑词频信息\n\n\n\n\n16.2.2 为什么余弦相似度适合文本分析？\n余弦相似度在文本分析中特别常用，原因在于：\n\n文档长度不敏感：长文档和短文档可以直接比较\n方向敏感：关注的是词汇分布的模式而非绝对频率\n高效计算：特别适合稀疏向量计算\n范围明确：值域为[-1,1]，便于理解和比较\n\n在TF-IDF向量空间中，两个文档的相似度可以通过计算它们的TF-IDF向量之间的余弦相似度得到，这样既考虑了共同词汇，又关注了词语的区分度。\n\n\n16.2.3 政府工作报告的相似度分析\n分析不同年份政府工作报告之间的相似度，揭示政策连续性和变化：\n\n\n代码\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n# 计算不同年份报告之间的余弦相似度\nsimilarity = cosine_similarity(tfidf_matrix)\nsimilarity_df = pd.DataFrame(similarity, index=years, columns=years)\nprint(\"各年份政府工作报告相似度矩阵:\")\nprint(similarity_df)\n\n# 可视化相似度矩阵\nplt.figure(figsize=(10, 8))\nsns.heatmap(similarity_df, annot=True, fmt='.2f', cmap='YlGnBu')\nplt.title('政府工作报告相似度矩阵')\n\n# 分析最相似和最不相似的年份报告\nnp.fill_diagonal(similarity, -1)  # 忽略自身相似度\nmost_similar_idx = np.unravel_index(similarity.argmax(), similarity.shape)\nleast_similar_idx = np.unravel_index(similarity.argmin(), similarity.shape)\n\nprint(f\"\\n最相似的报告: {years[most_similar_idx[0]]}年和{years[most_similar_idx[1]]}年 (相似度: {similarity[most_similar_idx]:.2f})\")\nprint(f\"最不相似的报告: {years[least_similar_idx[0]]}年和{years[least_similar_idx[1]]}年 (相似度: {similarity[least_similar_idx]:.2f})\")\n\n# 分析结果解释\nprint(\"\\n分析解释:\")\nprint(f\"1. {years[most_similar_idx[0]]}年和{years[most_similar_idx[1]]}年报告相似度高，可能反映这两年政策方向一致\")\nprint(f\"2. {years[least_similar_idx[0]]}年和{years[least_similar_idx[1]]}年报告差异大，可能是政策重点发生了转变\")\nprint(\"3. 疫情前后的报告相似度变化显著，反映了疫情对政策重点的影响\")",
+    "text": "16.2 文本相似度的理论基础\n文本相似度是衡量两篇文档内容相似程度的度量，广泛应用于信息检索、文档聚类和分类、推荐系统等领域。\n\n16.2.1 主要相似度度量\n\n欧氏距离(Euclidean Distance)：向量空间中两点之间的直线距离\n\\[d(X,Y) = \\sqrt{\\sum_{i=1}^{n}(x_i - y_i)^2}\\]\n\n优点：直观、易理解\n缺点：对向量长度敏感，不适合长短不一的文档比较\n\n曼哈顿距离(Manhattan Distance)：向量各维度差的绝对值之和\n\\[d(X,Y) = \\sum_{i=1}^{n}|x_i - y_i|\\]\n\n优点：计算简单，对异常值不敏感\n缺点：同样对向量长度敏感\n\n余弦相似度(Cosine Similarity)：向量夹角的余弦值\n\\[similarity(X,Y) = \\cos(\\theta) = \\frac{X \\cdot Y}{||X|| \\times ||Y||} = \\frac{\\sum_{i=1}^{n}x_i y_i}{\\sqrt{\\sum_{i=1}^{n}x_i^2} \\sqrt{\\sum_{i=1}^{n}y_i^2}}\\]\n\n优点：不受向量长度影响，适合文本相似度计算\n缺点：不考虑向量幅值，只关注方向\n\n杰卡德相似系数(Jaccard Similarity)：集合交集与并集的比值\n\\[J(A,B) = \\frac{|A \\cap B|}{|A \\cup B|}\\]\n\n优点：适用于二元特征或集合比较\n缺点：不考虑词频信息\n\n\n\n\n16.2.2 为什么余弦相似度适合文本分析？\n余弦相似度在文本分析中特别常用，原因在于：\n\n文档长度不敏感：长文档和短文档可以直接比较\n方向敏感：关注的是词汇分布的模式而非绝对频率\n高效计算：特别适合稀疏向量计算\n范围明确：值域为[-1,1]，便于理解和比较\n\n在TF-IDF向量空间中，两个文档的相似度可以通过计算它们的TF-IDF向量之间的余弦相似度得到，这样既考虑了共同词汇，又关注了词语的区分度。",
     "crumbs": [
-      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析(一)：词频法与向量空间</span>"
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析1：词频法与向量空间</span>"
     ]
   },
   {
     "objectID": "11_nlp.html#词云图的理论基础",
     "href": "11_nlp.html#词云图的理论基础",
-    "title": "13  文本分析(一)：词频法与向量空间",
+    "title": "13  文本分析1：词频法与向量空间",
     "section": "17.1 词云图的理论基础",
-    "text": "17.1 词云图的理论基础\n词云图(Word Cloud)是文本数据可视化的常用方法，通过调整词语的大小和颜色来表示其在文本中的重要性。词云图基于以下理论基础：\n\n17.1.1 词重要性的数学表示\n词云图中词语大小的确定通常基于以下指标：\n\n词频(Term Frequency, TF)：词语在文档中出现的次数 \\[TF(t,d) = f_{t,d}\\]\nTF-IDF权重：结合词频和逆文档频率 \\[TF\\text{-}IDF(t,d) = TF(t,d) \\times IDF(t)\\]\n其他自定义权重：如情感分析中的极性强度等\n\n\n\n17.1.2 布局算法\n词云图的布局是一个复杂的问题，主要算法包括：\n\n贪婪算法：从最重要的词开始，按重要性递减顺序放置单词\n力导向布局：将词语视为带电粒子，通过模拟物理力实现分布\n螺旋放置：从中心点开始，沿螺旋线放置词语\n碰撞检测：确保词语之间不重叠\n\n\n\n17.1.3 视觉编码原则\n词云图的设计遵循以下视觉编码原则：\n\n大小编码(Size Encoding)：词语的大小与其重要性成正比\n颜色编码(Color Encoding)：可用来表示词语的类别、情感极性等\n方向编码(Orientation Encoding)：词语的方向可以增加视觉多样性\n位置编码(Position Encoding)：中心位置通常放置最重要的词\n\n\n\n17.1.4 政府工作报告的词云图分析\n我们使用词云图直观展示政府工作报告的关键词分布：\n\n\n代码\nfrom wordcloud import WordCloud\nfrom matplotlib.font_manager import FontProperties\n\n# 设置中文字体，请确保系统中有相应的字体文件\nfont_path = '/System/Library/Fonts/PingFang.ttc'  # macOS路径，根据您的系统修改\n\n# 统计词频函数\ndef get_word_freq(words):\n    word_freq = {}\n    for word in words:\n        if word in word_freq:\n            word_freq[word] += 1\n        else:\n            word_freq[word] = 1\n    return word_freq\n\n# 生成2023年的词云图\nplt.figure(figsize=(12, 6))\nwords = processed_reports[2023]\nword_freq = get_word_freq(words)\n\nwordcloud = WordCloud(\n    font_path=font_path,\n    width=800,\n    height=400,\n    background_color='white',\n    max_words=100\n).generate_from_frequencies(word_freq)\n\nplt.imshow(wordcloud, interpolation='bilinear')\nplt.axis('off')\nplt.title('2023年政府工作报告词云')\nplt.tight_layout()\n\n# 比较各年份的词云图\nplt.figure(figsize=(20, 15))\nfor i, year in enumerate(sorted(processed_reports.keys())):\n    plt.subplot(3, 2, i+1)\n    \n    words = processed_reports[year]\n    word_freq = get_word_freq(words)\n    \n    wordcloud = WordCloud(\n        font_path=font_path,\n        width=800,\n        height=400,\n        background_color='white',\n        max_words=100\n    ).generate_from_frequencies(word_freq)\n    \n    plt.imshow(wordcloud, interpolation='bilinear')\n    plt.axis('off')\n    plt.title(f'{year}年政府工作报告词云')\n\nplt.tight_layout()",
+    "text": "17.1 词云图的理论基础\n词云图(Word Cloud)是文本数据可视化的常用方法，通过调整词语的大小和颜色来表示其在文本中的重要性。词云图基于以下理论基础：\n\n17.1.1 词重要性的数学表示\n词云图中词语大小的确定通常基于以下指标：\n\n词频(Term Frequency, TF)：词语在文档中出现的次数 \\[TF(t,d) = f_{t,d}\\]\nTF-IDF权重：结合词频和逆文档频率 \\[TF\\text{-}IDF(t,d) = TF(t,d) \\times IDF(t)\\]\n其他自定义权重：如情感分析中的极性强度等\n\n\n\n17.1.2 布局算法\n词云图的布局是一个复杂的问题，主要算法包括：\n\n贪婪算法：从最重要的词开始，按重要性递减顺序放置单词\n力导向布局：将词语视为带电粒子，通过模拟物理力实现分布\n螺旋放置：从中心点开始，沿螺旋线放置词语\n碰撞检测：确保词语之间不重叠\n\n\n\n17.1.3 视觉编码原则\n词云图的设计遵循以下视觉编码原则：\n\n大小编码(Size Encoding)：词语的大小与其重要性成正比\n颜色编码(Color Encoding)：可用来表示词语的类别、情感极性等\n方向编码(Orientation Encoding)：词语的方向可以增加视觉多样性\n位置编码(Position Encoding)：中心位置通常放置最重要的词",
     "crumbs": [
-      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析(一)：词频法与向量空间</span>"
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析1：词频法与向量空间</span>"
     ]
   },
   {
     "objectID": "11_nlp.html#情感分析的理论基础",
     "href": "11_nlp.html#情感分析的理论基础",
-    "title": "13  文本分析(一)：词频法与向量空间",
+    "title": "13  文本分析1：词频法与向量空间",
     "section": "18.1 情感分析的理论基础",
-    "text": "18.1 情感分析的理论基础\n情感分析(Sentiment Analysis)，也称为意见挖掘(Opinion Mining)，是指通过自然语言处理、文本分析和计算语言学等方法来识别、提取和量化文本中主观信息的过程。情感分析试图回答的核心问题是：文本作者对特定主题或实体的态度是什么？\n\n18.1.1 情感分析的主要任务\n情感分析主要包括以下几个层次的任务：\n\n文档级情感分析：确定整个文档的情感倾向（积极、消极或中性）\n句子级情感分析：确定单个句子的情感倾向\n方面级情感分析：识别文本中提到的特定方面/属性及其相关情感\n比较情感分析：比较不同实体之间的情感差异\n\n\n\n18.1.2 情感分析的主要方法\n情感分析的方法大致可分为三类：\n\n基于词典的方法：\n\n依赖预定义的情感词典，如知网HowNet情感词典、大连理工情感词典等\n通过计算情感词的出现频率和强度来评估整体情感\n数学表示：\\[Score(d) = \\frac{\\sum_{t \\in d} s_t \\times w_t}{\\sum_{t \\in d} w_t}\\] 其中\\(s_t\\)是词\\(t\\)的情感得分，\\(w_t\\)是权重（可以是TF-IDF值）\n\n基于机器学习的方法：\n\n监督学习：使用标注数据训练分类器（如SVM、朴素贝叶斯、决策树等）\n半监督学习：结合少量标注数据和大量未标注数据\n深度学习：使用CNN、RNN/LSTM、Transformer等神经网络模型\n\n混合方法：\n\n结合词典和机器学习方法的优点\n使用词典特征增强机器学习模型\n使用规则修正机器学习结果\n\n\n\n\n18.1.3 情感词典的构建原理\n情感词典是情感分析的重要资源，其构建原理包括：\n\n人工标注：语言学专家手动标注词语的情感极性和强度\n基于种子词的扩展：从少量种子情感词出发，利用同义词、反义词关系扩展\n基于共现的统计方法：分析情感词与已知极性词的共现统计\n基于深度学习的词嵌入：使用词向量的相似性发现新的情感词\n\n\n\n18.1.4 政府工作报告的情感分析\n我们使用基于词典的方法分析政府工作报告的情感倾向，探索政策语言的情感特征：\n\n\n代码\n# 加载情感词典\n# 简化版的情感词典，实际使用时可加载完整词典\npos_words = {'发展', '增长', '提高', '改善', '促进', '创新', '稳定', '优化', '提升', '保障',\n             '保持', '强化', '扩大', '提质', '安全', '推动', '积极', '坚持', '实现', '支持'}\nneg_words = {'下降', '减少', '风险', '问题', '困难', '挑战', '严峻', '复杂', '低迷', '压力',\n             '下滑', '减缓', '防控', '责任', '防范', '应对', '治理', '整治', '控制', '防止'}\n\n# 情感分析函数\ndef sentiment_analysis(text_list):\n    pos_count = 0\n    neg_count = 0\n    \n    for word in text_list:\n        if word in pos_words:\n            pos_count += 1\n        elif word in neg_words:\n            neg_count += 1\n    \n    total = pos_count + neg_count\n    if total == 0:\n        return 0\n    \n    # 计算情感得分 (-1 to 1)\n    sentiment_score = (pos_count - neg_count) / total\n    \n    return {\n        'positive': pos_count,\n        'negative': neg_count,\n        'total': total,\n        'score': sentiment_score\n    }\n\n# 对每年的报告进行情感分析\nsentiment_results = {}\nfor year, words in processed_reports.items():\n    sentiment_results[year] = sentiment_analysis(words)\n\n# 创建结果DataFrame\nsentiment_df = pd.DataFrame({\n    'Year': years,\n    'Positive': [sentiment_results[year]['positive'] for year in years],\n    'Negative': [sentiment_results[year]['negative'] for year in years],\n    'Score': [sentiment_results[year]['score'] for year in years]\n})\nprint(\"情感分析结果:\")\nprint(sentiment_df)\n\n# 绘制情感得分变化趋势\nplt.figure(figsize=(12, 6))\nplt.subplot(2, 1, 1)\nplt.bar(sentiment_df['Year'], sentiment_df['Score'], color=['green' if s &gt; 0 else 'red' for s in sentiment_df['Score']])\nplt.axhline(y=0, color='k', linestyle='-', alpha=0.3)\nplt.ylabel('情感得分')\nplt.title('政府工作报告情感得分变化趋势')\n\n# 为每个柱添加具体数值\nfor i, score in enumerate(sentiment_df['Score']):\n    plt.text(years[i], score + (0.05 if score &gt;= 0 else -0.1), \n             f'{score:.2f}', ha='center')\n\n# 绘制正面词和负面词数量对比\nplt.subplot(2, 1, 2)\nplt.bar(sentiment_df['Year'], sentiment_df['Positive'], label='正面词', color='green', alpha=0.7)\nplt.bar(sentiment_df['Year'], sentiment_df['Negative'], label='负面词', color='red', alpha=0.7, bottom=sentiment_df['Positive'])\nplt.ylabel('词数')\nplt.legend()\nplt.title('政府工作报告情感词汇分布')\n\nplt.tight_layout()\n\n# 分析结果解释\nprint(\"\\n情感分析结论:\")\nmost_positive_year = sentiment_df.loc[sentiment_df['Score'].idxmax(), 'Year']\nmost_negative_year = sentiment_df.loc[sentiment_df['Score'].idxmin(), 'Year']\nprint(f\"1. {most_positive_year}年报告情感倾向最积极，得分为{sentiment_df.loc[sentiment_df['Score'].idxmax(), 'Score']:.2f}\")\nprint(f\"2. {most_negative_year}年报告情感倾向最消极，得分为{sentiment_df.loc[sentiment_df['Score'].idxmin(), 'Score']:.2f}\")\nprint(\"3. 情感变化趋势与当年经济形势和政策环境密切相关\")",
+    "text": "18.1 情感分析的理论基础\n情感分析(Sentiment Analysis)，也称为意见挖掘(Opinion Mining)，是指通过自然语言处理、文本分析和计算语言学等方法来识别、提取和量化文本中主观信息的过程。情感分析试图回答的核心问题是：文本作者对特定主题或实体的态度是什么？\n\n18.1.1 情感分析的主要任务\n情感分析主要包括以下几个层次的任务：\n\n文档级情感分析：确定整个文档的情感倾向（积极、消极或中性）\n句子级情感分析：确定单个句子的情感倾向\n方面级情感分析：识别文本中提到的特定方面/属性及其相关情感\n比较情感分析：比较不同实体之间的情感差异\n\n\n\n18.1.2 情感分析的主要方法\n情感分析的方法大致可分为三类：\n\n基于词典的方法：\n\n依赖预定义的情感词典，如知网HowNet情感词典、大连理工情感词典等\n通过计算情感词的出现频率和强度来评估整体情感\n数学表示：\\[Score(d) = \\frac{\\sum_{t \\in d} s_t \\times w_t}{\\sum_{t \\in d} w_t}\\] 其中\\(s_t\\)是词\\(t\\)的情感得分，\\(w_t\\)是权重（可以是TF-IDF值）\n\n基于机器学习的方法：\n\n监督学习：使用标注数据训练分类器（如SVM、朴素贝叶斯、决策树等）\n半监督学习：结合少量标注数据和大量未标注数据\n深度学习：使用CNN、RNN/LSTM、Transformer等神经网络模型\n\n混合方法：\n\n结合词典和机器学习方法的优点\n使用词典特征增强机器学习模型\n使用规则修正机器学习结果\n\n\n\n\n18.1.3 情感词典的构建原理\n情感词典是情感分析的重要资源，其构建原理包括：\n\n人工标注：语言学专家手动标注词语的情感极性和强度\n基于种子词的扩展：从少量种子情感词出发，利用同义词、反义词关系扩展\n基于共现的统计方法：分析情感词与已知极性词的共现统计\n基于深度学习的词嵌入：使用词向量的相似性发现新的情感词",
     "crumbs": [
-      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析(一)：词频法与向量空间</span>"
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析1：词频法与向量空间</span>"
     ]
   },
   {
     "objectID": "11_nlp.html#主题建模理论",
     "href": "11_nlp.html#主题建模理论",
-    "title": "13  文本分析(一)：词频法与向量空间",
+    "title": "13  文本分析1：词频法与向量空间",
     "section": "19.1 主题建模理论",
-    "text": "19.1 主题建模理论\n主题建模(Topic Modeling)是一类无监督机器学习技术，旨在从文档集合中发现抽象”主题”。其核心思想是：每篇文档可以看作是多个主题的混合，而每个主题又是词语上的概率分布。\n\n19.1.1 潜在语义分析(LSA)\n潜在语义分析(Latent Semantic Analysis, LSA)是早期的主题建模方法，基于奇异值分解(SVD)。\n\n数学表示：\n\n将文档-词项矩阵 \\(X\\) 分解为 \\(X \\approx U\\Sigma V^T\\)\n\\(U\\) 是文档-主题矩阵，\\(V\\) 是词-主题矩阵，\\(\\Sigma\\) 是表示主题重要性的对角矩阵\n\n优缺点：\n\n优点：计算简单，容易理解\n缺点：缺乏明确的统计语义解释，可能出现负值\n\n\n\n\n19.1.2 概率潜在语义分析(PLSA)\n概率潜在语义分析(Probabilistic Latent Semantic Analysis, PLSA)引入了概率框架，将文档和词语的关系建模为混合模型。\n\n数学表示：\n\n文档 \\(d\\) 中词 \\(w\\) 的生成概率：\\(P(w|d) = \\sum_{z} P(w|z)P(z|d)\\)\n其中 \\(z\\) 表示潜在主题，\\(P(w|z)\\) 是主题 \\(z\\) 生成词 \\(w\\) 的概率，\\(P(z|d)\\) 是文档 \\(d\\) 中主题 \\(z\\) 的比例\n\n优缺点：\n\n优点：有明确的概率解释，结果更加合理\n缺点：容易过拟合，不是完全贝叶斯模型\n\n\n\n\n19.1.3 潜在狄利克雷分配(LDA)\n潜在狄利克雷分配(Latent Dirichlet Allocation, LDA)是目前最流行的主题建模方法，它是PLSA的贝叶斯版本，引入了主题分布和词分布的先验。\n\n19.1.3.1 LDA的生成过程\nLDA假设文档的生成过程如下：\n\n对于每个文档 \\(d\\)：\n\n从狄利克雷分布 \\(Dir(\\alpha)\\) 中抽取主题比例向量 \\(\\theta_d\\)\n\n对于每个主题 \\(k\\)：\n\n从狄利克雷分布 \\(Dir(\\beta)\\) 中抽取词语分布 \\(\\phi_k\\)\n\n对于文档 \\(d\\) 中的每个词位置 \\(i\\)：\n\n从多项式分布 \\(Mult(\\theta_d)\\) 中抽取主题 \\(z_{di}\\)\n从多项式分布 \\(Mult(\\phi_{z_{di}})\\) 中抽取词语 \\(w_{di}\\)\n\n\n\n\n19.1.3.2 LDA的数学表示\n\n联合概率分布： \\[P(\\mathbf{w}, \\mathbf{z}, \\mathbf{\\theta}, \\mathbf{\\phi}|\\alpha, \\beta) = \\prod_{k=1}^{K} P(\\phi_k|\\beta) \\prod_{d=1}^{D} P(\\theta_d|\\alpha) \\prod_{i=1}^{N_d} P(z_{di}|\\theta_d) P(w_{di}|z_{di}, \\phi)\\]\n推断任务：\n\n给定观察到的词 \\(\\mathbf{w}\\)，推断隐变量 \\(\\mathbf{z}\\), \\(\\mathbf{\\theta}\\), \\(\\mathbf{\\phi}\\)\n使用近似推断算法，如变分推断、吉布斯采样等\n\n模型参数：\n\n\\(\\alpha\\)：主题分布的先验参数，控制文档主题的稀疏性\n\\(\\beta\\)：词分布的先验参数，控制主题中词的稀疏性\n\\(K\\)：主题数量，需要事先指定\n\n\n\n\n19.1.3.3 LDA的优缺点\n优点： - 完整的生成概率模型，理论基础扎实 - 解释性强，主题和词语分布有明确的语义 - 可扩展性好，适用于大规模文档集合 - 有效避免过拟合\n缺点： - 需要预先指定主题数量 - 不考虑词序和语法，丢失部分语义信息 - 对短文本效果较差 - 复杂度较高，训练较慢\n\n\n\n19.1.4 主题一致性评估\n评估主题模型质量的主要指标包括：\n\n困惑度(Perplexity)：衡量模型对未见文档的预测能力 \\[Perplexity(D_{test}) = \\exp \\left(-\\frac{\\sum_{d=1}^{M} \\log p(\\mathbf{w}_d)}{\\sum_{d=1}^{M} N_d}\\right)\\]\n主题一致性(Topic Coherence)：衡量主题内部词语的语义相关性\n\nPMI(Pointwise Mutual Information)：基于词对在同一文档中共现的概率\nNPMI(Normalized PMI)：归一化的PMI\nUCI coherence：基于PMI的一致性度量\nUMass coherence：基于条件概率的一致性度量\n\n\n\n\n19.1.5 政府工作报告的LDA主题建模\n应用LDA模型分析政府工作报告，发现潜在的政策主题：\n\n\n代码\nfrom sklearn.decomposition import LatentDirichletAllocation\n\n# 定义LDA模型\nn_topics = 3  # 主题数量\nlda = LatentDirichletAllocation(n_components=n_topics, random_state=42)\n\n# 使用词频矩阵训练LDA模型\nlda.fit(X)\n\n# 输出每个主题的关键词\ndef print_top_words(model, feature_names, n_top_words):\n    topics = []\n    for topic_idx, topic in enumerate(model.components_):\n        top_words = [feature_names[i] for i in topic.argsort()[:-n_top_words - 1:-1]]\n        topics.append(top_words)\n        print(f\"主题 #{topic_idx+1}:\")\n        print(\" \".join(top_words))\n    print()\n    return topics\n\n# 打印每个主题的前15个关键词\ntopics = print_top_words(lda, vocabulary, 15)\n\n# 为主题命名\ntopic_names = [\"经济发展\", \"民生保障\", \"风险应对\"]\nfor i, name in enumerate(topic_names):\n    print(f\"主题{i+1} ({name}): {' '.join(topics[i][:10])}\")\n\n# 计算每年报告的主题分布\ndoc_topic_dist = lda.transform(X)\n\n# 创建主题分布DataFrame\ntopic_dist_df = pd.DataFrame(doc_topic_dist, \n                           index=years, \n                           columns=[f'主题{i+1} ({name})' for i, name in enumerate(topic_names)])\nprint(\"\\n各年份主题分布:\")\nprint(topic_dist_df)\n\n# 可视化主题分布\nplt.figure(figsize=(12, 8))\nsns.heatmap(topic_dist_df, annot=True, fmt='.2f', cmap='YlGnBu')\nplt.title('各年份政府工作报告的主题分布')\nplt.tight_layout()\n\n# 主题演变趋势\nplt.figure(figsize=(12, 6))\nfor i, name in enumerate(topic_names):\n    plt.plot(years, doc_topic_dist[:, i], marker='o', label=f'主题{i+1} ({name})')\n\nplt.xlabel('年份')\nplt.ylabel('主题比重')\nplt.title('政府工作报告主题演变趋势')\nplt.legend()\nplt.grid(True, linestyle='--', alpha=0.7)\nplt.tight_layout()\n\n# 分析结果解释\nprint(\"\\nLDA主题分析结论:\")\nprint(\"1. 经济发展主题在各年报告中都占有重要位置，反映其作为政府工作核心\")\nprint(\"2. 疫情期间报告中风险应对主题比重明显上升\")\nprint(\"3. 近年来民生保障主题比重增长，表明政府对民生问题的关注增强\")",
+    "text": "19.1 主题建模理论\n主题建模(Topic Modeling)是一类无监督机器学习技术，旨在从文档集合中发现抽象”主题”。其核心思想是：每篇文档可以看作是多个主题的混合，而每个主题又是词语上的概率分布。\n\n19.1.1 潜在语义分析(LSA)\n潜在语义分析(Latent Semantic Analysis, LSA)是早期的主题建模方法，基于奇异值分解(SVD)。\n\n数学表示：\n\n将文档-词项矩阵 \\(X\\) 分解为 \\(X \\approx U\\Sigma V^T\\)\n\\(U\\) 是文档-主题矩阵，\\(V\\) 是词-主题矩阵，\\(\\Sigma\\) 是表示主题重要性的对角矩阵\n\n优缺点：\n\n优点：计算简单，容易理解\n缺点：缺乏明确的统计语义解释，可能出现负值\n\n\n\n\n19.1.2 概率潜在语义分析(PLSA)\n概率潜在语义分析(Probabilistic Latent Semantic Analysis, PLSA)引入了概率框架，将文档和词语的关系建模为混合模型。\n\n数学表示：\n\n文档 \\(d\\) 中词 \\(w\\) 的生成概率：\\(P(w|d) = \\sum_{z} P(w|z)P(z|d)\\)\n其中 \\(z\\) 表示潜在主题，\\(P(w|z)\\) 是主题 \\(z\\) 生成词 \\(w\\) 的概率，\\(P(z|d)\\) 是文档 \\(d\\) 中主题 \\(z\\) 的比例\n\n优缺点：\n\n优点：有明确的概率解释，结果更加合理\n缺点：容易过拟合，不是完全贝叶斯模型\n\n\n\n\n19.1.3 潜在狄利克雷分配(LDA)\n潜在狄利克雷分配(Latent Dirichlet Allocation, LDA)是目前最流行的主题建模方法，它是PLSA的贝叶斯版本，引入了主题分布和词分布的先验。\n\n19.1.3.1 LDA的生成过程\nLDA假设文档的生成过程如下：\n\n对于每个文档 \\(d\\)：\n\n从狄利克雷分布 \\(Dir(\\alpha)\\) 中抽取主题比例向量 \\(\\theta_d\\)\n\n对于每个主题 \\(k\\)：\n\n从狄利克雷分布 \\(Dir(\\beta)\\) 中抽取词语分布 \\(\\phi_k\\)\n\n对于文档 \\(d\\) 中的每个词位置 \\(i\\)：\n\n从多项式分布 \\(Mult(\\theta_d)\\) 中抽取主题 \\(z_{di}\\)\n从多项式分布 \\(Mult(\\phi_{z_{di}})\\) 中抽取词语 \\(w_{di}\\)\n\n\n\n\n19.1.3.2 LDA的数学表示\n\n联合概率分布： \\[P(\\mathbf{w}, \\mathbf{z}, \\mathbf{\\theta}, \\mathbf{\\phi}|\\alpha, \\beta) = \\prod_{k=1}^{K} P(\\phi_k|\\beta) \\prod_{d=1}^{D} P(\\theta_d|\\alpha) \\prod_{i=1}^{N_d} P(z_{di}|\\theta_d) P(w_{di}|z_{di}, \\phi)\\]\n推断任务：\n\n给定观察到的词 \\(\\mathbf{w}\\)，推断隐变量 \\(\\mathbf{z}\\), \\(\\mathbf{\\theta}\\), \\(\\mathbf{\\phi}\\)\n使用近似推断算法，如变分推断、吉布斯采样等\n\n模型参数：\n\n\\(\\alpha\\)：主题分布的先验参数，控制文档主题的稀疏性\n\\(\\beta\\)：词分布的先验参数，控制主题中词的稀疏性\n\\(K\\)：主题数量，需要事先指定\n\n\n\n\n19.1.3.3 LDA的优缺点\n优点： - 完整的生成概率模型，理论基础扎实 - 解释性强，主题和词语分布有明确的语义 - 可扩展性好，适用于大规模文档集合 - 有效避免过拟合\n缺点： - 需要预先指定主题数量 - 不考虑词序和语法，丢失部分语义信息 - 对短文本效果较差 - 复杂度较高，训练较慢\n\n\n\n19.1.4 主题一致性评估\n评估主题模型质量的主要指标包括：\n\n困惑度(Perplexity)：衡量模型对未见文档的预测能力 \\[Perplexity(D_{test}) = \\exp \\left(-\\frac{\\sum_{d=1}^{M} \\log p(\\mathbf{w}_d)}{\\sum_{d=1}^{M} N_d}\\right)\\]\n主题一致性(Topic Coherence)：衡量主题内部词语的语义相关性\n\nPMI(Pointwise Mutual Information)：基于词对在同一文档中共现的概率\nNPMI(Normalized PMI)：归一化的PMI\nUCI coherence：基于PMI的一致性度量\nUMass coherence：基于条件概率的一致性度量",
     "crumbs": [
-      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析(一)：词频法与向量空间</span>"
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>文本分析1：词频法与向量空间</span>"
     ]
   },
   {
     "objectID": "12_embedding.html",
     "href": "12_embedding.html",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "",
     "text": "15 从稀疏到密集表示",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#bag-of-words模型的局限性",
     "href": "12_embedding.html#bag-of-words模型的局限性",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "15.1 Bag of Words模型的局限性",
     "text": "15.1 Bag of Words模型的局限性\n上一讲中，我们学习了词袋模型（Bag of Words）和TF-IDF，这些是文本分析的基础方法。然而，这些方法存在明显局限性：\n\n丢失词序信息：词袋模型完全忽略词语出现的顺序。例如”政府调控房价”和”房价调控政府”在词袋表示中是完全相同的\n语义鸿沟问题：无法捕捉词与词之间的语义关系，如同义词、上下位词等\n维度灾难：高维稀疏向量（维度等于词汇量大小）导致计算效率低下\n未登录词问题：无法处理训练集中未出现过的词语\n\n词袋模型的这些局限性促使研究者寻找更先进的文本表示方法，词向量（Word Embedding）正是这一探索的重要成果。",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#词向量的直觉理解",
     "href": "12_embedding.html#词向量的直觉理解",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "15.2 词向量的直觉理解",
     "text": "15.2 词向量的直觉理解\n词向量（Word Embedding）是将词语映射到一个低维稠密实数向量空间的技术，通常维度在50-300之间。与词袋模型不同，词向量具有以下特点：\n\n稠密表示：向量中的每个维度都有非零值\n语义编码：向量的不同维度隐含地编码了词语的语义特征\n相似性可计算：语义相近的词在向量空间中距离较近\n\n例如，“银行”和”金融”在向量空间中距离较近，而”银行”和”蔬菜”则距离较远。",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#分布式假设词向量的理论基础",
     "href": "12_embedding.html#分布式假设词向量的理论基础",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "15.3 分布式假设：词向量的理论基础",
     "text": "15.3 分布式假设：词向量的理论基础\n词向量背后的核心理论是分布式假设（Distributional Hypothesis），这一理论由语言学家J.R. Firth在1957年提出：\n\n“You shall know a word by the company it keeps.”（一个词的含义取决于它的伙伴词）\n\n这一假设认为：上下文相似的词，其语义也相似。例如，“银行”和”金融机构”经常出现在相似的上下文中，因此它们可能具有相似的语义。\n基于分布式假设，词向量学习的核心任务可以归纳为：学习一个映射函数，使得在语料库中上下文相似的词在向量空间中的位置也相近。",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#密集表示的数学性质",
     "href": "12_embedding.html#密集表示的数学性质",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "15.4 密集表示的数学性质",
     "text": "15.4 密集表示的数学性质\n从数学角度看，密集表示的优势在于：\n\n降维性：从稀疏高维空间（词汇量大小，如5万维）降至低维空间（如300维）\n连续性：连续向量空间允许进行向量代数运算，如类比推理\n泛化能力：能够更好地泛化到未见过的例子\n\n数学上，稀疏向量与密集向量的对比如下：\n\n稀疏向量（Sparse Vector）：\\(\\mathbf{v} = [0, 0, 1, 0, ..., 0, 2, 0]\\)，大多数元素为0\n密集向量（Dense Vector）：\\(\\mathbf{v} = [0.2, -0.6, 0.5, 0.9, ..., -0.1, 0.3]\\)，大多数元素非0\n\n稠密向量表示的直观优势可以通过一个简单的类比来理解：假设我们要描述一个人，可以使用二元特征（是/否问题，对应稀疏表示）如”是否戴眼镜”、“是否有胡子”等，也可以使用连续特征（对应稠密表示）如身高、体重、年龄等。连续特征通常能更精确、更紧凑地描述对象。",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#word2vec简介",
     "href": "12_embedding.html#word2vec简介",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "16.1 Word2Vec简介",
     "text": "16.1 Word2Vec简介\nWord2Vec是Mikolov等人于2013年提出的一种高效学习词向量的方法，它通过浅层神经网络从大规模语料库中学习词语的分布式表示。Word2Vec迅速成为NLP领域的里程碑技术，为后续深度学习在NLP中的应用奠定了基础。\nWord2Vec的核心思想是：通过预测上下文中的词来学习词语的向量表示。基于这一思想，Word2Vec提出了两种模型：\n\nSkip-gram模型：预测上下文词\nCBOW（Continuous Bag of Words）模型：预测目标词",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#skip-gram模型详解",
     "href": "12_embedding.html#skip-gram模型详解",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "16.2 Skip-gram模型详解",
     "text": "16.2 Skip-gram模型详解\nSkip-gram模型的目标是：给定中心词，预测其上下文词。\n\n16.2.1 模型结构\nSkip-gram模型的网络结构如下：\n\n输入层：中心词的one-hot编码，维度为词汇量大小\\(|V|\\)\n隐藏层：不含激活函数的全连接层，维度为词向量维度\\(d\\)\n输出层：预测上下文词概率的softmax层，维度为词汇量大小\\(|V|\\)\n\n其数学表示为：\n\\[p(w_o|w_i) = \\frac{\\exp(v_{w_o}^{\\prime T} \\cdot v_{w_i})}{\\sum_{w=1}^{|V|} \\exp(v_w^{\\prime T} \\cdot v_{w_i})}\\]\n其中： - \\(w_i\\)是中心词 - \\(w_o\\)是上下文词 - \\(v_{w_i}\\)是中心词的词向量（输入向量） - \\(v_{w_o}^{\\prime}\\)是上下文词的词向量（输出向量） - \\(|V|\\)是词汇表大小\n\n\n16.2.2 训练过程\nSkip-gram模型的训练过程如下：\n\n从语料库中抽取中心词\\(w_i\\)及其上下文窗口内的词\\(w_o\\)\n最大化预测上下文词的条件概率\\(p(w_o|w_i)\\)\n对所有词对\\((w_i, w_o)\\)，优化目标函数：\n\n\\[J(\\theta) = \\frac{1}{T}\\sum_{t=1}^{T} \\sum_{-c \\leq j \\leq c, j \\neq 0} \\log p(w_{t+j}|w_t)\\]\n其中： - \\(T\\)是语料库中的词数 - \\(c\\)是上下文窗口大小 - \\(\\theta\\)是模型参数",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#cbow模型详解",
     "href": "12_embedding.html#cbow模型详解",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "16.3 CBOW模型详解",
     "text": "16.3 CBOW模型详解\nCBOW（Continuous Bag of Words）模型与Skip-gram相反，其目标是：给定上下文词，预测中心词。\n\n16.3.1 模型结构\nCBOW模型的网络结构如下：\n\n输入层：多个上下文词的one-hot编码，每个维度为词汇量大小\\(|V|\\)\n隐藏层：不含激活函数的全连接层，维度为词向量维度\\(d\\)\n输出层：预测中心词概率的softmax层，维度为词汇量大小\\(|V|\\)\n\nCBOW模型首先对上下文词的向量取平均：\n\\[\\hat{v} = \\frac{1}{2c} \\sum_{-c \\leq j \\leq c, j \\neq 0} v_{w_{t+j}}\\]\n然后预测中心词的概率：\n\\[p(w_t|\\hat{v}) = \\frac{\\exp(v_{w_t}^{\\prime T} \\cdot \\hat{v})}{\\sum_{w=1}^{|V|} \\exp(v_w^{\\prime T} \\cdot \\hat{v})}\\]\n\n\n16.3.2 Skip-gram与CBOW对比\n两种模型各有优缺点：\n\nSkip-gram:\n\n更适合小型语料库\n对低频词表现更好\n计算复杂度较高\n\nCBOW:\n\n训练速度更快\n对高频词表现更好\n在大型语料库上更稳定",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#负采样negative-sampling技术",
     "href": "12_embedding.html#负采样negative-sampling技术",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "16.4 负采样（Negative Sampling）技术",
     "text": "16.4 负采样（Negative Sampling）技术\nWord2Vec的一个主要计算瓶颈是softmax函数，其计算复杂度与词汇量成正比。为解决这一问题，Mikolov等人提出了负采样（Negative Sampling）技术。\n\n16.4.1 负采样原理\n负采样将多分类问题转化为二分类问题：\n\n对于真实的词对\\((w_i, w_o)\\)，将其标记为正样本（标签为1）\n对于每个正样本，随机采样\\(k\\)个负样本\\((w_i, w_n)\\)，其中\\(w_n\\)是随机词（标签为0）\n使用逻辑回归来判断词对是否真实共现\n\n优化目标变为：\n\\[J(\\theta) = \\log \\sigma(v_{w_o}^{\\prime T} \\cdot v_{w_i}) + \\sum_{j=1}^{k} \\mathbb{E}_{w_j \\sim P_n(w)} [\\log \\sigma(-v_{w_j}^{\\prime T} \\cdot v_{w_i})]\\]\n其中： - \\(\\sigma\\)是sigmoid函数 - \\(P_n(w)\\)是负样本的噪声分布，通常为词频的3/4次方\n\n\n16.4.2 负采样的优势\n负采样技术带来的主要优势包括：\n\n计算效率：将复杂度从\\(O(|V|)\\)降至\\(O(k)\\)，其中\\(k \\ll |V|\\)（通常\\(k=5-20\\)）\n稀疏更新：每次只更新少量词向量，加速收敛\n控制学习难度：通过调整负样本数量控制任务难度\n\n负采样是Word2Vec能够在大规模语料库上高效训练的关键技术之一。",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#词向量空间的语义特性",
     "href": "12_embedding.html#词向量空间的语义特性",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "16.5 词向量空间的语义特性",
     "text": "16.5 词向量空间的语义特性\nWord2Vec训练得到的词向量空间具有丰富的语义特性，这些特性使得词向量成为各种NLP任务的强大特征。\n\n16.5.1 语义相关性\n相似概念在向量空间中距离较近。例如：\n\n“银行”和”金融”距离近\n“苹果”(水果)和”橙子”距离近\n“苹果”(公司)和”微软”距离近\n\n这种相似性可以通过余弦相似度定量衡量：\n\\[similarity(w_1, w_2) = \\cos(\\theta) = \\frac{v_{w_1} \\cdot v_{w_2}}{||v_{w_1}|| \\cdot ||v_{w_2}||}\\]\n\n\n16.5.2 语义计算\n词向量空间中最令人惊讶的特性是支持向量代数运算，可以进行”语义计算”：\n\\[v(\\text{\"king\"}) - v(\\text{\"man\"}) + v(\\text{\"woman\"}) \\approx v(\\text{\"queen\"})\\]\n这意味着我们可以通过向量运算回答类比问题：“man之于woman，相当于king之于什么？”\n其他例子包括： - \\(v(\\text{\"中国\"}) - v(\\text{\"北京\"}) + v(\\text{\"法国\"}) \\approx v(\\text{\"巴黎\"})\\) - \\(v(\\text{\"比特币\"}) - v(\\text{\"数字\"}) + v(\\text{\"实物\"}) \\approx v(\\text{\"黄金\"})\\)\n这些语义运算的存在表明词向量确实捕获了复杂的语义关系，而非简单的共现统计。",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#金融领域的词向量应用",
     "href": "12_embedding.html#金融领域的词向量应用",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "17.1 金融领域的词向量应用",
     "text": "17.1 金融领域的词向量应用\n在金融领域，词向量技术已被广泛应用于多种任务：\n\n情感分析：分析金融新闻、社交媒体对市场情绪的影响\n风险评估：从文本数据中提取风险信号\n主题发现：自动识别财经报道中的热点话题\n市场预测：结合文本特征进行市场走势预测\n\n金融文本的特殊性（专业术语多、实体关系复杂）使得通用词向量模型可能表现不佳，因此针对金融领域训练的词向量至关重要。",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#训练金融领域词向量",
     "href": "12_embedding.html#训练金融领域词向量",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "17.2 训练金融领域词向量",
     "text": "17.2 训练金融领域词向量\n以下我们将使用政府工作报告和其他财经语料训练Word2Vec模型，展示其在金融领域的应用。\n\n\n代码\nimport pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport jieba\nfrom gensim.models import Word2Vec\nimport re\n\n# 加载政府工作报告数据\ngovreport = pd.read_csv(\"labs/NLP/data/govreport.csv\")\n\n# 设置中文显示\nplt.rcParams['font.sans-serif'] = ['Songti SC']  # 用来正常显示中文标签\nplt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号\n\n# 加载停用词\nwith open(\"labs/NLP/data/ChineseStopWords.txt\", 'r', encoding='utf-8') as f:\n    stop_words = {line.strip() for line in f}\n\n# 文本清洗并分词\ndef preprocess_text(text):\n    # 去除标点符号和数字\n    text = re.sub(r'[^\\u4e00-\\u9fa5]', ' ', text)\n    # 分词\n    words = jieba.cut(text)\n    # 去除停用词和空白\n    return [word for word in words if word.strip() and word not in stop_words]\n\n# 处理所有文档\ncorpus = []\nfor _, row in govreport.iterrows():\n    words = preprocess_text(row['texts'])\n    corpus.append(words)\n\nprint(f\"语料库包含{len(corpus)}篇文档\")\n\n\n\n17.2.1 训练Word2Vec模型\n\n\n代码\n# 训练Word2Vec模型\nmodel = Word2Vec(\n    sentences=corpus,\n    vector_size=100,  # 词向量维度\n    window=5,         # 上下文窗口大小\n    min_count=5,      # 忽略低频词的阈值\n    sg=1,             # 使用Skip-gram模型\n    negative=5,       # 负采样数量\n    epochs=10,        # 训练轮数\n    seed=42\n)\n\n# 保存模型\nmodel.save(\"gov_report_word2vec.model\")\n\n# 查看词汇量\nprint(f\"模型包含{len(model.wv)}个词语\")\n\n# 查看一些词向量示例\nprint(\"'经济'的词向量:\")\nprint(model.wv['经济'])\n\n\n\n\n17.2.2 探索词向量空间\n通过查找最相似的词，我们可以验证词向量空间是否捕捉到了金融语义：\n\n\n代码\n# 查找与\"经济\"最相似的词\nsimilar_words = model.wv.most_similar('经济', topn=10)\nprint(\"与'经济'最相似的词:\")\nfor word, similarity in similar_words:\n    print(f\"{word}: {similarity:.4f}\")\n\n# 查找更多词的相似词\nfor query in ['金融', '创新', '改革', '发展']:\n    print(f\"\\n与'{query}'最相似的词:\")\n    for word, similarity in model.wv.most_similar(query, topn=5):\n        print(f\"{word}: {similarity:.4f}\")\n\n\n\n\n17.2.3 词向量的语义运算\n我们可以尝试在金融词向量空间中进行语义运算：\n\n\n代码\n# 词向量运算示例\ntry:\n    result = model.wv.most_similar(\n        positive=['改革', '创新'],\n        negative=['传统'],\n        topn=5\n    )\n    print(\"\\n'改革'+'创新'-'传统'的结果:\")\n    for word, similarity in result:\n        print(f\"{word}: {similarity:.4f}\")\nexcept KeyError as e:\n    print(f\"词汇不在模型中: {e}\")",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#可视化词向量空间",
     "href": "12_embedding.html#可视化词向量空间",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "17.3 可视化词向量空间",
     "text": "17.3 可视化词向量空间\n由于词向量通常是高维的（如100维），无法直接可视化。我们需要使用降维技术将其映射到2D空间：\n\n\n代码\nfrom sklearn.manifold import TSNE\nimport matplotlib.pyplot as plt\n\n# 选择一些重要的金融和经济词汇\nkey_words = []\nfor word in ['经济', '金融', '改革', '创新', '发展', '企业', '市场', '投资', \n             '消费', '增长', '就业', '收入', '债务', '减税', '风险', '数字', \n             '科技', '产业', '结构', '调控', '开放', '政策', '监管', '服务',\n             '银行', '证券', '保险', '互联网', '环保', '低碳']:\n    if word in model.wv:\n        key_words.append(word)\n\n# 获取这些词的向量\nword_vectors = [model.wv[word] for word in key_words]\n\n# 使用t-SNE降维到2D\ntsne = TSNE(n_components=2, random_state=42, perplexity=5)\nembeddings_2d = tsne.fit_transform(word_vectors)\n\n# 可视化\nplt.figure(figsize=(12, 10))\nplt.scatter(embeddings_2d[:, 0], embeddings_2d[:, 1], alpha=0)\n\n# 添加词语标签\nfor i, word in enumerate(key_words):\n    plt.annotate(word, xy=(embeddings_2d[i, 0], embeddings_2d[i, 1]), \n                 fontsize=12, alpha=0.8)\n\nplt.title('金融经济词汇的词向量空间可视化')\nplt.grid(True, linestyle='--', alpha=0.5)\nplt.tight_layout()\nplt.show()",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#实战案例政策热点分析",
     "href": "12_embedding.html#实战案例政策热点分析",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "17.4 实战案例：政策热点分析",
     "text": "17.4 实战案例：政策热点分析\n我们可以结合词向量技术分析政府工作报告中的政策热点演变：\n\n\n代码\n# 以几个关键政策词为中心，分析其在不同年份报告中的语义环境\nfocus_words = ['创新', '改革', '开放', '就业', '风险']\n\n# 为每个年份创建一个语义环境分析\nyears = sorted(govreport['Year'].unique())\nsemantic_evolution = {}\n\n# 对每个焦点词，分析其在各年份报告中的最相似词\nfor focus in focus_words:\n    if focus not in model.wv:\n        continue\n        \n    print(f\"\\n'{focus}'的语义演变:\")\n    # 获取最相似的10个词\n    similar_words = [word for word, _ in model.wv.most_similar(focus, topn=10)]\n    \n    # 查看这些词在各年份报告中的频率\n    for year in years:\n        year_text = govreport[govreport['Year'] == year]['texts'].iloc[0]\n        year_words = preprocess_text(year_text)\n        \n        # 计算焦点词及相似词在该年报告中的出现次数\n        focus_count = year_words.count(focus)\n        similar_counts = {word: year_words.count(word) for word in similar_words}\n        \n        # 排序并展示前5个高频相似词\n        top_similar = sorted(similar_counts.items(), key=lambda x: x[1], reverse=True)[:5]\n        \n        if focus_count &gt; 0:\n            print(f\"{year}年 - '{focus}'出现{focus_count}次，相关词:\")\n            for word, count in top_similar:\n                if count &gt; 0:\n                    print(f\"  {word}: {count}次\")",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#与其他nlp模型的集成",
     "href": "12_embedding.html#与其他nlp模型的集成",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "17.5 与其他NLP模型的集成",
     "text": "17.5 与其他NLP模型的集成\n词向量作为特征可以与各种机器学习模型集成，用于更复杂的NLP任务：\n\n\n代码\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn import metrics\nimport numpy as np\n\n# 示例：使用词向量增强TF-IDF特征进行分类任务\n# (本例为概念演示，实际应用需要真实标签)\n\n# 为演示目的，我们假设2015-2019年为一类，2020-2023年为另一类\ngovreport['label'] = govreport['Year'].apply(lambda x: 1 if x &gt;= 2020 else 0)\n\n# 构建文档向量（简单方法：词向量的平均）\ndef document_vector(doc):\n    # 分词并过滤\n    words = preprocess_text(doc)\n    # 只考虑模型中有的词\n    words = [word for word in words if word in model.wv]\n    if len(words) == 0:\n        return np.zeros(model.vector_size)\n    # 计算词向量的平均\n    return np.mean([model.wv[word] for word in words], axis=0)\n\n# 为每个文档创建向量表示\nX = np.array([document_vector(text) for text in govreport['texts']])\ny = govreport['label'].values\n\n# 简单训练分类器（实际应用中应使用交叉验证）\nclf = RandomForestClassifier(random_state=42)\nclf.fit(X, y)\n\n# 查看特征重要性\nfeature_importances = clf.feature_importances_\nprint(\"\\n词向量特征的重要性分布:\")\nplt.figure(figsize=(10, 6))\nplt.hist(feature_importances, bins=20)\nplt.title('词向量特征重要性分布')\nplt.xlabel('特征重要性')\nplt.ylabel('特征数量')\nplt.show()\n\n# 预测（为演示使用训练集，实际应用需要独立测试集）\ny_pred = clf.predict(X)\nprint(\"\\n分类性能：\")\nprint(f\"准确率: {metrics.accuracy_score(y, y_pred):.4f}\")\nprint(f\"F1得分: {metrics.f1_score(y, y_pred):.4f}\")",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#中文预训练词向量模型",
     "href": "12_embedding.html#中文预训练词向量模型",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "18.1 中文预训练词向量模型",
     "text": "18.1 中文预训练词向量模型\n\n18.1.1 1. 腾讯AI Lab词向量（Chinese Word Vectors）\n腾讯AI Lab发布的中文词向量是目前应用最广泛的中文预训练词向量之一。\n\n训练语料：由8亿多条句子、超过200亿词汇组成\n词汇量：约800万个词、词组和实体\n向量维度：200维\n特点：覆盖面广，质量高，适用于多领域任务\n\n\n\n代码\n# 示例：加载腾讯词向量\nimport gensim\n\n# 下载地址：https://ai.tencent.com/ailab/nlp/en/embedding.html\n# 假设已下载并解压到./data/Tencent_AILab_ChineseEmbedding.txt\ntencent_model = gensim.models.KeyedVectors.load_word2vec_format(\n    './data/Tencent_AILab_ChineseEmbedding.txt', \n    binary=False\n)\n\n# 查找相似词\nprint(\"与'金融'最相似的词:\")\nfor word, similarity in tencent_model.most_similar('金融', topn=5):\n    print(f\"{word}: {similarity:.4f}\")\n\n\n\n\n18.1.2 2. 哈工大/讯飞联合实验室词向量（HIT-SCIR Chinese Word Vectors）\n\n训练语料：人民日报语料库和其他新闻语料\n词汇量：约100万个词\n向量维度：300维\n特点：对专业术语和实体识别有较好的表现\n\n\n\n18.1.3 3. 百度百科词向量（Baidu Encyclopedia Word Vectors）\n\n训练语料：基于百度百科的语料\n词汇量：约200万个词\n向量维度：300维\n特点：对百科类内容和常识性知识表示较好",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#英文预训练词向量模型",
     "href": "12_embedding.html#英文预训练词向量模型",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "18.2 英文预训练词向量模型",
     "text": "18.2 英文预训练词向量模型\n\n18.2.1 1. Google News词向量\n由Google在约1000亿单词的Google News数据集上训练的Word2Vec模型。\n\n词汇量：约300万个词和短语\n向量维度：300维\n特点：通用性强，被广泛应用于英文NLP研究和应用\n\n\n\n代码\n# 示例：加载Google News词向量\nfrom gensim.models import KeyedVectors\n\n# 下载地址：https://code.google.com/archive/p/word2vec/\n# 假设已下载并解压到./data/GoogleNews-vectors-negative300.bin\ngoogle_model = KeyedVectors.load_word2vec_format(\n    './data/GoogleNews-vectors-negative300.bin', \n    binary=True\n)\n\n# 查找相似词\nprint(\"与'finance'最相似的词:\")\nfor word, similarity in google_model.most_similar('finance', topn=5):\n    print(f\"{word}: {similarity:.4f}\")\n\n\n\n\n18.2.2 2. GloVe（Global Vectors for Word Representation）\n由斯坦福NLP小组开发的词向量模型，训练自维基百科和网络文本。\n\n训练语料：CommonCrawl（840B tokens）、Wikipedia（6B tokens）等\n词汇量：根据语料大小从40万到200万不等\n向量维度：50到300维不等\n特点：结合了全局矩阵分解和局部上下文窗口方法的优点\n\n\n\n代码\n# 示例：加载GloVe词向量\nimport numpy as np\n\n# 下载地址：https://nlp.stanford.edu/projects/glove/\n# 假设已下载并解压到./data/glove.6B.300d.txt\ndef load_glove_vectors(file_path):\n    word_vectors = {}\n    with open(file_path, 'r', encoding='utf-8') as f:\n        for line in f:\n            values = line.strip().split()\n            word = values[0]\n            vector = np.array(values[1:], dtype='float32')\n            word_vectors[word] = vector\n    return word_vectors\n\nglove_vectors = load_glove_vectors('./data/glove.6B.300d.txt')\n\n# 计算词相似度（简化版）\ndef cosine_similarity(vec1, vec2):\n    dot = np.dot(vec1, vec2)\n    norm1 = np.linalg.norm(vec1)\n    norm2 = np.linalg.norm(vec2)\n    return dot / (norm1 * norm2)\n\n# 查找相似词（简化版，实际应用中需要更高效的实现）\ndef find_similar_words(word, vectors, topn=5):\n    if word not in vectors:\n        return []\n    target_vector = vectors[word]\n    similarities = []\n    for w, vec in vectors.items():\n        if w != word:\n            sim = cosine_similarity(target_vector, vec)\n            similarities.append((w, sim))\n    return sorted(similarities, key=lambda x: x[1], reverse=True)[:topn]\n\n# 输出与'finance'最相似的词\nsimilar_to_finance = find_similar_words('finance', glove_vectors, 5)\nprint(\"与'finance'最相似的词 (GloVe):\")\nfor word, similarity in similar_to_finance:\n    print(f\"{word}: {similarity:.4f}\")\n\n\n\n\n18.2.3 3. FastText\n由Facebook AI Research开发，在维基百科语料上训练。\n\n词汇量：约200万个词\n向量维度：300维\n特点：利用词的子词信息，能更好地处理罕见词和未登录词\n\n\n\n代码\n# 示例：加载FastText词向量\nfrom gensim.models.fasttext import FastText\n\n# 下载地址：https://fasttext.cc/docs/en/english-vectors.html\n# 假设已下载并解压到./data/wiki-news-300d-1M.vec\nfasttext_model = KeyedVectors.load_word2vec_format(\n    './data/wiki-news-300d-1M.vec'\n)\n\n# 查找相似词\nprint(\"与'finance'最相似的词 (FastText):\")\nfor word, similarity in fasttext_model.most_similar('finance', topn=5):\n    print(f\"{word}: {similarity:.4f}\")",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#预训练模型的表现比较",
     "href": "12_embedding.html#预训练模型的表现比较",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "18.3 预训练模型的表现比较",
     "text": "18.3 预训练模型的表现比较\n不同预训练词向量模型在各种任务上的表现各有优劣。下面我们将从多个维度对它们进行比较：\n\n18.3.1 1. 语义捕捉能力\n通过测试几组典型的语义关系来比较不同模型：\n\n\n代码\n# 语义关系测试：国家-首都\ndef test_capital_country_relation(model, language='en'):\n    if language == 'en':\n        # 英文测试对\n        test_pairs = [\n            ('france', 'paris'),\n            ('germany', 'berlin'),\n            ('japan', 'tokyo'),\n            ('china', 'beijing'),\n            ('italy', 'rome')\n        ]\n    else:\n        # 中文测试对\n        test_pairs = [\n            ('法国', '巴黎'),\n            ('德国', '柏林'),\n            ('日本', '东京'),\n            ('中国', '北京'),\n            ('意大利', '罗马')\n        ]\n    \n    # 测试向量关系\n    for country, capital in test_pairs:\n        try:\n            result = model.most_similar(\n                positive=[capital, 'country' if language == 'en' else '国家'],\n                negative=['capital' if language == 'en' else '首都'],\n                topn=1\n            )\n            print(f\"{capital} : {country} = {result[0][0]} : {result[0][1]:.4f}\")\n        except:\n            print(f\"无法测试 {country}-{capital} 关系\")\n            \n# 测试Google模型（英文）\nprint(\"Google News 词向量的国家-首都关系测试：\")\ntest_capital_country_relation(google_model)\n\n# 测试腾讯模型（中文）\nprint(\"\\n腾讯AI Lab 词向量的国家-首都关系测试：\")\ntest_capital_country_relation(tencent_model, language='zh')\n\n\n\n\n18.3.2 2. 领域适应性\n不同模型在特定领域（如金融、医疗、法律等）的表现评估：\n\n\n代码\n# 金融领域词汇测试\nfinancial_terms_en = ['stock', 'bond', 'market', 'investment', 'risk']\nfinancial_terms_zh = ['股票', '债券', '市场', '投资', '风险']\n\n# 测试英文模型\nprint(\"Google模型在金融领域词汇相似性：\")\nfor term in financial_terms_en:\n    try:\n        similar_words = google_model.most_similar(term, topn=3)\n        print(f\"{term}: {', '.join([f'{w}({s:.2f})' for w, s in similar_words])}\")\n    except:\n        print(f\"{term}: 不在词汇表中\")\n\n# 测试中文模型\nprint(\"\\n腾讯模型在金融领域词汇相似性：\")\nfor term in financial_terms_zh:\n    try:\n        similar_words = tencent_model.most_similar(term, topn=3)\n        print(f\"{term}: {', '.join([f'{w}({s:.2f})' for w, s in similar_words])}\")\n    except:\n        print(f\"{term}: 不在词汇表中\")\n\n\n\n\n18.3.3 3. 处理未登录词能力\nFastText由于使用子词信息，对未登录词有独特优势：\n\n\n代码\n# 测试处理未登录词的能力\noov_words_en = ['cryptocurrencies', 'fintech', 'blockchain']\noov_words_zh = ['区块链', '数字货币', '智能投顾']\n\n# 对于FastText模型，即使词不在训练集中，也能生成向量\ndef test_oov_words(model, words):\n    for word in words:\n        try:\n            vector = model[word]\n            similar_words = model.most_similar(word, topn=3)\n            print(f\"{word}: 在词表中，相似词: {', '.join([w for w, _ in similar_words])}\")\n        except:\n            print(f\"{word}: 不在词表中\")\n\nprint(\"FastText对未登录词的处理能力：\")\ntest_oov_words(fasttext_model, oov_words_en)\n\n\n\n\n18.3.4 4. 多语言词向量对齐\n为了支持跨语言应用，可以将不同语言的词向量空间对齐：\n\n\n代码\n# 跨语言词向量对齐示例（概念演示）\ndef simple_translate(word, en_model, zh_model, en_to_zh_dictionary):\n    \"\"\"简化的跨语言词查找\"\"\"\n    if word in en_to_zh_dictionary:\n        return en_to_zh_dictionary[word]\n    \n    # 获取英文词向量\n    if word not in en_model:\n        return \"未找到英文词\"\n    \n    en_vector = en_model[word]\n    \n    # 在中文词空间中寻找最近的词\n    max_sim = -1\n    best_word = None\n    \n    # 实际应用中需要更高效的实现，这里仅为演示\n    for zh_word in list(zh_model.key_to_index.keys())[:1000]:  # 限制搜索范围\n        zh_vector = zh_model[zh_word]\n        sim = cosine_similarity(en_vector, zh_vector)\n        if sim &gt; max_sim:\n            max_sim = sim\n            best_word = zh_word\n    \n    return best_word if max_sim &gt; 0.5 else \"未找到匹配的中文词\"",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#预训练模型在不同任务中的选择指南",
     "href": "12_embedding.html#预训练模型在不同任务中的选择指南",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "18.4 预训练模型在不同任务中的选择指南",
     "text": "18.4 预训练模型在不同任务中的选择指南\n根据不同应用场景，我们推荐选择的预训练词向量模型：\n\n\n\n\n\n\n\n\n\n应用场景\n推荐中文模型\n推荐英文模型\n理由\n\n\n\n\n通用文本分类\n腾讯AI Lab\nGloVe 300d\n覆盖面广，向量维度适中\n\n\n命名实体识别\n哈工大词向量\nFastText\n对实体名称和罕见词有更好表现\n\n\n情感分析\n腾讯AI Lab\nGoogle News\n对语义细微差别表现更好\n\n\n专业领域(如金融)\n领域特定模型\n领域特定模型\n通用模型对专业术语表示不足\n\n\n处理网络文本\n搜狗新闻词向量\nFastText\n对网络流行语和新词表现更好",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#选择或训练自己的词向量模型",
     "href": "12_embedding.html#选择或训练自己的词向量模型",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "18.5 选择或训练自己的词向量模型",
     "text": "18.5 选择或训练自己的词向量模型\n在实际应用中，我们需要根据具体任务和数据特点选择合适的预训练模型或决定是否需要训练自己的模型：\n\n使用预训练模型的情况：\n\n数据量有限，无法支持有效训练\n任务是通用领域，预训练模型已足够好\n计算资源有限\n需要快速开发原型系统\n\n训练自己的模型的情况：\n\n有大量特定领域的文本数据\n应用领域有特殊术语或表达方式\n现有预训练模型表现不佳\n有足够的计算资源\n\n微调预训练模型的折中方案：\n\n从预训练模型开始，用领域数据继续训练\n保留通用语言知识，同时学习领域特定表示\n资源需求适中，效果通常不错",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#结论",
     "href": "12_embedding.html#结论",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "18.6 结论",
     "text": "18.6 结论\n预训练词向量模型为NLP任务提供了便捷的起点，无需从头训练就能获得高质量的词语表示。根据我们的测试，腾讯AI Lab词向量和GloVe模型在通用任务中表现最佳，而FastText在处理未登录词方面具有明显优势。\n对于金融文本分析，我们建议：如果数据量充足，可以在通用预训练模型基础上，使用金融领域文本进行进一步训练，以获得更符合领域特性的词向量表示；如果资源有限，可以选择腾讯AI Lab等高质量预训练模型作为基础，然后结合任务特点设计适当的特征工程。",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#相同文本的两种表示方法",
     "href": "12_embedding.html#相同文本的两种表示方法",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "19.1 相同文本的两种表示方法",
     "text": "19.1 相同文本的两种表示方法\n首先，让我们回顾两种方法对同一文档的不同表示方式：\n\n\n代码\nimport pandas as pd\nimport numpy as np\nimport jieba\nimport re\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom gensim.models import Word2Vec\nimport matplotlib.pyplot as plt\n\n# 加载政府工作报告数据\ngovreport = pd.read_csv(\"labs/NLP/data/govreport.csv\")\n\n# 加载停用词\nwith open(\"labs/NLP/data/ChineseStopWords.txt\", 'r', encoding='utf-8') as f:\n    stop_words = {line.strip() for line in f}\n\n# 文本清洗与分词函数\ndef preprocess_text(text):\n    # 去除标点符号和数字\n    text = re.sub(r'[^\\u4e00-\\u9fa5]', ' ', text)\n    # 分词\n    words = jieba.cut(text)\n    # 去除停用词和空白\n    return [word for word in words if word.strip() and word not in stop_words]\n\n# 处理所有文档\ncorpus = []\ncorpus_raw = []  # 用于TF-IDF\nyears = []\nfor _, row in govreport.iterrows():\n    year = row['Year']\n    text = row['texts']\n    words = preprocess_text(text)\n    corpus.append(words)\n    corpus_raw.append(' '.join(words))\n    years.append(year)\n\n# 1. TF-IDF表示\ntfidf_vectorizer = TfidfVectorizer()\ntfidf_matrix = tfidf_vectorizer.fit_transform(corpus_raw)\ntfidf_feature_names = tfidf_vectorizer.get_feature_names_out()\n\n# 2. Word2Vec表示\nw2v_model = Word2Vec(\n    corpus, \n    vector_size=100,\n    window=5,\n    min_count=2,\n    sg=1,  # 使用Skip-gram\n    epochs=10\n)\n\n# 文档向量化（取平均）\ndef get_doc_vector(doc_words, model):\n    # 过滤不在模型中的词\n    doc_words = [word for word in doc_words if word in model.wv]\n    if len(doc_words) == 0:\n        return np.zeros(model.vector_size)\n    # 计算词向量的平均\n    return np.mean([model.wv[word] for word in doc_words], axis=0)\n\n# 计算每个文档的词向量表示\ndoc_vectors_w2v = [get_doc_vector(doc, w2v_model) for doc in corpus]\n\n# 打印示例\nreport_idx = 2  # 2021年报告\nprint(f\"{years[report_idx]}年政府工作报告的不同表示方法:\")\nprint(\"\\nTF-IDF表示（稀疏向量，只显示前10个非零元素）:\")\ntfidf_vec = tfidf_matrix[report_idx].toarray()[0]\nnonzero_idxs = np.nonzero(tfidf_vec)[0][:10]\nfor idx in nonzero_idxs:\n    print(f\"{tfidf_feature_names[idx]}: {tfidf_vec[idx]:.4f}\")\n\nprint(\"\\nWord2Vec表示（密集向量，显示前10个维度）:\")\nw2v_vec = doc_vectors_w2v[report_idx]\nfor i in range(10):\n    print(f\"维度{i+1}: {w2v_vec[i]:.4f}\")",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#文本相似度计算比较",
     "href": "12_embedding.html#文本相似度计算比较",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "19.2 文本相似度计算比较",
     "text": "19.2 文本相似度计算比较\n词频法和词向量在计算文档相似度时有明显差异：\n\n\n代码\nfrom sklearn.metrics.pairwise import cosine_similarity\n\n# 1. 基于TF-IDF的相似度\ntfidf_similarity = cosine_similarity(tfidf_matrix)\n\n# 2. 基于Word2Vec的相似度\nw2v_similarity = cosine_similarity(doc_vectors_w2v)\n\n# 创建相似度对比DataFrame\nsimilarity_comparison = pd.DataFrame({\n    'Years': years,\n    'TF-IDF Similarity with 2021': tfidf_similarity[2],  # 以2021年为参考\n    'Word2Vec Similarity with 2021': w2v_similarity[2]   # 以2021年为参考\n})\n\n# 打印相似度比较\nprint(\"不同年份与2021年报告的相似度比较:\")\nprint(similarity_comparison)\n\n# 可视化比较\nplt.figure(figsize=(12, 6))\nplt.bar(similarity_comparison['Years'], similarity_comparison['TF-IDF Similarity with 2021'], \n        alpha=0.7, label='TF-IDF相似度')\nplt.bar(similarity_comparison['Years'], similarity_comparison['Word2Vec Similarity with 2021'], \n        alpha=0.7, label='Word2Vec相似度', color='orange')\nplt.axhline(y=1, color='r', linestyle='--', alpha=0.3)  # 2021年与自身对比线\nplt.xlabel('年份')\nplt.ylabel('与2021年报告的相似度')\nplt.title('词频法与词向量的文本相似度比较')\nplt.legend()\nplt.grid(True, linestyle='--', alpha=0.5)\nplt.tight_layout()\n\n\n相似度计算结果分析:\n\nTF-IDF相似度：\n\n基于词汇重叠度，相同词汇出现越多，相似度越高\n对关键词敏感，但没有语义理解\n相似度变化跨度较大，更容易区分文档\n\nWord2Vec相似度：\n\n基于语义空间的接近程度，能捕捉同义词和相关概念\n所有文档相似度普遍较高，因为它们都处于相似的语义空间\n变化更平滑，体现语义连续性\n\n\n例如，即使2020年疫情报告的词汇与其他年份有明显不同，但在Word2Vec中相似度依然较高，因为整体语义主题（政府工作）是相似的。",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#关键词提取比较",
     "href": "12_embedding.html#关键词提取比较",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "19.3 关键词提取比较",
     "text": "19.3 关键词提取比较\n两种方法在关键词提取上也有明显不同：\n\n\n代码\n# 1. TF-IDF关键词提取\ndef get_tfidf_top_words(tfidf_matrix, feature_names, doc_idx, top_n=10):\n    tfidf_vec = tfidf_matrix[doc_idx].toarray()[0]\n    top_idxs = tfidf_vec.argsort()[-top_n:][::-1]\n    return [(feature_names[idx], tfidf_vec[idx]) for idx in top_idxs]\n\n# 2. Word2Vec关键词提取 (基于词向量中心性)\ndef get_w2v_central_words(doc_words, model, top_n=10):\n    # 只考虑模型中有的词\n    doc_words = [w for w in doc_words if w in model.wv]\n    if len(doc_words) == 0:\n        return []\n    \n    # 计算每个词与文档其他词的平均相似度 (中心性)\n    word_centrality = {}\n    for word in doc_words:\n        # 与其他词的相似度之和\n        total_sim = sum(model.wv.similarity(word, other_word) \n                        for other_word in doc_words if other_word != word)\n        # 平均相似度\n        word_centrality[word] = total_sim / (len(doc_words) - 1) if len(doc_words) &gt; 1 else 0\n    \n    # 返回中心性最高的词\n    return sorted(word_centrality.items(), key=lambda x: x[1], reverse=True)[:top_n]\n\n# 比较2023年报告的关键词提取结果\nreport_idx = 4  # 2023年\nprint(f\"{years[report_idx]}年政府工作报告关键词提取比较:\")\n\ntfidf_top_words = get_tfidf_top_words(tfidf_matrix, tfidf_feature_names, report_idx)\nprint(\"\\nTF-IDF提取的关键词:\")\nfor word, score in tfidf_top_words:\n    print(f\"{word}: {score:.4f}\")\n\nw2v_top_words = get_w2v_central_words(corpus[report_idx], w2v_model)\nprint(\"\\nWord2Vec提取的关键词 (基于中心性):\")\nfor word, score in w2v_top_words:\n    print(f\"{word}: {score:.4f}\")\n\n\n关键词提取结果分析:\n\nTF-IDF关键词：\n\n提取文档中特有的、区分度高的词\n往往是该文档特有的专有名词或低频词\n关注”独特性”而非”重要性”\n\nWord2Vec关键词：\n\n提取文档的语义中心词，与其他词语义联系最紧密的词\n往往是文档主题的核心词，且在语义网络中起枢纽作用\n关注”中心性”而非”频率”或”独特性”\n\n\n例如，TF-IDF可能会提取”十四五”这样的特定术语，而Word2Vec可能会提取”发展”这样的核心概念词。",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#语义关联发现比较",
     "href": "12_embedding.html#语义关联发现比较",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "19.4 语义关联发现比较",
     "text": "19.4 语义关联发现比较\n词频法和词向量在发现词语关联关系上有本质区别：\n\n\n代码\n# 1. 词频法的共现分析\nfrom collections import Counter\nimport networkx as nx\n\ndef build_cooccurrence_network(corpus, target_words, window_size=5):\n    \"\"\"构建目标词的共现网络\"\"\"\n    cooccur = Counter()\n    \n    for doc in corpus:\n        for i, word in enumerate(doc):\n            if word in target_words:\n                # 获取窗口内的词\n                context = doc[max(0, i-window_size):i] + doc[i+1:min(len(doc), i+window_size+1)]\n                for context_word in context:\n                    if context_word in target_words and context_word != word:\n                        # 记录共现次数\n                        pair = tuple(sorted([word, context_word]))\n                        cooccur[pair] += 1\n    \n    # 创建网络\n    G = nx.Graph()\n    for word in target_words:\n        G.add_node(word)\n    \n    # 添加边和权重\n    for (word1, word2), weight in cooccur.items():\n        if weight &gt; 0:\n            G.add_edge(word1, word2, weight=weight)\n    \n    return G, cooccur\n\n# 2. Word2Vec的语义相似性网络\ndef build_semantic_network(model, target_words, threshold=0.3):\n    \"\"\"构建基于词向量相似度的语义网络\"\"\"\n    G = nx.Graph()\n    \n    # 过滤不在模型中的词\n    valid_words = [w for w in target_words if w in model.wv]\n    \n    for word in valid_words:\n        G.add_node(word)\n    \n    # 添加边和权重\n    for i, word1 in enumerate(valid_words):\n        for word2 in valid_words[i+1:]:\n            similarity = model.wv.similarity(word1, word2)\n            if similarity &gt; threshold:\n                G.add_edge(word1, word2, weight=similarity)\n    \n    return G\n\n# 分析目标词之间的关系\ntarget_words = ['发展', '经济', '创新', '改革', '开放', '就业', '民生', '环保', '科技', '数字']\n\n# 1. 创建共现网络\ncooccur_net, cooccur_counter = build_cooccurrence_network(corpus, target_words)\n\n# 2. 创建语义网络\nsemantic_net = build_semantic_network(w2v_model, target_words)\n\n# 共现矩阵可视化\ncooccur_matrix = np.zeros((len(target_words), len(target_words)))\nfor i, word1 in enumerate(target_words):\n    for j, word2 in enumerate(target_words):\n        if i != j:\n            pair = tuple(sorted([word1, word2]))\n            cooccur_matrix[i, j] = cooccur_counter[pair]\n\n# 语义相似度矩阵\nsemantic_matrix = np.zeros((len(target_words), len(target_words)))\nfor i, word1 in enumerate(target_words):\n    for j, word2 in enumerate(target_words[i+1:], i+1):\n        if word1 in w2v_model.wv and word2 in w2v_model.wv:\n            similarity = w2v_model.wv.similarity(word1, word2)\n            semantic_matrix[i, j] = semantic_matrix[j, i] = similarity\n\n# 可视化比较\nfig, axes = plt.subplots(1, 2, figsize=(15, 6))\n\n# 共现网络热图\nim1 = axes[0].imshow(cooccur_matrix, cmap='Blues')\naxes[0].set_title('词频法：共现关系')\naxes[0].set_xticks(range(len(target_words)))\naxes[0].set_yticks(range(len(target_words)))\naxes[0].set_xticklabels(target_words)\naxes[0].set_yticklabels(target_words)\nplt.colorbar(im1, ax=axes[0], label='共现次数')\n\n# 语义网络热图\nim2 = axes[1].imshow(semantic_matrix, cmap='Reds')\naxes[1].set_title('Word2Vec：语义相似度')\naxes[1].set_xticks(range(len(target_words)))\naxes[1].set_yticks(range(len(target_words)))\naxes[1].set_xticklabels(target_words)\naxes[1].set_yticklabels(target_words)\nplt.colorbar(im2, ax=axes[1], label='余弦相似度')\n\nplt.tight_layout()\nplt.show()\n\n\n语义关联分析结果比较:\n\n词频法（共现分析）：\n\n基于词语在文本中出现的物理距离\n只能发现直接共现的关系，不能泛化\n需要大量文本才能得到可靠的统计结果\n无法发现从未共现但语义相关的词\n\nWord2Vec（语义网络）：\n\n基于分布式表示学习的语义空间距离\n能发现间接关联，即使两个词从未共现\n能发现语义层次和类比关系\n受预训练语料的影响大\n\n\n例如，在政府工作报告中，“环保”和”低碳”可能很少直接共现，但在Word2Vec的语义空间中会很接近。",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#主题和情感分析的差异",
     "href": "12_embedding.html#主题和情感分析的差异",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "19.5 主题和情感分析的差异",
     "text": "19.5 主题和情感分析的差异\n两种方法在主题建模和情感分析上也有明显区别：\n\n\n代码\nfrom sklearn.decomposition import LatentDirichletAllocation\nfrom sklearn.feature_extraction.text import CountVectorizer\n\n# 1. 基于词频的主题建模 (LDA)\n# 使用词频矩阵\ncv = CountVectorizer()\nbow_matrix = cv.fit_transform(corpus_raw)\nfeature_names = cv.get_feature_names_out()\n\n# LDA模型\nlda = LatentDirichletAllocation(n_components=3, random_state=42)\nlda.fit(bow_matrix)\n\n# 2. 基于Word2Vec的主题聚类\nfrom sklearn.cluster import KMeans\n\n# 对文档向量进行聚类\nkmeans = KMeans(n_clusters=3, random_state=42)\nclusters = kmeans.fit_predict(doc_vectors_w2v)\n\n# 输出LDA主题词\nprint(\"基于词频的LDA主题词:\")\nfor topic_idx, topic in enumerate(lda.components_):\n    print(f\"主题 #{topic_idx+1}:\")\n    top_words = [feature_names[i] for i in topic.argsort()[:-11:-1]]\n    print(\", \".join(top_words))\n\n# 输出Word2Vec聚类中心最近的词\nprint(\"\\nWord2Vec聚类中心最近的词:\")\nfor i in range(3):\n    # 获取聚类中心\n    center = kmeans.cluster_centers_[i]\n    \n    # 找出与中心最接近的词\n    word_dists = []\n    for word in w2v_model.wv.index_to_key:\n        dist = np.linalg.norm(w2v_model.wv[word] - center)\n        word_dists.append((word, dist))\n    \n    top_words = sorted(word_dists, key=lambda x: x[1])[:10]\n    print(f\"聚类 #{i+1}:\")\n    print(\", \".join(word for word, _ in top_words))\n\n\n主题分析结果比较:\n\n基于词频的LDA：\n\n基于词语在文档中的共现统计构建主题\n主题是词语的概率分布，每个词有明确的主题概率\n结果可解释性强，但受制于表面统计\n\n基于Word2Vec的聚类：\n\n基于文档在语义空间中的分布进行聚类\n主题体现为语义空间中的区域，边界更加模糊\n能发现更抽象的语义关联，但解释性较弱",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#综合比较与应用建议",
     "href": "12_embedding.html#综合比较与应用建议",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "19.6 综合比较与应用建议",
     "text": "19.6 综合比较与应用建议\n通过以上案例比较，我们总结词频法和词向量在政府工作报告分析中的优缺点：\n\n\n\n比较维度\n词频法 (Bag of Words/TF-IDF)\n词向量 (Word2Vec)\n\n\n\n\n数据表示\n高维稀疏向量(~万维)\n低维稠密向量(~百维)\n\n\n语义捕捉\n基于表面词频统计，无语义\n基于分布式假设，有语义\n\n\n计算复杂度\n低，适合大规模文档\n中等，训练需要时间\n\n\n内存占用\n大（稀疏矩阵）\n小（稠密向量）\n\n\n新词处理\n无法处理未见词\n也无法直接处理(FastText可以)\n\n\n相似度计算\n仅基于词重叠\n基于语义相似\n\n\n关键词提取\n偏向特有词\n偏向中心词\n\n\n语义关联\n仅能发现共现关系\n能发现间接语义关联\n\n\n应用场景\n文档分类、信息检索\n语义搜索、推荐系统\n\n\n\n\n19.6.1 应用建议\n基于我们对政府工作报告的分析经验，针对不同任务推荐的方法：\n\n文档去重或精确匹配：使用词频表示\n文档语义检索或推荐：使用词向量表示\n特有术语或政策提取：使用TF-IDF方法\n政策主题语义聚类：使用Word2Vec\n综合分析：可以同时使用两种方法并结合结果\n\n在实际应用中，选择合适的文本表示方法往往取决于具体任务需求、可用资源和期望的结果特性。词频法和词向量并非互斥，而是互补的分析视角。",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#词向量的优缺点",
     "href": "12_embedding.html#词向量的优缺点",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "20.1 词向量的优缺点",
     "text": "20.1 词向量的优缺点\n\n20.1.1 优点\n\n语义丰富：捕获了词语间的语义关系\n维度可控：典型地为50-300维，远低于词汇量大小\n泛化能力：能处理未见过的词组合\n通用性：可用于各种NLP任务的特征提取\n\n\n\n20.1.2 局限性\n\n多义词问题：无法区分同一个词的不同含义（如”苹果”可以是水果或公司）\n上下文依赖：固定的词向量无法根据上下文调整\n预训练依赖：需要大量语料预训练\n领域专一性：通用领域训练的词向量在专业领域效果可能不佳",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#进阶方向",
     "href": "12_embedding.html#进阶方向",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "20.2 进阶方向",
     "text": "20.2 进阶方向\n\n上下文相关的词表示：如ELMo、BERT等模型能根据上下文动态生成词表示\n多语言词向量：跨语言的词向量对齐，支持多语言应用\n领域适应：将通用词向量迁移到特定领域\n可解释性研究：理解词向量空间的维度含义",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "12_embedding.html#本讲小结",
     "href": "12_embedding.html#本讲小结",
-    "title": "14  文本分析(二)：词向量与深度学习基础",
+    "title": "14  文本分析2：词向量与深度学习基础",
     "section": "20.3 本讲小结",
     "text": "20.3 本讲小结\n本讲我们从Bag of Words模型的局限性出发，介绍了词向量的概念、原理和应用：\n\n词向量通过低维稠密向量表示词语，克服了传统方法的局限\nWord2Vec通过Skip-gram和CBOW两种模型高效学习词向量\n负采样等技术大幅提高了训练效率\n词向量空间具有丰富的语义特性，支持相似性计算和向量代数运算\n在金融文本分析中，词向量可以发现政策热点、分析语义变化等",
     "crumbs": [
-      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析(二)：词向量与深度学习基础</span>"
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>文本分析2：词向量与深度学习基础</span>"
     ]
   },
   {
     "objectID": "13_llm.html",
     "href": "13_llm.html",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "",
     "text": "16 从静态向量到动态表示",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#word2vec的局限性",
     "href": "13_llm.html#word2vec的局限性",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "16.1 Word2Vec的局限性",
     "text": "16.1 Word2Vec的局限性\n上一讲中，我们学习了Word2Vec等词向量技术，它通过分布式表示极大提升了NLP的表示能力。然而，静态词向量仍然存在明显局限性：\n\n一词一向量问题：每个词只对应一个固定的向量，无法处理一词多义。例如”苹果”在”我吃了一个苹果”和”苹果公司发布新产品”中的含义完全不同。\n上下文无关：词向量无法捕捉词语在特定上下文中的含义变化。例如”银行存款”和”河流的银行”中，“银行”的含义有很大差异。\n长距离依赖问题：无法捕捉句子中相距较远的词之间的依赖关系。例如”他说中文，因为他在中国生活了很多年”中，第二个”他”与第一个”他”指代相同。\n表达能力有限：固定维度的向量难以编码复杂的语言知识和语法结构。\n\n这些局限性促使研究者探索更先进的表示方法，能够根据上下文动态调整词语的表示。这一探索最终导致了BERT等基于Transformer的语言模型的诞生。",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#上下文感知的词表示",
     "href": "13_llm.html#上下文感知的词表示",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "16.2 上下文感知的词表示",
     "text": "16.2 上下文感知的词表示\n上下文感知的词表示（Contextualized Word Representations）是指词语的向量表示会根据其所处的上下文动态变化。与静态词向量不同，它具有以下特点：\n\n动态表示：同一个词在不同上下文中具有不同的向量表示\n语义消歧：能够根据上下文区分多义词的不同含义\n句法感知：能够捕捉词语在句子中的句法功能\n长距离依赖：能够建模句子中远距离词语之间的关系\n\n这种表示方法的核心思想是：一个词的含义不仅取决于它自身，更取决于它的上下文环境。",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#语言模型理解上下文的基础",
     "href": "13_llm.html#语言模型理解上下文的基础",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "16.3 语言模型：理解上下文的基础",
     "text": "16.3 语言模型：理解上下文的基础\n上下文感知表示的关键在于语言模型（Language Model）。语言模型是一种能够计算文本序列概率的模型，其基本任务是预测序列中的下一个词：\n\\[P(w_t | w_1, w_2, ..., w_{t-1})\\]\n不同类型的语言模型处理上下文的方式不同：\n\n传统n-gram语言模型：只考虑有限历史，如\\(P(w_t | w_{t-2}, w_{t-1})\\)\n循环神经网络(RNN)语言模型：通过隐藏状态递归编码全部历史\n双向语言模型：同时考虑左侧和右侧上下文\nTransformer语言模型：通过注意力机制直接建模所有位置间的依赖关系\n\n预训练语言模型的出现为NLP带来了革命性变化，它通过在大规模语料上无监督预训练，学习通用的语言表示，然后再针对下游任务进行微调。",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#从elmo到bert的演进",
     "href": "13_llm.html#从elmo到bert的演进",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "16.4 从ELMo到BERT的演进",
     "text": "16.4 从ELMo到BERT的演进\n上下文感知的词表示技术的发展经历了几个里程碑：\n\n16.4.1 ELMo (2018)\nELMo (Embeddings from Language Models) 是上下文词表示的早期尝试，由Peters等人在2018年提出。其特点包括：\n\n使用双层双向LSTM结构\n将前向和后向语言模型结合\n使用不同层的表示的加权组合作为最终表示\n有效解决了一词多义问题\n\nELMo的表示公式为：\n\\[ELMo_k^{task} = E(R_k; \\Theta^{task}) = \\gamma^{task} \\sum_{j=0}^{L} s_j^{task} \\mathbf{h}_{k,j}^{LM}\\]\n其中，\\(\\mathbf{h}_{k,j}^{LM}\\)是第k个词在第j层的表示。\n\n\n16.4.2 GPT (2018)\nOpenAI的GPT (Generative Pre-Training) 模型采用了单向Transformer结构：\n\n仅使用前向语言模型（只看左侧上下文）\n基于Transformer解码器架构\n首次展示了大规模预训练+微调的范式\n\nGPT采用的预训练目标是预测下一个词：\n\\[L(\\mathcal{U}) = \\sum_i \\log P(u_i | u_{i-k}, ..., u_{i-1}; \\Theta)\\]\n\n\n16.4.3 BERT (2018)\nBERT (Bidirectional Encoder Representations from Transformers) 由Google在2018年提出，成为上下文词表示的里程碑工作：\n\n使用双向Transformer编码器\n采用掩码语言模型(Masked LM)预训练\n同时使用下一句预测(NSP)任务\n极大提升了NLP任务的性能上限\n\nBERT的预训练目标是预测被掩码的词：\n\\[L(\\mathcal{D}) = \\sum_{i \\in \\mathcal{M}} \\log P(w_i | w_{\\neg \\mathcal{M}}; \\Theta)\\]\n其中，\\(\\mathcal{M}\\)是被掩码的词的位置集合。\n这一演进体现了以下趋势： - 从浅层网络到深层Transformer架构 - 从单向上下文到双向上下文 - 从特征提取器到通用语言模型 - 从任务相关到预训练-微调范式\n接下来，我们将深入理解BERT模型的内部工作原理。",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#transformer架构bert的基础",
     "href": "13_llm.html#transformer架构bert的基础",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "17.1 Transformer架构：BERT的基础",
     "text": "17.1 Transformer架构：BERT的基础\nBERT建立在Transformer架构之上，这是由Vaswani等人在2017年提出的一种完全基于注意力机制的神经网络结构。在深入BERT之前，我们需要先理解Transformer的基本组件。\n\n17.1.1 自注意力机制\n自注意力（Self-Attention）是Transformer的核心组件，它允许模型在处理某个位置时，考虑序列中所有位置的信息。其计算过程如下：\n\n将输入向量\\(X\\)分别转换为查询(Query)、键(Key)和值(Value)三个矩阵： \\[Q = XW^Q, K = XW^K, V = XW^V\\]\n计算注意力得分并归一化： \\[Attention(Q, K, V) = softmax(\\frac{QK^T}{\\sqrt{d_k}})V\\]\n其中，\\(\\sqrt{d_k}\\)是缩放因子，用于防止梯度消失。\n\n自注意力机制的优势在于： - 可以捕捉任意距离的依赖关系 - 计算复杂度相对RNN低 - 允许并行计算\n\n\n17.1.2 多头注意力\n为了增强模型的表示能力，Transformer使用了多头注意力（Multi-Head Attention）：\n\\[MultiHead(Q, K, V) = Concat(head_1, ..., head_h)W^O\\]\n其中，\\(head_i = Attention(QW_i^Q, KW_i^K, VW_i^V)\\)\n多头注意力允许模型: - 在不同子空间中学习不同的关注模式 - 同时关注位置和语义信息 - 提供更丰富的特征表示\n\n\n17.1.3 位置编码\n由于自注意力机制本身不包含位置信息，Transformer引入了位置编码（Positional Encoding）来将序列顺序信息注入模型：\n\\[PE_{(pos, 2i)} = sin(pos/10000^{2i/d_{model}})\\] \\[PE_{(pos, 2i+1)} = cos(pos/10000^{2i/d_{model}})\\]\n其中，\\(pos\\)是位置，\\(i\\)是维度。\n\n\n17.1.4 前馈神经网络\nTransformer中每个子层还包含一个前馈神经网络（Feed-Forward Network），由两个线性变换组成：\n\\[FFN(x) = max(0, xW_1 + b_1)W_2 + b_2\\]\n\n\n17.1.5 Transformer编码器结构\n一个完整的Transformer编码器层包含： 1. 多头自注意力机制 2. 层归一化（Layer Normalization） 3. 前馈神经网络 4. 残差连接（Residual Connection）\n这些组件按以下方式组合： \\[\\hat{h} = LayerNorm(x + MultiHeadAttention(x))\\] \\[h = LayerNorm(\\hat{h} + FFN(\\hat{h}))\\]\nBERT使用了Transformer的编码器部分，通常包含12层（BERT-Base）或24层（BERT-Large）。",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#bert模型详解",
     "href": "13_llm.html#bert模型详解",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "17.2 BERT模型详解",
     "text": "17.2 BERT模型详解\nBERT（Bidirectional Encoder Representations from Transformers）是一种预训练语言模型，旨在学习深层的双向语言表示。\n\n17.2.1 BERT的输入表示\nBERT的输入由三种嵌入的总和组成：\n\n词嵌入（Token Embeddings）：WordPiece词表中的词元对应的嵌入\n段嵌入（Segment Embeddings）：区分句子对中的第一句和第二句\n位置嵌入（Position Embeddings）：表示词元在序列中的位置\n\n每个输入序列以特殊标记[CLS]开始，以[SEP]分隔不同句子。\n\n\n\nBERT输入表示\n\n\n\n\n17.2.2 BERT的预训练任务\nBERT通过两个无监督任务进行预训练：\n\n掩码语言模型（Masked Language Model，MLM）：\n\n随机掩盖输入中15%的词元\n其中80%用[MASK]替换，10%用随机词替换，10%保持不变\n训练模型预测被掩盖的原始词元\n这使得BERT能够学习双向上下文表示\n\n下一句预测（Next Sentence Prediction，NSP）：\n\n给定两个句子，预测第二句是否是第一句的真实后续\n训练数据中50%是真实的连续句子，50%是随机句子对\n这使得BERT能够理解句子间的关系\n\n\n\n\n17.2.3 BERT的模型变体\nBERT有两个主要变体：\n\nBERT-Base：\n\n12层Transformer编码器\n12个注意力头\n768维隐藏层\n1.1亿参数\n\nBERT-Large：\n\n24层Transformer编码器\n16个注意力头\n1024维隐藏层\n3.4亿参数\n\n\n\n\n17.2.4 BERT的微调方式\n预训练后的BERT可以通过简单的任务特定层进行微调，适用于多种下游任务：\n\n序列级任务（如分类）：使用[CLS]标记的最终隐藏状态\n词元级任务（如NER）：使用每个词元的最终隐藏状态\n句子对任务（如问答）：同时输入问题和段落，识别答案跨度\n\n微调过程通常只需要少量标注数据和训练轮次，极大地降低了NLP任务的门槛。",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#bert的内部工作机制",
     "href": "13_llm.html#bert的内部工作机制",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "17.3 BERT的内部工作机制",
     "text": "17.3 BERT的内部工作机制\n通过深入分析BERT的内部表示，研究者发现BERT的不同层捕捉了不同类型的语言知识：\n\n17.3.1 层次化语言知识\n\n底层（1-4层）：捕捉表面语法特征、词性、局部依赖等\n中层（5-8层）：编码短语级语义和共指关系\n高层（9-12层）：处理长距离依赖和更抽象的语义关系\n\n\n\n17.3.2 注意力头的专业化\nBERT的不同注意力头专注于不同类型的语言信息：\n\n语法头：关注句法依赖关系\n语义头：关注语义相关的词\n共指头：关注指代同一实体的表达\n\n\n\n17.3.3 BERT的表示空间\nBERT的表示空间表现出interessting的性质：\n\n各向异性：嵌入向量集中在狭窄的锥体中，而非均匀分布\n语义区分：相似概念在表示空间中形成聚类\n线性结构：某些语义关系可以通过向量差来表示\n\n这些特性使得BERT能够有效地编码复杂的语言知识，并为下游任务提供丰富的特征表示。",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#bert的后续演进",
     "href": "13_llm.html#bert的后续演进",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "17.4 BERT的后续演进",
     "text": "17.4 BERT的后续演进\nBERT发布后，研究者提出了许多改进版本，主要集中在以下几个方向：\n\n17.4.1 预训练任务优化\n\nRoBERTa：移除NSP任务，使用更大批量和更多数据训练\nALBERT：参数共享和分解嵌入，降低模型大小\nELECTRA：用判别式替换检测训练，提高效率\n\n\n\n17.4.2 知识增强\n\nKnowBERT：集成知识库信息\nERNIE：加入实体和短语级掩码\nFinBERT：针对金融领域的专业知识训练\n\n\n\n17.4.3 模型架构改进\n\nSpanBERT：掩盖连续的文本片段而非单个词\nXLNet：使用排列语言模型，解决掩码带来的预训练-微调不一致\nDeBERTa：解耦注意力机制，增强位置编码\n\n这些改进进一步推动了预训练语言模型的发展，为下一代更强大的模型如GPT系列奠定了基础。",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#transformer架构的扩展",
     "href": "13_llm.html#transformer架构的扩展",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "18.1 Transformer架构的扩展",
     "text": "18.1 Transformer架构的扩展\n虽然BERT在NLP领域带来了巨大进步，但它仍然存在一些局限性，如无法进行生成任务和处理长文本。为了克服这些限制，研究者们对Transformer架构进行了多方面扩展。\n\n18.1.1 编码器-解码器结构\n编码器-解码器（Encoder-Decoder）结构是机器翻译等序列到序列任务的标准架构：\n\n编码器：处理输入序列，生成上下文表示\n解码器：基于编码器输出生成目标序列\n交叉注意力：解码器通过注意力机制访问编码器的输出\n\n代表模型： - T5：将所有NLP任务统一为文本到文本的转换 - BART：通过降噪自编码器预训练\n\n\n18.1.2 仅解码器架构\n仅解码器（Decoder-only）架构专注于生成任务，通过自回归方式预测下一个词：\n\n单向自注意力：每个位置只能看到其前面的位置\n自回归生成：逐词生成输出序列\n缩放规模：通过扩大模型规模提升能力\n\n代表模型： - GPT系列：从GPT-1到GPT-4，规模和能力不断增长 - LLaMA：开源的大型语言模型，有效降低了资源需求\n\n\n18.1.3 长距离建模\n处理长文本的能力是大语言模型的关键挑战之一，研究者提出了多种解决方案：\n\n稀疏注意力：如Longformer，只关注局部窗口和全局标记\n循环机制：如Transformer-XL，跨段传递隐藏状态\n线性复杂度：如Linformer，通过低秩近似降低计算量\n扩展上下文窗口：如DeepSeek，将上下文窗口扩展到128K",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#大型语言模型的关键创新",
     "href": "13_llm.html#大型语言模型的关键创新",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "18.2 大型语言模型的关键创新",
     "text": "18.2 大型语言模型的关键创新\n大型语言模型（LLMs）相比传统BERT模型有几个关键创新：\n\n18.2.1 规模扩展\n深度学习研究表明，模型规模与性能呈现”幂律”关系，增加参数量能带来显著性能提升：\n\n从亿到千亿参数：BERT-Large有3.4亿参数，而GPT-4估计有超过1万亿参数\n计算资源增长：训练大模型需要数千GPU/TPU，消耗数百万美元\n预训练数据扩展：从GB级语料到TB级语料\n\n\n\n18.2.2 涌现能力\n大语言模型最惊人的特性是涌现能力（Emergent Abilities）——在达到一定规模后突然出现的能力：\n\n指令跟随：理解并执行自然语言指令\n思维链推理：通过分步骤推理解决复杂问题\n上下文学习：从少量示例中学习新任务\n多模态理解：结合文本与图像等多种模态信息\n\n\n\n18.2.3 提示工程与思维链推理\n大语言模型的使用方式也发生了革命性变化：\n\n提示工程（Prompt Engineering）：\n\n通过精心设计的提示引导模型行为\n不同于传统的微调范式\n允许灵活调整模型输出\n\n思维链推理（Chain-of-Thought）：\n\n让模型先生成推理过程，再给出结论\n显著提高模型解决复杂问题的能力\n公式：\\(\\text{Prompt} + \\text{思考过程} \\to \\text{更准确的结果}\\)\n\n上下文学习（In-context Learning）：\n\n在提示中包含示例，引导模型学习模式\n无需参数更新，即可适应新任务\n示例：给出几个情感分类示例，模型可泛化到新文本",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#代表性大型语言模型",
     "href": "13_llm.html#代表性大型语言模型",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "18.3 代表性大型语言模型",
     "text": "18.3 代表性大型语言模型\n\n18.3.1 GPT系列\n由OpenAI开发的GPT（Generative Pre-trained Transformer）系列是大型语言模型的代表：\n\nGPT-1（2018）：\n\n1.17亿参数\n首次展示预训练+微调范式\n在多个NLP任务上获得突破\n\nGPT-2（2019）：\n\n15亿参数\n展示了零样本学习能力\n文本生成质量有显著提升\n\nGPT-3（2020）：\n\n1750亿参数\n展示了惊人的少样本学习能力\n可以执行之前未见过的任务\n\nGPT-4（2023）：\n\n参数规模未公开，估计超过1万亿\n多模态能力，支持图像输入\n接近人类专家水平的表现\n\n\n\n\n18.3.2 开源大型语言模型\n除了GPT系列，开源社区也开发了多种高性能大语言模型：\n\nLLaMA系列：\n\n由Meta AI开发\n参数规模从7B到65B不等\n性能接近闭源商业模型\n衍生了许多优秀模型如Vicuna和Alpaca\n\n国产大模型：\n\nChatGLM：清华大学与智谱AI合作开发的双语模型\nDeepSeek：深度求索开发，专注长序列处理\nQwen：阿里云开发，性能优异的开源模型\n\n多模态模型：\n\nCLIP：连接图像和文本的表示学习\nGPT-4V：具有视觉理解能力的GPT-4变体\nGemini：Google的多模态大语言模型",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#大语言模型的金融应用",
     "href": "13_llm.html#大语言模型的金融应用",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "18.4 大语言模型的金融应用",
     "text": "18.4 大语言模型的金融应用\n大语言模型在金融领域有广泛的应用潜力：\n\n18.4.1 信息提取与分析\n\n报告解析：\n\n自动提取财报中的关键财务指标\n总结长篇研报要点\n识别风险披露声明\n\n市场情感分析：\n\n分析新闻报道的市场情绪\n提取投资者情绪信号\n预测市场波动\n\n事件提取：\n\n从财经新闻中识别重大事件\n构建事件知识图谱\n分析事件之间的因果关系\n\n\n\n\n18.4.2 金融文本生成\n\n研究报告生成：\n\n基于数据自动生成财务分析\n创建行业趋势报告\n生成个股评论\n\n监管合规：\n\n生成合规声明和披露\n检查文档是否符合监管要求\n自动更新合规文件\n\n客户交互：\n\n智能金融顾问\n个性化投资建议\n金融知识普及\n\n\n\n\n18.4.3 无监督学习辅助\n\n文本聚类：\n\n通过嵌入向量聚类发现主题\n识别相似公告和报告\n发现市场关注热点\n\n异常检测：\n\n识别异常金融叙述\n发现财报中的可疑部分\n预警潜在风险信号\n\n主题提取：\n\n无监督发现文档主题\n总结长文本的核心观点\n追踪主题随时间的演变",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#bert与word2vec的实验对比",
     "href": "13_llm.html#bert与word2vec的实验对比",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "19.1 BERT与Word2Vec的实验对比",
     "text": "19.1 BERT与Word2Vec的实验对比\n在本节中，我们将使用政府工作报告数据，对比BERT与Word2Vec在文本表示上的差异。这一对比将帮助我们理解上下文感知表示相对于静态词向量的优势。\n\n19.1.1 数据准备与预处理\n与上一讲类似，我们首先加载和预处理政府工作报告数据：\n\n\n代码\nimport pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport jieba\nimport re\nfrom sklearn.metrics.pairwise import cosine_similarity\nimport torch\nfrom transformers import BertModel, BertTokenizer\n\n# 加载政府工作报告数据\ngovreport = pd.read_csv(\"labs/NLP/data/govreport.csv\")\n\n# 设置中文显示\nplt.rcParams['font.sans-serif'] = ['Songti SC']  # 用来正常显示中文标签\nplt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号\n\n# 加载停用词\nwith open(\"labs/NLP/data/ChineseStopWords.txt\", 'r', encoding='utf-8') as f:\n    stop_words = {line.strip() for line in f}\n\n# 文本清洗并分词\ndef preprocess_text(text):\n    # 去除标点符号和数字\n    text = re.sub(r'[^\\u4e00-\\u9fa5]', ' ', text)\n    # 分词\n    words = jieba.cut(text)\n    # 去除停用词和空白\n    return [word for word in words if word.strip() and word not in stop_words]\n\n# 处理所有文档\ncorpus = []\nyears = []\nfor _, row in govreport.iterrows():\n    words = preprocess_text(row['texts'])\n    corpus.append(words)\n    years.append(row['Year'])\n\nprint(f\"语料库包含{len(corpus)}篇文档\")\n\n# 加载预训练的Word2Vec模型（假设我们已经训练好了，这里直接加载）\nfrom gensim.models import Word2Vec\nw2v_model = Word2Vec.load(\"gov_report_word2vec.model\")\n\n\n\n\n19.1.2 加载BERT模型\n我们将使用中文预训练BERT模型：\n\n\n代码\n# 加载预训练的中文BERT模型\ntokenizer = BertTokenizer.from_pretrained('bert-base-chinese')\nmodel = BertModel.from_pretrained('bert-base-chinese')\nmodel.eval()  # 设置为评估模式\n\n# 定义函数获取BERT词向量\ndef get_bert_embeddings(text, tokenizer, model, max_length=512):\n    # 对文本进行分词和转换\n    inputs = tokenizer(text, return_tensors='pt', truncation=True, max_length=max_length, padding='max_length')\n    \n    # 获取BERT输出\n    with torch.no_grad():\n        outputs = model(**inputs)\n    \n    # 提取最后一层的隐藏状态（词向量）\n    last_hidden_states = outputs.last_hidden_state\n    \n    # 提取[CLS]标记的向量作为句子表示\n    cls_embedding = last_hidden_states[:, 0, :].numpy()\n    \n    # 提取所有词元的向量\n    token_embeddings = last_hidden_states.numpy()\n    \n    return {\n        'cls_embedding': cls_embedding,  # 句子表示\n        'token_embeddings': token_embeddings,  # 词元表示\n        'tokens': tokenizer.convert_ids_to_tokens(inputs['input_ids'][0])  # 对应的词元\n    }\n\n\n\n\n19.1.3 多义词表示对比\n我们将对比BERT和Word2Vec在处理多义词上的能力差异：\n\n\n代码\n# 选择一个多义词进行分析，如\"发展\"\nambiguous_word = \"发展\"\n\n# 从报告中找出含有该词的不同上下文\ncontexts = []\nfor i, doc in enumerate(corpus):\n    # 将分词列表转换为文本\n    text = \"\".join(doc)\n    # 在原文中寻找该词\n    if ambiguous_word in text:\n        # 寻找包含目标词的短句\n        sentences = re.split(r'[，。！？；]', text)\n        for sentence in sentences:\n            if ambiguous_word in sentence and 10 &lt; len(sentence) &lt; 50:\n                contexts.append((years[i], sentence))\n                if len(contexts) &gt;= 5:  # 只取5个上下文示例\n                    break\n    if len(contexts) &gt;= 5:\n        break\n\n# 1. Word2Vec的表示（静态）\nw2v_vector = w2v_model.wv[ambiguous_word]\n\n# 2. BERT的表示（动态，依赖上下文）\nbert_vectors = []\nfor year, context in contexts:\n    # 获取BERT表示\n    bert_result = get_bert_embeddings(context, tokenizer, model)\n    # 找到目标词的位置\n    target_positions = [i for i, token in enumerate(bert_result['tokens']) \n                        if ambiguous_word in token and '##' not in token]\n    \n    if target_positions:\n        # 提取目标词在该上下文中的表示\n        target_idx = target_positions[0]\n        bert_vector = bert_result['token_embeddings'][0, target_idx, :]\n        bert_vectors.append((year, context, bert_vector))\n\n# 计算BERT表示之间的相似度\nif bert_vectors:\n    bert_similarities = np.zeros((len(bert_vectors), len(bert_vectors)))\n    for i in range(len(bert_vectors)):\n        for j in range(len(bert_vectors)):\n            bert_similarities[i, j] = cosine_similarity(\n                bert_vectors[i][2].reshape(1, -1), \n                bert_vectors[j][2].reshape(1, -1)\n            )[0, 0]\n    \n    # 可视化BERT表示的相似度矩阵\n    plt.figure(figsize=(10, 8))\n    plt.imshow(bert_similarities, cmap='YlOrRd')\n    plt.colorbar(label='余弦相似度')\n    plt.title(f'\"{ambiguous_word}\"在不同上下文中的BERT表示相似度')\n    \n    # 设置坐标轴标签\n    context_labels = [f\"{year}: {context[:10]}...\" for year, context, _ in bert_vectors]\n    plt.xticks(range(len(context_labels)), context_labels, rotation=45, ha='right')\n    plt.yticks(range(len(context_labels)), context_labels)\n    \n    plt.tight_layout()\n    plt.show()\n    \n    print(f\"\\nWord2Vec中'{ambiguous_word}'的静态表示是固定的，无法区分不同上下文\")\n    print(f\"而BERT可以为'{ambiguous_word}'在不同上下文中生成不同的表示\")\n    print(\"相似度矩阵展示了这些表示之间的差异，相似度较低的对应不同语义用法\")\n\n\n\n\n19.1.4 生成句子向量比较\n我们将对比Word2Vec和BERT生成的句子向量在文本相似度任务上的表现：\n\n\n代码\n# 为每个报告生成句子向量\n# 1. 基于Word2Vec (简单平均)\ndef get_w2v_sentence_vector(tokens, model):\n    valid_tokens = [t for t in tokens if t in model.wv]\n    if not valid_tokens:\n        return np.zeros(model.vector_size)\n    return np.mean([model.wv[t] for t in valid_tokens], axis=0)\n\n# 2. 基于BERT的[CLS]标记\ndef get_bert_sentence_vector(text, tokenizer, model):\n    result = get_bert_embeddings(text, tokenizer, model)\n    return result['cls_embedding'][0]\n\n# 生成向量\nw2v_doc_vectors = [get_w2v_sentence_vector(doc, w2v_model) for doc in corpus]\nbert_doc_vectors = []\n\nfor i, _ in govreport.iterrows():\n    # 取报告的前512个字符（BERT输入长度限制）\n    text_sample = govreport.iloc[i]['texts'][:512]\n    bert_vec = get_bert_sentence_vector(text_sample, tokenizer, model)\n    bert_doc_vectors.append(bert_vec)\n\n# 计算报告之间的相似度\nw2v_similarities = cosine_similarity(w2v_doc_vectors)\nbert_similarities = cosine_similarity(bert_doc_vectors)\n\n# 可视化报告相似度矩阵比较\nfig, axes = plt.subplots(1, 2, figsize=(16, 7))\n\n# Word2Vec相似度矩阵\nim1 = axes[0].imshow(w2v_similarities, cmap='Blues')\naxes[0].set_title('Word2Vec: 报告相似度矩阵')\naxes[0].set_xticks(range(len(years)))\naxes[0].set_yticks(range(len(years)))\naxes[0].set_xticklabels(years)\naxes[0].set_yticklabels(years)\nplt.colorbar(im1, ax=axes[0])\n\n# BERT相似度矩阵\nim2 = axes[1].imshow(bert_similarities, cmap='Reds')\naxes[1].set_title('BERT: 报告相似度矩阵')\naxes[1].set_xticks(range(len(years)))\naxes[1].set_yticks(range(len(years)))\naxes[1].set_xticklabels(years)\naxes[1].set_yticklabels(years)\nplt.colorbar(im2, ax=axes[1])\n\nplt.tight_layout()\nplt.show()\n\n\n\n\n19.1.5 关键词提取对比\n比较BERT和Word2Vec在关键词提取任务上的差异：\n\n\n代码\n# 基于BERT的关键词提取\ndef extract_bert_keywords(text, tokenizer, model, top_n=10):\n    # 将文本分成短句\n    sentences = re.split(r'[，。！？；]', text)\n    sentences = [s for s in sentences if len(s) &gt; 5]\n    \n    if not sentences:\n        return []\n    \n    # 对每个句子获取词元表示\n    all_tokens = []\n    all_embeddings = []\n    \n    for sentence in sentences[:20]:  # 限制句子数量\n        result = get_bert_embeddings(sentence, tokenizer, model)\n        tokens = result['tokens']\n        embeddings = result['token_embeddings'][0]\n        \n        # 过滤掉特殊标记和重复词\n        valid_indices = []\n        valid_tokens = []\n        for i, token in enumerate(tokens):\n            if token not in ['[CLS]', '[SEP]', '[PAD]'] and '##' not in token:\n                if token not in valid_tokens:\n                    valid_indices.append(i)\n                    valid_tokens.append(token)\n        \n        all_tokens.extend([tokens[i] for i in valid_indices])\n        all_embeddings.extend([embeddings[i] for i in valid_indices])\n    \n    if not all_tokens:\n        return []\n    \n    # 计算每个词与文档中心的余弦相似度\n    doc_center = np.mean(all_embeddings, axis=0)\n    token_scores = []\n    \n    for i, token in enumerate(all_tokens):\n        if token in stop_words or len(token) &lt; 2:\n            continue\n        score = cosine_similarity([all_embeddings[i]], [doc_center])[0][0]\n        token_scores.append((token, score))\n    \n    # 按分数排序并返回前N个关键词\n    unique_tokens = {}\n    for token, score in token_scores:\n        if token not in unique_tokens or score &gt; unique_tokens[token]:\n            unique_tokens[token] = score\n    \n    sorted_tokens = sorted(unique_tokens.items(), key=lambda x: x[1], reverse=True)\n    return sorted_tokens[:top_n]\n\n# 选择2023年报告进行分析\nreport_idx = govreport[govreport['Year'] == 2023].index[0]\nreport_text = govreport.loc[report_idx, 'texts']\nreport_tokens = corpus[report_idx]\n\n# Word2Vec关键词（使用上一讲的中心性方法）\ndef get_w2v_central_words(tokens, model, top_n=10):\n    # 过滤不在模型中的词\n    valid_tokens = [t for t in tokens if t in model.wv]\n    \n    if not valid_tokens:\n        return []\n    \n    # 计算中心性\n    word_centrality = {}\n    for word in set(valid_tokens):\n        if len(word) &lt; 2:  # 跳过单字词\n            continue\n        similarities = [model.wv.similarity(word, t) for t in valid_tokens if t != word]\n        if similarities:\n            word_centrality[word] = sum(similarities) / len(similarities)\n    \n    # 返回中心性最高的词\n    return sorted(word_centrality.items(), key=lambda x: x[1], reverse=True)[:top_n]\n\n# 提取关键词\nw2v_keywords = get_w2v_central_words(report_tokens, w2v_model)\nbert_keywords = extract_bert_keywords(report_text[:2000], tokenizer, model)  # 限制文本长度\n\n# 打印结果比较\nprint(\"Word2Vec提取的关键词:\")\nfor word, score in w2v_keywords:\n    print(f\"{word}: {score:.4f}\")\n\nprint(\"\\nBERT提取的关键词:\")\nfor word, score in bert_keywords:\n    print(f\"{word}: {score:.4f}\")",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#使用预训练模型进行主题分析",
     "href": "13_llm.html#使用预训练模型进行主题分析",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "19.2 使用预训练模型进行主题分析",
     "text": "19.2 使用预训练模型进行主题分析\n接下来，我们探索如何使用BERT进行政府工作报告的主题分析。\n\n19.2.1 基于BERT表示的文本聚类\n\n\n代码\nfrom sklearn.cluster import KMeans\nfrom sklearn.decomposition import PCA\n\n# 对BERT文档向量进行聚类\nn_clusters = 3\nkmeans = KMeans(n_clusters=n_clusters, random_state=42)\ncluster_labels = kmeans.fit_predict(bert_doc_vectors)\n\n# 将聚类结果与年份对应\ncluster_df = pd.DataFrame({\n    'Year': years,\n    'Cluster': cluster_labels\n})\n\n# 对结果进行可视化（使用PCA降维）\npca = PCA(n_components=2)\nbert_2d = pca.fit_transform(bert_doc_vectors)\n\nplt.figure(figsize=(12, 8))\nfor cluster in range(n_clusters):\n    # 找出属于当前簇的点\n    cluster_points = bert_2d[cluster_labels == cluster]\n    cluster_years = [years[i] for i in range(len(years)) if cluster_labels[i] == cluster]\n    \n    # 绘制点\n    plt.scatter(cluster_points[:, 0], cluster_points[:, 1], label=f'Cluster {cluster}', alpha=0.7)\n    \n    # 添加年份标签\n    for i, point in enumerate(cluster_points):\n        plt.annotate(cluster_years[i], xy=point, fontsize=10)\n\nplt.title('基于BERT表示的政府工作报告聚类')\nplt.xlabel('PCA维度1')\nplt.ylabel('PCA维度2')\nplt.legend()\nplt.grid(True, linestyle='--', alpha=0.5)\nplt.tight_layout()\nplt.show()\n\n# 分析每个簇的主题特征\nfor cluster in range(n_clusters):\n    cluster_indices = [i for i, label in enumerate(cluster_labels) if label == cluster]\n    cluster_years = [years[i] for i in cluster_indices]\n    \n    print(f\"\\n簇 {cluster} 包含年份: {', '.join(map(str, cluster_years))}\")\n    \n    # 合并该簇的所有文档\n    cluster_text = \" \".join([govreport.iloc[i]['texts'][:500] for i in cluster_indices])\n    \n    # 提取该簇的主题词\n    cluster_keywords = extract_bert_keywords(cluster_text, tokenizer, model, top_n=15)\n    print(\"主题词:\")\n    for word, score in cluster_keywords:\n        print(f\"  {word}: {score:.4f}\")\n\n\n\n\n19.2.2 文本主题随时间的演变分析\n\n\n代码\n# 对每年报告提取主题词，分析主题随时间的演变\nyears_list = sorted(set(years))\nyearly_topics = {}\n\nfor year in years_list:\n    idx = govreport[govreport['Year'] == year].index[0]\n    text = govreport.loc[idx, 'texts'][:2000]  # 限制长度\n    \n    # 提取主题词\n    topics = extract_bert_keywords(text, tokenizer, model, top_n=10)\n    yearly_topics[year] = topics\n\n# 跟踪某些关键词随时间的变化\nfocus_words = ['创新', '发展', '改革', '民生', '科技', '数字', '经济']\nword_trends = {word: [] for word in focus_words}\n\nfor year in years_list:\n    # 创建当年主题词的字典\n    year_word_scores = {word: score for word, score in yearly_topics[year]}\n    \n    # 记录焦点词的出现情况\n    for word in focus_words:\n        if word in year_word_scores:\n            word_trends[word].append((year, year_word_scores[word]))\n        else:\n            word_trends[word].append((year, 0))\n\n# 可视化关键词趋势\nplt.figure(figsize=(14, 8))\nfor word, trend in word_trends.items():\n    years_data = [t[0] for t in trend]\n    scores = [t[1] for t in trend]\n    plt.plot(years_data, scores, marker='o', linewidth=2, label=word)\n\nplt.title('政府工作报告中关键概念的重要性变化')\nplt.xlabel('年份')\nplt.ylabel('主题重要性得分')\nplt.legend()\nplt.grid(True, linestyle='--', alpha=0.5)\nplt.xticks(years_list)\nplt.tight_layout()\nplt.show()\n\n\n\n\n19.2.3 语义相似度异常点检测\n\n\n代码\nfrom sklearn.neighbors import LocalOutlierFactor\n\n# 使用局部异常因子(LOF)算法检测异常点\nlof = LocalOutlierFactor(n_neighbors=2, contamination=0.1)\noutliers = lof.fit_predict(bert_doc_vectors)\n\n# 异常点是-1，正常点是1\nanomaly_indices = [i for i, label in enumerate(outliers) if label == -1]\nanomaly_years = [years[i] for i in anomaly_indices]\n\nprint(f\"检测到的异常报告: {', '.join(map(str, anomaly_years))}\")\n\n# 可视化异常点\nplt.figure(figsize=(12, 8))\nplt.scatter(bert_2d[:, 0], bert_2d[:, 1], c=['red' if x == -1 else 'blue' for x in outliers], \n            alpha=0.7, label=['Anomaly' if x == -1 else 'Normal' for x in outliers])\n\n# 添加年份标签\nfor i, point in enumerate(bert_2d):\n    plt.annotate(years[i], xy=point, fontsize=10)\n\nplt.title('政府工作报告语义异常检测')\nplt.xlabel('PCA维度1')\nplt.ylabel('PCA维度2')\nplt.legend()\nplt.grid(True, linestyle='--', alpha=0.5)\nplt.tight_layout()\nplt.show()\n\n# 分析异常报告的特点\nif anomaly_indices:\n    for idx in anomaly_indices:\n        year = years[idx]\n        print(f\"\\n{year}年报告被检测为异常，分析其特点:\")\n        \n        # 提取该报告的特有词汇\n        text = govreport.iloc[idx]['texts'][:2000]\n        keywords = extract_bert_keywords(text, tokenizer, model, top_n=10)\n        \n        print(\"特征词:\")\n        for word, score in keywords:\n            print(f\"  {word}: {score:.4f}\")\n        \n        # 计算与其他报告的平均相似度\n        similarities = []\n        for i in range(len(bert_doc_vectors)):\n            if i != idx:\n                sim = cosine_similarity([bert_doc_vectors[idx]], [bert_doc_vectors[i]])[0][0]\n                similarities.append((years[i], sim))\n        \n        avg_similarity = sum(sim for _, sim in similarities) / len(similarities)\n        print(f\"与其他报告的平均相似度: {avg_similarity:.4f}\")\n        \n        # 找出最不相似的报告\n        least_similar = min(similarities, key=lambda x: x[1])\n        print(f\"最不相似的报告是{least_similar[0]}年，相似度为{least_similar[1]:.4f}\")",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#使用finbert进行金融文本分类",
     "href": "13_llm.html#使用finbert进行金融文本分类",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "20.1 使用FinBERT进行金融文本分类",
     "text": "20.1 使用FinBERT进行金融文本分类\nFinBERT是一种针对金融领域进行微调的BERT变体，专门为金融文本分析而设计。\n\n20.1.1 安装与加载FinBERT\n\n\n代码\n# 安装所需库\n# !pip install transformers sentencepiece matplotlib\n# !pip install finbert\n\nimport torch\nfrom transformers import AutoModelForSequenceClassification, AutoTokenizer\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# 加载FinBERT模型\ntokenizer = AutoTokenizer.from_pretrained(\"ProsusAI/finbert\")\nmodel = AutoModelForSequenceClassification.from_pretrained(\"ProsusAI/finbert\")\nmodel.eval()  # 设置为评估模式\n\n\n\n\n20.1.2 金融情感分析\nFinBERT的一个主要用途是金融文本的情感分析，可以将文本分类为正面、负面或中性：\n\n\n代码\ndef analyze_sentiment(text, model, tokenizer):\n    inputs = tokenizer(text, return_tensors=\"pt\", padding=True, truncation=True, max_length=512)\n    \n    with torch.no_grad():\n        outputs = model(**inputs)\n        predictions = torch.nn.functional.softmax(outputs.logits, dim=-1)\n    \n    # FinBERT情感标签: 0=negative, 1=neutral, 2=positive\n    sentiment_labels = [\"负面\", \"中性\", \"正面\"]\n    scores = predictions[0].numpy()\n    \n    results = []\n    for i in range(len(sentiment_labels)):\n        results.append((sentiment_labels[i], float(scores[i])))\n    \n    return sorted(results, key=lambda x: x[1], reverse=True)\n\n# 测试几个金融相关的文本片段\ntest_texts = [\n    \"今年以来，我国经济稳中向好，经济增长好于预期，通胀水平保持稳定。\",\n    \"受外部需求减弱影响，出口增长放缓，企业经营压力加大，就业形势更加严峻。\",\n    \"科技创新成为经济高质量发展的强大动力，数字经济蓬勃发展。\",\n    \"金融风险明显增加，部分企业债务违约，需要加强风险防控。\",\n    \"资本市场改革持续推进，投资者信心有所恢复，市场预期逐步改善。\"\n]\n\n# 分析情感\nsentiments = []\nfor text in test_texts:\n    sentiment = analyze_sentiment(text, model, tokenizer)\n    sentiments.append(sentiment)\n    print(f\"文本: {text}\")\n    for label, score in sentiment:\n        print(f\"  {label}: {score:.4f}\")\n    print()\n\n# 可视化情感分析结果\nfig, ax = plt.subplots(figsize=(12, 8))\nx = np.arange(len(test_texts))\nwidth = 0.25\n\n# 提取各情感得分\nnegative_scores = [sentiment[2][1] for sentiment in sentiments]\nneutral_scores = [sentiment[1][1] for sentiment in sentiments]\npositive_scores = [sentiment[0][1] for sentiment in sentiments]\n\n# 绘制条形图\nax.bar(x - width, positive_scores, width, label='正面')\nax.bar(x, neutral_scores, width, label='中性')\nax.bar(x + width, negative_scores, width, label='负面')\n\nax.set_ylabel('情感得分')\nax.set_title('FinBERT金融文本情感分析')\nax.set_xticks(x)\nax.set_xticklabels([f'文本{i+1}' for i in range(len(test_texts))])\nax.legend()\n\nplt.tight_layout()\nplt.show()\n\n\n\n\n20.1.3 对政府工作报告进行金融情感分析\n接下来，我们使用FinBERT分析政府工作报告中的金融相关段落：\n\n\n代码\n# 从政府工作报告中提取金融相关段落\ndef extract_finance_paragraphs(text, keywords=None):\n    if keywords is None:\n        keywords = ['经济', '金融', '财政', '税收', '货币', '银行', '债务', '投资', \n                  '证券', '股市', '外汇', '通胀', '增长', '风险', '改革']\n    \n    # 将文本分成段落\n    paragraphs = text.split('\\n')\n    \n    # 过滤出含有金融关键词的段落\n    finance_paragraphs = []\n    for para in paragraphs:\n        if len(para) &lt; 10:  # 跳过短段落\n            continue\n        if any(keyword in para for keyword in keywords):\n            finance_paragraphs.append(para)\n    \n    return finance_paragraphs\n\n# 按年份分析政府工作报告的金融情感\nyearly_sentiments = {}\n\nfor year in years_list:\n    idx = govreport[govreport['Year'] == year].index[0]\n    text = govreport.loc[idx, 'texts']\n    \n    # 提取金融段落\n    finance_paras = extract_finance_paragraphs(text)\n    \n    # 不分析段落过少的年份\n    if len(finance_paras) &lt; 3:\n        continue\n    \n    # 分析每个段落的情感\n    para_sentiments = []\n    for para in finance_paras[:10]:  # 限制段落数量\n        sentiment = analyze_sentiment(para, model, tokenizer)\n        para_sentiments.append(sentiment)\n    \n    # 计算平均情感分数\n    avg_positive = np.mean([s[0][1] for s in para_sentiments])\n    avg_neutral = np.mean([s[1][1] for s in para_sentiments])\n    avg_negative = np.mean([s[2][1] for s in para_sentiments])\n    \n    yearly_sentiments[year] = {\n        \"正面\": avg_positive,\n        \"中性\": avg_neutral,\n        \"负面\": avg_negative\n    }\n\n# 可视化情感随时间的变化\nplt.figure(figsize=(14, 8))\nyears = sorted(yearly_sentiments.keys())\npositive_scores = [yearly_sentiments[year][\"正面\"] for year in years]\nneutral_scores = [yearly_sentiments[year][\"中性\"] for year in years]\nnegative_scores = [yearly_sentiments[year][\"负面\"] for year in years]\n\nplt.plot(years, positive_scores, 'g-', marker='o', linewidth=2, label='正面')\nplt.plot(years, neutral_scores, 'b-', marker='s', linewidth=2, label='中性')\nplt.plot(years, negative_scores, 'r-', marker='^', linewidth=2, label='负面')\n\nplt.title('政府工作报告金融段落情感变化趋势')\nplt.xlabel('年份')\nplt.ylabel('情感强度')\nplt.legend()\nplt.grid(True, linestyle='--', alpha=0.5)\nplt.xticks(years)\nplt.tight_layout()\nplt.show()",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#使用通用大语言模型的零样本分类",
     "href": "13_llm.html#使用通用大语言模型的零样本分类",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "20.2 使用通用大语言模型的零样本分类",
     "text": "20.2 使用通用大语言模型的零样本分类\n除了专业领域模型，我们还可以利用通用大语言模型的强大能力进行零样本分类，无需额外训练。\n\n20.2.1 安装与设置大语言模型\n\n\n代码\n# 安装所需库\n# !pip install openai\n# !pip install deepseek\n\n# 导入必要的库\nimport openai\nimport os\nimport pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom deepseek import DeepSeekAPI\n\n# 设置API密钥（请使用自己的API密钥）\n# openai.api_key = \"your-api-key-here\"  # GPT-4/3.5\n# deepseek_api = DeepSeekAPI(\"your-deepseek-api-key\")  # DeepSeek\n\n\n\n\n20.2.2 零样本文本分类\n我们可以使用大语言模型进行零样本分类，无需提供训练数据：\n\n\n代码\ndef classify_text_with_gpt(text, categories, model=\"gpt-3.5-turbo\"):\n    \"\"\"使用GPT模型进行零样本文本分类\"\"\"\n    prompt = f\"\"\"请将以下文本分类到这些类别之一: {', '.join(categories)}。\n    只需回复类别名称，不要添加任何解释或标点符号。\n    \n    文本: {text}\n    \"\"\"\n    \n    response = openai.ChatCompletion.create(\n        model=model,\n        messages=[\n            {\"role\": \"system\", \"content\": \"你是一个精确的文本分类助手。\"},\n            {\"role\": \"user\", \"content\": prompt}\n        ],\n        temperature=0,\n    )\n    \n    return response.choices[0].message.content.strip()\n\ndef classify_text_with_deepseek(text, categories, model=\"deepseek-chat\"):\n    \"\"\"使用DeepSeek模型进行零样本文本分类\"\"\"\n    prompt = f\"\"\"请将以下文本分类到这些类别之一: {', '.join(categories)}。\n    只需回复类别名称，不要添加任何解释或标点符号。\n    \n    文本: {text}\n    \"\"\"\n    \n    response = deepseek_api.chat.completions.create(\n        model=model,\n        messages=[\n            {\"role\": \"system\", \"content\": \"你是一个精确的文本分类助手。\"},\n            {\"role\": \"user\", \"content\": prompt}\n        ],\n        temperature=0,\n    )\n    \n    return response.choices[0].message.content.strip()\n\n# 示例：将政府工作报告段落分类为不同政策领域\npolicy_categories = [\"经济发展\", \"科技创新\", \"民生改善\", \"环境保护\", \"改革开放\", \"风险防控\"]\n\n# 从多个年份的报告中选取段落\nsample_paragraphs = []\nsample_years = [2019, 2020, 2021, 2022, 2023]\n\nfor year in sample_years:\n    idx = govreport[govreport['Year'] == year].index[0]\n    text = govreport.loc[idx, 'texts']\n    \n    # 提取段落\n    paragraphs = [p for p in text.split('\\n') if len(p) &gt; 50 and len(p) &lt; 200]\n    if paragraphs:\n        # 随机选择一个段落\n        import random\n        selected_para = random.choice(paragraphs)\n        sample_paragraphs.append((year, selected_para))\n\n# 使用大语言模型进行分类\n# 注意：实际运行时取消注释以下代码，但需要API密钥\n\"\"\"\nclassification_results = []\nfor year, para in sample_paragraphs:\n    # category = classify_text_with_gpt(para, policy_categories)\n    category = classify_text_with_deepseek(para, policy_categories)\n    classification_results.append((year, para[:50] + \"...\", category))\n\n# 打印分类结果\nprint(\"大语言模型零样本分类结果:\")\nfor year, para_preview, category in classification_results:\n    print(f\"{year}年段落: {para_preview}\")\n    print(f\"分类: {category}\\n\")\n\"\"\"\n\n\n\n\n20.2.3 使用大模型生成金融文本摘要\n大语言模型在摘要生成方面表现出色，可以用于提取政府工作报告中的金融政策要点：\n\n\n代码\ndef generate_summary_with_gpt(text, model=\"gpt-3.5-turbo\"):\n    \"\"\"使用GPT模型生成摘要\"\"\"\n    prompt = f\"\"\"请总结以下政府工作报告中的金融政策要点，以简洁的要点形式列出，最多5条:\n\n    {text}\n    \"\"\"\n    \n    response = openai.ChatCompletion.create(\n        model=model,\n        messages=[\n            {\"role\": \"system\", \"content\": \"你是一个专业的金融政策分析师。\"},\n            {\"role\": \"user\", \"content\": prompt}\n        ],\n        temperature=0.3,\n        max_tokens=300\n    )\n    \n    return response.choices[0].message.content.strip()\n\ndef generate_summary_with_deepseek(text, model=\"deepseek-chat\"):\n    \"\"\"使用DeepSeek模型生成摘要\"\"\"\n    prompt = f\"\"\"请总结以下政府工作报告中的金融政策要点，以简洁的要点形式列出，最多5条:\n\n    {text}\n    \"\"\"\n    \n    response = deepseek_api.chat.completions.create(\n        model=model,\n        messages=[\n            {\"role\": \"system\", \"content\": \"你是一个专业的金融政策分析师。\"},\n            {\"role\": \"user\", \"content\": prompt}\n        ],\n        temperature=0.3,\n        max_tokens=300\n    )\n    \n    return response.choices[0].message.content.strip()\n\n# 为近几年的报告生成金融政策摘要\n# 注意：实际运行时取消注释以下代码，但需要API密钥\n\"\"\"\npolicy_summaries = {}\nfor year in [2021, 2022, 2023]:\n    idx = govreport[govreport['Year'] == year].index[0]\n    text = govreport.loc[idx, 'texts']\n    \n    # 提取金融段落\n    finance_paras = extract_finance_paragraphs(text)\n    finance_text = \"\\n\".join(finance_paras[:10])  # 限制输入长度\n    \n    # 生成摘要\n    # summary = generate_summary_with_gpt(finance_text)\n    summary = generate_summary_with_deepseek(finance_text)\n    policy_summaries[year] = summary\n\n# 打印摘要结果\nfor year, summary in policy_summaries.items():\n    print(f\"{year}年政府工作报告金融政策要点:\")\n    print(summary)\n    print(\"\\n\" + \"-\"*50 + \"\\n\")\n\"\"\"",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#使用大语言模型进行高级文本分析",
     "href": "13_llm.html#使用大语言模型进行高级文本分析",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "20.3 使用大语言模型进行高级文本分析",
     "text": "20.3 使用大语言模型进行高级文本分析\n大语言模型还可以用于更复杂的无监督文本分析任务。\n\n20.3.1 提示式主题建模\n使用提示工程（Prompt Engineering）引导大语言模型进行主题发现：\n\n\n代码\ndef extract_topics_with_gpt(texts, n_topics=5, model=\"gpt-3.5-turbo\"):\n    \"\"\"使用GPT模型进行提示式主题建模\"\"\"\n    # 合并文本，但限制长度以适应API限制\n    combined_text = \"\\n\\n\".join(texts)\n    if len(combined_text) &gt; 4000:\n        combined_text = combined_text[:4000] + \"...\"\n    \n    prompt = f\"\"\"作为一个文本挖掘专家，请分析以下多个文本片段，识别其中的{n_topics}个主要主题。\n    每个主题请提供一个简短标题和3-5个关键词。\n    请仅输出主题和关键词，不要有其他解释。\n    \n    文本片段:\n    {combined_text}\n    \"\"\"\n    \n    response = openai.ChatCompletion.create(\n        model=model,\n        messages=[\n            {\"role\": \"system\", \"content\": \"你是一个专业的文本挖掘专家。\"},\n            {\"role\": \"user\", \"content\": prompt}\n        ],\n        temperature=0.2,\n        max_tokens=500\n    )\n    \n    return response.choices[0].message.content.strip()\n\n# 从多个年份的报告中提取金融段落\nall_finance_paras = []\nfor year in years_list[-5:]:  # 只取最近5年\n    idx = govreport[govreport['Year'] == year].index[0]\n    text = govreport.loc[idx, 'texts']\n    finance_paras = extract_finance_paragraphs(text)\n    all_finance_paras.extend(finance_paras[:5])  # 每年取5个段落\n\n# 使用大语言模型进行主题建模\n# 注意：实际运行时取消注释以下代码，但需要API密钥\n\"\"\"\ntopics = extract_topics_with_gpt(all_finance_paras)\nprint(\"大语言模型识别的主题:\")\nprint(topics)\n\"\"\"\n\n\n\n\n20.3.2 思维链分析\n使用思维链（Chain-of-Thought）技术引导大语言模型进行深度分析：\n\n\n代码\ndef analyze_with_cot(text, question, model=\"gpt-3.5-turbo\"):\n    \"\"\"使用思维链技术进行深度分析\"\"\"\n    prompt = f\"\"\"请分析以下政府工作报告文本，回答问题。\n    请先逐步思考，然后给出最终答案。\n    \n    文本:\n    {text}\n    \n    问题: {question}\n    \n    逐步思考:\n    \"\"\"\n    \n    response = openai.ChatCompletion.create(\n        model=model,\n        messages=[\n            {\"role\": \"system\", \"content\": \"你是一个专业的政策分析师。\"},\n            {\"role\": \"user\", \"content\": prompt}\n        ],\n        temperature=0.3,\n        max_tokens=800\n    )\n    \n    return response.choices[0].message.content.strip()\n\n# 示例：分析最新报告中的政策转变\n# 注意：实际运行时取消注释以下代码，但需要API密钥\n\"\"\"\n# 获取2023年报告\nlatest_idx = govreport[govreport['Year'] == 2023].index[0]\nlatest_text = govreport.loc[latest_idx, 'texts']\n\n# 限制文本长度\nanalysis_text = latest_text[:3000]\n\n# 定义分析问题\nanalysis_question = \"这份政府工作报告对金融风险防控政策有哪些新的调整？这些调整与前几年相比有何变化？\"\n\n# 进行思维链分析\nanalysis_result = analyze_with_cot(analysis_text, analysis_question)\nprint(\"思维链分析结果:\")\nprint(analysis_result)\n\"\"\"\n\n\n\n\n20.3.3 嵌入空间与向量检索\n大语言模型的嵌入向量可用于高级语义检索：\n\n\n代码\ndef get_embedding_with_openai(text, model=\"text-embedding-ada-002\"):\n    \"\"\"获取OpenAI的文本嵌入向量\"\"\"\n    if not text.strip():\n        return np.zeros(1536)  # OpenAI embeddings are 1536-dimensional\n    \n    # 限制文本长度\n    if len(text) &gt; 8000:\n        text = text[:8000]\n    \n    response = openai.Embedding.create(\n        input=text,\n        model=model\n    )\n    \n    embedding = response['data'][0]['embedding']\n    return np.array(embedding)\n\n# 为政府工作报告段落生成嵌入向量\n# 注意：实际运行时取消注释以下代码，但需要API密钥\n\"\"\"\n# 准备段落\nall_paragraphs = []\nfor year in years_list:\n    idx = govreport[govreport['Year'] == year].index[0]\n    text = govreport.loc[idx, 'texts']\n    \n    # 分段\n    paragraphs = [p for p in text.split('\\n') if len(p) &gt; 50]\n    for para in paragraphs[:10]:  # 每年最多10个段落\n        all_paragraphs.append({\n            'year': year,\n            'content': para\n        })\n\n# 生成嵌入向量\nfor i, para in enumerate(all_paragraphs):\n    embedding = get_embedding_with_openai(para['content'])\n    all_paragraphs[i]['embedding'] = embedding\n    \n# 计算相似度矩阵\nn_paras = len(all_paragraphs)\nsimilarity_matrix = np.zeros((n_paras, n_paras))\n\nfor i in range(n_paras):\n    for j in range(n_paras):\n        if i == j:\n            similarity_matrix[i, j] = 1.0\n        else:\n            similarity_matrix[i, j] = cosine_similarity(\n                [all_paragraphs[i]['embedding']], \n                [all_paragraphs[j]['embedding']]\n            )[0, 0]\n\n# 找出每个段落最相似的其他段落\nfor i, para in enumerate(all_paragraphs):\n    similar_indices = np.argsort(similarity_matrix[i])[-3:-1][::-1]  # 排除自身，取前2个\n    \n    print(f\"{para['year']}年段落:\")\n    print(para['content'][:100] + \"...\\n\")\n    \n    print(\"最相似的段落:\")\n    for idx in similar_indices:\n        sim_para = all_paragraphs[idx]\n        sim_score = similarity_matrix[i, idx]\n        print(f\"- {sim_para['year']}年 (相似度: {sim_score:.4f}):\")\n        print(sim_para['content'][:100] + \"...\\n\")\n    \n    print(\"-\"*80 + \"\\n\")\n\"\"\"",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#应用大语言模型的最佳实践",
     "href": "13_llm.html#应用大语言模型的最佳实践",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "20.4 应用大语言模型的最佳实践",
     "text": "20.4 应用大语言模型的最佳实践\n在金融文本分析中应用大语言模型时，应注意以下几点：\n\n20.4.1 提示设计技巧\n\n明确任务界定：\n\n清晰指定分析目标和期望输出格式\n使用领域专业术语增强精确性\n\n思维链设计：\n\n引导模型分步思考复杂问题\n要求模型先分析再总结\n\n角色设定：\n\n指定模型扮演”金融分析师”等专业角色\n增强输出的专业性和针对性\n\n\n\n\n20.4.2 金融特定优化\n\n上下文补充：\n\n提供行业背景信息增强理解\n明确时间线帮助模型理解经济周期\n\n多模型比较：\n\n使用通用模型和金融专业模型对比结果\n综合优势获得更全面分析\n\n人机协作：\n\n将模型输出作为专业分析的起点\n关键决策仍需人类专家判断\n\n\n\n\n20.4.3 局限性与注意事项\n\n事实准确性：\n\n大语言模型可能产生”幻觉”，输出虚构内容\n关键数据和结论需要人工验证\n\n偏见风险：\n\n模型可能继承训练数据中的偏见\n金融分析需要客观中立\n\n时效性限制：\n\n模型知识截止日期后的事件需要通过提示补充\n定期更新分析以反映最新情况",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#从静态向量到大语言模型的演进",
     "href": "13_llm.html#从静态向量到大语言模型的演进",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "21.1 从静态向量到大语言模型的演进",
     "text": "21.1 从静态向量到大语言模型的演进\n本讲我们从Word2Vec的局限性出发，介绍了BERT等Transformer模型的原理，以及大语言模型的应用：\n\n表示方法演进：从静态词向量到上下文感知的动态表示\n架构演进：从浅层神经网络到深层Transformer架构\n规模演进：从百万参数到千亿参数\n应用演进：从特征提取到端到端文本理解与生成",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#无监督学习的新范式",
     "href": "13_llm.html#无监督学习的新范式",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "21.2 无监督学习的新范式",
     "text": "21.2 无监督学习的新范式\n大语言模型为无监督学习带来了新的范式：\n\n零样本学习：无需额外标注数据，直接分类新数据\n上下文学习：通过提示中的示例引导模型学习模式\n涌现能力：模型规模增长带来质的飞跃\n提示工程：通过设计提示引导模型行为",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#金融文本分析的未来方向",
     "href": "13_llm.html#金融文本分析的未来方向",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "21.3 金融文本分析的未来方向",
     "text": "21.3 金融文本分析的未来方向\n大语言模型在金融文本分析中的未来方向包括：\n\n多模态融合：结合文本、数值、图表等多种数据\n实时适应：持续学习最新市场信息和政策变化\n可解释性增强：提高模型决策的透明度\n领域知识增强：融入更多金融专业知识",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#进阶学习资源",
     "href": "13_llm.html#进阶学习资源",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "21.4 进阶学习资源",
     "text": "21.4 进阶学习资源\n\n理论深入：\n\n《Attention Is All You Need》 - Transformer原始论文\n《BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding》\n\n实践教程：\n\nHugging Face Transformers 库文档\nOpenAI GPT API 文档\n\n金融NLP资源：\n\nFinBERT 和 FinGPT 项目\n金融领域预训练模型集合",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
     "objectID": "13_llm.html#本讲小结",
     "href": "13_llm.html#本讲小结",
-    "title": "15  文本分析(三)：大语言模型及其应用",
+    "title": "15  文本分析3：大语言模型及其应用",
     "section": "21.5 本讲小结",
     "text": "21.5 本讲小结\n本讲我们从Word2Vec的局限性出发，介绍了BERT和Transformer架构的原理，以及大语言模型在金融文本分析中的应用：\n\n从静态词向量到动态上下文表示的演进\nTransformer架构与自注意力机制的工作原理\nBERT等预训练模型的内部结构和应用方法\n大语言模型的关键创新与涌现能力\n实践案例：使用BERT和大语言模型分析政府工作报告\n\n通过这些内容，我们理解了现代NLP技术在金融文本分析中的强大能力，以及如何将这些技术应用于实际金融分析任务。",
     "crumbs": [
-      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析(三)：大语言模型及其应用</span>"
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>文本分析3：大语言模型及其应用</span>"
     ]
   },
   {
@@ -1477,6 +1457,16 @@
     "text": "18.7 评分标准\n\n课堂展示（40分）\n\n内容全面性：清晰展示中文文本数据获取、预处理、特征提取和风险评估的完整流程\n技术理解：准确阐述中文财务文本分析的特点和所采用NLP技术的优缺点\n结果分析：深入解读企业网络安全风险评估结果及其行业差异\n可视化呈现：包含关键词频统计图、主题分布图、风险评分对比图等专业可视化图表\n创新性：展示特色词典构建或针对中文财务文本的特殊处理方法\n时间控制：重点突出，在10分钟内完整呈现核心内容\n\n代码质量（30分）\n\n完整性：包含文本获取、中文分词、特征提取、模型构建和结果评估全流程\n中文处理：正确实现中文文本的分词、去停用词和特征提取流程\n可重复性：设置随机种子，保证结果可复现，包含必要的词典文件\n规范性：代码模块化设计，有清晰的函数注释和文档说明（特别是中文注释）\n可视化：实现文本分析关键结果的可视化功能，包括词云、主题分布等\n\n模型性能（30分）\n\n特征工程：构建全面的中文网络安全相关特征，包括关键词频率、语义特征等\n风险指标：成功构建有效的网络安全风险评估指标体系\n模型多样性：至少实现3种不同文本分析方法（如词频统计、主题模型、情感分析）\n评估全面性：从多角度（行业对比、时间趋势、案例分析）评估分析结果\n实际应用：将文本分析结果与企业财务表现或市场反应进行关联分析",
     "crumbs": [
       "<span class='chapter-number'>18</span>  <span class='chapter-title'>项目2B：财务报表文本分析与企业网络安全风险评估</span>"
+    ]
+  },
+  {
+    "objectID": "review.html",
+    "href": "review.html",
+    "title": "19  《数据挖掘与机器学习》期末考试复习指南",
+    "section": "",
+    "text": "各位同学：\n大家好！本学期《数据挖掘与机器学习》课程即将结束，为帮助大家更好地准备期末考试，特整理本复习指南。期末考试旨在考察大家对课程核心理论知识的理解和应用能力。\n考试形式： 闭卷笔试 题型分布（参考）： 选择题、判断题、简答题、案例分析题 考试范围： 主要覆盖课程讲义及课堂讲解的核心内容。\n复习要点：\n一、 机器学习基础概念与流程 * 理解监督学习、无监督学习的基本概念和典型任务（分类、回归、聚类等）。 * 掌握典型的机器学习项目流程：问题定义 -&gt; 数据收集 -&gt; 数据预处理与特征工程 -&gt; 模型选择与训练 -&gt; 模型评估与调优 -&gt; 模型部署与监控。\n二、 数据预处理与特征工程 * 特征工程: 理解其在机器学习流程中的位置和重要性。 * 类别特征编码: 掌握常用方法，如独热编码（One-Hot Encoding）、标签编码（Label Encoding）的原理、优缺点和适用场景。 * 特征缩放: 了解为何需要特征缩放（如标准化、归一化），哪些算法对其敏感（如基于距离的算法、梯度下降优化的算法），哪些不太敏感（如基于树的模型）。\n三、 监督学习 * 算法原理与应用: * 逻辑回归: 理解其主要用途是解决二分类问题，能输出概率。 * 决策树: 了解其基本构建思想（基于信息增益或基尼不纯度等进行分裂）。 * 集成学习: * 理解Bagging（如随机森林基础）的基本思想（自助采样、并行训练、聚合结果）和主要目标（降低方差）。 * 理解Boosting（如GBDT）的基本思想（串行训练、关注错误/残差、加权组合）和基本工作原理。 * 掌握GBDT与随机森林在构建方式（串行 vs 并行）、依赖关系和目标侧重（降偏差 vs 降方差）上的主要区别。 * 神经网络: 了解隐藏层常用激活函数（如ReLU）的作用是引入非线性。 * 模型评估与选择: * 偏差-方差权衡: 理解偏差（Bias）、方差（Variance）的概念，及其与欠拟合（高偏差）、过拟合（高方差）的对应关系，掌握模型复杂度与两者权衡的基本思想。 * 评估指标: * 掌握准确率（Accuracy）、精确率（Precision）、召回率（Recall）、F1分数（F1-Score）的定义、计算方式和物理意义。 * 理解在类别不平衡数据场景下，准确率可能失效，为何需要重点关注Precision, Recall, F1等指标。 * 掌握ROC曲线绘制的是TPR vs FPR的关系，理解AUC值的含义（0.5代表随机，越接近1越好）。 * 验证方法: * 理解交叉验证（Cross-Validation，如K折）的基本原理和相比简单划分的优势（更稳健的评估、更有效利用数据）。 * 理解处理时间序列数据时为何不能用随机交叉验证（破坏时序性导致数据泄漏），掌握至少一种适用方法（如向前滚动划分/Walk-Forward）的原理与优缺点。 * 正则化: * 理解L1 (Lasso) 和 L2 (Ridge) 正则化的主要目的（作为一种模型复杂度控制手段，降低过拟合风险）。 * 了解L1正则化倾向于产生稀疏权重，具有特征选择的效果。\n四、 无监督学习及相关技术 * 聚类: * 理解聚类的核心目标（发现数据内在分组结构，使得簇内相似、簇间相异）。 * 了解聚类在金融客户分析中的应用（如客户细分及其价值）。 * （若涉及K-Means）了解其基本步骤和主要局限性（如需指定K值、对初始点敏感、假设球状簇等）。 * 降维: * 理解维度灾难（Curse of Dimensionality）的概念。 * 了解降维的主要目标（克服维度灾难、降低计算成本、去噪、可视化等）。 * 掌握经典的线性降维方法PCA的基本思想（最大化方差投影）。 * 能够识别常见的降维算法（如PCA, t-SNE, UMAP）并与其他类型算法（如KNN）区分开。 * 文本表示与分析基础: * 文本预处理: 理解分词（Tokenization）的基本概念。 * 文本表示方法: * 了解词袋模型（Bag-of-Words）及其忽略词序的主要局限性。 * 掌握TF-IDF的计算原理（TF * IDF）及其相比简单词频的优势（降低常见词权重，提升关键词权重）。了解其在金融文本分析中的应用。 * 了解词嵌入（Word Embeddings，如Word2Vec）的基本思想（将词映射为低维稠密向量，捕捉语义）。 * 主题模型: 了解其目标（从大量文档中发现隐藏的主题结构）。\n五、 复习建议 * 回归基础： 重点回顾和理解课程讲义及核心概念，确保基础扎实。 * 理解原理： 不仅要记住算法名称，更要理解其背后的基本原理、适用场景及优缺点。 * 联系实际： 思考课程中介绍的各种技术如何在金融场景（风控、量化、客户分析、文本处理等）中应用。 * 查漏补缺： 对照复习要点，检查自己是否有遗漏或理解不清的地方，及时复习巩固。\n预祝各位同学期末考试顺利，取得理想成绩！",
+    "crumbs": [
+      "<span class='chapter-number'>19</span>  <span class='chapter-title'>《数据挖掘与机器学习》期末考试复习指南</span>"
     ]
   }
 ]

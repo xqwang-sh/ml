@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>13&nbsp; 文本分析(一)：词频法与向量空间 – 数据挖掘与机器学习课程讲义</title>
+<title>13&nbsp; 文本分析1：词频法与向量空间 – 数据挖掘与机器学习课程讲义</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,40 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -144,7 +110,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11_nlp.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本分析(一)：词频法与向量空间</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11_nlp.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本分析1：词频法与向量空间</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="展开或折叠侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="搜索" onclick="window.quartoOpenSearch();">
@@ -244,19 +210,19 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11_nlp.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本分析(一)：词频法与向量空间</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本分析1：词频法与向量空间</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12_embedding.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析(二)：词向量与深度学习基础</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析2：词向量与深度学习基础</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13_llm.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">文本分析(三)：大语言模型及其应用</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">文本分析3：大语言模型及其应用</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -277,6 +243,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./review.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">《数据挖掘与机器学习》期末考试复习指南</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -290,28 +262,25 @@ window.Quarto = {
   <li><a href="#文本数据与nlp初步" id="toc-文本数据与nlp初步" class="nav-link active" data-scroll-target="#文本数据与nlp初步"><span class="header-section-number">14</span> 文本数据与NLP初步</a>
   <ul class="collapse">
   <li><a href="#文本数据的特点" id="toc-文本数据的特点" class="nav-link" data-scroll-target="#文本数据的特点"><span class="header-section-number">14.1</span> 文本数据的特点</a></li>
-  <li><a href="#应用案例政府工作报告分析" id="toc-应用案例政府工作报告分析" class="nav-link" data-scroll-target="#应用案例政府工作报告分析"><span class="header-section-number">14.2</span> 应用案例：政府工作报告分析</a></li>
-  <li><a href="#文本处理流程概览" id="toc-文本处理流程概览" class="nav-link" data-scroll-target="#文本处理流程概览"><span class="header-section-number">14.3</span> 文本处理流程概览</a></li>
+  <li><a href="#文本处理流程概览" id="toc-文本处理流程概览" class="nav-link" data-scroll-target="#文本处理流程概览"><span class="header-section-number">14.2</span> 文本处理流程概览</a></li>
   </ul></li>
   <li><a href="#文本预处理" id="toc-文本预处理" class="nav-link" data-scroll-target="#文本预处理"><span class="header-section-number">15</span> 文本预处理</a>
   <ul class="collapse">
-  <li><a href="#数据准备" id="toc-数据准备" class="nav-link" data-scroll-target="#数据准备"><span class="header-section-number">15.1</span> 数据准备</a></li>
-  <li><a href="#中文分词" id="toc-中文分词" class="nav-link" data-scroll-target="#中文分词"><span class="header-section-number">15.2</span> 中文分词</a></li>
-  <li><a href="#文本清洗与去停用词" id="toc-文本清洗与去停用词" class="nav-link" data-scroll-target="#文本清洗与去停用词"><span class="header-section-number">15.3</span> 文本清洗与去停用词</a></li>
-  <li><a href="#词袋模型详解" id="toc-词袋模型详解" class="nav-link" data-scroll-target="#词袋模型详解"><span class="header-section-number">15.4</span> 词袋模型详解</a>
+  <li><a href="#中文分词" id="toc-中文分词" class="nav-link" data-scroll-target="#中文分词"><span class="header-section-number">15.1</span> 中文分词</a></li>
+  <li><a href="#文本清洗与去停用词" id="toc-文本清洗与去停用词" class="nav-link" data-scroll-target="#文本清洗与去停用词"><span class="header-section-number">15.2</span> 文本清洗与去停用词</a></li>
+  <li><a href="#词袋模型详解" id="toc-词袋模型详解" class="nav-link" data-scroll-target="#词袋模型详解"><span class="header-section-number">15.3</span> 词袋模型详解</a>
   <ul class="collapse">
-  <li><a href="#词袋模型的理论基础" id="toc-词袋模型的理论基础" class="nav-link" data-scroll-target="#词袋模型的理论基础"><span class="header-section-number">15.4.1</span> 词袋模型的理论基础</a></li>
-  <li><a href="#词袋模型的变体" id="toc-词袋模型的变体" class="nav-link" data-scroll-target="#词袋模型的变体"><span class="header-section-number">15.4.2</span> 词袋模型的变体</a></li>
-  <li><a href="#词袋模型的向量化过程" id="toc-词袋模型的向量化过程" class="nav-link" data-scroll-target="#词袋模型的向量化过程"><span class="header-section-number">15.4.3</span> 词袋模型的向量化过程</a></li>
-  <li><a href="#词袋模型的特点" id="toc-词袋模型的特点" class="nav-link" data-scroll-target="#词袋模型的特点"><span class="header-section-number">15.4.4</span> 词袋模型的特点</a></li>
-  <li><a href="#政府工作报告应用实例" id="toc-政府工作报告应用实例" class="nav-link" data-scroll-target="#政府工作报告应用实例"><span class="header-section-number">15.4.5</span> 政府工作报告应用实例</a></li>
+  <li><a href="#词袋模型的理论基础" id="toc-词袋模型的理论基础" class="nav-link" data-scroll-target="#词袋模型的理论基础"><span class="header-section-number">15.3.1</span> 词袋模型的理论基础</a></li>
+  <li><a href="#词袋模型的变体" id="toc-词袋模型的变体" class="nav-link" data-scroll-target="#词袋模型的变体"><span class="header-section-number">15.3.2</span> 词袋模型的变体</a></li>
+  <li><a href="#词袋模型的向量化过程" id="toc-词袋模型的向量化过程" class="nav-link" data-scroll-target="#词袋模型的向量化过程"><span class="header-section-number">15.3.3</span> 词袋模型的向量化过程</a></li>
+  <li><a href="#词袋模型的特点" id="toc-词袋模型的特点" class="nav-link" data-scroll-target="#词袋模型的特点"><span class="header-section-number">15.3.4</span> 词袋模型的特点</a></li>
   </ul></li>
-  <li><a href="#特征稀疏性分析" id="toc-特征稀疏性分析" class="nav-link" data-scroll-target="#特征稀疏性分析"><span class="header-section-number">15.5</span> 特征稀疏性分析</a>
+  <li><a href="#特征稀疏性分析" id="toc-特征稀疏性分析" class="nav-link" data-scroll-target="#特征稀疏性分析"><span class="header-section-number">15.4</span> 特征稀疏性分析</a>
   <ul class="collapse">
-  <li><a href="#稀疏性的理论解释" id="toc-稀疏性的理论解释" class="nav-link" data-scroll-target="#稀疏性的理论解释"><span class="header-section-number">15.5.1</span> 稀疏性的理论解释</a></li>
-  <li><a href="#稀疏性的数学度量" id="toc-稀疏性的数学度量" class="nav-link" data-scroll-target="#稀疏性的数学度量"><span class="header-section-number">15.5.2</span> 稀疏性的数学度量</a></li>
-  <li><a href="#稀疏表示的优势和挑战" id="toc-稀疏表示的优势和挑战" class="nav-link" data-scroll-target="#稀疏表示的优势和挑战"><span class="header-section-number">15.5.3</span> 稀疏表示的优势和挑战</a></li>
-  <li><a href="#稀疏矩阵的高效存储" id="toc-稀疏矩阵的高效存储" class="nav-link" data-scroll-target="#稀疏矩阵的高效存储"><span class="header-section-number">15.5.4</span> 稀疏矩阵的高效存储</a></li>
+  <li><a href="#稀疏性的理论解释" id="toc-稀疏性的理论解释" class="nav-link" data-scroll-target="#稀疏性的理论解释"><span class="header-section-number">15.4.1</span> 稀疏性的理论解释</a></li>
+  <li><a href="#稀疏性的数学度量" id="toc-稀疏性的数学度量" class="nav-link" data-scroll-target="#稀疏性的数学度量"><span class="header-section-number">15.4.2</span> 稀疏性的数学度量</a></li>
+  <li><a href="#稀疏表示的优势和挑战" id="toc-稀疏表示的优势和挑战" class="nav-link" data-scroll-target="#稀疏表示的优势和挑战"><span class="header-section-number">15.4.3</span> 稀疏表示的优势和挑战</a></li>
+  <li><a href="#稀疏矩阵的高效存储" id="toc-稀疏矩阵的高效存储" class="nav-link" data-scroll-target="#稀疏矩阵的高效存储"><span class="header-section-number">15.4.4</span> 稀疏矩阵的高效存储</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#tf-idf与相似度分析" id="toc-tf-idf与相似度分析" class="nav-link" data-scroll-target="#tf-idf与相似度分析"><span class="header-section-number">16</span> TF-IDF与相似度分析</a>
@@ -321,13 +290,11 @@ window.Quarto = {
   <li><a href="#数学定义" id="toc-数学定义" class="nav-link" data-scroll-target="#数学定义"><span class="header-section-number">16.1.1</span> 数学定义</a></li>
   <li><a href="#tf-idf的理论性质" id="toc-tf-idf的理论性质" class="nav-link" data-scroll-target="#tf-idf的理论性质"><span class="header-section-number">16.1.2</span> TF-IDF的理论性质</a></li>
   <li><a href="#tf-idf的数学基础" id="toc-tf-idf的数学基础" class="nav-link" data-scroll-target="#tf-idf的数学基础"><span class="header-section-number">16.1.3</span> TF-IDF的数学基础</a></li>
-  <li><a href="#政府工作报告的tf-idf分析" id="toc-政府工作报告的tf-idf分析" class="nav-link" data-scroll-target="#政府工作报告的tf-idf分析"><span class="header-section-number">16.1.4</span> 政府工作报告的TF-IDF分析</a></li>
   </ul></li>
   <li><a href="#文本相似度的理论基础" id="toc-文本相似度的理论基础" class="nav-link" data-scroll-target="#文本相似度的理论基础"><span class="header-section-number">16.2</span> 文本相似度的理论基础</a>
   <ul class="collapse">
   <li><a href="#主要相似度度量" id="toc-主要相似度度量" class="nav-link" data-scroll-target="#主要相似度度量"><span class="header-section-number">16.2.1</span> 主要相似度度量</a></li>
   <li><a href="#为什么余弦相似度适合文本分析" id="toc-为什么余弦相似度适合文本分析" class="nav-link" data-scroll-target="#为什么余弦相似度适合文本分析"><span class="header-section-number">16.2.2</span> 为什么余弦相似度适合文本分析？</a></li>
-  <li><a href="#政府工作报告的相似度分析" id="toc-政府工作报告的相似度分析" class="nav-link" data-scroll-target="#政府工作报告的相似度分析"><span class="header-section-number">16.2.3</span> 政府工作报告的相似度分析</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#词云图与可视化分析" id="toc-词云图与可视化分析" class="nav-link" data-scroll-target="#词云图与可视化分析"><span class="header-section-number">17</span> 词云图与可视化分析</a>
@@ -337,7 +304,6 @@ window.Quarto = {
   <li><a href="#词重要性的数学表示" id="toc-词重要性的数学表示" class="nav-link" data-scroll-target="#词重要性的数学表示"><span class="header-section-number">17.1.1</span> 词重要性的数学表示</a></li>
   <li><a href="#布局算法" id="toc-布局算法" class="nav-link" data-scroll-target="#布局算法"><span class="header-section-number">17.1.2</span> 布局算法</a></li>
   <li><a href="#视觉编码原则" id="toc-视觉编码原则" class="nav-link" data-scroll-target="#视觉编码原则"><span class="header-section-number">17.1.3</span> 视觉编码原则</a></li>
-  <li><a href="#政府工作报告的词云图分析" id="toc-政府工作报告的词云图分析" class="nav-link" data-scroll-target="#政府工作报告的词云图分析"><span class="header-section-number">17.1.4</span> 政府工作报告的词云图分析</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#情感分析" id="toc-情感分析" class="nav-link" data-scroll-target="#情感分析"><span class="header-section-number">18</span> 情感分析</a>
@@ -347,7 +313,6 @@ window.Quarto = {
   <li><a href="#情感分析的主要任务" id="toc-情感分析的主要任务" class="nav-link" data-scroll-target="#情感分析的主要任务"><span class="header-section-number">18.1.1</span> 情感分析的主要任务</a></li>
   <li><a href="#情感分析的主要方法" id="toc-情感分析的主要方法" class="nav-link" data-scroll-target="#情感分析的主要方法"><span class="header-section-number">18.1.2</span> 情感分析的主要方法</a></li>
   <li><a href="#情感词典的构建原理" id="toc-情感词典的构建原理" class="nav-link" data-scroll-target="#情感词典的构建原理"><span class="header-section-number">18.1.3</span> 情感词典的构建原理</a></li>
-  <li><a href="#政府工作报告的情感分析" id="toc-政府工作报告的情感分析" class="nav-link" data-scroll-target="#政府工作报告的情感分析"><span class="header-section-number">18.1.4</span> 政府工作报告的情感分析</a></li>
   </ul></li>
   </ul></li>
   <li><a href="#lda主题建模" id="toc-lda主题建模" class="nav-link" data-scroll-target="#lda主题建模"><span class="header-section-number">19</span> LDA主题建模</a>
@@ -358,10 +323,8 @@ window.Quarto = {
   <li><a href="#概率潜在语义分析plsa" id="toc-概率潜在语义分析plsa" class="nav-link" data-scroll-target="#概率潜在语义分析plsa"><span class="header-section-number">19.1.2</span> 概率潜在语义分析(PLSA)</a></li>
   <li><a href="#潜在狄利克雷分配lda" id="toc-潜在狄利克雷分配lda" class="nav-link" data-scroll-target="#潜在狄利克雷分配lda"><span class="header-section-number">19.1.3</span> 潜在狄利克雷分配(LDA)</a></li>
   <li><a href="#主题一致性评估" id="toc-主题一致性评估" class="nav-link" data-scroll-target="#主题一致性评估"><span class="header-section-number">19.1.4</span> 主题一致性评估</a></li>
-  <li><a href="#政府工作报告的lda主题建模" id="toc-政府工作报告的lda主题建模" class="nav-link" data-scroll-target="#政府工作报告的lda主题建模"><span class="header-section-number">19.1.5</span> 政府工作报告的LDA主题建模</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#小练习政府工作报告深度分析" id="toc-小练习政府工作报告深度分析" class="nav-link" data-scroll-target="#小练习政府工作报告深度分析"><span class="header-section-number">20</span> 小练习：政府工作报告深度分析</a></li>
   </ul>
 </nav>
     </div>
@@ -370,7 +333,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本分析(一)：词频法与向量空间</span></h1>
+<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">文本分析1：词频法与向量空间</span></h1>
 </div>
 
 
@@ -398,29 +361,8 @@ window.Quarto = {
 <li><strong>语义性</strong>：文本承载复杂的语义信息，存在歧义、隐喻、引用等多种语言现象</li>
 </ol>
 </section>
-<section id="应用案例政府工作报告分析" class="level2" data-number="14.2">
-<h2 data-number="14.2" class="anchored" data-anchor-id="应用案例政府工作报告分析"><span class="header-section-number">14.2</span> 应用案例：政府工作报告分析</h2>
-<p>我们将以历年政府工作报告为例，展示文本分析的整个流程和应用。政府工作报告是研究国家政策和经济发展的重要文本数据，通过分析可以：</p>
-<ul>
-<li><strong>政策趋势分析</strong>：追踪国家各时期政策重点的变化</li>
-<li><strong>经济指标预测</strong>：从定性描述中提取经济发展预期</li>
-<li><strong>社会关注点识别</strong>：发现不同时期的社会热点问题</li>
-<li><strong>政策效果评估</strong>：将政策目标与实际结果进行对比</li>
-</ul>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 导入基础库</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jieba</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="文本处理流程概览" class="level2" data-number="14.3">
-<h2 data-number="14.3" class="anchored" data-anchor-id="文本处理流程概览"><span class="header-section-number">14.3</span> 文本处理流程概览</h2>
+<section id="文本处理流程概览" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="文本处理流程概览"><span class="header-section-number">14.2</span> 文本处理流程概览</h2>
 <p>文本分析通常遵循以下步骤：</p>
 <ol type="1">
 <li><strong>采集</strong>：网络爬虫、API接口、数据库、PDF解析等</li>
@@ -428,103 +370,25 @@ window.Quarto = {
 <li><strong>表示</strong>：将文本转换为机器可理解的形式（向量化）</li>
 <li><strong>建模</strong>：应用机器学习算法执行分类、聚类、主题提取等任务</li>
 </ol>
-<p>在我们的政府工作报告案例中，将完整展示这个流程。</p>
 </section>
 </section>
 <section id="文本预处理" class="level1" data-number="15">
 <h1 data-number="15"><span class="header-section-number">15</span> 文本预处理</h1>
-<section id="数据准备" class="level2" data-number="15.1">
-<h2 data-number="15.1" class="anchored" data-anchor-id="数据准备"><span class="header-section-number">15.1</span> 数据准备</h2>
-<p>首先，我们加载政府工作报告数据集：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载政府工作报告数据</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 在实际教学中，可以从本地文件加载</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># govreport = pd.read_csv('govreport.csv') </span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 这里用一个模拟数据集进行演示</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>govreport <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Year'</span>: [<span class="dv">2019</span>, <span class="dv">2020</span>, <span class="dv">2021</span>, <span class="dv">2022</span>, <span class="dv">2023</span>],</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'texts'</span>: [</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'今年发展主要预期目标是：国内生产总值增长6%－6.5%；城镇新增就业1100万人以上，城镇调查失业率5.5%左右，城镇登记失业率4.5%以内；居民消费价格涨幅3%左右；国际收支基本平衡，进出口稳中提质；宏观杠杆率基本稳定，金融财政风险有效防控；农村贫困人口减少1000万以上，居民收入增长与经济增长基本同步；生态环境进一步改善，单位国内生产总值能耗下降3%左右，主要污染物排放量继续下降。'</span>,</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">'今年我国发展面临的环境更加严峻复杂，特别是新冠肺炎疫情影响广泛深远，经济社会发展困难挑战前所未有，必须做好较长时间应对外部环境变化的思想准备和工作准备。'</span>,</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">'今年发展主要预期目标是：国内生产总值增长6%以上；城镇新增就业1100万人以上，城镇调查失业率5.5%左右；居民消费价格涨幅3%左右；进出口量稳质升，国际收支基本平衡；居民收入稳步增长；生态环境质量进一步改善，单位国内生产总值能耗降低3%左右，主要污染物排放量继续下降；粮食产量保持在1.3万亿斤以上。'</span>,</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">'综合研判国内外形势，今年我国发展面临的风险挑战明显增多，要继续统筹好疫情防控和经济社会发展，迎难而上，砥砺前行。'</span>,</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">'今年发展主要预期目标是：国内生产总值增长5%左右；城镇新增就业1200万人左右，城镇调查失业率5.5%左右；居民消费价格涨幅3%左右；居民收入增长与经济增长基本同步；进出口促稳提质，国际收支基本平衡；粮食产量保持在1.3万亿斤以上；生态环境质量持续改善，主要污染物排放量继续下降；能耗强度目标在"十四五"规划期内统筹考核，并留有适当弹性。'</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看数据集</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(govreport.head())</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="中文分词" class="level2" data-number="15.2">
-<h2 data-number="15.2" class="anchored" data-anchor-id="中文分词"><span class="header-section-number">15.2</span> 中文分词</h2>
-<p>与英文不同，中文没有明显的词语分隔符，需要专门的分词工具。在我们的案例中，使用jieba进行中文分词：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jieba</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 示例</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> govreport.loc[<span class="dv">0</span>, <span class="st">'texts'</span>]</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> jieba.cut(text)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"分词结果示例:"</span>)</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">" "</span>.join(words))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
+<section id="中文分词" class="level2" data-number="15.1">
+<h2 data-number="15.1" class="anchored" data-anchor-id="中文分词"><span class="header-section-number">15.1</span> 中文分词</h2>
+<p>与英文不同，中文没有明显的词语分隔符，需要专门的分词工具。</p>
 <p><strong>jieba</strong>是目前最流行的中文分词工具之一，具有以下特点： - 支持精确模式、全模式和搜索引擎模式 - 允许添加自定义词典 - 具有词性标注功能</p>
 <p><strong>常见问题</strong>： - 专业术语、新词识别困难（需添加自定义词典） - 歧义分词（例如”结合成分子”可能被分为”结合/成/分子”或”结合/成分/子”） - 中英文混合文本处理</p>
 </section>
-<section id="文本清洗与去停用词" class="level2" data-number="15.3">
-<h2 data-number="15.3" class="anchored" data-anchor-id="文本清洗与去停用词"><span class="header-section-number">15.3</span> 文本清洗与去停用词</h2>
-<p>文本清洗是将原始文本转换为标准格式的过程：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载停用词表</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 在实际教学中，可以从本地文件加载</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># with open('stopwords.txt', 'r', encoding='utf-8') as f:</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     stop_words = [line.strip() for line in f]</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 简化版停用词表</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>stop_words <span class="op">=</span> {<span class="st">'的'</span>, <span class="st">'了'</span>, <span class="st">'和'</span>, <span class="st">'是'</span>, <span class="st">'在'</span>, <span class="st">'我们'</span>, <span class="st">'要'</span>, <span class="st">'把'</span>, <span class="st">'与'</span>, <span class="st">'以'</span>, <span class="st">'为'</span>, <span class="st">'等'</span>, <span class="st">'对'</span>, <span class="st">'这'</span>, <span class="st">'从'</span>}</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 文本清洗函数</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> clean_text(text):</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 去除标点符号和数字</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r'[^\u4e00-\u9fa5]'</span>, <span class="st">' '</span>, text)</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> text</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 分词并去除停用词</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess_text(text):</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 清洗文本</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    cleaned_text <span class="op">=</span> clean_text(text)</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 分词</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> jieba.cut(cleaned_text)</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 去除停用词和空白</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [word <span class="cf">for</span> word <span class="kw">in</span> words <span class="cf">if</span> word.strip() <span class="kw">and</span> word <span class="kw">not</span> <span class="kw">in</span> stop_words]</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 对政府工作报告进行预处理</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>processed_reports <span class="op">=</span> {}</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> govreport.iterrows():</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    year <span class="op">=</span> row[<span class="st">'Year'</span>]</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> row[<span class="st">'texts'</span>]</span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    processed_reports[year] <span class="op">=</span> preprocess_text(text)</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看处理后的结果</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2023年报告处理前：</span><span class="sc">{</span>govreport<span class="sc">.</span>loc[<span class="dv">4</span>, <span class="st">'texts'</span>][:<span class="dv">50</span>]<span class="sc">}</span><span class="ss">..."</span>)</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2023年报告处理后：</span><span class="sc">{</span><span class="st">' '</span><span class="sc">.</span>join(processed_reports[<span class="dv">2023</span>][:<span class="dv">20</span>])<span class="sc">}</span><span class="ss">..."</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
+<section id="文本清洗与去停用词" class="level2" data-number="15.2">
+<h2 data-number="15.2" class="anchored" data-anchor-id="文本清洗与去停用词"><span class="header-section-number">15.2</span> 文本清洗与去停用词</h2>
+<p>文本清洗是将原始文本转换为标准格式的过程，主要包括： - 去除标点符号、特殊字符和数字 - 去除停用词（如”的”、“了”、“和”等对分析无实质帮助的词语） - 词形还原（如将”running”转为”run”） - 大小写统一（对英文文本）</p>
 </section>
-<section id="词袋模型详解" class="level2" data-number="15.4">
-<h2 data-number="15.4" class="anchored" data-anchor-id="词袋模型详解"><span class="header-section-number">15.4</span> 词袋模型详解</h2>
+<section id="词袋模型详解" class="level2" data-number="15.3">
+<h2 data-number="15.3" class="anchored" data-anchor-id="词袋模型详解"><span class="header-section-number">15.3</span> 词袋模型详解</h2>
 <p><strong>词袋模型(Bag of Words)</strong>是自然语言处理中最基础的文本表示方法。该模型将文本视为一组无序的词语集合，完全忽略语法和词序，仅关注词语在文档中是否出现或出现次数。</p>
-<section id="词袋模型的理论基础" class="level3" data-number="15.4.1">
-<h3 data-number="15.4.1" class="anchored" data-anchor-id="词袋模型的理论基础"><span class="header-section-number">15.4.1</span> 词袋模型的理论基础</h3>
+<section id="词袋模型的理论基础" class="level3" data-number="15.3.1">
+<h3 data-number="15.3.1" class="anchored" data-anchor-id="词袋模型的理论基础"><span class="header-section-number">15.3.1</span> 词袋模型的理论基础</h3>
 <p>词袋模型基于一个简化假设：文档的含义可以由其包含的词语而非词语顺序决定。尽管这个假设在许多情况下显然是错误的（例如”狗咬人”和”人咬狗”含义截然不同），但在文本分类、主题识别等任务上仍然取得了不错的效果。</p>
 <p>词袋模型的数学表示如下：</p>
 <p>对于文档集合 <span class="math inline">\(D = \{d_1, d_2, ..., d_n\}\)</span>，我们首先构建一个词汇表 <span class="math inline">\(V = \{w_1, w_2, ..., w_m\}\)</span>，其中包含所有文档中出现的唯一词语。</p>
@@ -538,8 +402,8 @@ x_{21} &amp; x_{22} &amp; \cdots &amp; x_{2m} \\
 x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nm}
 \end{bmatrix}\]</span></p>
 </section>
-<section id="词袋模型的变体" class="level3" data-number="15.4.2">
-<h3 data-number="15.4.2" class="anchored" data-anchor-id="词袋模型的变体"><span class="header-section-number">15.4.2</span> 词袋模型的变体</h3>
+<section id="词袋模型的变体" class="level3" data-number="15.3.2">
+<h3 data-number="15.3.2" class="anchored" data-anchor-id="词袋模型的变体"><span class="header-section-number">15.3.2</span> 词袋模型的变体</h3>
 <p>词袋模型有几种常见的变体，根据计数方式的不同，具有不同的特性：</p>
 <ol type="1">
 <li><p><strong>二值化词袋模型（Binary Bag of Words）</strong>：只关心词语是否出现，不关心出现次数 <span class="math display">\[x_{ij} = \begin{cases}
@@ -556,8 +420,8 @@ x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nm}
 </ul></li>
 </ol>
 </section>
-<section id="词袋模型的向量化过程" class="level3" data-number="15.4.3">
-<h3 data-number="15.4.3" class="anchored" data-anchor-id="词袋模型的向量化过程"><span class="header-section-number">15.4.3</span> 词袋模型的向量化过程</h3>
+<section id="词袋模型的向量化过程" class="level3" data-number="15.3.3">
+<h3 data-number="15.3.3" class="anchored" data-anchor-id="词袋模型的向量化过程"><span class="header-section-number">15.3.3</span> 词袋模型的向量化过程</h3>
 <p>实现词袋模型通常包括以下步骤：</p>
 <ol type="1">
 <li><p><strong>构建词汇表</strong>：从所有文档中收集唯一的词语，建立完整的词汇表</p>
@@ -568,38 +432,9 @@ x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nm}
 <li><p><strong>统计词频</strong>：计算每个文档中每个词语出现的次数</p></li>
 <li><p><strong>创建文档向量</strong>：每个文档表示为一个向量，向量的长度等于词汇表大小，向量的元素为对应词语在文档中的出现次数或其他统计量</p></li>
 </ol>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 词袋模型的Python实现示例</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> CountVectorizer</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 示例文档集合</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>corpus <span class="op">=</span> [</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"自然语言处理是人工智能的重要分支"</span>,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"机器学习算法可以处理自然语言"</span>,</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"深度学习在自然语言处理中表现优异"</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建词袋模型</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>vectorizer <span class="op">=</span> CountVectorizer()</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> vectorizer.fit_transform(corpus)</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取词汇表</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>vocabulary <span class="op">=</span> vectorizer.get_feature_names_out()</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"词汇表:"</span>, vocabulary)</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取词频矩阵</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>word_counts <span class="op">=</span> X.toarray()</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">词频矩阵:"</span>)</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame(word_counts, columns<span class="op">=</span>vocabulary))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
 </section>
-<section id="词袋模型的特点" class="level3" data-number="15.4.4">
-<h3 data-number="15.4.4" class="anchored" data-anchor-id="词袋模型的特点"><span class="header-section-number">15.4.4</span> 词袋模型的特点</h3>
+<section id="词袋模型的特点" class="level3" data-number="15.3.4">
+<h3 data-number="15.3.4" class="anchored" data-anchor-id="词袋模型的特点"><span class="header-section-number">15.3.4</span> 词袋模型的特点</h3>
 <ol type="1">
 <li><strong>优点</strong>：
 <ul>
@@ -617,62 +452,12 @@ x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nm}
 </ul></li>
 </ol>
 </section>
-<section id="政府工作报告应用实例" class="level3" data-number="15.4.5">
-<h3 data-number="15.4.5" class="anchored" data-anchor-id="政府工作报告应用实例"><span class="header-section-number">15.4.5</span> 政府工作报告应用实例</h3>
-<p>现在我们将词袋模型应用到政府工作报告分析中，展示如何实际操作：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 将处理好的文本转换为CountVectorizer可接受的格式</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>corpus <span class="op">=</span> []</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>years <span class="op">=</span> []</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year, words <span class="kw">in</span> processed_reports.items():</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    corpus.append(<span class="st">' '</span>.join(words))</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    years.append(year)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用CountVectorizer构建词汇表并统计词频</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>vectorizer <span class="op">=</span> CountVectorizer()</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> vectorizer.fit_transform(corpus)</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取词汇表</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>vocabulary <span class="op">=</span> vectorizer.get_feature_names_out()</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"词汇表大小: </span><span class="sc">{</span><span class="bu">len</span>(vocabulary)<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"词汇表前20个词: </span><span class="sc">{</span>vocabulary[:<span class="dv">20</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取词频矩阵</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>word_counts <span class="op">=</span> X.toarray()</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">词频矩阵大小:"</span>, word_counts.shape)</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建词频DataFrame便于查看</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>count_df <span class="op">=</span> pd.DataFrame(word_counts, index<span class="op">=</span>years, columns<span class="op">=</span>vocabulary)</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">词频矩阵示例(部分词汇):"</span>)</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 选择一些有代表性的词查看在各年份报告中的出现频率</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>selected_words <span class="op">=</span> [<span class="st">'生产总值'</span>, <span class="st">'就业'</span>, <span class="st">'收入'</span>, <span class="st">'增长'</span>, <span class="st">'发展'</span>, <span class="st">'疫情'</span>, <span class="st">'风险'</span>]</span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(count_df[selected_words])</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化部分词频矩阵</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>sns.heatmap(count_df[selected_words], annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'d'</span>, cmap<span class="op">=</span><span class="st">'Blues'</span>)</span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'政府工作报告词频矩阵(部分词汇)'</span>)</span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>通过政府工作报告的词袋模型分析，我们可以观察到：</p>
-<ol type="1">
-<li>不同年份报告中关键词的使用频率变化反映了政策重点的转变</li>
-<li>例如”疫情”一词在2020年后的报告中频繁出现，反映了新冠疫情的影响</li>
-<li>“发展”和”增长”等词在各年报告中均保持高频，体现了经济发展的核心地位</li>
-</ol>
 </section>
-</section>
-<section id="特征稀疏性分析" class="level2" data-number="15.5">
-<h2 data-number="15.5" class="anchored" data-anchor-id="特征稀疏性分析"><span class="header-section-number">15.5</span> 特征稀疏性分析</h2>
+<section id="特征稀疏性分析" class="level2" data-number="15.4">
+<h2 data-number="15.4" class="anchored" data-anchor-id="特征稀疏性分析"><span class="header-section-number">15.4</span> 特征稀疏性分析</h2>
 <p>文本向量的稀疏性是文本分析中的重要特性。在词袋模型表示下，文本向量具有高度稀疏性，即绝大多数元素为零。这一特性有着深远的理论和实践意义。</p>
-<section id="稀疏性的理论解释" class="level3" data-number="15.5.1">
-<h3 data-number="15.5.1" class="anchored" data-anchor-id="稀疏性的理论解释"><span class="header-section-number">15.5.1</span> 稀疏性的理论解释</h3>
+<section id="稀疏性的理论解释" class="level3" data-number="15.4.1">
+<h3 data-number="15.4.1" class="anchored" data-anchor-id="稀疏性的理论解释"><span class="header-section-number">15.4.1</span> 稀疏性的理论解释</h3>
 <p>稀疏性源于以下事实：</p>
 <ol type="1">
 <li><strong>词汇量巨大</strong>：自然语言的词汇量通常非常大（中文常用词汇约有几万个）</li>
@@ -681,19 +466,19 @@ x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nm}
 </ol>
 <p>齐普夫定律可表示为： <span class="math display">\[f(k) \propto \frac{1}{k^s}\]</span> 其中 <span class="math inline">\(f(k)\)</span> 是排名第 <span class="math inline">\(k\)</span> 的词的频率，<span class="math inline">\(s\)</span> 是接近于1的常数。</p>
 </section>
-<section id="稀疏性的数学度量" class="level3" data-number="15.5.2">
-<h3 data-number="15.5.2" class="anchored" data-anchor-id="稀疏性的数学度量"><span class="header-section-number">15.5.2</span> 稀疏性的数学度量</h3>
+<section id="稀疏性的数学度量" class="level3" data-number="15.4.2">
+<h3 data-number="15.4.2" class="anchored" data-anchor-id="稀疏性的数学度量"><span class="header-section-number">15.4.2</span> 稀疏性的数学度量</h3>
 <p>文本向量的稀疏性可以用密度(density)的倒数来表示，其计算公式为：</p>
 <p><span class="math display">\[\text{稀疏度} = 1 - \frac{\text{非零元素数量}}{\text{总元素数量}}\]</span></p>
 <p>例如，如果一个10000维的向量中只有100个非零元素，则其稀疏度为: <span class="math display">\[1 - \frac{100}{10000} = 0.99 = 99\%\]</span></p>
 </section>
-<section id="稀疏表示的优势和挑战" class="level3" data-number="15.5.3">
-<h3 data-number="15.5.3" class="anchored" data-anchor-id="稀疏表示的优势和挑战"><span class="header-section-number">15.5.3</span> 稀疏表示的优势和挑战</h3>
+<section id="稀疏表示的优势和挑战" class="level3" data-number="15.4.3">
+<h3 data-number="15.4.3" class="anchored" data-anchor-id="稀疏表示的优势和挑战"><span class="header-section-number">15.4.3</span> 稀疏表示的优势和挑战</h3>
 <p><strong>优势</strong>： - 存储效率高：只需存储非零元素及其位置 - 计算效率高：只需处理非零元素 - 降低过拟合风险：稀疏性可视为一种正则化</p>
 <p><strong>挑战</strong>： - 信息密度低：需要更多样本学习有效特征 - 难以直接应用某些算法，如神经网络 - “维度灾难”问题：高维空间中数据点趋于疏远</p>
 </section>
-<section id="稀疏矩阵的高效存储" class="level3" data-number="15.5.4">
-<h3 data-number="15.5.4" class="anchored" data-anchor-id="稀疏矩阵的高效存储"><span class="header-section-number">15.5.4</span> 稀疏矩阵的高效存储</h3>
+<section id="稀疏矩阵的高效存储" class="level3" data-number="15.4.4">
+<h3 data-number="15.4.4" class="anchored" data-anchor-id="稀疏矩阵的高效存储"><span class="header-section-number">15.4.4</span> 稀疏矩阵的高效存储</h3>
 <p>针对稀疏矩阵的特点，常用的存储格式包括：</p>
 <ol type="1">
 <li><strong>坐标列表(COO格式)</strong>：存储(行索引,列索引,值)三元组</li>
@@ -701,28 +486,6 @@ x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nm}
 <li><strong>压缩稀疏列(CSC格式)</strong>：存储非零值、行索引和列指针</li>
 </ol>
 <p>以CSR格式为例，其空间复杂度从O(m×n)降低到O(2nnz+m+1)，其中nnz为非零元素数量。</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 分析政府工作报告词频矩阵的稀疏度</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>total_elements <span class="op">=</span> word_counts.size</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>non_zero_elements <span class="op">=</span> np.count_nonzero(word_counts)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>sparsity <span class="op">=</span> <span class="fl">1.0</span> <span class="op">-</span> (non_zero_elements <span class="op">/</span> total_elements)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"矩阵总元素数: </span><span class="sc">{</span>total_elements<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"非零元素数: </span><span class="sc">{</span>non_zero_elements<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"稀疏度: </span><span class="sc">{</span>sparsity<span class="sc">:.2%}</span><span class="ss"> (即</span><span class="sc">{</span>sparsity<span class="sc">:.2%}</span><span class="ss">的元素为0)"</span>)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用稀疏矩阵表示</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.sparse <span class="im">import</span> csr_matrix</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>sparse_counts <span class="op">=</span> csr_matrix(word_counts)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">稀疏矩阵表示:"</span>)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sparse_counts)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">CSR格式内存占用:"</span>, sparse_counts.data.nbytes <span class="op">+</span> sparse_counts.indptr.nbytes <span class="op">+</span> sparse_counts.indices.nbytes, <span class="st">"字节"</span>)</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"密集矩阵内存占用:"</span>, word_counts.nbytes, <span class="st">"字节"</span>)</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"内存节省: </span><span class="sc">{</span>(<span class="dv">1</span> <span class="op">-</span> (sparse_counts.data.nbytes <span class="op">+</span> sparse_counts.indptr.nbytes <span class="op">+</span> sparse_counts.indices.nbytes) <span class="op">/</span> word_counts.nbytes)<span class="sc">:.2%}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
 </section>
 </section>
 </section>
@@ -765,55 +528,6 @@ x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nm}
 <p><span class="math display">\[IDF(t) \propto -\log P(t)\]</span></p>
 <p>其中 <span class="math inline">\(P(t)\)</span> 是从随机选择的文档中抽取到词语 <span class="math inline">\(t\)</span> 的概率。词语越罕见，其信息量越大。</p>
 <p>TF-IDF权重也可以从概率模型推导：它与词语 <span class="math inline">\(t\)</span> 对文档 <span class="math inline">\(d\)</span> 的主题分类贡献度成正比。</p>
-</section>
-<section id="政府工作报告的tf-idf分析" class="level3" data-number="16.1.4">
-<h3 data-number="16.1.4" class="anchored" data-anchor-id="政府工作报告的tf-idf分析"><span class="header-section-number">16.1.4</span> 政府工作报告的TF-IDF分析</h3>
-<p>我们应用TF-IDF算法分析政府工作报告，识别每年报告中最具特色的关键词：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> TfidfVectorizer</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用TfidfVectorizer计算TF-IDF</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>tfidf_vectorizer <span class="op">=</span> TfidfVectorizer()</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>tfidf_matrix <span class="op">=</span> tfidf_vectorizer.fit_transform(corpus)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取词汇表</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>tfidf_vocabulary <span class="op">=</span> tfidf_vectorizer.get_feature_names_out()</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取TF-IDF矩阵</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>tfidf_values <span class="op">=</span> tfidf_matrix.toarray()</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建TF-IDF DataFrame便于查看</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>tfidf_df <span class="op">=</span> pd.DataFrame(tfidf_values, index<span class="op">=</span>years, columns<span class="op">=</span>tfidf_vocabulary)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">TF-IDF矩阵示例(部分词汇):"</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tfidf_df[selected_words])</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 找出每年报告中TF-IDF值最高的10个词</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>top_terms <span class="op">=</span> {}</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, year <span class="kw">in</span> <span class="bu">enumerate</span>(years):</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    top_indices <span class="op">=</span> np.argsort(tfidf_values[i])[<span class="op">-</span><span class="dv">10</span>:]</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    top_terms[year] <span class="op">=</span> [(tfidf_vocabulary[idx], tfidf_values[i, idx]) <span class="cf">for</span> idx <span class="kw">in</span> top_indices]</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span>year<span class="sc">}</span><span class="ss">年报告中TF-IDF最高的词:"</span>)</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> term, score <span class="kw">in</span> <span class="bu">sorted</span>(top_terms[year], key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>):</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>term<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>score<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化不同年份报告的TF-IDF高值词</span></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">10</span>))</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, year <span class="kw">in</span> <span class="bu">enumerate</span>(years):</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">3</span>, <span class="dv">2</span>, i<span class="op">+</span><span class="dv">1</span>)</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    terms <span class="op">=</span> [term <span class="cf">for</span> term, _ <span class="kw">in</span> top_terms[year]]</span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> [score <span class="cf">for</span> _, score <span class="kw">in</span> top_terms[year]]</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 翻转数据以便按得分降序显示</span></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    plt.barh(<span class="bu">range</span>(<span class="bu">len</span>(terms)), scores[::<span class="op">-</span><span class="dv">1</span>])</span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    plt.yticks(<span class="bu">range</span>(<span class="bu">len</span>(terms)), terms[::<span class="op">-</span><span class="dv">1</span>])</span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'</span><span class="sc">{</span>year<span class="sc">}</span><span class="ss">年报告TF-IDF最高的词'</span>)</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    plt.xlim(<span class="dv">0</span>, <span class="bu">max</span>(scores) <span class="op">*</span> <span class="fl">1.1</span>)</span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
 </section>
 </section>
 <section id="文本相似度的理论基础" class="level2" data-number="16.2">
@@ -859,41 +573,6 @@ x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nm}
 </ol>
 <p>在TF-IDF向量空间中，两个文档的相似度可以通过计算它们的TF-IDF向量之间的余弦相似度得到，这样既考虑了共同词汇，又关注了词语的区分度。</p>
 </section>
-<section id="政府工作报告的相似度分析" class="level3" data-number="16.2.3">
-<h3 data-number="16.2.3" class="anchored" data-anchor-id="政府工作报告的相似度分析"><span class="header-section-number">16.2.3</span> 政府工作报告的相似度分析</h3>
-<p>分析不同年份政府工作报告之间的相似度，揭示政策连续性和变化：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics.pairwise <span class="im">import</span> cosine_similarity</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算不同年份报告之间的余弦相似度</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>similarity <span class="op">=</span> cosine_similarity(tfidf_matrix)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>similarity_df <span class="op">=</span> pd.DataFrame(similarity, index<span class="op">=</span>years, columns<span class="op">=</span>years)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"各年份政府工作报告相似度矩阵:"</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(similarity_df)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化相似度矩阵</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>sns.heatmap(similarity_df, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'.2f'</span>, cmap<span class="op">=</span><span class="st">'YlGnBu'</span>)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'政府工作报告相似度矩阵'</span>)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 分析最相似和最不相似的年份报告</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>np.fill_diagonal(similarity, <span class="op">-</span><span class="dv">1</span>)  <span class="co"># 忽略自身相似度</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>most_similar_idx <span class="op">=</span> np.unravel_index(similarity.argmax(), similarity.shape)</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>least_similar_idx <span class="op">=</span> np.unravel_index(similarity.argmin(), similarity.shape)</span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">最相似的报告: </span><span class="sc">{</span>years[most_similar_idx[<span class="dv">0</span>]]<span class="sc">}</span><span class="ss">年和</span><span class="sc">{</span>years[most_similar_idx[<span class="dv">1</span>]]<span class="sc">}</span><span class="ss">年 (相似度: </span><span class="sc">{</span>similarity[most_similar_idx]<span class="sc">:.2f}</span><span class="ss">)"</span>)</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"最不相似的报告: </span><span class="sc">{</span>years[least_similar_idx[<span class="dv">0</span>]]<span class="sc">}</span><span class="ss">年和</span><span class="sc">{</span>years[least_similar_idx[<span class="dv">1</span>]]<span class="sc">}</span><span class="ss">年 (相似度: </span><span class="sc">{</span>similarity[least_similar_idx]<span class="sc">:.2f}</span><span class="ss">)"</span>)</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co"># 分析结果解释</span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">分析解释:"</span>)</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"1. </span><span class="sc">{</span>years[most_similar_idx[<span class="dv">0</span>]]<span class="sc">}</span><span class="ss">年和</span><span class="sc">{</span>years[most_similar_idx[<span class="dv">1</span>]]<span class="sc">}</span><span class="ss">年报告相似度高，可能反映这两年政策方向一致"</span>)</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2. </span><span class="sc">{</span>years[least_similar_idx[<span class="dv">0</span>]]<span class="sc">}</span><span class="ss">年和</span><span class="sc">{</span>years[least_similar_idx[<span class="dv">1</span>]]<span class="sc">}</span><span class="ss">年报告差异大，可能是政策重点发生了转变"</span>)</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"3. 疫情前后的报告相似度变化显著，反映了疫情对政策重点的影响"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
 </section>
 </section>
 <section id="词云图与可视化分析" class="level1" data-number="17">
@@ -929,70 +608,6 @@ x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nm}
 <li><strong>方向编码(Orientation Encoding)</strong>：词语的方向可以增加视觉多样性</li>
 <li><strong>位置编码(Position Encoding)</strong>：中心位置通常放置最重要的词</li>
 </ol>
-</section>
-<section id="政府工作报告的词云图分析" class="level3" data-number="17.1.4">
-<h3 data-number="17.1.4" class="anchored" data-anchor-id="政府工作报告的词云图分析"><span class="header-section-number">17.1.4</span> 政府工作报告的词云图分析</h3>
-<p>我们使用词云图直观展示政府工作报告的关键词分布：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.font_manager <span class="im">import</span> FontProperties</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 设置中文字体，请确保系统中有相应的字体文件</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>font_path <span class="op">=</span> <span class="st">'/System/Library/Fonts/PingFang.ttc'</span>  <span class="co"># macOS路径，根据您的系统修改</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 统计词频函数</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_word_freq(words):</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    word_freq <span class="op">=</span> {}</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word <span class="kw">in</span> words:</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> word <span class="kw">in</span> word_freq:</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>            word_freq[word] <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>            word_freq[word] <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> word_freq</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成2023年的词云图</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> processed_reports[<span class="dv">2023</span>]</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>word_freq <span class="op">=</span> get_word_freq(words)</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>wordcloud <span class="op">=</span> WordCloud(</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    font_path<span class="op">=</span>font_path,</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    width<span class="op">=</span><span class="dv">800</span>,</span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    height<span class="op">=</span><span class="dv">400</span>,</span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    background_color<span class="op">=</span><span class="st">'white'</span>,</span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    max_words<span class="op">=</span><span class="dv">100</span></span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>).generate_from_frequencies(word_freq)</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>plt.imshow(wordcloud, interpolation<span class="op">=</span><span class="st">'bilinear'</span>)</span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'2023年政府工作报告词云'</span>)</span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a><span class="co"># 比较各年份的词云图</span></span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">15</span>))</span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, year <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">sorted</span>(processed_reports.keys())):</span>
-<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    plt.subplot(<span class="dv">3</span>, <span class="dv">2</span>, i<span class="op">+</span><span class="dv">1</span>)</span>
-<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> processed_reports[year]</span>
-<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    word_freq <span class="op">=</span> get_word_freq(words)</span>
-<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    wordcloud <span class="op">=</span> WordCloud(</span>
-<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>        font_path<span class="op">=</span>font_path,</span>
-<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>        width<span class="op">=</span><span class="dv">800</span>,</span>
-<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>        height<span class="op">=</span><span class="dv">400</span>,</span>
-<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>        background_color<span class="op">=</span><span class="st">'white'</span>,</span>
-<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>        max_words<span class="op">=</span><span class="dv">100</span></span>
-<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>    ).generate_from_frequencies(word_freq)</span>
-<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>    plt.imshow(wordcloud, interpolation<span class="op">=</span><span class="st">'bilinear'</span>)</span>
-<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>    plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'</span><span class="sc">{</span>year<span class="sc">}</span><span class="ss">年政府工作报告词云'</span>)</span>
-<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
 </section>
 </section>
 </section>
@@ -1044,92 +659,6 @@ x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nm}
 <li><strong>基于共现的统计方法</strong>：分析情感词与已知极性词的共现统计</li>
 <li><strong>基于深度学习的词嵌入</strong>：使用词向量的相似性发现新的情感词</li>
 </ol>
-</section>
-<section id="政府工作报告的情感分析" class="level3" data-number="18.1.4">
-<h3 data-number="18.1.4" class="anchored" data-anchor-id="政府工作报告的情感分析"><span class="header-section-number">18.1.4</span> 政府工作报告的情感分析</h3>
-<p>我们使用基于词典的方法分析政府工作报告的情感倾向，探索政策语言的情感特征：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载情感词典</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 简化版的情感词典，实际使用时可加载完整词典</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>pos_words <span class="op">=</span> {<span class="st">'发展'</span>, <span class="st">'增长'</span>, <span class="st">'提高'</span>, <span class="st">'改善'</span>, <span class="st">'促进'</span>, <span class="st">'创新'</span>, <span class="st">'稳定'</span>, <span class="st">'优化'</span>, <span class="st">'提升'</span>, <span class="st">'保障'</span>,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">'保持'</span>, <span class="st">'强化'</span>, <span class="st">'扩大'</span>, <span class="st">'提质'</span>, <span class="st">'安全'</span>, <span class="st">'推动'</span>, <span class="st">'积极'</span>, <span class="st">'坚持'</span>, <span class="st">'实现'</span>, <span class="st">'支持'</span>}</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>neg_words <span class="op">=</span> {<span class="st">'下降'</span>, <span class="st">'减少'</span>, <span class="st">'风险'</span>, <span class="st">'问题'</span>, <span class="st">'困难'</span>, <span class="st">'挑战'</span>, <span class="st">'严峻'</span>, <span class="st">'复杂'</span>, <span class="st">'低迷'</span>, <span class="st">'压力'</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">'下滑'</span>, <span class="st">'减缓'</span>, <span class="st">'防控'</span>, <span class="st">'责任'</span>, <span class="st">'防范'</span>, <span class="st">'应对'</span>, <span class="st">'治理'</span>, <span class="st">'整治'</span>, <span class="st">'控制'</span>, <span class="st">'防止'</span>}</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 情感分析函数</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sentiment_analysis(text_list):</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    pos_count <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    neg_count <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word <span class="kw">in</span> text_list:</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> word <span class="kw">in</span> pos_words:</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>            pos_count <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> word <span class="kw">in</span> neg_words:</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>            neg_count <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> pos_count <span class="op">+</span> neg_count</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> total <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 计算情感得分 (-1 to 1)</span></span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    sentiment_score <span class="op">=</span> (pos_count <span class="op">-</span> neg_count) <span class="op">/</span> total</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">'positive'</span>: pos_count,</span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>        <span class="st">'negative'</span>: neg_count,</span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>        <span class="st">'total'</span>: total,</span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>        <span class="st">'score'</span>: sentiment_score</span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 对每年的报告进行情感分析</span></span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>sentiment_results <span class="op">=</span> {}</span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year, words <span class="kw">in</span> processed_reports.items():</span>
-<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    sentiment_results[year] <span class="op">=</span> sentiment_analysis(words)</span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建结果DataFrame</span></span>
-<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>sentiment_df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Year'</span>: years,</span>
-<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Positive'</span>: [sentiment_results[year][<span class="st">'positive'</span>] <span class="cf">for</span> year <span class="kw">in</span> years],</span>
-<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Negative'</span>: [sentiment_results[year][<span class="st">'negative'</span>] <span class="cf">for</span> year <span class="kw">in</span> years],</span>
-<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Score'</span>: [sentiment_results[year][<span class="st">'score'</span>] <span class="cf">for</span> year <span class="kw">in</span> years]</span>
-<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"情感分析结果:"</span>)</span>
-<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sentiment_df)</span>
-<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制情感得分变化趋势</span></span>
-<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
-<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>plt.bar(sentiment_df[<span class="st">'Year'</span>], sentiment_df[<span class="st">'Score'</span>], color<span class="op">=</span>[<span class="st">'green'</span> <span class="cf">if</span> s <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">'red'</span> <span class="cf">for</span> s <span class="kw">in</span> sentiment_df[<span class="st">'Score'</span>]])</span>
-<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>plt.axhline(y<span class="op">=</span><span class="dv">0</span>, color<span class="op">=</span><span class="st">'k'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'情感得分'</span>)</span>
-<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'政府工作报告情感得分变化趋势'</span>)</span>
-<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a><span class="co"># 为每个柱添加具体数值</span></span>
-<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, score <span class="kw">in</span> <span class="bu">enumerate</span>(sentiment_df[<span class="st">'Score'</span>]):</span>
-<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>    plt.text(years[i], score <span class="op">+</span> (<span class="fl">0.05</span> <span class="cf">if</span> score <span class="op">&gt;=</span> <span class="dv">0</span> <span class="cf">else</span> <span class="op">-</span><span class="fl">0.1</span>), </span>
-<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>             <span class="ss">f'</span><span class="sc">{</span>score<span class="sc">:.2f}</span><span class="ss">'</span>, ha<span class="op">=</span><span class="st">'center'</span>)</span>
-<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制正面词和负面词数量对比</span></span>
-<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>plt.subplot(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>)</span>
-<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>plt.bar(sentiment_df[<span class="st">'Year'</span>], sentiment_df[<span class="st">'Positive'</span>], label<span class="op">=</span><span class="st">'正面词'</span>, color<span class="op">=</span><span class="st">'green'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>plt.bar(sentiment_df[<span class="st">'Year'</span>], sentiment_df[<span class="st">'Negative'</span>], label<span class="op">=</span><span class="st">'负面词'</span>, color<span class="op">=</span><span class="st">'red'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>, bottom<span class="op">=</span>sentiment_df[<span class="st">'Positive'</span>])</span>
-<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'词数'</span>)</span>
-<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'政府工作报告情感词汇分布'</span>)</span>
-<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a><span class="co"># 分析结果解释</span></span>
-<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">情感分析结论:"</span>)</span>
-<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a>most_positive_year <span class="op">=</span> sentiment_df.loc[sentiment_df[<span class="st">'Score'</span>].idxmax(), <span class="st">'Year'</span>]</span>
-<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a>most_negative_year <span class="op">=</span> sentiment_df.loc[sentiment_df[<span class="st">'Score'</span>].idxmin(), <span class="st">'Year'</span>]</span>
-<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"1. </span><span class="sc">{</span>most_positive_year<span class="sc">}</span><span class="ss">年报告情感倾向最积极，得分为</span><span class="sc">{</span>sentiment_df<span class="sc">.</span>loc[sentiment_df[<span class="st">'Score'</span>].idxmax(), <span class="st">'Score'</span>]<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"2. </span><span class="sc">{</span>most_negative_year<span class="sc">}</span><span class="ss">年报告情感倾向最消极，得分为</span><span class="sc">{</span>sentiment_df<span class="sc">.</span>loc[sentiment_df[<span class="st">'Score'</span>].idxmin(), <span class="st">'Score'</span>]<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
-<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"3. 情感变化趋势与当年经济形势和政策环境密切相关"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
 </section>
 </section>
 </section>
@@ -1228,126 +757,10 @@ x_{n1} &amp; x_{n2} &amp; \cdots &amp; x_{nm}
 <li><strong>UMass coherence</strong>：基于条件概率的一致性度量</li>
 </ul></li>
 </ol>
-</section>
-<section id="政府工作报告的lda主题建模" class="level3" data-number="19.1.5">
-<h3 data-number="19.1.5" class="anchored" data-anchor-id="政府工作报告的lda主题建模"><span class="header-section-number">19.1.5</span> 政府工作报告的LDA主题建模</h3>
-<p>应用LDA模型分析政府工作报告，发现潜在的政策主题：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> LatentDirichletAllocation</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义LDA模型</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>n_topics <span class="op">=</span> <span class="dv">3</span>  <span class="co"># 主题数量</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>lda <span class="op">=</span> LatentDirichletAllocation(n_components<span class="op">=</span>n_topics, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用词频矩阵训练LDA模型</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>lda.fit(X)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 输出每个主题的关键词</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_top_words(model, feature_names, n_top_words):</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    topics <span class="op">=</span> []</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> topic_idx, topic <span class="kw">in</span> <span class="bu">enumerate</span>(model.components_):</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>        top_words <span class="op">=</span> [feature_names[i] <span class="cf">for</span> i <span class="kw">in</span> topic.argsort()[:<span class="op">-</span>n_top_words <span class="op">-</span> <span class="dv">1</span>:<span class="op">-</span><span class="dv">1</span>]]</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>        topics.append(top_words)</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"主题 #</span><span class="sc">{</span>topic_idx<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">:"</span>)</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">" "</span>.join(top_words))</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> topics</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 打印每个主题的前15个关键词</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>topics <span class="op">=</span> print_top_words(lda, vocabulary, <span class="dv">15</span>)</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 为主题命名</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>topic_names <span class="op">=</span> [<span class="st">"经济发展"</span>, <span class="st">"民生保障"</span>, <span class="st">"风险应对"</span>]</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, name <span class="kw">in</span> <span class="bu">enumerate</span>(topic_names):</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"主题</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">): </span><span class="sc">{</span><span class="st">' '</span><span class="sc">.</span>join(topics[i][:<span class="dv">10</span>])<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算每年报告的主题分布</span></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>doc_topic_dist <span class="op">=</span> lda.transform(X)</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="co"># 创建主题分布DataFrame</span></span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>topic_dist_df <span class="op">=</span> pd.DataFrame(doc_topic_dist, </span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>                           index<span class="op">=</span>years, </span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>                           columns<span class="op">=</span>[<span class="ss">f'主题</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">)'</span> <span class="cf">for</span> i, name <span class="kw">in</span> <span class="bu">enumerate</span>(topic_names)])</span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">各年份主题分布:"</span>)</span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(topic_dist_df)</span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化主题分布</span></span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
-<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>sns.heatmap(topic_dist_df, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">'.2f'</span>, cmap<span class="op">=</span><span class="st">'YlGnBu'</span>)</span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'各年份政府工作报告的主题分布'</span>)</span>
-<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="co"># 主题演变趋势</span></span>
-<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
-<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, name <span class="kw">in</span> <span class="bu">enumerate</span>(topic_names):</span>
-<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>    plt.plot(years, doc_topic_dist[:, i], marker<span class="op">=</span><span class="st">'o'</span>, label<span class="op">=</span><span class="ss">f'主题</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">)'</span>)</span>
-<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'年份'</span>)</span>
-<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'主题比重'</span>)</span>
-<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'政府工作报告主题演变趋势'</span>)</span>
-<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a><span class="co"># 分析结果解释</span></span>
-<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">LDA主题分析结论:"</span>)</span>
-<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"1. 经济发展主题在各年报告中都占有重要位置，反映其作为政府工作核心"</span>)</span>
-<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"2. 疫情期间报告中风险应对主题比重明显上升"</span>)</span>
-<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"3. 近年来民生保障主题比重增长，表明政府对民生问题的关注增强"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-</section>
-</section>
-<section id="小练习政府工作报告深度分析" class="level1" data-number="20">
-<h1 data-number="20"><span class="header-section-number">20</span> 小练习：政府工作报告深度分析</h1>
-<p><strong>背景</strong>：政府工作报告是研究国家政策导向的重要文本资料，通过文本分析技术可以揭示政策走向的变化和连续性。</p>
-<p><strong>目标</strong>：通过应用所学的文本分析方法，对历年政府工作报告进行系统分析，挖掘其中的政策主题、情感倾向和关键词变化。</p>
-<p><strong>数据集</strong>：2015-2023年的政府工作报告全文（可从政府官网获取）</p>
-<p><strong>练习要求</strong>：</p>
-<ol type="1">
-<li><strong>文本预处理</strong>：
-<ul>
-<li>使用jieba进行中文分词</li>
-<li>构建并应用停用词表</li>
-<li>实现基础的文本清洗（去除标点、数字等）</li>
-</ul></li>
-<li><strong>词频与TF-IDF分析</strong>：
-<ul>
-<li>构建词袋模型，分析各年份报告的高频词</li>
-<li>应用TF-IDF算法提取每年报告的关键词</li>
-<li>比较不同年份关键词的变化</li>
-</ul></li>
-<li><strong>文本相似度比较</strong>：
-<ul>
-<li>计算相邻年份报告的余弦相似度</li>
-<li>找出相似度最高和最低的年份对</li>
-<li>分析政策连续性的变化规律</li>
-</ul></li>
-<li><strong>主题建模</strong>：
-<ul>
-<li>应用LDA模型发现潜在主题（尝试不同的主题数量）</li>
-<li>为识别出的主题命名并解释</li>
-<li>分析主题比例随时间的变化趋势</li>
-</ul></li>
-<li><strong>可视化与结论</strong>：
-<ul>
-<li>使用词云图展示每年的关键词</li>
-<li>绘制主题演变趋势图</li>
-<li>总结分析结果，提出政策走向的见解</li>
-</ul></li>
-</ol>
-<p><strong>探究问题</strong>：</p>
-<ul>
-<li>政府工作报告的关键词随时间如何变化？这反映了哪些社会经济政策的转变？</li>
-<li>相邻年份报告的相似度是否有规律性变化？是什么因素导致某些年份报告差异较大？</li>
-<li>如何通过改进文本预处理和模型参数来提高主题模型的解释性？</li>
-<li>结合当年经济社会环境，如何解读报告的语言风格和情感倾向变化？</li>
-</ul>
 
 
+</section>
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -1778,8 +1191,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./12_embedding.html" class="pagination-link" aria-label="文本分析(二)：词向量与深度学习基础">
-        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析(二)：词向量与深度学习基础</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./12_embedding.html" class="pagination-link" aria-label="文本分析2：词向量与深度学习基础">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">文本分析2：词向量与深度学习基础</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

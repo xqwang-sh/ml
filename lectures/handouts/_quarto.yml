@@ -25,6 +25,7 @@ book:
     - project1_LC.qmd
     - project2a_tspred.qmd
     - project2b_text.qmd
+    - review.qmd
 
 format:
   html:
