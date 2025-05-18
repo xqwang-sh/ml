@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -274,7 +240,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./project2b_text.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业网络安全风险评估</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">项目2B：财务报表文本分析与企业风险评估</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -360,60 +326,25 @@ window.Quarto = {
   <li><a href="#金融文本生成" id="toc-金融文本生成" class="nav-link" data-scroll-target="#金融文本生成"><span class="header-section-number">18.4.2</span> 金融文本生成</a></li>
   <li><a href="#无监督学习辅助" id="toc-无监督学习辅助" class="nav-link" data-scroll-target="#无监督学习辅助"><span class="header-section-number">18.4.3</span> 无监督学习辅助</a></li>
   </ul></li>
-  </ul></li>
-  <li><a href="#基于bert的政府工作报告分析" id="toc-基于bert的政府工作报告分析" class="nav-link" data-scroll-target="#基于bert的政府工作报告分析"><span class="header-section-number">19</span> 基于BERT的政府工作报告分析</a>
+  <li><a href="#大语言模型的使用指南" id="toc-大语言模型的使用指南" class="nav-link" data-scroll-target="#大语言模型的使用指南"><span class="header-section-number">18.5</span> 大语言模型的使用指南</a>
   <ul class="collapse">
-  <li><a href="#bert与word2vec的实验对比" id="toc-bert与word2vec的实验对比" class="nav-link" data-scroll-target="#bert与word2vec的实验对比"><span class="header-section-number">19.1</span> BERT与Word2Vec的实验对比</a>
+  <li><a href="#提示词工程基础" id="toc-提示词工程基础" class="nav-link" data-scroll-target="#提示词工程基础"><span class="header-section-number">18.5.1</span> 提示词工程基础</a></li>
+  <li><a href="#提示词模板示例" id="toc-提示词模板示例" class="nav-link" data-scroll-target="#提示词模板示例"><span class="header-section-number">18.5.2</span> 提示词模板示例</a></li>
+  <li><a href="#提示词优化技巧" id="toc-提示词优化技巧" class="nav-link" data-scroll-target="#提示词优化技巧"><span class="header-section-number">18.5.3</span> 提示词优化技巧</a></li>
+  <li><a href="#常见应用场景示例" id="toc-常见应用场景示例" class="nav-link" data-scroll-target="#常见应用场景示例"><span class="header-section-number">18.5.4</span> 常见应用场景示例</a></li>
+  <li><a href="#提示词工程最佳实践" id="toc-提示词工程最佳实践" class="nav-link" data-scroll-target="#提示词工程最佳实践"><span class="header-section-number">18.5.5</span> 提示词工程最佳实践</a></li>
+  <li><a href="#注意事项" id="toc-注意事项" class="nav-link" data-scroll-target="#注意事项"><span class="header-section-number">18.5.6</span> 注意事项</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#小结与进阶方向" id="toc-小结与进阶方向" class="nav-link" data-scroll-target="#小结与进阶方向"><span class="header-section-number">19</span> 小结与进阶方向</a>
   <ul class="collapse">
-  <li><a href="#数据准备与预处理" id="toc-数据准备与预处理" class="nav-link" data-scroll-target="#数据准备与预处理"><span class="header-section-number">19.1.1</span> 数据准备与预处理</a></li>
-  <li><a href="#加载bert模型" id="toc-加载bert模型" class="nav-link" data-scroll-target="#加载bert模型"><span class="header-section-number">19.1.2</span> 加载BERT模型</a></li>
-  <li><a href="#多义词表示对比" id="toc-多义词表示对比" class="nav-link" data-scroll-target="#多义词表示对比"><span class="header-section-number">19.1.3</span> 多义词表示对比</a></li>
-  <li><a href="#生成句子向量比较" id="toc-生成句子向量比较" class="nav-link" data-scroll-target="#生成句子向量比较"><span class="header-section-number">19.1.4</span> 生成句子向量比较</a></li>
-  <li><a href="#关键词提取对比" id="toc-关键词提取对比" class="nav-link" data-scroll-target="#关键词提取对比"><span class="header-section-number">19.1.5</span> 关键词提取对比</a></li>
+  <li><a href="#从静态向量到大语言模型的演进" id="toc-从静态向量到大语言模型的演进" class="nav-link" data-scroll-target="#从静态向量到大语言模型的演进"><span class="header-section-number">19.1</span> 从静态向量到大语言模型的演进</a></li>
+  <li><a href="#无监督学习的新范式" id="toc-无监督学习的新范式" class="nav-link" data-scroll-target="#无监督学习的新范式"><span class="header-section-number">19.2</span> 无监督学习的新范式</a></li>
+  <li><a href="#金融文本分析的未来方向" id="toc-金融文本分析的未来方向" class="nav-link" data-scroll-target="#金融文本分析的未来方向"><span class="header-section-number">19.3</span> 金融文本分析的未来方向</a></li>
+  <li><a href="#进阶学习资源" id="toc-进阶学习资源" class="nav-link" data-scroll-target="#进阶学习资源"><span class="header-section-number">19.4</span> 进阶学习资源</a></li>
+  <li><a href="#本讲小结" id="toc-本讲小结" class="nav-link" data-scroll-target="#本讲小结"><span class="header-section-number">19.5</span> 本讲小结</a></li>
   </ul></li>
-  <li><a href="#使用预训练模型进行主题分析" id="toc-使用预训练模型进行主题分析" class="nav-link" data-scroll-target="#使用预训练模型进行主题分析"><span class="header-section-number">19.2</span> 使用预训练模型进行主题分析</a>
-  <ul class="collapse">
-  <li><a href="#基于bert表示的文本聚类" id="toc-基于bert表示的文本聚类" class="nav-link" data-scroll-target="#基于bert表示的文本聚类"><span class="header-section-number">19.2.1</span> 基于BERT表示的文本聚类</a></li>
-  <li><a href="#文本主题随时间的演变分析" id="toc-文本主题随时间的演变分析" class="nav-link" data-scroll-target="#文本主题随时间的演变分析"><span class="header-section-number">19.2.2</span> 文本主题随时间的演变分析</a></li>
-  <li><a href="#语义相似度异常点检测" id="toc-语义相似度异常点检测" class="nav-link" data-scroll-target="#语义相似度异常点检测"><span class="header-section-number">19.2.3</span> 语义相似度异常点检测</a></li>
-  </ul></li>
-  </ul></li>
-  <li><a href="#使用大语言模型进行金融文本分析" id="toc-使用大语言模型进行金融文本分析" class="nav-link" data-scroll-target="#使用大语言模型进行金融文本分析"><span class="header-section-number">20</span> 使用大语言模型进行金融文本分析</a>
-  <ul class="collapse">
-  <li><a href="#使用finbert进行金融文本分类" id="toc-使用finbert进行金融文本分类" class="nav-link" data-scroll-target="#使用finbert进行金融文本分类"><span class="header-section-number">20.1</span> 使用FinBERT进行金融文本分类</a>
-  <ul class="collapse">
-  <li><a href="#安装与加载finbert" id="toc-安装与加载finbert" class="nav-link" data-scroll-target="#安装与加载finbert"><span class="header-section-number">20.1.1</span> 安装与加载FinBERT</a></li>
-  <li><a href="#金融情感分析" id="toc-金融情感分析" class="nav-link" data-scroll-target="#金融情感分析"><span class="header-section-number">20.1.2</span> 金融情感分析</a></li>
-  <li><a href="#对政府工作报告进行金融情感分析" id="toc-对政府工作报告进行金融情感分析" class="nav-link" data-scroll-target="#对政府工作报告进行金融情感分析"><span class="header-section-number">20.1.3</span> 对政府工作报告进行金融情感分析</a></li>
-  </ul></li>
-  <li><a href="#使用通用大语言模型的零样本分类" id="toc-使用通用大语言模型的零样本分类" class="nav-link" data-scroll-target="#使用通用大语言模型的零样本分类"><span class="header-section-number">20.2</span> 使用通用大语言模型的零样本分类</a>
-  <ul class="collapse">
-  <li><a href="#安装与设置大语言模型" id="toc-安装与设置大语言模型" class="nav-link" data-scroll-target="#安装与设置大语言模型"><span class="header-section-number">20.2.1</span> 安装与设置大语言模型</a></li>
-  <li><a href="#零样本文本分类" id="toc-零样本文本分类" class="nav-link" data-scroll-target="#零样本文本分类"><span class="header-section-number">20.2.2</span> 零样本文本分类</a></li>
-  <li><a href="#使用大模型生成金融文本摘要" id="toc-使用大模型生成金融文本摘要" class="nav-link" data-scroll-target="#使用大模型生成金融文本摘要"><span class="header-section-number">20.2.3</span> 使用大模型生成金融文本摘要</a></li>
-  </ul></li>
-  <li><a href="#使用大语言模型进行高级文本分析" id="toc-使用大语言模型进行高级文本分析" class="nav-link" data-scroll-target="#使用大语言模型进行高级文本分析"><span class="header-section-number">20.3</span> 使用大语言模型进行高级文本分析</a>
-  <ul class="collapse">
-  <li><a href="#提示式主题建模" id="toc-提示式主题建模" class="nav-link" data-scroll-target="#提示式主题建模"><span class="header-section-number">20.3.1</span> 提示式主题建模</a></li>
-  <li><a href="#思维链分析" id="toc-思维链分析" class="nav-link" data-scroll-target="#思维链分析"><span class="header-section-number">20.3.2</span> 思维链分析</a></li>
-  <li><a href="#嵌入空间与向量检索" id="toc-嵌入空间与向量检索" class="nav-link" data-scroll-target="#嵌入空间与向量检索"><span class="header-section-number">20.3.3</span> 嵌入空间与向量检索</a></li>
-  </ul></li>
-  <li><a href="#应用大语言模型的最佳实践" id="toc-应用大语言模型的最佳实践" class="nav-link" data-scroll-target="#应用大语言模型的最佳实践"><span class="header-section-number">20.4</span> 应用大语言模型的最佳实践</a>
-  <ul class="collapse">
-  <li><a href="#提示设计技巧" id="toc-提示设计技巧" class="nav-link" data-scroll-target="#提示设计技巧"><span class="header-section-number">20.4.1</span> 提示设计技巧</a></li>
-  <li><a href="#金融特定优化" id="toc-金融特定优化" class="nav-link" data-scroll-target="#金融特定优化"><span class="header-section-number">20.4.2</span> 金融特定优化</a></li>
-  <li><a href="#局限性与注意事项" id="toc-局限性与注意事项" class="nav-link" data-scroll-target="#局限性与注意事项"><span class="header-section-number">20.4.3</span> 局限性与注意事项</a></li>
-  </ul></li>
-  </ul></li>
-  <li><a href="#小结与进阶方向" id="toc-小结与进阶方向" class="nav-link" data-scroll-target="#小结与进阶方向"><span class="header-section-number">21</span> 小结与进阶方向</a>
-  <ul class="collapse">
-  <li><a href="#从静态向量到大语言模型的演进" id="toc-从静态向量到大语言模型的演进" class="nav-link" data-scroll-target="#从静态向量到大语言模型的演进"><span class="header-section-number">21.1</span> 从静态向量到大语言模型的演进</a></li>
-  <li><a href="#无监督学习的新范式" id="toc-无监督学习的新范式" class="nav-link" data-scroll-target="#无监督学习的新范式"><span class="header-section-number">21.2</span> 无监督学习的新范式</a></li>
-  <li><a href="#金融文本分析的未来方向" id="toc-金融文本分析的未来方向" class="nav-link" data-scroll-target="#金融文本分析的未来方向"><span class="header-section-number">21.3</span> 金融文本分析的未来方向</a></li>
-  <li><a href="#进阶学习资源" id="toc-进阶学习资源" class="nav-link" data-scroll-target="#进阶学习资源"><span class="header-section-number">21.4</span> 进阶学习资源</a></li>
-  <li><a href="#本讲小结" id="toc-本讲小结" class="nav-link" data-scroll-target="#本讲小结"><span class="header-section-number">21.5</span> 本讲小结</a></li>
-  </ul></li>
-  <li><a href="#参考资料" id="toc-参考资料" class="nav-link" data-scroll-target="#参考资料"><span class="header-section-number">22</span> 参考资料</a></li>
+  <li><a href="#参考资料" id="toc-参考资料" class="nav-link" data-scroll-target="#参考资料"><span class="header-section-number">20</span> 参考资料</a></li>
   </ul>
 </nav>
     </div>
@@ -572,12 +503,6 @@ window.Quarto = {
 <li><strong>位置嵌入</strong>（Position Embeddings）：表示词元在序列中的位置</li>
 </ol>
 <p>每个输入序列以特殊标记<code>[CLS]</code>开始，以<code>[SEP]</code>分隔不同句子。</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="https://d2l.ai/_images/bert-input.svg" class="img-fluid figure-img"></p>
-<figcaption>BERT输入表示</figcaption>
-</figure>
-</div>
 </section>
 <section id="bert的预训练任务" class="level3" data-number="17.2.2">
 <h3 data-number="17.2.2" class="anchored" data-anchor-id="bert的预训练任务"><span class="header-section-number">17.2.2</span> BERT的预训练任务</h3>
@@ -651,7 +576,7 @@ window.Quarto = {
 </section>
 <section id="bert的表示空间" class="level3" data-number="17.3.3">
 <h3 data-number="17.3.3" class="anchored" data-anchor-id="bert的表示空间"><span class="header-section-number">17.3.3</span> BERT的表示空间</h3>
-<p>BERT的表示空间表现出interessting的性质：</p>
+<p>BERT的表示空间表现出interesting的性质：</p>
 <ol type="1">
 <li><strong>各向异性</strong>：嵌入向量集中在狭窄的锥体中，而非均匀分布</li>
 <li><strong>语义区分</strong>：相似概念在表示空间中形成聚类</li>
@@ -824,11 +749,14 @@ window.Quarto = {
 </ul></li>
 <li><strong>多模态模型</strong>：
 <ul>
-<li><strong>CLIP</strong>：连接图像和文本的表示学习</li>
-<li><strong>GPT-4V</strong>：具有视觉理解能力的GPT-4变体</li>
-<li><strong>Gemini</strong>：Google的多模态大语言模型</li>
+<li><strong>CLIP</strong>：连接图像和文本的表示学习，能够理解自然语言描述与图像的对应关系</li>
+<li><strong>GPT-4V</strong>：具有视觉理解能力的GPT-4变体，可以分析图像内容并生成相关文本描述</li>
+<li><strong>Gemini</strong>：Google的多模态大语言模型，能同时处理文本、图像、音频和视频</li>
+<li><strong>Claude 3</strong>：Anthropic推出的多模态模型，具有较强的视觉理解和推理能力</li>
+<li><strong>多模态Mixtral</strong>：Mistral AI的多模态版本，支持多种输入模态的处理</li>
 </ul></li>
 </ol>
+<p>这些多模态模型极大地扩展了大语言模型的应用场景，使其能够在金融图表分析、文档理解、多媒体内容生成等方面发挥作用。</p>
 </section>
 </section>
 <section id="大语言模型的金融应用" class="level2" data-number="18.4">
@@ -904,1119 +832,212 @@ window.Quarto = {
 </ol>
 </section>
 </section>
-</section>
-<section id="基于bert的政府工作报告分析" class="level1" data-number="19">
-<h1 data-number="19"><span class="header-section-number">19</span> 基于BERT的政府工作报告分析</h1>
-<section id="bert与word2vec的实验对比" class="level2" data-number="19.1">
-<h2 data-number="19.1" class="anchored" data-anchor-id="bert与word2vec的实验对比"><span class="header-section-number">19.1</span> BERT与Word2Vec的实验对比</h2>
-<p>在本节中，我们将使用政府工作报告数据，对比BERT与Word2Vec在文本表示上的差异。这一对比将帮助我们理解上下文感知表示相对于静态词向量的优势。</p>
-<section id="数据准备与预处理" class="level3" data-number="19.1.1">
-<h3 data-number="19.1.1" class="anchored" data-anchor-id="数据准备与预处理"><span class="header-section-number">19.1.1</span> 数据准备与预处理</h3>
-<p>与上一讲类似，我们首先加载和预处理政府工作报告数据：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jieba</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics.pairwise <span class="im">import</span> cosine_similarity</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> BertModel, BertTokenizer</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载政府工作报告数据</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>govreport <span class="op">=</span> pd.read_csv(<span class="st">"labs/NLP/data/govreport.csv"</span>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 设置中文显示</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'font.sans-serif'</span>] <span class="op">=</span> [<span class="st">'Songti SC'</span>]  <span class="co"># 用来正常显示中文标签</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'axes.unicode_minus'</span>] <span class="op">=</span> <span class="va">False</span>  <span class="co"># 用来正常显示负号</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载停用词</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"labs/NLP/data/ChineseStopWords.txt"</span>, <span class="st">'r'</span>, encoding<span class="op">=</span><span class="st">'utf-8'</span>) <span class="im">as</span> f:</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    stop_words <span class="op">=</span> {line.strip() <span class="cf">for</span> line <span class="kw">in</span> f}</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 文本清洗并分词</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess_text(text):</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 去除标点符号和数字</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> re.sub(<span class="vs">r'[^\u4e00-\u9fa5]'</span>, <span class="st">' '</span>, text)</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 分词</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> jieba.cut(text)</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 去除停用词和空白</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [word <span class="cf">for</span> word <span class="kw">in</span> words <span class="cf">if</span> word.strip() <span class="kw">and</span> word <span class="kw">not</span> <span class="kw">in</span> stop_words]</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># 处理所有文档</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>corpus <span class="op">=</span> []</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>years <span class="op">=</span> []</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> govreport.iterrows():</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    words <span class="op">=</span> preprocess_text(row[<span class="st">'texts'</span>])</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    corpus.append(words)</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    years.append(row[<span class="st">'Year'</span>])</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"语料库包含</span><span class="sc">{</span><span class="bu">len</span>(corpus)<span class="sc">}</span><span class="ss">篇文档"</span>)</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载预训练的Word2Vec模型（假设我们已经训练好了，这里直接加载）</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> gensim.models <span class="im">import</span> Word2Vec</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>w2v_model <span class="op">=</span> Word2Vec.load(<span class="st">"gov_report_word2vec.model"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="加载bert模型" class="level3" data-number="19.1.2">
-<h3 data-number="19.1.2" class="anchored" data-anchor-id="加载bert模型"><span class="header-section-number">19.1.2</span> 加载BERT模型</h3>
-<p>我们将使用中文预训练BERT模型：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载预训练的中文BERT模型</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> BertTokenizer.from_pretrained(<span class="st">'bert-base-chinese'</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> BertModel.from_pretrained(<span class="st">'bert-base-chinese'</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()  <span class="co"># 设置为评估模式</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义函数获取BERT词向量</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_bert_embeddings(text, tokenizer, model, max_length<span class="op">=</span><span class="dv">512</span>):</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 对文本进行分词和转换</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> tokenizer(text, return_tensors<span class="op">=</span><span class="st">'pt'</span>, truncation<span class="op">=</span><span class="va">True</span>, max_length<span class="op">=</span>max_length, padding<span class="op">=</span><span class="st">'max_length'</span>)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 获取BERT输出</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        outputs <span class="op">=</span> model(<span class="op">**</span>inputs)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 提取最后一层的隐藏状态（词向量）</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    last_hidden_states <span class="op">=</span> outputs.last_hidden_state</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 提取[CLS]标记的向量作为句子表示</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    cls_embedding <span class="op">=</span> last_hidden_states[:, <span class="dv">0</span>, :].numpy()</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 提取所有词元的向量</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    token_embeddings <span class="op">=</span> last_hidden_states.numpy()</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        <span class="st">'cls_embedding'</span>: cls_embedding,  <span class="co"># 句子表示</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">'token_embeddings'</span>: token_embeddings,  <span class="co"># 词元表示</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        <span class="st">'tokens'</span>: tokenizer.convert_ids_to_tokens(inputs[<span class="st">'input_ids'</span>][<span class="dv">0</span>])  <span class="co"># 对应的词元</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="多义词表示对比" class="level3" data-number="19.1.3">
-<h3 data-number="19.1.3" class="anchored" data-anchor-id="多义词表示对比"><span class="header-section-number">19.1.3</span> 多义词表示对比</h3>
-<p>我们将对比BERT和Word2Vec在处理多义词上的能力差异：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 选择一个多义词进行分析，如"发展"</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ambiguous_word <span class="op">=</span> <span class="st">"发展"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 从报告中找出含有该词的不同上下文</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>contexts <span class="op">=</span> []</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, doc <span class="kw">in</span> <span class="bu">enumerate</span>(corpus):</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 将分词列表转换为文本</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> <span class="st">""</span>.join(doc)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 在原文中寻找该词</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ambiguous_word <span class="kw">in</span> text:</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 寻找包含目标词的短句</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>        sentences <span class="op">=</span> re.split(<span class="vs">r'[，。！？；]'</span>, text)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> sentence <span class="kw">in</span> sentences:</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> ambiguous_word <span class="kw">in</span> sentence <span class="kw">and</span> <span class="dv">10</span> <span class="op">&lt;</span> <span class="bu">len</span>(sentence) <span class="op">&lt;</span> <span class="dv">50</span>:</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>                contexts.append((years[i], sentence))</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="bu">len</span>(contexts) <span class="op">&gt;=</span> <span class="dv">5</span>:  <span class="co"># 只取5个上下文示例</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">break</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(contexts) <span class="op">&gt;=</span> <span class="dv">5</span>:</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Word2Vec的表示（静态）</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>w2v_vector <span class="op">=</span> w2v_model.wv[ambiguous_word]</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. BERT的表示（动态，依赖上下文）</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>bert_vectors <span class="op">=</span> []</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year, context <span class="kw">in</span> contexts:</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 获取BERT表示</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    bert_result <span class="op">=</span> get_bert_embeddings(context, tokenizer, model)</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 找到目标词的位置</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    target_positions <span class="op">=</span> [i <span class="cf">for</span> i, token <span class="kw">in</span> <span class="bu">enumerate</span>(bert_result[<span class="st">'tokens'</span>]) </span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>                        <span class="cf">if</span> ambiguous_word <span class="kw">in</span> token <span class="kw">and</span> <span class="st">'##'</span> <span class="kw">not</span> <span class="kw">in</span> token]</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> target_positions:</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 提取目标词在该上下文中的表示</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>        target_idx <span class="op">=</span> target_positions[<span class="dv">0</span>]</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>        bert_vector <span class="op">=</span> bert_result[<span class="st">'token_embeddings'</span>][<span class="dv">0</span>, target_idx, :]</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>        bert_vectors.append((year, context, bert_vector))</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算BERT表示之间的相似度</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> bert_vectors:</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    bert_similarities <span class="op">=</span> np.zeros((<span class="bu">len</span>(bert_vectors), <span class="bu">len</span>(bert_vectors)))</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(bert_vectors)):</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(bert_vectors)):</span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>            bert_similarities[i, j] <span class="op">=</span> cosine_similarity(</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>                bert_vectors[i][<span class="dv">2</span>].reshape(<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>), </span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>                bert_vectors[j][<span class="dv">2</span>].reshape(<span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>)</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>            )[<span class="dv">0</span>, <span class="dv">0</span>]</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 可视化BERT表示的相似度矩阵</span></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    plt.imshow(bert_similarities, cmap<span class="op">=</span><span class="st">'YlOrRd'</span>)</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    plt.colorbar(label<span class="op">=</span><span class="st">'余弦相似度'</span>)</span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'"</span><span class="sc">{</span>ambiguous_word<span class="sc">}</span><span class="ss">"在不同上下文中的BERT表示相似度'</span>)</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 设置坐标轴标签</span></span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>    context_labels <span class="op">=</span> [<span class="ss">f"</span><span class="sc">{</span>year<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>context[:<span class="dv">10</span>]<span class="sc">}</span><span class="ss">..."</span> <span class="cf">for</span> year, context, _ <span class="kw">in</span> bert_vectors]</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    plt.xticks(<span class="bu">range</span>(<span class="bu">len</span>(context_labels)), context_labels, rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">'right'</span>)</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>    plt.yticks(<span class="bu">range</span>(<span class="bu">len</span>(context_labels)), context_labels)</span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Word2Vec中'</span><span class="sc">{</span>ambiguous_word<span class="sc">}</span><span class="ss">'的静态表示是固定的，无法区分不同上下文"</span>)</span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"而BERT可以为'</span><span class="sc">{</span>ambiguous_word<span class="sc">}</span><span class="ss">'在不同上下文中生成不同的表示"</span>)</span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"相似度矩阵展示了这些表示之间的差异，相似度较低的对应不同语义用法"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="生成句子向量比较" class="level3" data-number="19.1.4">
-<h3 data-number="19.1.4" class="anchored" data-anchor-id="生成句子向量比较"><span class="header-section-number">19.1.4</span> 生成句子向量比较</h3>
-<p>我们将对比Word2Vec和BERT生成的句子向量在文本相似度任务上的表现：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 为每个报告生成句子向量</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 基于Word2Vec (简单平均)</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_w2v_sentence_vector(tokens, model):</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    valid_tokens <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> tokens <span class="cf">if</span> t <span class="kw">in</span> model.wv]</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> valid_tokens:</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.zeros(model.vector_size)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.mean([model.wv[t] <span class="cf">for</span> t <span class="kw">in</span> valid_tokens], axis<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 基于BERT的[CLS]标记</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_bert_sentence_vector(text, tokenizer, model):</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> get_bert_embeddings(text, tokenizer, model)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result[<span class="st">'cls_embedding'</span>][<span class="dv">0</span>]</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成向量</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>w2v_doc_vectors <span class="op">=</span> [get_w2v_sentence_vector(doc, w2v_model) <span class="cf">for</span> doc <span class="kw">in</span> corpus]</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>bert_doc_vectors <span class="op">=</span> []</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, _ <span class="kw">in</span> govreport.iterrows():</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 取报告的前512个字符（BERT输入长度限制）</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    text_sample <span class="op">=</span> govreport.iloc[i][<span class="st">'texts'</span>][:<span class="dv">512</span>]</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    bert_vec <span class="op">=</span> get_bert_sentence_vector(text_sample, tokenizer, model)</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    bert_doc_vectors.append(bert_vec)</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算报告之间的相似度</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>w2v_similarities <span class="op">=</span> cosine_similarity(w2v_doc_vectors)</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>bert_similarities <span class="op">=</span> cosine_similarity(bert_doc_vectors)</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化报告相似度矩阵比较</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">7</span>))</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Word2Vec相似度矩阵</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>im1 <span class="op">=</span> axes[<span class="dv">0</span>].imshow(w2v_similarities, cmap<span class="op">=</span><span class="st">'Blues'</span>)</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">'Word2Vec: 报告相似度矩阵'</span>)</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(years)))</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_yticks(<span class="bu">range</span>(<span class="bu">len</span>(years)))</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xticklabels(years)</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_yticklabels(years)</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>plt.colorbar(im1, ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="co"># BERT相似度矩阵</span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>im2 <span class="op">=</span> axes[<span class="dv">1</span>].imshow(bert_similarities, cmap<span class="op">=</span><span class="st">'Reds'</span>)</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">'BERT: 报告相似度矩阵'</span>)</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(years)))</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_yticks(<span class="bu">range</span>(<span class="bu">len</span>(years)))</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xticklabels(years)</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_yticklabels(years)</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>plt.colorbar(im2, ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="关键词提取对比" class="level3" data-number="19.1.5">
-<h3 data-number="19.1.5" class="anchored" data-anchor-id="关键词提取对比"><span class="header-section-number">19.1.5</span> 关键词提取对比</h3>
-<p>比较BERT和Word2Vec在关键词提取任务上的差异：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 基于BERT的关键词提取</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_bert_keywords(text, tokenizer, model, top_n<span class="op">=</span><span class="dv">10</span>):</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 将文本分成短句</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    sentences <span class="op">=</span> re.split(<span class="vs">r'[，。！？；]'</span>, text)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    sentences <span class="op">=</span> [s <span class="cf">for</span> s <span class="kw">in</span> sentences <span class="cf">if</span> <span class="bu">len</span>(s) <span class="op">&gt;</span> <span class="dv">5</span>]</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> sentences:</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> []</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 对每个句子获取词元表示</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    all_tokens <span class="op">=</span> []</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    all_embeddings <span class="op">=</span> []</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> sentence <span class="kw">in</span> sentences[:<span class="dv">20</span>]:  <span class="co"># 限制句子数量</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> get_bert_embeddings(sentence, tokenizer, model)</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>        tokens <span class="op">=</span> result[<span class="st">'tokens'</span>]</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        embeddings <span class="op">=</span> result[<span class="st">'token_embeddings'</span>][<span class="dv">0</span>]</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 过滤掉特殊标记和重复词</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        valid_indices <span class="op">=</span> []</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        valid_tokens <span class="op">=</span> []</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, token <span class="kw">in</span> <span class="bu">enumerate</span>(tokens):</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> token <span class="kw">not</span> <span class="kw">in</span> [<span class="st">'[CLS]'</span>, <span class="st">'[SEP]'</span>, <span class="st">'[PAD]'</span>] <span class="kw">and</span> <span class="st">'##'</span> <span class="kw">not</span> <span class="kw">in</span> token:</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> token <span class="kw">not</span> <span class="kw">in</span> valid_tokens:</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>                    valid_indices.append(i)</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>                    valid_tokens.append(token)</span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>        all_tokens.extend([tokens[i] <span class="cf">for</span> i <span class="kw">in</span> valid_indices])</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>        all_embeddings.extend([embeddings[i] <span class="cf">for</span> i <span class="kw">in</span> valid_indices])</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> all_tokens:</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> []</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 计算每个词与文档中心的余弦相似度</span></span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    doc_center <span class="op">=</span> np.mean(all_embeddings, axis<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    token_scores <span class="op">=</span> []</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, token <span class="kw">in</span> <span class="bu">enumerate</span>(all_tokens):</span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> token <span class="kw">in</span> stop_words <span class="kw">or</span> <span class="bu">len</span>(token) <span class="op">&lt;</span> <span class="dv">2</span>:</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>        score <span class="op">=</span> cosine_similarity([all_embeddings[i]], [doc_center])[<span class="dv">0</span>][<span class="dv">0</span>]</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>        token_scores.append((token, score))</span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 按分数排序并返回前N个关键词</span></span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>    unique_tokens <span class="op">=</span> {}</span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> token, score <span class="kw">in</span> token_scores:</span>
-<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> token <span class="kw">not</span> <span class="kw">in</span> unique_tokens <span class="kw">or</span> score <span class="op">&gt;</span> unique_tokens[token]:</span>
-<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>            unique_tokens[token] <span class="op">=</span> score</span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>    sorted_tokens <span class="op">=</span> <span class="bu">sorted</span>(unique_tokens.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sorted_tokens[:top_n]</span>
-<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a><span class="co"># 选择2023年报告进行分析</span></span>
-<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>report_idx <span class="op">=</span> govreport[govreport[<span class="st">'Year'</span>] <span class="op">==</span> <span class="dv">2023</span>].index[<span class="dv">0</span>]</span>
-<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>report_text <span class="op">=</span> govreport.loc[report_idx, <span class="st">'texts'</span>]</span>
-<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>report_tokens <span class="op">=</span> corpus[report_idx]</span>
-<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Word2Vec关键词（使用上一讲的中心性方法）</span></span>
-<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_w2v_central_words(tokens, model, top_n<span class="op">=</span><span class="dv">10</span>):</span>
-<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 过滤不在模型中的词</span></span>
-<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>    valid_tokens <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> tokens <span class="cf">if</span> t <span class="kw">in</span> model.wv]</span>
-<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> valid_tokens:</span>
-<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> []</span>
-<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 计算中心性</span></span>
-<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>    word_centrality <span class="op">=</span> {}</span>
-<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word <span class="kw">in</span> <span class="bu">set</span>(valid_tokens):</span>
-<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(word) <span class="op">&lt;</span> <span class="dv">2</span>:  <span class="co"># 跳过单字词</span></span>
-<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>        similarities <span class="op">=</span> [model.wv.similarity(word, t) <span class="cf">for</span> t <span class="kw">in</span> valid_tokens <span class="cf">if</span> t <span class="op">!=</span> word]</span>
-<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> similarities:</span>
-<span id="cb5-73"><a href="#cb5-73" aria-hidden="true" tabindex="-1"></a>            word_centrality[word] <span class="op">=</span> <span class="bu">sum</span>(similarities) <span class="op">/</span> <span class="bu">len</span>(similarities)</span>
-<span id="cb5-74"><a href="#cb5-74" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb5-75"><a href="#cb5-75" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 返回中心性最高的词</span></span>
-<span id="cb5-76"><a href="#cb5-76" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sorted</span>(word_centrality.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)[:top_n]</span>
-<span id="cb5-77"><a href="#cb5-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-78"><a href="#cb5-78" aria-hidden="true" tabindex="-1"></a><span class="co"># 提取关键词</span></span>
-<span id="cb5-79"><a href="#cb5-79" aria-hidden="true" tabindex="-1"></a>w2v_keywords <span class="op">=</span> get_w2v_central_words(report_tokens, w2v_model)</span>
-<span id="cb5-80"><a href="#cb5-80" aria-hidden="true" tabindex="-1"></a>bert_keywords <span class="op">=</span> extract_bert_keywords(report_text[:<span class="dv">2000</span>], tokenizer, model)  <span class="co"># 限制文本长度</span></span>
-<span id="cb5-81"><a href="#cb5-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-82"><a href="#cb5-82" aria-hidden="true" tabindex="-1"></a><span class="co"># 打印结果比较</span></span>
-<span id="cb5-83"><a href="#cb5-83" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Word2Vec提取的关键词:"</span>)</span>
-<span id="cb5-84"><a href="#cb5-84" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word, score <span class="kw">in</span> w2v_keywords:</span>
-<span id="cb5-85"><a href="#cb5-85" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>score<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb5-86"><a href="#cb5-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-87"><a href="#cb5-87" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">BERT提取的关键词:"</span>)</span>
-<span id="cb5-88"><a href="#cb5-88" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word, score <span class="kw">in</span> bert_keywords:</span>
-<span id="cb5-89"><a href="#cb5-89" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>score<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-</section>
-<section id="使用预训练模型进行主题分析" class="level2" data-number="19.2">
-<h2 data-number="19.2" class="anchored" data-anchor-id="使用预训练模型进行主题分析"><span class="header-section-number">19.2</span> 使用预训练模型进行主题分析</h2>
-<p>接下来，我们探索如何使用BERT进行政府工作报告的主题分析。</p>
-<section id="基于bert表示的文本聚类" class="level3" data-number="19.2.1">
-<h3 data-number="19.2.1" class="anchored" data-anchor-id="基于bert表示的文本聚类"><span class="header-section-number">19.2.1</span> 基于BERT表示的文本聚类</h3>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># 对BERT文档向量进行聚类</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>n_clusters <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>kmeans <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>n_clusters, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>cluster_labels <span class="op">=</span> kmeans.fit_predict(bert_doc_vectors)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 将聚类结果与年份对应</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>cluster_df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Year'</span>: years,</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Cluster'</span>: cluster_labels</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co"># 对结果进行可视化（使用PCA降维）</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>bert_2d <span class="op">=</span> pca.fit_transform(bert_doc_vectors)</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cluster <span class="kw">in</span> <span class="bu">range</span>(n_clusters):</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 找出属于当前簇的点</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    cluster_points <span class="op">=</span> bert_2d[cluster_labels <span class="op">==</span> cluster]</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    cluster_years <span class="op">=</span> [years[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(years)) <span class="cf">if</span> cluster_labels[i] <span class="op">==</span> cluster]</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 绘制点</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    plt.scatter(cluster_points[:, <span class="dv">0</span>], cluster_points[:, <span class="dv">1</span>], label<span class="op">=</span><span class="ss">f'Cluster </span><span class="sc">{</span>cluster<span class="sc">}</span><span class="ss">'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 添加年份标签</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, point <span class="kw">in</span> <span class="bu">enumerate</span>(cluster_points):</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        plt.annotate(cluster_years[i], xy<span class="op">=</span>point, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'基于BERT表示的政府工作报告聚类'</span>)</span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'PCA维度1'</span>)</span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'PCA维度2'</span>)</span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="co"># 分析每个簇的主题特征</span></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cluster <span class="kw">in</span> <span class="bu">range</span>(n_clusters):</span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>    cluster_indices <span class="op">=</span> [i <span class="cf">for</span> i, label <span class="kw">in</span> <span class="bu">enumerate</span>(cluster_labels) <span class="cf">if</span> label <span class="op">==</span> cluster]</span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    cluster_years <span class="op">=</span> [years[i] <span class="cf">for</span> i <span class="kw">in</span> cluster_indices]</span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">簇 </span><span class="sc">{</span>cluster<span class="sc">}</span><span class="ss"> 包含年份: </span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join(<span class="bu">map</span>(<span class="bu">str</span>, cluster_years))<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 合并该簇的所有文档</span></span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>    cluster_text <span class="op">=</span> <span class="st">" "</span>.join([govreport.iloc[i][<span class="st">'texts'</span>][:<span class="dv">500</span>] <span class="cf">for</span> i <span class="kw">in</span> cluster_indices])</span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 提取该簇的主题词</span></span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>    cluster_keywords <span class="op">=</span> extract_bert_keywords(cluster_text, tokenizer, model, top_n<span class="op">=</span><span class="dv">15</span>)</span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"主题词:"</span>)</span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word, score <span class="kw">in</span> cluster_keywords:</span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>score<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="文本主题随时间的演变分析" class="level3" data-number="19.2.2">
-<h3 data-number="19.2.2" class="anchored" data-anchor-id="文本主题随时间的演变分析"><span class="header-section-number">19.2.2</span> 文本主题随时间的演变分析</h3>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 对每年报告提取主题词，分析主题随时间的演变</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>years_list <span class="op">=</span> <span class="bu">sorted</span>(<span class="bu">set</span>(years))</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>yearly_topics <span class="op">=</span> {}</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year <span class="kw">in</span> years_list:</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> govreport[govreport[<span class="st">'Year'</span>] <span class="op">==</span> year].index[<span class="dv">0</span>]</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> govreport.loc[idx, <span class="st">'texts'</span>][:<span class="dv">2000</span>]  <span class="co"># 限制长度</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 提取主题词</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    topics <span class="op">=</span> extract_bert_keywords(text, tokenizer, model, top_n<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    yearly_topics[year] <span class="op">=</span> topics</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 跟踪某些关键词随时间的变化</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>focus_words <span class="op">=</span> [<span class="st">'创新'</span>, <span class="st">'发展'</span>, <span class="st">'改革'</span>, <span class="st">'民生'</span>, <span class="st">'科技'</span>, <span class="st">'数字'</span>, <span class="st">'经济'</span>]</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>word_trends <span class="op">=</span> {word: [] <span class="cf">for</span> word <span class="kw">in</span> focus_words}</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year <span class="kw">in</span> years_list:</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 创建当年主题词的字典</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    year_word_scores <span class="op">=</span> {word: score <span class="cf">for</span> word, score <span class="kw">in</span> yearly_topics[year]}</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 记录焦点词的出现情况</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word <span class="kw">in</span> focus_words:</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> word <span class="kw">in</span> year_word_scores:</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>            word_trends[word].append((year, year_word_scores[word]))</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>            word_trends[word].append((year, <span class="dv">0</span>))</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化关键词趋势</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> word, trend <span class="kw">in</span> word_trends.items():</span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    years_data <span class="op">=</span> [t[<span class="dv">0</span>] <span class="cf">for</span> t <span class="kw">in</span> trend]</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> [t[<span class="dv">1</span>] <span class="cf">for</span> t <span class="kw">in</span> trend]</span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    plt.plot(years_data, scores, marker<span class="op">=</span><span class="st">'o'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span>word)</span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'政府工作报告中关键概念的重要性变化'</span>)</span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'年份'</span>)</span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'主题重要性得分'</span>)</span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>plt.xticks(years_list)</span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="语义相似度异常点检测" class="level3" data-number="19.2.3">
-<h3 data-number="19.2.3" class="anchored" data-anchor-id="语义相似度异常点检测"><span class="header-section-number">19.2.3</span> 语义相似度异常点检测</h3>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> LocalOutlierFactor</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用局部异常因子(LOF)算法检测异常点</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>lof <span class="op">=</span> LocalOutlierFactor(n_neighbors<span class="op">=</span><span class="dv">2</span>, contamination<span class="op">=</span><span class="fl">0.1</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>outliers <span class="op">=</span> lof.fit_predict(bert_doc_vectors)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 异常点是-1，正常点是1</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>anomaly_indices <span class="op">=</span> [i <span class="cf">for</span> i, label <span class="kw">in</span> <span class="bu">enumerate</span>(outliers) <span class="cf">if</span> label <span class="op">==</span> <span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>anomaly_years <span class="op">=</span> [years[i] <span class="cf">for</span> i <span class="kw">in</span> anomaly_indices]</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"检测到的异常报告: </span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join(<span class="bu">map</span>(<span class="bu">str</span>, anomaly_years))<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化异常点</span></span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>plt.scatter(bert_2d[:, <span class="dv">0</span>], bert_2d[:, <span class="dv">1</span>], c<span class="op">=</span>[<span class="st">'red'</span> <span class="cf">if</span> x <span class="op">==</span> <span class="op">-</span><span class="dv">1</span> <span class="cf">else</span> <span class="st">'blue'</span> <span class="cf">for</span> x <span class="kw">in</span> outliers], </span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>            alpha<span class="op">=</span><span class="fl">0.7</span>, label<span class="op">=</span>[<span class="st">'Anomaly'</span> <span class="cf">if</span> x <span class="op">==</span> <span class="op">-</span><span class="dv">1</span> <span class="cf">else</span> <span class="st">'Normal'</span> <span class="cf">for</span> x <span class="kw">in</span> outliers])</span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 添加年份标签</span></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, point <span class="kw">in</span> <span class="bu">enumerate</span>(bert_2d):</span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    plt.annotate(years[i], xy<span class="op">=</span>point, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'政府工作报告语义异常检测'</span>)</span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'PCA维度1'</span>)</span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'PCA维度2'</span>)</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a><span class="co"># 分析异常报告的特点</span></span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> anomaly_indices:</span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> idx <span class="kw">in</span> anomaly_indices:</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>        year <span class="op">=</span> years[idx]</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span>year<span class="sc">}</span><span class="ss">年报告被检测为异常，分析其特点:"</span>)</span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 提取该报告的特有词汇</span></span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>        text <span class="op">=</span> govreport.iloc[idx][<span class="st">'texts'</span>][:<span class="dv">2000</span>]</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>        keywords <span class="op">=</span> extract_bert_keywords(text, tokenizer, model, top_n<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"特征词:"</span>)</span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> word, score <span class="kw">in</span> keywords:</span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>word<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>score<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 计算与其他报告的平均相似度</span></span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>        similarities <span class="op">=</span> []</span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(bert_doc_vectors)):</span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> i <span class="op">!=</span> idx:</span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>                sim <span class="op">=</span> cosine_similarity([bert_doc_vectors[idx]], [bert_doc_vectors[i]])[<span class="dv">0</span>][<span class="dv">0</span>]</span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>                similarities.append((years[i], sim))</span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>        avg_similarity <span class="op">=</span> <span class="bu">sum</span>(sim <span class="cf">for</span> _, sim <span class="kw">in</span> similarities) <span class="op">/</span> <span class="bu">len</span>(similarities)</span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"与其他报告的平均相似度: </span><span class="sc">{</span>avg_similarity<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 找出最不相似的报告</span></span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>        least_similar <span class="op">=</span> <span class="bu">min</span>(similarities, key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>])</span>
-<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"最不相似的报告是</span><span class="sc">{</span>least_similar[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">年，相似度为</span><span class="sc">{</span>least_similar[<span class="dv">1</span>]<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-</section>
-</section>
-<section id="使用大语言模型进行金融文本分析" class="level1" data-number="20">
-<h1 data-number="20"><span class="header-section-number">20</span> 使用大语言模型进行金融文本分析</h1>
-<p>在本节中，我们将探索如何利用强大的大语言模型（LLMs）进行金融文本分析。我们将介绍如何使用预训练的金融专业模型FinBERT以及通用大模型如DeepSeek等，实现无监督的文本理解任务。</p>
-<section id="使用finbert进行金融文本分类" class="level2" data-number="20.1">
-<h2 data-number="20.1" class="anchored" data-anchor-id="使用finbert进行金融文本分类"><span class="header-section-number">20.1</span> 使用FinBERT进行金融文本分类</h2>
-<p>FinBERT是一种针对金融领域进行微调的BERT变体，专门为金融文本分析而设计。</p>
-<section id="安装与加载finbert" class="level3" data-number="20.1.1">
-<h3 data-number="20.1.1" class="anchored" data-anchor-id="安装与加载finbert"><span class="header-section-number">20.1.1</span> 安装与加载FinBERT</h3>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装所需库</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install transformers sentencepiece matplotlib</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install finbert</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoModelForSequenceClassification, AutoTokenizer</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 加载FinBERT模型</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(<span class="st">"ProsusAI/finbert"</span>)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModelForSequenceClassification.from_pretrained(<span class="st">"ProsusAI/finbert"</span>)</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()  <span class="co"># 设置为评估模式</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="金融情感分析" class="level3" data-number="20.1.2">
-<h3 data-number="20.1.2" class="anchored" data-anchor-id="金融情感分析"><span class="header-section-number">20.1.2</span> 金融情感分析</h3>
-<p>FinBERT的一个主要用途是金融文本的情感分析，可以将文本分类为正面、负面或中性：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analyze_sentiment(text, model, tokenizer):</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> tokenizer(text, return_tensors<span class="op">=</span><span class="st">"pt"</span>, padding<span class="op">=</span><span class="va">True</span>, truncation<span class="op">=</span><span class="va">True</span>, max_length<span class="op">=</span><span class="dv">512</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        outputs <span class="op">=</span> model(<span class="op">**</span>inputs)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>        predictions <span class="op">=</span> torch.nn.functional.softmax(outputs.logits, dim<span class="op">=-</span><span class="dv">1</span>)</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># FinBERT情感标签: 0=negative, 1=neutral, 2=positive</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    sentiment_labels <span class="op">=</span> [<span class="st">"负面"</span>, <span class="st">"中性"</span>, <span class="st">"正面"</span>]</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    scores <span class="op">=</span> predictions[<span class="dv">0</span>].numpy()</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    results <span class="op">=</span> []</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(sentiment_labels)):</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        results.append((sentiment_labels[i], <span class="bu">float</span>(scores[i])))</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sorted</span>(results, key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 测试几个金融相关的文本片段</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>test_texts <span class="op">=</span> [</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"今年以来，我国经济稳中向好，经济增长好于预期，通胀水平保持稳定。"</span>,</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"受外部需求减弱影响，出口增长放缓，企业经营压力加大，就业形势更加严峻。"</span>,</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"科技创新成为经济高质量发展的强大动力，数字经济蓬勃发展。"</span>,</span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"金融风险明显增加，部分企业债务违约，需要加强风险防控。"</span>,</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"资本市场改革持续推进，投资者信心有所恢复，市场预期逐步改善。"</span></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 分析情感</span></span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>sentiments <span class="op">=</span> []</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> test_texts:</span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    sentiment <span class="op">=</span> analyze_sentiment(text, model, tokenizer)</span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    sentiments.append(sentiment)</span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"文本: </span><span class="sc">{</span>text<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> label, score <span class="kw">in</span> sentiment:</span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>label<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>score<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化情感分析结果</span></span>
-<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
-<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="bu">len</span>(test_texts))</span>
-<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="fl">0.25</span></span>
-<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a><span class="co"># 提取各情感得分</span></span>
-<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>negative_scores <span class="op">=</span> [sentiment[<span class="dv">2</span>][<span class="dv">1</span>] <span class="cf">for</span> sentiment <span class="kw">in</span> sentiments]</span>
-<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>neutral_scores <span class="op">=</span> [sentiment[<span class="dv">1</span>][<span class="dv">1</span>] <span class="cf">for</span> sentiment <span class="kw">in</span> sentiments]</span>
-<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>positive_scores <span class="op">=</span> [sentiment[<span class="dv">0</span>][<span class="dv">1</span>] <span class="cf">for</span> sentiment <span class="kw">in</span> sentiments]</span>
-<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制条形图</span></span>
-<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a>ax.bar(x <span class="op">-</span> width, positive_scores, width, label<span class="op">=</span><span class="st">'正面'</span>)</span>
-<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>ax.bar(x, neutral_scores, width, label<span class="op">=</span><span class="st">'中性'</span>)</span>
-<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>ax.bar(x <span class="op">+</span> width, negative_scores, width, label<span class="op">=</span><span class="st">'负面'</span>)</span>
-<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'情感得分'</span>)</span>
-<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'FinBERT金融文本情感分析'</span>)</span>
-<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(x)</span>
-<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels([<span class="ss">f'文本</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(test_texts))])</span>
-<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
-<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="对政府工作报告进行金融情感分析" class="level3" data-number="20.1.3">
-<h3 data-number="20.1.3" class="anchored" data-anchor-id="对政府工作报告进行金融情感分析"><span class="header-section-number">20.1.3</span> 对政府工作报告进行金融情感分析</h3>
-<p>接下来，我们使用FinBERT分析政府工作报告中的金融相关段落：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 从政府工作报告中提取金融相关段落</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_finance_paragraphs(text, keywords<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> keywords <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>        keywords <span class="op">=</span> [<span class="st">'经济'</span>, <span class="st">'金融'</span>, <span class="st">'财政'</span>, <span class="st">'税收'</span>, <span class="st">'货币'</span>, <span class="st">'银行'</span>, <span class="st">'债务'</span>, <span class="st">'投资'</span>, </span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'证券'</span>, <span class="st">'股市'</span>, <span class="st">'外汇'</span>, <span class="st">'通胀'</span>, <span class="st">'增长'</span>, <span class="st">'风险'</span>, <span class="st">'改革'</span>]</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 将文本分成段落</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    paragraphs <span class="op">=</span> text.split(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 过滤出含有金融关键词的段落</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    finance_paragraphs <span class="op">=</span> []</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> para <span class="kw">in</span> paragraphs:</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(para) <span class="op">&lt;</span> <span class="dv">10</span>:  <span class="co"># 跳过短段落</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">any</span>(keyword <span class="kw">in</span> para <span class="cf">for</span> keyword <span class="kw">in</span> keywords):</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>            finance_paragraphs.append(para)</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> finance_paragraphs</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 按年份分析政府工作报告的金融情感</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>yearly_sentiments <span class="op">=</span> {}</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year <span class="kw">in</span> years_list:</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> govreport[govreport[<span class="st">'Year'</span>] <span class="op">==</span> year].index[<span class="dv">0</span>]</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> govreport.loc[idx, <span class="st">'texts'</span>]</span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 提取金融段落</span></span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    finance_paras <span class="op">=</span> extract_finance_paragraphs(text)</span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 不分析段落过少的年份</span></span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(finance_paras) <span class="op">&lt;</span> <span class="dv">3</span>:</span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 分析每个段落的情感</span></span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>    para_sentiments <span class="op">=</span> []</span>
-<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> para <span class="kw">in</span> finance_paras[:<span class="dv">10</span>]:  <span class="co"># 限制段落数量</span></span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a>        sentiment <span class="op">=</span> analyze_sentiment(para, model, tokenizer)</span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>        para_sentiments.append(sentiment)</span>
-<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 计算平均情感分数</span></span>
-<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>    avg_positive <span class="op">=</span> np.mean([s[<span class="dv">0</span>][<span class="dv">1</span>] <span class="cf">for</span> s <span class="kw">in</span> para_sentiments])</span>
-<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>    avg_neutral <span class="op">=</span> np.mean([s[<span class="dv">1</span>][<span class="dv">1</span>] <span class="cf">for</span> s <span class="kw">in</span> para_sentiments])</span>
-<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>    avg_negative <span class="op">=</span> np.mean([s[<span class="dv">2</span>][<span class="dv">1</span>] <span class="cf">for</span> s <span class="kw">in</span> para_sentiments])</span>
-<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a>    yearly_sentiments[year] <span class="op">=</span> {</span>
-<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>        <span class="st">"正面"</span>: avg_positive,</span>
-<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>        <span class="st">"中性"</span>: avg_neutral,</span>
-<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>        <span class="st">"负面"</span>: avg_negative</span>
-<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a><span class="co"># 可视化情感随时间的变化</span></span>
-<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">8</span>))</span>
-<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a>years <span class="op">=</span> <span class="bu">sorted</span>(yearly_sentiments.keys())</span>
-<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a>positive_scores <span class="op">=</span> [yearly_sentiments[year][<span class="st">"正面"</span>] <span class="cf">for</span> year <span class="kw">in</span> years]</span>
-<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a>neutral_scores <span class="op">=</span> [yearly_sentiments[year][<span class="st">"中性"</span>] <span class="cf">for</span> year <span class="kw">in</span> years]</span>
-<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>negative_scores <span class="op">=</span> [yearly_sentiments[year][<span class="st">"负面"</span>] <span class="cf">for</span> year <span class="kw">in</span> years]</span>
-<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a>plt.plot(years, positive_scores, <span class="st">'g-'</span>, marker<span class="op">=</span><span class="st">'o'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'正面'</span>)</span>
-<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>plt.plot(years, neutral_scores, <span class="st">'b-'</span>, marker<span class="op">=</span><span class="st">'s'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'中性'</span>)</span>
-<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a>plt.plot(years, negative_scores, <span class="st">'r-'</span>, marker<span class="op">=</span><span class="st">'^'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'负面'</span>)</span>
-<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'政府工作报告金融段落情感变化趋势'</span>)</span>
-<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'年份'</span>)</span>
-<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'情感强度'</span>)</span>
-<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>plt.xticks(years)</span>
-<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-</section>
-<section id="使用通用大语言模型的零样本分类" class="level2" data-number="20.2">
-<h2 data-number="20.2" class="anchored" data-anchor-id="使用通用大语言模型的零样本分类"><span class="header-section-number">20.2</span> 使用通用大语言模型的零样本分类</h2>
-<p>除了专业领域模型，我们还可以利用通用大语言模型的强大能力进行零样本分类，无需额外训练。</p>
-<section id="安装与设置大语言模型" class="level3" data-number="20.2.1">
-<h3 data-number="20.2.1" class="anchored" data-anchor-id="安装与设置大语言模型"><span class="header-section-number">20.2.1</span> 安装与设置大语言模型</h3>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 安装所需库</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install openai</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># !pip install deepseek</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 导入必要的库</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> openai</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> deepseek <span class="im">import</span> DeepSeekAPI</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 设置API密钥（请使用自己的API密钥）</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co"># openai.api_key = "your-api-key-here"  # GPT-4/3.5</span></span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co"># deepseek_api = DeepSeekAPI("your-deepseek-api-key")  # DeepSeek</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="零样本文本分类" class="level3" data-number="20.2.2">
-<h3 data-number="20.2.2" class="anchored" data-anchor-id="零样本文本分类"><span class="header-section-number">20.2.2</span> 零样本文本分类</h3>
-<p>我们可以使用大语言模型进行零样本分类，无需提供训练数据：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> classify_text_with_gpt(text, categories, model<span class="op">=</span><span class="st">"gpt-3.5-turbo"</span>):</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""使用GPT模型进行零样本文本分类"""</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"""请将以下文本分类到这些类别之一: </span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join(categories)<span class="sc">}</span><span class="ss">。</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ss">    只需回复类别名称，不要添加任何解释或标点符号。</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="ss">    文本: </span><span class="sc">{</span>text<span class="sc">}</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="ss">    """</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> openai.ChatCompletion.create(</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span>model,</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        messages<span class="op">=</span>[</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: <span class="st">"你是一个精确的文本分类助手。"</span>},</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>        temperature<span class="op">=</span><span class="dv">0</span>,</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response.choices[<span class="dv">0</span>].message.content.strip()</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> classify_text_with_deepseek(text, categories, model<span class="op">=</span><span class="st">"deepseek-chat"</span>):</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""使用DeepSeek模型进行零样本文本分类"""</span></span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"""请将以下文本分类到这些类别之一: </span><span class="sc">{</span><span class="st">', '</span><span class="sc">.</span>join(categories)<span class="sc">}</span><span class="ss">。</span></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="ss">    只需回复类别名称，不要添加任何解释或标点符号。</span></span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span></span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="ss">    文本: </span><span class="sc">{</span>text<span class="sc">}</span></span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="ss">    """</span></span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> deepseek_api.chat.completions.create(</span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span>model,</span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>        messages<span class="op">=</span>[</span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: <span class="st">"你是一个精确的文本分类助手。"</span>},</span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}</span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>        temperature<span class="op">=</span><span class="dv">0</span>,</span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response.choices[<span class="dv">0</span>].message.content.strip()</span>
-<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a><span class="co"># 示例：将政府工作报告段落分类为不同政策领域</span></span>
-<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>policy_categories <span class="op">=</span> [<span class="st">"经济发展"</span>, <span class="st">"科技创新"</span>, <span class="st">"民生改善"</span>, <span class="st">"环境保护"</span>, <span class="st">"改革开放"</span>, <span class="st">"风险防控"</span>]</span>
-<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a><span class="co"># 从多个年份的报告中选取段落</span></span>
-<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>sample_paragraphs <span class="op">=</span> []</span>
-<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>sample_years <span class="op">=</span> [<span class="dv">2019</span>, <span class="dv">2020</span>, <span class="dv">2021</span>, <span class="dv">2022</span>, <span class="dv">2023</span>]</span>
-<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year <span class="kw">in</span> sample_years:</span>
-<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> govreport[govreport[<span class="st">'Year'</span>] <span class="op">==</span> year].index[<span class="dv">0</span>]</span>
-<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> govreport.loc[idx, <span class="st">'texts'</span>]</span>
-<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 提取段落</span></span>
-<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>    paragraphs <span class="op">=</span> [p <span class="cf">for</span> p <span class="kw">in</span> text.split(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>) <span class="cf">if</span> <span class="bu">len</span>(p) <span class="op">&gt;</span> <span class="dv">50</span> <span class="kw">and</span> <span class="bu">len</span>(p) <span class="op">&lt;</span> <span class="dv">200</span>]</span>
-<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> paragraphs:</span>
-<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 随机选择一个段落</span></span>
-<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>        <span class="im">import</span> random</span>
-<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>        selected_para <span class="op">=</span> random.choice(paragraphs)</span>
-<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>        sample_paragraphs.append((year, selected_para))</span>
-<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用大语言模型进行分类</span></span>
-<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a><span class="co"># 注意：实际运行时取消注释以下代码，但需要API密钥</span></span>
-<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
-<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a><span class="co">classification_results = []</span></span>
-<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a><span class="co">for year, para in sample_paragraphs:</span></span>
-<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a><span class="co">    # category = classify_text_with_gpt(para, policy_categories)</span></span>
-<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a><span class="co">    category = classify_text_with_deepseek(para, policy_categories)</span></span>
-<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a><span class="co">    classification_results.append((year, para[:50] + "...", category))</span></span>
-<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a><span class="co"># 打印分类结果</span></span>
-<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a><span class="co">print("大语言模型零样本分类结果:")</span></span>
-<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a><span class="co">for year, para_preview, category in classification_results:</span></span>
-<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a><span class="co">    print(f"{year}年段落: {para_preview}")</span></span>
-<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a><span class="co">    print(f"分类: {category}</span><span class="ch">\n</span><span class="co">")</span></span>
-<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="使用大模型生成金融文本摘要" class="level3" data-number="20.2.3">
-<h3 data-number="20.2.3" class="anchored" data-anchor-id="使用大模型生成金融文本摘要"><span class="header-section-number">20.2.3</span> 使用大模型生成金融文本摘要</h3>
-<p>大语言模型在摘要生成方面表现出色，可以用于提取政府工作报告中的金融政策要点：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_summary_with_gpt(text, model<span class="op">=</span><span class="st">"gpt-3.5-turbo"</span>):</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""使用GPT模型生成摘要"""</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"""请总结以下政府工作报告中的金融政策要点，以简洁的要点形式列出，最多5条:</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span><span class="sc">{</span>text<span class="sc">}</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="ss">    """</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> openai.ChatCompletion.create(</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span>model,</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>        messages<span class="op">=</span>[</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: <span class="st">"你是一个专业的金融政策分析师。"</span>},</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        temperature<span class="op">=</span><span class="fl">0.3</span>,</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        max_tokens<span class="op">=</span><span class="dv">300</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response.choices[<span class="dv">0</span>].message.content.strip()</span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_summary_with_deepseek(text, model<span class="op">=</span><span class="st">"deepseek-chat"</span>):</span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""使用DeepSeek模型生成摘要"""</span></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"""请总结以下政府工作报告中的金融政策要点，以简洁的要点形式列出，最多5条:</span></span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span><span class="sc">{</span>text<span class="sc">}</span></span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="ss">    """</span></span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> deepseek_api.chat.completions.create(</span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span>model,</span>
-<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>        messages<span class="op">=</span>[</span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: <span class="st">"你是一个专业的金融政策分析师。"</span>},</span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}</span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>        temperature<span class="op">=</span><span class="fl">0.3</span>,</span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>        max_tokens<span class="op">=</span><span class="dv">300</span></span>
-<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response.choices[<span class="dv">0</span>].message.content.strip()</span>
-<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a><span class="co"># 为近几年的报告生成金融政策摘要</span></span>
-<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a><span class="co"># 注意：实际运行时取消注释以下代码，但需要API密钥</span></span>
-<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
-<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a><span class="co">policy_summaries = {}</span></span>
-<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a><span class="co">for year in [2021, 2022, 2023]:</span></span>
-<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a><span class="co">    idx = govreport[govreport['Year'] == year].index[0]</span></span>
-<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a><span class="co">    text = govreport.loc[idx, 'texts']</span></span>
-<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
-<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a><span class="co">    # 提取金融段落</span></span>
-<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a><span class="co">    finance_paras = extract_finance_paragraphs(text)</span></span>
-<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a><span class="co">    finance_text = "</span><span class="ch">\n</span><span class="co">".join(finance_paras[:10])  # 限制输入长度</span></span>
-<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
-<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a><span class="co">    # 生成摘要</span></span>
-<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a><span class="co">    # summary = generate_summary_with_gpt(finance_text)</span></span>
-<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a><span class="co">    summary = generate_summary_with_deepseek(finance_text)</span></span>
-<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a><span class="co">    policy_summaries[year] = summary</span></span>
-<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a><span class="co"># 打印摘要结果</span></span>
-<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a><span class="co">for year, summary in policy_summaries.items():</span></span>
-<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a><span class="co">    print(f"{year}年政府工作报告金融政策要点:")</span></span>
-<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a><span class="co">    print(summary)</span></span>
-<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a><span class="co">    print("</span><span class="ch">\n</span><span class="co">" + "-"*50 + "</span><span class="ch">\n</span><span class="co">")</span></span>
-<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-</section>
-<section id="使用大语言模型进行高级文本分析" class="level2" data-number="20.3">
-<h2 data-number="20.3" class="anchored" data-anchor-id="使用大语言模型进行高级文本分析"><span class="header-section-number">20.3</span> 使用大语言模型进行高级文本分析</h2>
-<p>大语言模型还可以用于更复杂的无监督文本分析任务。</p>
-<section id="提示式主题建模" class="level3" data-number="20.3.1">
-<h3 data-number="20.3.1" class="anchored" data-anchor-id="提示式主题建模"><span class="header-section-number">20.3.1</span> 提示式主题建模</h3>
-<p>使用提示工程（Prompt Engineering）引导大语言模型进行主题发现：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_topics_with_gpt(texts, n_topics<span class="op">=</span><span class="dv">5</span>, model<span class="op">=</span><span class="st">"gpt-3.5-turbo"</span>):</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""使用GPT模型进行提示式主题建模"""</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 合并文本，但限制长度以适应API限制</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    combined_text <span class="op">=</span> <span class="st">"</span><span class="ch">\n\n</span><span class="st">"</span>.join(texts)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(combined_text) <span class="op">&gt;</span> <span class="dv">4000</span>:</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        combined_text <span class="op">=</span> combined_text[:<span class="dv">4000</span>] <span class="op">+</span> <span class="st">"..."</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"""作为一个文本挖掘专家，请分析以下多个文本片段，识别其中的</span><span class="sc">{</span>n_topics<span class="sc">}</span><span class="ss">个主要主题。</span></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="ss">    每个主题请提供一个简短标题和3-5个关键词。</span></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="ss">    请仅输出主题和关键词，不要有其他解释。</span></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="ss">    文本片段:</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span><span class="sc">{</span>combined_text<span class="sc">}</span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="ss">    """</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> openai.ChatCompletion.create(</span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span>model,</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>        messages<span class="op">=</span>[</span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: <span class="st">"你是一个专业的文本挖掘专家。"</span>},</span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}</span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>        temperature<span class="op">=</span><span class="fl">0.2</span>,</span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>        max_tokens<span class="op">=</span><span class="dv">500</span></span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response.choices[<span class="dv">0</span>].message.content.strip()</span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="co"># 从多个年份的报告中提取金融段落</span></span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>all_finance_paras <span class="op">=</span> []</span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> year <span class="kw">in</span> years_list[<span class="op">-</span><span class="dv">5</span>:]:  <span class="co"># 只取最近5年</span></span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>    idx <span class="op">=</span> govreport[govreport[<span class="st">'Year'</span>] <span class="op">==</span> year].index[<span class="dv">0</span>]</span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>    text <span class="op">=</span> govreport.loc[idx, <span class="st">'texts'</span>]</span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>    finance_paras <span class="op">=</span> extract_finance_paragraphs(text)</span>
-<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a>    all_finance_paras.extend(finance_paras[:<span class="dv">5</span>])  <span class="co"># 每年取5个段落</span></span>
-<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用大语言模型进行主题建模</span></span>
-<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 注意：实际运行时取消注释以下代码，但需要API密钥</span></span>
-<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
-<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a><span class="co">topics = extract_topics_with_gpt(all_finance_paras)</span></span>
-<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a><span class="co">print("大语言模型识别的主题:")</span></span>
-<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a><span class="co">print(topics)</span></span>
-<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="思维链分析" class="level3" data-number="20.3.2">
-<h3 data-number="20.3.2" class="anchored" data-anchor-id="思维链分析"><span class="header-section-number">20.3.2</span> 思维链分析</h3>
-<p>使用思维链（Chain-of-Thought）技术引导大语言模型进行深度分析：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> analyze_with_cot(text, question, model<span class="op">=</span><span class="st">"gpt-3.5-turbo"</span>):</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""使用思维链技术进行深度分析"""</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    prompt <span class="op">=</span> <span class="ss">f"""请分析以下政府工作报告文本，回答问题。</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="ss">    请先逐步思考，然后给出最终答案。</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="ss">    文本:</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span><span class="sc">{</span>text<span class="sc">}</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="ss">    问题: </span><span class="sc">{</span>question<span class="sc">}</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="ss">    </span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="ss">    逐步思考:</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="ss">    """</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> openai.ChatCompletion.create(</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span>model,</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>        messages<span class="op">=</span>[</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: <span class="st">"你是一个专业的政策分析师。"</span>},</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}</span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>        ],</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>        temperature<span class="op">=</span><span class="fl">0.3</span>,</span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>        max_tokens<span class="op">=</span><span class="dv">800</span></span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> response.choices[<span class="dv">0</span>].message.content.strip()</span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 示例：分析最新报告中的政策转变</span></span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="co"># 注意：实际运行时取消注释以下代码，但需要API密钥</span></span>
-<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
-<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 获取2023年报告</span></span>
-<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a><span class="co">latest_idx = govreport[govreport['Year'] == 2023].index[0]</span></span>
-<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="co">latest_text = govreport.loc[latest_idx, 'texts']</span></span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="co"># 限制文本长度</span></span>
-<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="co">analysis_text = latest_text[:3000]</span></span>
-<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义分析问题</span></span>
-<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a><span class="co">analysis_question = "这份政府工作报告对金融风险防控政策有哪些新的调整？这些调整与前几年相比有何变化？"</span></span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a><span class="co"># 进行思维链分析</span></span>
-<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a><span class="co">analysis_result = analyze_with_cot(analysis_text, analysis_question)</span></span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a><span class="co">print("思维链分析结果:")</span></span>
-<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a><span class="co">print(analysis_result)</span></span>
-<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="嵌入空间与向量检索" class="level3" data-number="20.3.3">
-<h3 data-number="20.3.3" class="anchored" data-anchor-id="嵌入空间与向量检索"><span class="header-section-number">20.3.3</span> 嵌入空间与向量检索</h3>
-<p>大语言模型的嵌入向量可用于高级语义检索：</p>
-<div class="cell">
-<details class="code-fold">
-<summary>代码</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_embedding_with_openai(text, model<span class="op">=</span><span class="st">"text-embedding-ada-002"</span>):</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""获取OpenAI的文本嵌入向量"""</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> text.strip():</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.zeros(<span class="dv">1536</span>)  <span class="co"># OpenAI embeddings are 1536-dimensional</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 限制文本长度</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(text) <span class="op">&gt;</span> <span class="dv">8000</span>:</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>        text <span class="op">=</span> text[:<span class="dv">8000</span>]</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> openai.Embedding.create(</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">input</span><span class="op">=</span>text,</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>        model<span class="op">=</span>model</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    embedding <span class="op">=</span> response[<span class="st">'data'</span>][<span class="dv">0</span>][<span class="st">'embedding'</span>]</span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(embedding)</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="co"># 为政府工作报告段落生成嵌入向量</span></span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 注意：实际运行时取消注释以下代码，但需要API密钥</span></span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 准备段落</span></span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="co">all_paragraphs = []</span></span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="co">for year in years_list:</span></span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="co">    idx = govreport[govreport['Year'] == year].index[0]</span></span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="co">    text = govreport.loc[idx, 'texts']</span></span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="co">    # 分段</span></span>
-<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="co">    paragraphs = [p for p in text.split('</span><span class="ch">\n</span><span class="co">') if len(p) &gt; 50]</span></span>
-<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a><span class="co">    for para in paragraphs[:10]:  # 每年最多10个段落</span></span>
-<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a><span class="co">        all_paragraphs.append({</span></span>
-<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a><span class="co">            'year': year,</span></span>
-<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a><span class="co">            'content': para</span></span>
-<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a><span class="co">        })</span></span>
-<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a><span class="co"># 生成嵌入向量</span></span>
-<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a><span class="co">for i, para in enumerate(all_paragraphs):</span></span>
-<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a><span class="co">    embedding = get_embedding_with_openai(para['content'])</span></span>
-<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a><span class="co">    all_paragraphs[i]['embedding'] = embedding</span></span>
-<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
-<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算相似度矩阵</span></span>
-<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a><span class="co">n_paras = len(all_paragraphs)</span></span>
-<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a><span class="co">similarity_matrix = np.zeros((n_paras, n_paras))</span></span>
-<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a><span class="co">for i in range(n_paras):</span></span>
-<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a><span class="co">    for j in range(n_paras):</span></span>
-<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a><span class="co">        if i == j:</span></span>
-<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a><span class="co">            similarity_matrix[i, j] = 1.0</span></span>
-<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a><span class="co">        else:</span></span>
-<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a><span class="co">            similarity_matrix[i, j] = cosine_similarity(</span></span>
-<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a><span class="co">                [all_paragraphs[i]['embedding']], </span></span>
-<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a><span class="co">                [all_paragraphs[j]['embedding']]</span></span>
-<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a><span class="co">            )[0, 0]</span></span>
-<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a><span class="co"># 找出每个段落最相似的其他段落</span></span>
-<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a><span class="co">for i, para in enumerate(all_paragraphs):</span></span>
-<span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a><span class="co">    similar_indices = np.argsort(similarity_matrix[i])[-3:-1][::-1]  # 排除自身，取前2个</span></span>
-<span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
-<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a><span class="co">    print(f"{para['year']}年段落:")</span></span>
-<span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a><span class="co">    print(para['content'][:100] + "...</span><span class="ch">\n</span><span class="co">")</span></span>
-<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
-<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a><span class="co">    print("最相似的段落:")</span></span>
-<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a><span class="co">    for idx in similar_indices:</span></span>
-<span id="cb17-63"><a href="#cb17-63" aria-hidden="true" tabindex="-1"></a><span class="co">        sim_para = all_paragraphs[idx]</span></span>
-<span id="cb17-64"><a href="#cb17-64" aria-hidden="true" tabindex="-1"></a><span class="co">        sim_score = similarity_matrix[i, idx]</span></span>
-<span id="cb17-65"><a href="#cb17-65" aria-hidden="true" tabindex="-1"></a><span class="co">        print(f"- {sim_para['year']}年 (相似度: {sim_score:.4f}):")</span></span>
-<span id="cb17-66"><a href="#cb17-66" aria-hidden="true" tabindex="-1"></a><span class="co">        print(sim_para['content'][:100] + "...</span><span class="ch">\n</span><span class="co">")</span></span>
-<span id="cb17-67"><a href="#cb17-67" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
-<span id="cb17-68"><a href="#cb17-68" aria-hidden="true" tabindex="-1"></a><span class="co">    print("-"*80 + "</span><span class="ch">\n</span><span class="co">")</span></span>
-<span id="cb17-69"><a href="#cb17-69" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-</section>
-<section id="应用大语言模型的最佳实践" class="level2" data-number="20.4">
-<h2 data-number="20.4" class="anchored" data-anchor-id="应用大语言模型的最佳实践"><span class="header-section-number">20.4</span> 应用大语言模型的最佳实践</h2>
-<p>在金融文本分析中应用大语言模型时，应注意以下几点：</p>
-<section id="提示设计技巧" class="level3" data-number="20.4.1">
-<h3 data-number="20.4.1" class="anchored" data-anchor-id="提示设计技巧"><span class="header-section-number">20.4.1</span> 提示设计技巧</h3>
+<section id="大语言模型的使用指南" class="level2" data-number="18.5">
+<h2 data-number="18.5" class="anchored" data-anchor-id="大语言模型的使用指南"><span class="header-section-number">18.5</span> 大语言模型的使用指南</h2>
+<section id="提示词工程基础" class="level3" data-number="18.5.1">
+<h3 data-number="18.5.1" class="anchored" data-anchor-id="提示词工程基础"><span class="header-section-number">18.5.1</span> 提示词工程基础</h3>
+<p>提示词工程（Prompt Engineering）是有效使用大语言模型的关键技能。一个好的提示词应该：</p>
 <ol type="1">
-<li><strong>明确任务界定</strong>：
+<li><strong>明确任务目标</strong>：
 <ul>
-<li>清晰指定分析目标和期望输出格式</li>
-<li>使用领域专业术语增强精确性</li>
+<li>清晰说明期望的输出格式</li>
+<li>指定具体的任务要求</li>
+<li>设定适当的约束条件</li>
 </ul></li>
-<li><strong>思维链设计</strong>：
+<li><strong>提供上下文信息</strong>：
 <ul>
-<li>引导模型分步思考复杂问题</li>
-<li>要求模型先分析再总结</li>
+<li>补充必要的背景知识</li>
+<li>说明专业领域要求</li>
+<li>提供相关的参考信息</li>
 </ul></li>
-<li><strong>角色设定</strong>：
+<li><strong>设定角色定位</strong>：
 <ul>
-<li>指定模型扮演”金融分析师”等专业角色</li>
-<li>增强输出的专业性和针对性</li>
+<li>指定模型的专业角色</li>
+<li>明确回答的视角</li>
+<li>确定输出的风格</li>
 </ul></li>
 </ol>
 </section>
-<section id="金融特定优化" class="level3" data-number="20.4.2">
-<h3 data-number="20.4.2" class="anchored" data-anchor-id="金融特定优化"><span class="header-section-number">20.4.2</span> 金融特定优化</h3>
+<section id="提示词模板示例" class="level3" data-number="18.5.2">
+<h3 data-number="18.5.2" class="anchored" data-anchor-id="提示词模板示例"><span class="header-section-number">18.5.2</span> 提示词模板示例</h3>
+<p>以下是一些常用的提示词模板：</p>
 <ol type="1">
-<li><strong>上下文补充</strong>：
+<li><strong>分析类任务</strong>：</li>
+</ol>
+<pre><code>作为一位专业的金融分析师，请分析以下[文本类型]中的关键信息：
+[文本内容]
+
+请从以下几个方面进行分析：
+1. 主要观点
+2. 关键数据
+3. 潜在风险
+4. 投资建议</code></pre>
+<ol start="2" type="1">
+<li><strong>总结类任务</strong>：</li>
+</ol>
+<pre><code>请对以下[文本类型]进行专业总结：
+[文本内容]
+
+要求：
+- 提取核心要点
+- 保持专业术语
+- 突出关键数据
+- 控制在[字数]以内</code></pre>
+<ol start="3" type="1">
+<li><strong>比较类任务</strong>：</li>
+</ol>
+<pre><code>请比较以下两份[文本类型]的异同：
+[文本1]
+[文本2]
+
+请从以下维度进行分析：
+1. 内容重点
+2. 数据差异
+3. 观点异同
+4. 结论对比</code></pre>
+</section>
+<section id="提示词优化技巧" class="level3" data-number="18.5.3">
+<h3 data-number="18.5.3" class="anchored" data-anchor-id="提示词优化技巧"><span class="header-section-number">18.5.3</span> 提示词优化技巧</h3>
+<ol type="1">
+<li><strong>迭代优化</strong>：
 <ul>
-<li>提供行业背景信息增强理解</li>
-<li>明确时间线帮助模型理解经济周期</li>
+<li>从简单提示开始</li>
+<li>根据输出结果调整</li>
+<li>逐步细化要求</li>
+<li>持续改进提示词</li>
 </ul></li>
-<li><strong>多模型比较</strong>：
+<li><strong>约束条件设置</strong>：
 <ul>
-<li>使用通用模型和金融专业模型对比结果</li>
-<li>综合优势获得更全面分析</li>
+<li>限制输出长度</li>
+<li>指定输出格式</li>
+<li>设定专业程度</li>
+<li>明确时间范围</li>
 </ul></li>
-<li><strong>人机协作</strong>：
+<li><strong>示例引导</strong>：
 <ul>
-<li>将模型输出作为专业分析的起点</li>
-<li>关键决策仍需人类专家判断</li>
+<li>提供参考样例</li>
+<li>说明期望格式</li>
+<li>展示专业术语</li>
+<li>示范分析深度</li>
 </ul></li>
 </ol>
 </section>
-<section id="局限性与注意事项" class="level3" data-number="20.4.3">
-<h3 data-number="20.4.3" class="anchored" data-anchor-id="局限性与注意事项"><span class="header-section-number">20.4.3</span> 局限性与注意事项</h3>
+<section id="常见应用场景示例" class="level3" data-number="18.5.4">
+<h3 data-number="18.5.4" class="anchored" data-anchor-id="常见应用场景示例"><span class="header-section-number">18.5.4</span> 常见应用场景示例</h3>
 <ol type="1">
-<li><strong>事实准确性</strong>：
+<li><strong>金融报告分析</strong>：</li>
+</ol>
+<pre><code>作为一位资深金融分析师，请分析以下财报摘要：
+[财报内容]
+
+请提供：
+1. 关键财务指标分析
+2. 同比/环比变化
+3. 主要风险点
+4. 投资建议
+
+要求：
+- 使用专业金融术语
+- 数据精确到小数点后两位
+- 重点突出异常变化</code></pre>
+<ol start="2" type="1">
+<li><strong>市场新闻解读</strong>：</li>
+</ol>
+<pre><code>请以专业投资顾问的身份，解读以下市场新闻：
+[新闻内容]
+
+请从以下角度分析：
+1. 对市场的影响
+2. 相关行业影响
+3. 投资机会
+4. 风险提示
+
+要求：
+- 结合当前市场环境
+- 提供具体数据支持
+- 给出可操作建议</code></pre>
+<ol start="3" type="1">
+<li><strong>政策文件分析</strong>：</li>
+</ol>
+<pre><code>请作为政策研究专家，分析以下政策文件：
+[政策内容]
+
+请重点关注：
+1. 政策要点
+2. 实施影响
+3. 受益行业
+4. 潜在风险
+
+要求：
+- 结合历史政策对比
+- 分析实施难度
+- 预测市场反应</code></pre>
+</section>
+<section id="提示词工程最佳实践" class="level3" data-number="18.5.5">
+<h3 data-number="18.5.5" class="anchored" data-anchor-id="提示词工程最佳实践"><span class="header-section-number">18.5.5</span> 提示词工程最佳实践</h3>
+<ol type="1">
+<li><strong>明确性</strong>：
 <ul>
-<li>大语言模型可能产生”幻觉”，输出虚构内容</li>
-<li>关键数据和结论需要人工验证</li>
+<li>使用清晰、具体的指令</li>
+<li>避免模糊的表述</li>
+<li>设定明确的边界</li>
+<li>指定具体的输出格式</li>
 </ul></li>
-<li><strong>偏见风险</strong>：
+<li><strong>专业性</strong>：
 <ul>
-<li>模型可能继承训练数据中的偏见</li>
-<li>金融分析需要客观中立</li>
+<li>使用领域专业术语</li>
+<li>保持分析深度</li>
+<li>确保数据准确性</li>
+<li>符合行业标准</li>
 </ul></li>
-<li><strong>时效性限制</strong>：
+<li><strong>结构化</strong>：
 <ul>
-<li>模型知识截止日期后的事件需要通过提示补充</li>
-<li>定期更新分析以反映最新情况</li>
+<li>采用清晰的层次结构</li>
+<li>使用编号或要点</li>
+<li>保持逻辑连贯</li>
+<li>便于后续处理</li>
+</ul></li>
+<li><strong>可扩展性</strong>：
+<ul>
+<li>设计可复用的模板</li>
+<li>预留调整空间</li>
+<li>考虑不同场景</li>
+<li>便于批量处理</li>
+</ul></li>
+</ol>
+</section>
+<section id="注意事项" class="level3" data-number="18.5.6">
+<h3 data-number="18.5.6" class="anchored" data-anchor-id="注意事项"><span class="header-section-number">18.5.6</span> 注意事项</h3>
+<ol type="1">
+<li><strong>数据安全</strong>：
+<ul>
+<li>避免输入敏感信息</li>
+<li>注意数据脱敏</li>
+<li>遵守隐私规定</li>
+<li>保护商业机密</li>
+</ul></li>
+<li><strong>输出验证</strong>：
+<ul>
+<li>核实关键数据</li>
+<li>检查逻辑一致性</li>
+<li>验证专业术语</li>
+<li>确保结论合理</li>
+</ul></li>
+<li><strong>持续优化</strong>：
+<ul>
+<li>收集使用反馈</li>
+<li>更新提示词模板</li>
+<li>适应新需求</li>
+<li>提升使用效果</li>
 </ul></li>
 </ol>
 </section>
 </section>
 </section>
-<section id="小结与进阶方向" class="level1" data-number="21">
-<h1 data-number="21"><span class="header-section-number">21</span> 小结与进阶方向</h1>
-<section id="从静态向量到大语言模型的演进" class="level2" data-number="21.1">
-<h2 data-number="21.1" class="anchored" data-anchor-id="从静态向量到大语言模型的演进"><span class="header-section-number">21.1</span> 从静态向量到大语言模型的演进</h2>
+<section id="小结与进阶方向" class="level1" data-number="19">
+<h1 data-number="19"><span class="header-section-number">19</span> 小结与进阶方向</h1>
+<section id="从静态向量到大语言模型的演进" class="level2" data-number="19.1">
+<h2 data-number="19.1" class="anchored" data-anchor-id="从静态向量到大语言模型的演进"><span class="header-section-number">19.1</span> 从静态向量到大语言模型的演进</h2>
 <p>本讲我们从Word2Vec的局限性出发，介绍了BERT等Transformer模型的原理，以及大语言模型的应用：</p>
 <ol type="1">
 <li><strong>表示方法演进</strong>：从静态词向量到上下文感知的动态表示</li>
@@ -2025,8 +1046,8 @@ window.Quarto = {
 <li><strong>应用演进</strong>：从特征提取到端到端文本理解与生成</li>
 </ol>
 </section>
-<section id="无监督学习的新范式" class="level2" data-number="21.2">
-<h2 data-number="21.2" class="anchored" data-anchor-id="无监督学习的新范式"><span class="header-section-number">21.2</span> 无监督学习的新范式</h2>
+<section id="无监督学习的新范式" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="无监督学习的新范式"><span class="header-section-number">19.2</span> 无监督学习的新范式</h2>
 <p>大语言模型为无监督学习带来了新的范式：</p>
 <ol type="1">
 <li><strong>零样本学习</strong>：无需额外标注数据，直接分类新数据</li>
@@ -2035,18 +1056,26 @@ window.Quarto = {
 <li><strong>提示工程</strong>：通过设计提示引导模型行为</li>
 </ol>
 </section>
-<section id="金融文本分析的未来方向" class="level2" data-number="21.3">
-<h2 data-number="21.3" class="anchored" data-anchor-id="金融文本分析的未来方向"><span class="header-section-number">21.3</span> 金融文本分析的未来方向</h2>
+<section id="金融文本分析的未来方向" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="金融文本分析的未来方向"><span class="header-section-number">19.3</span> 金融文本分析的未来方向</h2>
 <p>大语言模型在金融文本分析中的未来方向包括：</p>
 <ol type="1">
 <li><strong>多模态融合</strong>：结合文本、数值、图表等多种数据</li>
 <li><strong>实时适应</strong>：持续学习最新市场信息和政策变化</li>
 <li><strong>可解释性增强</strong>：提高模型决策的透明度</li>
 <li><strong>领域知识增强</strong>：融入更多金融专业知识</li>
+<li><strong>检索增强生成(RAG)</strong>：
+<ul>
+<li>将大语言模型与金融专业知识库结合</li>
+<li>实时检索最新财经数据和报告</li>
+<li>减少幻觉，提高事实准确性</li>
+<li>构建公司、行业、政策等专业知识图谱</li>
+<li>为金融决策提供更可靠的信息支持</li>
+</ul></li>
 </ol>
 </section>
-<section id="进阶学习资源" class="level2" data-number="21.4">
-<h2 data-number="21.4" class="anchored" data-anchor-id="进阶学习资源"><span class="header-section-number">21.4</span> 进阶学习资源</h2>
+<section id="进阶学习资源" class="level2" data-number="19.4">
+<h2 data-number="19.4" class="anchored" data-anchor-id="进阶学习资源"><span class="header-section-number">19.4</span> 进阶学习资源</h2>
 <ol type="1">
 <li><strong>理论深入</strong>：
 <ul>
@@ -2065,8 +1094,8 @@ window.Quarto = {
 </ul></li>
 </ol>
 </section>
-<section id="本讲小结" class="level2" data-number="21.5">
-<h2 data-number="21.5" class="anchored" data-anchor-id="本讲小结"><span class="header-section-number">21.5</span> 本讲小结</h2>
+<section id="本讲小结" class="level2" data-number="19.5">
+<h2 data-number="19.5" class="anchored" data-anchor-id="本讲小结"><span class="header-section-number">19.5</span> 本讲小结</h2>
 <p>本讲我们从Word2Vec的局限性出发，介绍了BERT和Transformer架构的原理，以及大语言模型在金融文本分析中的应用：</p>
 <ol type="1">
 <li>从静态词向量到动态上下文表示的演进</li>
@@ -2078,8 +1107,8 @@ window.Quarto = {
 <p>通过这些内容，我们理解了现代NLP技术在金融文本分析中的强大能力，以及如何将这些技术应用于实际金融分析任务。</p>
 </section>
 </section>
-<section id="参考资料" class="level1" data-number="22">
-<h1 data-number="22"><span class="header-section-number">22</span> 参考资料</h1>
+<section id="参考资料" class="level1" data-number="20">
+<h1 data-number="20"><span class="header-section-number">20</span> 参考资料</h1>
 <ol type="1">
 <li>Devlin, J., Chang, M. W., Lee, K., &amp; Toutanova, K. (2018). BERT: Pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805.</li>
 <li>Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., … &amp; Polosukhin, I. (2017). Attention is all you need. Advances in neural information processing systems, 30.</li>

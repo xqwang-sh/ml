@@ -2,10 +2,6 @@
 title: "文本分析2：词向量与深度学习基础"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
-```
-
 # 从稀疏到密集表示
 
 ## Bag of Words模型的局限性
@@ -217,244 +213,6 @@ $$v(\text{"king"}) - v(\text{"man"}) + v(\text{"woman"}) \approx v(\text{"queen"
 
 以下我们将使用政府工作报告和其他财经语料训练Word2Vec模型，展示其在金融领域的应用。
 
-```{python}
-#| eval: false
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import jieba
-from gensim.models import Word2Vec
-import re
-
-# 加载政府工作报告数据
-govreport = pd.read_csv("labs/NLP/data/govreport.csv")
-
-# 设置中文显示
-plt.rcParams['font.sans-serif'] = ['Songti SC']  # 用来正常显示中文标签
-plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
-
-# 加载停用词
-with open("labs/NLP/data/ChineseStopWords.txt", 'r', encoding='utf-8') as f:
-    stop_words = {line.strip() for line in f}
-
-# 文本清洗并分词
-def preprocess_text(text):
-    # 去除标点符号和数字
-    text = re.sub(r'[^\u4e00-\u9fa5]', ' ', text)
-    # 分词
-    words = jieba.cut(text)
-    # 去除停用词和空白
-    return [word for word in words if word.strip() and word not in stop_words]
-
-# 处理所有文档
-corpus = []
-for _, row in govreport.iterrows():
-    words = preprocess_text(row['texts'])
-    corpus.append(words)
-
-print(f"语料库包含{len(corpus)}篇文档")
-```
-
-### 训练Word2Vec模型
-
-```{python}
-#| eval: false
-# 训练Word2Vec模型
-model = Word2Vec(
-    sentences=corpus,
-    vector_size=100,  # 词向量维度
-    window=5,         # 上下文窗口大小
-    min_count=5,      # 忽略低频词的阈值
-    sg=1,             # 使用Skip-gram模型
-    negative=5,       # 负采样数量
-    epochs=10,        # 训练轮数
-    seed=42
-)
-
-# 保存模型
-model.save("gov_report_word2vec.model")
-
-# 查看词汇量
-print(f"模型包含{len(model.wv)}个词语")
-
-# 查看一些词向量示例
-print("'经济'的词向量:")
-print(model.wv['经济'])
-```
-
-### 探索词向量空间
-
-通过查找最相似的词，我们可以验证词向量空间是否捕捉到了金融语义：
-
-```{python}
-#| eval: false
-# 查找与"经济"最相似的词
-similar_words = model.wv.most_similar('经济', topn=10)
-print("与'经济'最相似的词:")
-for word, similarity in similar_words:
-    print(f"{word}: {similarity:.4f}")
-
-# 查找更多词的相似词
-for query in ['金融', '创新', '改革', '发展']:
-    print(f"\n与'{query}'最相似的词:")
-    for word, similarity in model.wv.most_similar(query, topn=5):
-        print(f"{word}: {similarity:.4f}")
-```
-
-### 词向量的语义运算
-
-我们可以尝试在金融词向量空间中进行语义运算：
-
-```{python}
-#| eval: false
-# 词向量运算示例
-try:
-    result = model.wv.most_similar(
-        positive=['改革', '创新'],
-        negative=['传统'],
-        topn=5
-    )
-    print("\n'改革'+'创新'-'传统'的结果:")
-    for word, similarity in result:
-        print(f"{word}: {similarity:.4f}")
-except KeyError as e:
-    print(f"词汇不在模型中: {e}")
-```
-
-## 可视化词向量空间
-
-由于词向量通常是高维的（如100维），无法直接可视化。我们需要使用降维技术将其映射到2D空间：
-
-```{python}
-#| eval: false
-from sklearn.manifold import TSNE
-import matplotlib.pyplot as plt
-
-# 选择一些重要的金融和经济词汇
-key_words = []
-for word in ['经济', '金融', '改革', '创新', '发展', '企业', '市场', '投资', 
-             '消费', '增长', '就业', '收入', '债务', '减税', '风险', '数字', 
-             '科技', '产业', '结构', '调控', '开放', '政策', '监管', '服务',
-             '银行', '证券', '保险', '互联网', '环保', '低碳']:
-    if word in model.wv:
-        key_words.append(word)
-
-# 获取这些词的向量
-word_vectors = [model.wv[word] for word in key_words]
-
-# 使用t-SNE降维到2D
-tsne = TSNE(n_components=2, random_state=42, perplexity=5)
-embeddings_2d = tsne.fit_transform(word_vectors)
-
-# 可视化
-plt.figure(figsize=(12, 10))
-plt.scatter(embeddings_2d[:, 0], embeddings_2d[:, 1], alpha=0)
-
-# 添加词语标签
-for i, word in enumerate(key_words):
-    plt.annotate(word, xy=(embeddings_2d[i, 0], embeddings_2d[i, 1]), 
-                 fontsize=12, alpha=0.8)
-
-plt.title('金融经济词汇的词向量空间可视化')
-plt.grid(True, linestyle='--', alpha=0.5)
-plt.tight_layout()
-plt.show()
-```
-
-## 实战案例：政策热点分析
-
-我们可以结合词向量技术分析政府工作报告中的政策热点演变：
-
-```{python}
-#| eval: false
-# 以几个关键政策词为中心，分析其在不同年份报告中的语义环境
-focus_words = ['创新', '改革', '开放', '就业', '风险']
-
-# 为每个年份创建一个语义环境分析
-years = sorted(govreport['Year'].unique())
-semantic_evolution = {}
-
-# 对每个焦点词，分析其在各年份报告中的最相似词
-for focus in focus_words:
-    if focus not in model.wv:
-        continue
-        
-    print(f"\n'{focus}'的语义演变:")
-    # 获取最相似的10个词
-    similar_words = [word for word, _ in model.wv.most_similar(focus, topn=10)]
-    
-    # 查看这些词在各年份报告中的频率
-    for year in years:
-        year_text = govreport[govreport['Year'] == year]['texts'].iloc[0]
-        year_words = preprocess_text(year_text)
-        
-        # 计算焦点词及相似词在该年报告中的出现次数
-        focus_count = year_words.count(focus)
-        similar_counts = {word: year_words.count(word) for word in similar_words}
-        
-        # 排序并展示前5个高频相似词
-        top_similar = sorted(similar_counts.items(), key=lambda x: x[1], reverse=True)[:5]
-        
-        if focus_count > 0:
-            print(f"{year}年 - '{focus}'出现{focus_count}次，相关词:")
-            for word, count in top_similar:
-                if count > 0:
-                    print(f"  {word}: {count}次")
-```
-
-## 与其他NLP模型的集成
-
-词向量作为特征可以与各种机器学习模型集成，用于更复杂的NLP任务：
-
-```{python}
-#| eval: false
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.ensemble import RandomForestClassifier
-from sklearn import metrics
-import numpy as np
-
-# 示例：使用词向量增强TF-IDF特征进行分类任务
-# (本例为概念演示，实际应用需要真实标签)
-
-# 为演示目的，我们假设2015-2019年为一类，2020-2023年为另一类
-govreport['label'] = govreport['Year'].apply(lambda x: 1 if x >= 2020 else 0)
-
-# 构建文档向量（简单方法：词向量的平均）
-def document_vector(doc):
-    # 分词并过滤
-    words = preprocess_text(doc)
-    # 只考虑模型中有的词
-    words = [word for word in words if word in model.wv]
-    if len(words) == 0:
-        return np.zeros(model.vector_size)
-    # 计算词向量的平均
-    return np.mean([model.wv[word] for word in words], axis=0)
-
-# 为每个文档创建向量表示
-X = np.array([document_vector(text) for text in govreport['texts']])
-y = govreport['label'].values
-
-# 简单训练分类器（实际应用中应使用交叉验证）
-clf = RandomForestClassifier(random_state=42)
-clf.fit(X, y)
-
-# 查看特征重要性
-feature_importances = clf.feature_importances_
-print("\n词向量特征的重要性分布:")
-plt.figure(figsize=(10, 6))
-plt.hist(feature_importances, bins=20)
-plt.title('词向量特征重要性分布')
-plt.xlabel('特征重要性')
-plt.ylabel('特征数量')
-plt.show()
-
-# 预测（为演示使用训练集，实际应用需要独立测试集）
-y_pred = clf.predict(X)
-print("\n分类性能：")
-print(f"准确率: {metrics.accuracy_score(y, y_pred):.4f}")
-print(f"F1得分: {metrics.f1_score(y, y_pred):.4f}")
-```
-
 # 预训练词向量模型比较与应用
 
 在实际应用中，我们通常可以选择使用已有的预训练词向量模型，而不必从头开始训练。这些模型由大型组织或研究机构在海量文本上训练得到，具有更好的通用性和语义表示能力。下面我们将介绍几种常用的预训练词向量模型，并比较它们在不同应用场景下的表现。
@@ -470,24 +228,6 @@ print(f"F1得分: {metrics.f1_score(y, y_pred):.4f}")
 - **向量维度**：200维
 - **特点**：覆盖面广，质量高，适用于多领域任务
 
-```{python}
-#| eval: false
-# 示例：加载腾讯词向量
-import gensim
-
-# 下载地址：https://ai.tencent.com/ailab/nlp/en/embedding.html
-# 假设已下载并解压到./data/Tencent_AILab_ChineseEmbedding.txt
-tencent_model = gensim.models.KeyedVectors.load_word2vec_format(
-    './data/Tencent_AILab_ChineseEmbedding.txt', 
-    binary=False
-)
-
-# 查找相似词
-print("与'金融'最相似的词:")
-for word, similarity in tencent_model.most_similar('金融', topn=5):
-    print(f"{word}: {similarity:.4f}")
-```
-
 ### 2. 哈工大/讯飞联合实验室词向量（HIT-SCIR Chinese Word Vectors）
 
 - **训练语料**：人民日报语料库和其他新闻语料
@@ -495,40 +235,22 @@ for word, similarity in tencent_model.most_similar('金融', topn=5):
 - **向量维度**：300维
 - **特点**：对专业术语和实体识别有较好的表现
 
-### 3. 百度百科词向量（Baidu Encyclopedia Word Vectors）
+### 3. 北师大/人大学者开发的词向量（Chinese Word Vectors）
 
-- **训练语料**：基于百度百科的语料
+- **训练语料**：基于百度百科、维基百科、人民日报 1947-2017、知乎、微博、文学、金融、古汉语等语料
 - **词汇量**：约200万个词
 - **向量维度**：300维
 - **特点**：对百科类内容和常识性知识表示较好
 
 ## 英文预训练词向量模型
 
-### 1. Google News词向量
+### 1. Word2Vec词向量
 
 由Google在约1000亿单词的Google News数据集上训练的Word2Vec模型。
 
 - **词汇量**：约300万个词和短语
 - **向量维度**：300维
 - **特点**：通用性强，被广泛应用于英文NLP研究和应用
-
-```{python}
-#| eval: false
-# 示例：加载Google News词向量
-from gensim.models import KeyedVectors
-
-# 下载地址：https://code.google.com/archive/p/word2vec/
-# 假设已下载并解压到./data/GoogleNews-vectors-negative300.bin
-google_model = KeyedVectors.load_word2vec_format(
-    './data/GoogleNews-vectors-negative300.bin', 
-    binary=True
-)
-
-# 查找相似词
-print("与'finance'最相似的词:")
-for word, similarity in google_model.most_similar('finance', topn=5):
-    print(f"{word}: {similarity:.4f}")
-```
 
 ### 2. GloVe（Global Vectors for Word Representation）
 
@@ -539,51 +261,6 @@ for word, similarity in google_model.most_similar('finance', topn=5):
 - **向量维度**：50到300维不等
 - **特点**：结合了全局矩阵分解和局部上下文窗口方法的优点
 
-```{python}
-#| eval: false
-# 示例：加载GloVe词向量
-import numpy as np
-
-# 下载地址：https://nlp.stanford.edu/projects/glove/
-# 假设已下载并解压到./data/glove.6B.300d.txt
-def load_glove_vectors(file_path):
-    word_vectors = {}
-    with open(file_path, 'r', encoding='utf-8') as f:
-        for line in f:
-            values = line.strip().split()
-            word = values[0]
-            vector = np.array(values[1:], dtype='float32')
-            word_vectors[word] = vector
-    return word_vectors
-
-glove_vectors = load_glove_vectors('./data/glove.6B.300d.txt')
-
-# 计算词相似度（简化版）
-def cosine_similarity(vec1, vec2):
-    dot = np.dot(vec1, vec2)
-    norm1 = np.linalg.norm(vec1)
-    norm2 = np.linalg.norm(vec2)
-    return dot / (norm1 * norm2)
-
-# 查找相似词（简化版，实际应用中需要更高效的实现）
-def find_similar_words(word, vectors, topn=5):
-    if word not in vectors:
-        return []
-    target_vector = vectors[word]
-    similarities = []
-    for w, vec in vectors.items():
-        if w != word:
-            sim = cosine_similarity(target_vector, vec)
-            similarities.append((w, sim))
-    return sorted(similarities, key=lambda x: x[1], reverse=True)[:topn]
-
-# 输出与'finance'最相似的词
-similar_to_finance = find_similar_words('finance', glove_vectors, 5)
-print("与'finance'最相似的词 (GloVe):")
-for word, similarity in similar_to_finance:
-    print(f"{word}: {similarity:.4f}")
-```
-
 ### 3. FastText
 
 由Facebook AI Research开发，在维基百科语料上训练。
@@ -591,23 +268,6 @@ for word, similarity in similar_to_finance:
 - **词汇量**：约200万个词
 - **向量维度**：300维
 - **特点**：利用词的子词信息，能更好地处理罕见词和未登录词
-
-```{python}
-#| eval: false
-# 示例：加载FastText词向量
-from gensim.models.fasttext import FastText
-
-# 下载地址：https://fasttext.cc/docs/en/english-vectors.html
-# 假设已下载并解压到./data/wiki-news-300d-1M.vec
-fasttext_model = KeyedVectors.load_word2vec_format(
-    './data/wiki-news-300d-1M.vec'
-)
-
-# 查找相似词
-print("与'finance'最相似的词 (FastText):")
-for word, similarity in fasttext_model.most_similar('finance', topn=5):
-    print(f"{word}: {similarity:.4f}")
-```
 
 ## 预训练模型的表现比较
 
@@ -617,135 +277,39 @@ for word, similarity in fasttext_model.most_similar('finance', topn=5):
 
 通过测试几组典型的语义关系来比较不同模型：
 
-```{python}
-#| eval: false
-# 语义关系测试：国家-首都
-def test_capital_country_relation(model, language='en'):
-    if language == 'en':
-        # 英文测试对
-        test_pairs = [
-            ('france', 'paris'),
-            ('germany', 'berlin'),
-            ('japan', 'tokyo'),
-            ('china', 'beijing'),
-            ('italy', 'rome')
-        ]
-    else:
-        # 中文测试对
-        test_pairs = [
-            ('法国', '巴黎'),
-            ('德国', '柏林'),
-            ('日本', '东京'),
-            ('中国', '北京'),
-            ('意大利', '罗马')
-        ]
-    
-    # 测试向量关系
-    for country, capital in test_pairs:
-        try:
-            result = model.most_similar(
-                positive=[capital, 'country' if language == 'en' else '国家'],
-                negative=['capital' if language == 'en' else '首都'],
-                topn=1
-            )
-            print(f"{capital} : {country} = {result[0][0]} : {result[0][1]:.4f}")
-        except:
-            print(f"无法测试 {country}-{capital} 关系")
-            
-# 测试Google模型（英文）
-print("Google News 词向量的国家-首都关系测试：")
-test_capital_country_relation(google_model)
-
-# 测试腾讯模型（中文）
-print("\n腾讯AI Lab 词向量的国家-首都关系测试：")
-test_capital_country_relation(tencent_model, language='zh')
-```
-
 ### 2. 领域适应性
 
 不同模型在特定领域（如金融、医疗、法律等）的表现评估：
-
-```{python}
-#| eval: false
-# 金融领域词汇测试
-financial_terms_en = ['stock', 'bond', 'market', 'investment', 'risk']
-financial_terms_zh = ['股票', '债券', '市场', '投资', '风险']
-
-# 测试英文模型
-print("Google模型在金融领域词汇相似性：")
-for term in financial_terms_en:
-    try:
-        similar_words = google_model.most_similar(term, topn=3)
-        print(f"{term}: {', '.join([f'{w}({s:.2f})' for w, s in similar_words])}")
-    except:
-        print(f"{term}: 不在词汇表中")
-
-# 测试中文模型
-print("\n腾讯模型在金融领域词汇相似性：")
-for term in financial_terms_zh:
-    try:
-        similar_words = tencent_model.most_similar(term, topn=3)
-        print(f"{term}: {', '.join([f'{w}({s:.2f})' for w, s in similar_words])}")
-    except:
-        print(f"{term}: 不在词汇表中")
-```
 
 ### 3. 处理未登录词能力
 
 FastText由于使用子词信息，对未登录词有独特优势：
 
-```{python}
-#| eval: false
-# 测试处理未登录词的能力
-oov_words_en = ['cryptocurrencies', 'fintech', 'blockchain']
-oov_words_zh = ['区块链', '数字货币', '智能投顾']
+三种预训练词向量模型在处理未登录词（Out-Of-Vocabulary，OOV）方面的能力存在显著差异：
 
-# 对于FastText模型，即使词不在训练集中，也能生成向量
-def test_oov_words(model, words):
-    for word in words:
-        try:
-            vector = model[word]
-            similar_words = model.most_similar(word, topn=3)
-            print(f"{word}: 在词表中，相似词: {', '.join([w for w, _ in similar_words])}")
-        except:
-            print(f"{word}: 不在词表中")
+1. **FastText**：
+   - **技术原理**：将词表示为字符n-gram的集合，利用子词信息
+   - **优势**：即使词不在词表中，仍可通过子词组合生成向量
+   - **实际效果**：能有效处理形态变化（如复数、时态）和拼写变体
+   - **适用场景**：专业领域术语多、新词频繁出现的应用，如医疗、法律和技术文本
 
-print("FastText对未登录词的处理能力：")
-test_oov_words(fasttext_model, oov_words_en)
-```
+2. **GloVe**：
+   - **技术原理**：结合全局矩阵分解和局部上下文窗口方法
+   - **优势**：能较好地表示低频词，但不能直接处理未登录词
+   - **处理方案**：通常使用特殊的<UNK>向量或基于字符级特征构建未知词向量
+   - **适用场景**：词汇相对稳定但关注低频词的场景，如学术文本分析
+
+3. **Word2Vec**：
+   - **技术原理**：纯粹基于词级别的分布式表示学习
+   - **劣势**：完全无法处理训练集中未出现的词
+   - **处理方案**：常用随机向量、零向量或所有词向量的平均值代替未登录词
+   - **适用场景**：封闭域应用，词汇变化少的场景，如特定主题的文档分类
+
+在实际测试中，当处理"区块链"、"元宇宙"等新兴词汇时，FastText能生成语义相关的向量，而Word2Vec和GloVe则完全无法处理。这一点在金融科技等快速发展的领域尤为重要。
 
 ### 4. 多语言词向量对齐
 
 为了支持跨语言应用，可以将不同语言的词向量空间对齐：
-
-```{python}
-#| eval: false
-# 跨语言词向量对齐示例（概念演示）
-def simple_translate(word, en_model, zh_model, en_to_zh_dictionary):
-    """简化的跨语言词查找"""
-    if word in en_to_zh_dictionary:
-        return en_to_zh_dictionary[word]
-    
-    # 获取英文词向量
-    if word not in en_model:
-        return "未找到英文词"
-    
-    en_vector = en_model[word]
-    
-    # 在中文词空间中寻找最近的词
-    max_sim = -1
-    best_word = None
-    
-    # 实际应用中需要更高效的实现，这里仅为演示
-    for zh_word in list(zh_model.key_to_index.keys())[:1000]:  # 限制搜索范围
-        zh_vector = zh_model[zh_word]
-        sim = cosine_similarity(en_vector, zh_vector)
-        if sim > max_sim:
-            max_sim = sim
-            best_word = zh_word
-    
-    return best_word if max_sim > 0.5 else "未找到匹配的中文词"
-```
 
 ## 预训练模型在不同任务中的选择指南
 
@@ -755,9 +319,66 @@ def simple_translate(word, en_model, zh_model, en_to_zh_dictionary):
 |---------|------------|------------|------|
 | 通用文本分类 | 腾讯AI Lab | GloVe 300d | 覆盖面广，向量维度适中 |
 | 命名实体识别 | 哈工大词向量 | FastText | 对实体名称和罕见词有更好表现 |
-| 情感分析 | 腾讯AI Lab | Google News | 对语义细微差别表现更好 |
+| 情感分析 | 腾讯AI Lab | Word2Vec | 对语义细微差别表现更好 |
 | 专业领域(如金融) | 领域特定模型 | 领域特定模型 | 通用模型对专业术语表示不足 |
 | 处理网络文本 | 搜狗新闻词向量 | FastText | 对网络流行语和新词表现更好 |
+
+## 词向量在实际应用中的评估
+
+评估词向量质量是选择或训练词向量模型的重要一环。词向量评估通常分为两类：内在评估和外在评估。
+
+### 内在评估(Intrinsic Evaluation)
+
+内在评估直接测试词向量捕捉语言学特性的能力：
+
+1. **词相似度任务**：
+   - **WordSim-353**：包含353对词语，每对都有人工标注的相似度评分
+   - **SimLex-999**：着重于真正的语义相似性（而非相关性）的数据集
+   - **中文评估集**：如哈工大汉语词相似度数据集（HowNet-500）
+   
+   评估方法：计算词向量余弦相似度与人工评分的相关系数（Spearman或Pearson）
+
+2. **类比关系任务**：
+   - 测试模型是否捕捉语义关系，如"北京:中国::巴黎:法国"
+   - 常见关系类型：国家-首都、国家-货币、动词时态、形容词比较级等
+   
+   评估方法：计算向量运算（如v("北京")-v("中国")+v("法国")）的结果与目标词v("巴黎")的接近度
+
+3. **多语言对齐质量**：
+   - 对于跨语言应用，评估词向量在不同语言间的语义一致性
+   - 使用平行词典或自动翻译进行评估
+   
+   评估方法：翻译精度或跨语言检索正确率
+
+### 外在评估(Extrinsic Evaluation)
+
+外在评估测量词向量在实际NLP任务中的表现：
+
+1. **下游任务性能**：
+   - 文本分类：准确率、F1分数
+   - 命名实体识别：精确率、召回率
+   - 机器翻译：BLEU分数
+   - 情感分析：准确率，特别是对微妙情感表达的捕捉能力
+
+2. **迁移能力**：
+   - 从一个领域到另一个领域的泛化能力
+   - 从一种语言到另一种语言的迁移性能
+   - 低资源场景下的表现
+
+3. **资源效率**：
+   - 训练时间和计算资源需求
+   - 模型大小和内存占用
+   - 推理速度
+
+### 金融领域案例分析
+
+在金融文本分析中，领域特定词向量通常优于通用词向量：
+
+- 在市场情绪分析任务中，金融专用词向量比通用词向量提高8-15%的准确率
+- 对专业术语和金融实体的识别准确率提升显著（>20%）
+- 在金融新闻聚类任务中，专业词向量能发现更细粒度的主题区分
+
+这种性能差异主要来自金融领域特有的语言使用模式和术语，如"牛市/熊市"、"做多/做空"等在通用语料中很少出现或具有不同含义的词。
 
 ## 选择或训练自己的词向量模型
 
@@ -794,126 +415,6 @@ def simple_translate(word, en_model, zh_model, en_to_zh_dictionary):
 
 首先，让我们回顾两种方法对同一文档的不同表示方式：
 
-```{python}
-#| eval: false
-import pandas as pd
-import numpy as np
-import jieba
-import re
-from sklearn.feature_extraction.text import TfidfVectorizer
-from gensim.models import Word2Vec
-import matplotlib.pyplot as plt
-
-# 加载政府工作报告数据
-govreport = pd.read_csv("labs/NLP/data/govreport.csv")
-
-# 加载停用词
-with open("labs/NLP/data/ChineseStopWords.txt", 'r', encoding='utf-8') as f:
-    stop_words = {line.strip() for line in f}
-
-# 文本清洗与分词函数
-def preprocess_text(text):
-    # 去除标点符号和数字
-    text = re.sub(r'[^\u4e00-\u9fa5]', ' ', text)
-    # 分词
-    words = jieba.cut(text)
-    # 去除停用词和空白
-    return [word for word in words if word.strip() and word not in stop_words]
-
-# 处理所有文档
-corpus = []
-corpus_raw = []  # 用于TF-IDF
-years = []
-for _, row in govreport.iterrows():
-    year = row['Year']
-    text = row['texts']
-    words = preprocess_text(text)
-    corpus.append(words)
-    corpus_raw.append(' '.join(words))
-    years.append(year)
-
-# 1. TF-IDF表示
-tfidf_vectorizer = TfidfVectorizer()
-tfidf_matrix = tfidf_vectorizer.fit_transform(corpus_raw)
-tfidf_feature_names = tfidf_vectorizer.get_feature_names_out()
-
-# 2. Word2Vec表示
-w2v_model = Word2Vec(
-    corpus, 
-    vector_size=100,
-    window=5,
-    min_count=2,
-    sg=1,  # 使用Skip-gram
-    epochs=10
-)
-
-# 文档向量化（取平均）
-def get_doc_vector(doc_words, model):
-    # 过滤不在模型中的词
-    doc_words = [word for word in doc_words if word in model.wv]
-    if len(doc_words) == 0:
-        return np.zeros(model.vector_size)
-    # 计算词向量的平均
-    return np.mean([model.wv[word] for word in doc_words], axis=0)
-
-# 计算每个文档的词向量表示
-doc_vectors_w2v = [get_doc_vector(doc, w2v_model) for doc in corpus]
-
-# 打印示例
-report_idx = 2  # 2021年报告
-print(f"{years[report_idx]}年政府工作报告的不同表示方法:")
-print("\nTF-IDF表示（稀疏向量，只显示前10个非零元素）:")
-tfidf_vec = tfidf_matrix[report_idx].toarray()[0]
-nonzero_idxs = np.nonzero(tfidf_vec)[0][:10]
-for idx in nonzero_idxs:
-    print(f"{tfidf_feature_names[idx]}: {tfidf_vec[idx]:.4f}")
-
-print("\nWord2Vec表示（密集向量，显示前10个维度）:")
-w2v_vec = doc_vectors_w2v[report_idx]
-for i in range(10):
-    print(f"维度{i+1}: {w2v_vec[i]:.4f}")
-```
-
-## 文本相似度计算比较
-
-词频法和词向量在计算文档相似度时有明显差异：
-
-```{python}
-#| eval: false
-from sklearn.metrics.pairwise import cosine_similarity
-
-# 1. 基于TF-IDF的相似度
-tfidf_similarity = cosine_similarity(tfidf_matrix)
-
-# 2. 基于Word2Vec的相似度
-w2v_similarity = cosine_similarity(doc_vectors_w2v)
-
-# 创建相似度对比DataFrame
-similarity_comparison = pd.DataFrame({
-    'Years': years,
-    'TF-IDF Similarity with 2021': tfidf_similarity[2],  # 以2021年为参考
-    'Word2Vec Similarity with 2021': w2v_similarity[2]   # 以2021年为参考
-})
-
-# 打印相似度比较
-print("不同年份与2021年报告的相似度比较:")
-print(similarity_comparison)
-
-# 可视化比较
-plt.figure(figsize=(12, 6))
-plt.bar(similarity_comparison['Years'], similarity_comparison['TF-IDF Similarity with 2021'], 
-        alpha=0.7, label='TF-IDF相似度')
-plt.bar(similarity_comparison['Years'], similarity_comparison['Word2Vec Similarity with 2021'], 
-        alpha=0.7, label='Word2Vec相似度', color='orange')
-plt.axhline(y=1, color='r', linestyle='--', alpha=0.3)  # 2021年与自身对比线
-plt.xlabel('年份')
-plt.ylabel('与2021年报告的相似度')
-plt.title('词频法与词向量的文本相似度比较')
-plt.legend()
-plt.grid(True, linestyle='--', alpha=0.5)
-plt.tight_layout()
-```
-
 **相似度计算结果分析**:
 
 1. **TF-IDF相似度**：
@@ -932,48 +433,6 @@ plt.tight_layout()
 
 两种方法在关键词提取上也有明显不同：
 
-```{python}
-#| eval: false
-# 1. TF-IDF关键词提取
-def get_tfidf_top_words(tfidf_matrix, feature_names, doc_idx, top_n=10):
-    tfidf_vec = tfidf_matrix[doc_idx].toarray()[0]
-    top_idxs = tfidf_vec.argsort()[-top_n:][::-1]
-    return [(feature_names[idx], tfidf_vec[idx]) for idx in top_idxs]
-
-# 2. Word2Vec关键词提取 (基于词向量中心性)
-def get_w2v_central_words(doc_words, model, top_n=10):
-    # 只考虑模型中有的词
-    doc_words = [w for w in doc_words if w in model.wv]
-    if len(doc_words) == 0:
-        return []
-    
-    # 计算每个词与文档其他词的平均相似度 (中心性)
-    word_centrality = {}
-    for word in doc_words:
-        # 与其他词的相似度之和
-        total_sim = sum(model.wv.similarity(word, other_word) 
-                        for other_word in doc_words if other_word != word)
-        # 平均相似度
-        word_centrality[word] = total_sim / (len(doc_words) - 1) if len(doc_words) > 1 else 0
-    
-    # 返回中心性最高的词
-    return sorted(word_centrality.items(), key=lambda x: x[1], reverse=True)[:top_n]
-
-# 比较2023年报告的关键词提取结果
-report_idx = 4  # 2023年
-print(f"{years[report_idx]}年政府工作报告关键词提取比较:")
-
-tfidf_top_words = get_tfidf_top_words(tfidf_matrix, tfidf_feature_names, report_idx)
-print("\nTF-IDF提取的关键词:")
-for word, score in tfidf_top_words:
-    print(f"{word}: {score:.4f}")
-
-w2v_top_words = get_w2v_central_words(corpus[report_idx], w2v_model)
-print("\nWord2Vec提取的关键词 (基于中心性):")
-for word, score in w2v_top_words:
-    print(f"{word}: {score:.4f}")
-```
-
 **关键词提取结果分析**:
 
 1. **TF-IDF关键词**：
@@ -991,109 +450,6 @@ for word, score in w2v_top_words:
 ## 语义关联发现比较
 
 词频法和词向量在发现词语关联关系上有本质区别：
-
-```{python}
-#| eval: false
-# 1. 词频法的共现分析
-from collections import Counter
-import networkx as nx
-
-def build_cooccurrence_network(corpus, target_words, window_size=5):
-    """构建目标词的共现网络"""
-    cooccur = Counter()
-    
-    for doc in corpus:
-        for i, word in enumerate(doc):
-            if word in target_words:
-                # 获取窗口内的词
-                context = doc[max(0, i-window_size):i] + doc[i+1:min(len(doc), i+window_size+1)]
-                for context_word in context:
-                    if context_word in target_words and context_word != word:
-                        # 记录共现次数
-                        pair = tuple(sorted([word, context_word]))
-                        cooccur[pair] += 1
-    
-    # 创建网络
-    G = nx.Graph()
-    for word in target_words:
-        G.add_node(word)
-    
-    # 添加边和权重
-    for (word1, word2), weight in cooccur.items():
-        if weight > 0:
-            G.add_edge(word1, word2, weight=weight)
-    
-    return G, cooccur
-
-# 2. Word2Vec的语义相似性网络
-def build_semantic_network(model, target_words, threshold=0.3):
-    """构建基于词向量相似度的语义网络"""
-    G = nx.Graph()
-    
-    # 过滤不在模型中的词
-    valid_words = [w for w in target_words if w in model.wv]
-    
-    for word in valid_words:
-        G.add_node(word)
-    
-    # 添加边和权重
-    for i, word1 in enumerate(valid_words):
-        for word2 in valid_words[i+1:]:
-            similarity = model.wv.similarity(word1, word2)
-            if similarity > threshold:
-                G.add_edge(word1, word2, weight=similarity)
-    
-    return G
-
-# 分析目标词之间的关系
-target_words = ['发展', '经济', '创新', '改革', '开放', '就业', '民生', '环保', '科技', '数字']
-
-# 1. 创建共现网络
-cooccur_net, cooccur_counter = build_cooccurrence_network(corpus, target_words)
-
-# 2. 创建语义网络
-semantic_net = build_semantic_network(w2v_model, target_words)
-
-# 共现矩阵可视化
-cooccur_matrix = np.zeros((len(target_words), len(target_words)))
-for i, word1 in enumerate(target_words):
-    for j, word2 in enumerate(target_words):
-        if i != j:
-            pair = tuple(sorted([word1, word2]))
-            cooccur_matrix[i, j] = cooccur_counter[pair]
-
-# 语义相似度矩阵
-semantic_matrix = np.zeros((len(target_words), len(target_words)))
-for i, word1 in enumerate(target_words):
-    for j, word2 in enumerate(target_words[i+1:], i+1):
-        if word1 in w2v_model.wv and word2 in w2v_model.wv:
-            similarity = w2v_model.wv.similarity(word1, word2)
-            semantic_matrix[i, j] = semantic_matrix[j, i] = similarity
-
-# 可视化比较
-fig, axes = plt.subplots(1, 2, figsize=(15, 6))
-
-# 共现网络热图
-im1 = axes[0].imshow(cooccur_matrix, cmap='Blues')
-axes[0].set_title('词频法：共现关系')
-axes[0].set_xticks(range(len(target_words)))
-axes[0].set_yticks(range(len(target_words)))
-axes[0].set_xticklabels(target_words)
-axes[0].set_yticklabels(target_words)
-plt.colorbar(im1, ax=axes[0], label='共现次数')
-
-# 语义网络热图
-im2 = axes[1].imshow(semantic_matrix, cmap='Reds')
-axes[1].set_title('Word2Vec：语义相似度')
-axes[1].set_xticks(range(len(target_words)))
-axes[1].set_yticks(range(len(target_words)))
-axes[1].set_xticklabels(target_words)
-axes[1].set_yticklabels(target_words)
-plt.colorbar(im2, ax=axes[1], label='余弦相似度')
-
-plt.tight_layout()
-plt.show()
-```
 
 **语义关联分析结果比较**:
 
@@ -1114,52 +470,6 @@ plt.show()
 ## 主题和情感分析的差异
 
 两种方法在主题建模和情感分析上也有明显区别：
-
-```{python}
-#| eval: false
-from sklearn.decomposition import LatentDirichletAllocation
-from sklearn.feature_extraction.text import CountVectorizer
-
-# 1. 基于词频的主题建模 (LDA)
-# 使用词频矩阵
-cv = CountVectorizer()
-bow_matrix = cv.fit_transform(corpus_raw)
-feature_names = cv.get_feature_names_out()
-
-# LDA模型
-lda = LatentDirichletAllocation(n_components=3, random_state=42)
-lda.fit(bow_matrix)
-
-# 2. 基于Word2Vec的主题聚类
-from sklearn.cluster import KMeans
-
-# 对文档向量进行聚类
-kmeans = KMeans(n_clusters=3, random_state=42)
-clusters = kmeans.fit_predict(doc_vectors_w2v)
-
-# 输出LDA主题词
-print("基于词频的LDA主题词:")
-for topic_idx, topic in enumerate(lda.components_):
-    print(f"主题 #{topic_idx+1}:")
-    top_words = [feature_names[i] for i in topic.argsort()[:-11:-1]]
-    print(", ".join(top_words))
-
-# 输出Word2Vec聚类中心最近的词
-print("\nWord2Vec聚类中心最近的词:")
-for i in range(3):
-    # 获取聚类中心
-    center = kmeans.cluster_centers_[i]
-    
-    # 找出与中心最接近的词
-    word_dists = []
-    for word in w2v_model.wv.index_to_key:
-        dist = np.linalg.norm(w2v_model.wv[word] - center)
-        word_dists.append((word, dist))
-    
-    top_words = sorted(word_dists, key=lambda x: x[1])[:10]
-    print(f"聚类 #{i+1}:")
-    print(", ".join(word for word, _ in top_words))
-```
 
 **主题分析结果比较**:
 
@@ -1217,6 +527,28 @@ for i in range(3):
 3. **预训练依赖**：需要大量语料预训练
 4. **领域专一性**：通用领域训练的词向量在专业领域效果可能不佳
 
+### 多义词问题的解决方案
+
+针对词向量无法处理多义词的局限性，研究者提出了多种解决方案：
+
+1. **基于聚类的多义词表示**：
+   - 收集词的所有上下文向量
+   - 对上下文向量进行聚类（如K-means）
+   - 为每个聚类中心分配一个词义向量
+   - 使用时根据上下文选择最相似的词义向量
+
+2. **动态词表示模型**：
+   - **ELMo (Embeddings from Language Models)**：基于双向LSTM，根据句子上下文动态生成词表示
+   - **BERT (Bidirectional Encoder Representations from Transformers)**：基于Transformer架构，学习上下文敏感的词表示
+   - **GPT (Generative Pre-trained Transformer)**：单向语言模型，生成考虑左侧上下文的表示
+
+3. **词义消歧与表示结合**：
+   - 先使用词义消歧算法确定词的当前含义
+   - 再选择对应含义的词向量表示
+   - 例如MSSG (Multi-Sense Skip-Gram)模型
+
+这些技术已经在很大程度上克服了传统Word2Vec模型处理多义词的局限，代表了词表示技术的发展方向。
+
 ## 进阶方向
 
 1. **上下文相关的词表示**：如ELMo、BERT等模型能根据上下文动态生成词表示
@@ -1233,4 +565,3 @@ for i in range(3):
 3. 负采样等技术大幅提高了训练效率
 4. 词向量空间具有丰富的语义特性，支持相似性计算和向量代数运算
 5. 在金融文本分析中，词向量可以发现政策热点、分析语义变化等
-
