@@ -40,6 +40,9 @@ title: "《数据挖掘与机器学习》期末考试复习指南"
 2. 模型评估与选择:
 
 * 偏差-方差权衡: 理解偏差（Bias）、方差（Variance）的概念，及其与欠拟合（高偏差）、过拟合（高方差）的对应关系，掌握模型复杂度与两者权衡的基本思想。
+
+![Bias-Variance](pics/bias-variance.png)
+
 * 评估指标:
     * 掌握准确率（Accuracy）、精确率（Precision）、召回率（Recall）、F1分数（F1-Score）的定义、计算方式和物理意义。
     * 理解在类别不平衡数据场景下，准确率可能失效，为何需要重点关注Precision, Recall, F1等指标。
